@@ -49,6 +49,7 @@ import time
 class SearchTests(unittest.TestCase):
     
     _count_regex = '^.* (\d+) - (\d+)'
+    _total_count_regex = '^.* \d+ - \d+ of (\d+)'
 
     def setUp(self):
         self.selenium = selenium(ConnectionParameters.server, 
@@ -125,6 +126,19 @@ class SearchTests(unittest.TestCase):
         self.assertTrue(amo_search_page.is_text_present(search_str)) 
         results_count = amo_search_page.results_count
         self.assertFalse("0 - 0 of 0" in results_count)
+
+    def test_that_searching_with_substrings_returns_results(self):
+        """ Litmus 9561
+            https://litmus.mozilla.org/show_test.cgi?id=9561 """
+        amo_home_page = AddonsHomePage(self.selenium)
+        amo_search_page = amo_home_page.search_for("fox")
+        self.assertFalse(amo_search_page.is_text_present("No results found."))
+        results_count = amo_search_page.results_count
+        self.assertFalse("0 - 0 of 0" in results_count)
+        matches = re.search(self._total_count_regex, results_count)
+        self.assertTrue(int(matches.group(1)) > 1)
+
+
 
 if __name__ == "__main__":
     unittest.main()
