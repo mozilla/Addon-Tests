@@ -39,11 +39,10 @@
 
 from selenium import selenium
 from vars import ConnectionParameters
-import unittest
+import unittest2 as unittest
 import re
 from addons_site import AddonsHomePage
 import sys
-import time
 
 
 class SearchTests(unittest.TestCase):
@@ -62,7 +61,7 @@ class SearchTests(unittest.TestCase):
     def tearDown(self):
         self.selenium.stop()
 
-    def test_that_search_all_add_ons_results_then_go_back_and_forward(self):
+    def test_that_search_all_add_ons_results_have_pagination_that_moves_through_results(self):
         """ Test for litmus 4839 
             https://litmus.mozilla.org/show_test.cgi?id=4839
         """
@@ -117,7 +116,7 @@ class SearchTests(unittest.TestCase):
         results_count = amo_search_page.results_count
         self.assertTrue("0 - 0 of 0" in results_count)
 
-    def test_that_searching_with_unicde_characters_returns_results(self):
+    def test_that_searching_with_unicode_characters_returns_results(self):
         """ Litmus 9575
             https://litmus.mozilla.org/show_test.cgi?id=9575 """
         amo_home_page = AddonsHomePage(self.selenium)
@@ -137,8 +136,6 @@ class SearchTests(unittest.TestCase):
         self.assertFalse("0 - 0 of 0" in results_count)
         matches = re.search(self._total_count_regex, results_count)
         self.assertTrue(int(matches.group(1)) > 1)
-
-
 
 if __name__ == "__main__":
     unittest.main()
