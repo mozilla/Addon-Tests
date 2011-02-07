@@ -48,18 +48,23 @@ class AddonsHomePage(Page):
     #Search box
     _search_button_locator = "css=input.submit"
     _search_textbox_locator = "name=q"
+    _download_count_locator = "css=div.stats > strong"
 
     def __init__(self, selenium):
         ''' Creates a new instance of the class and gets the page ready for testing '''
-        self.sel = selenium
-        self.sel.open("/")
-        self.sel.window_maximize()
+        self.selenium = selenium
+        self.selenium.open("https://addons.allizom.org") #Must make this better!!!!
+        self.selenium.window_maximize()
 
     def search_for(self,search_term):
-        self.sel.type(self._search_textbox_locator, search_term)
-        self.sel.click(self._search_button_locator)
-        self.sel.wait_for_page_to_load(page_load_timeout)
-        return AddonsSearchHomePage(self.sel)
+        self.selenium.type(self._search_textbox_locator, search_term)
+        self.selenium.click(self._search_button_locator)
+        self.selenium.wait_for_page_to_load(page_load_timeout)
+        return AddonsSearchHomePage(self.selenium)
+
+    @property
+    def download_count(self):
+        return self.selenium.get_text(self._download_count_locator)
 
 
 class AddonsSearchHomePage(AddonsHomePage):
@@ -87,3 +92,42 @@ class AddonsSearchHomePage(AddonsHomePage):
     def page_back(self):
         self.selenium.click(self._prev_link)
         self.selenium.wait_for_page_to_load("30000") 
+
+class DiscoveryPane(Page):
+
+    _what_are_addons_section_locator = 'id=intro'
+    _what_are_addons_text_locator = 'css=#intro p'
+    _mission_section_locator = 'id=mission'
+    _mission_section_text_locator = 'css=#mission > p'
+    _learn_more_locator = 'link=Learn More' #Using link till 631557 implemented
+    _mozilla_org_link_locator = "css=a[href=http://www.mozilla.org/]"
+    _download_count_text_locator = "id=download-count"
+
+    def __init__(self, selenium, path):
+        self.selenium = selenium
+        self.selenium.open(path)
+
+    @property
+    def what_are_addons_text(self):
+        return self.selenium.get_text(self._what_are_addons_text_locator)
+
+    def click_learn_more(self):
+        self.selenium.click(self._learn_more_locator)
+        self.selenium.wait_for_page_to_load("30000")
+
+    @property
+    def mission_section(self):
+        return self._mission_section_locator
+
+    @property
+    def mission_section_text(self):
+        return self.selenium.get_text(self._mission_section_text_locator)
+
+    @property
+    def mozilla_org_link(self):
+        return self._mozilla_org_link_locator
+
+    @property
+    def download_count_text(self):
+        return self.selenium.get_text(self._download_count_text_locator)
+
