@@ -53,7 +53,7 @@ class AddonsHomePage(Page):
     def __init__(self, selenium):
         ''' Creates a new instance of the class and gets the page ready for testing '''
         self.selenium = selenium
-        self.selenium.open("https://addons.allizom.org") #Must make this better!!!!
+        self.selenium.open("/") 
         self.selenium.window_maximize()
 
     def search_for(self,search_term):
@@ -115,19 +115,17 @@ class DiscoveryPane(Page):
         self.selenium.click(self._learn_more_locator)
         self.selenium.wait_for_page_to_load("30000")
 
+    def is_mission_section_visible(self):
+        return self.is_element_visible(self._mission_section_locator)
+
     @property
     def mission_section(self):
-        return self._mission_section_locator
-
-    @property
-    def mission_section_text(self):
         return self.selenium.get_text(self._mission_section_text_locator)
 
-    @property
-    def mozilla_org_link(self):
-        return self._mozilla_org_link_locator
+    def mozilla_org_link_visible(self):
+        return self.is_element_visible(self._mozilla_org_link_locator)
 
     @property
-    def download_count_text(self):
+    def download_count(self):
         return self.selenium.get_text(self._download_count_text_locator)
 

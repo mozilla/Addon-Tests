@@ -49,12 +49,11 @@ import urllib2
 class DiscoveryPaneTests(unittest.TestCase):
     """ This only works with Firefox 4 """    
 
-    baseurl = 'https://services.addons.mozilla.org'
     basepath= '/en-US/firefox/discovery/pane/4.0b10/Darwin' #Need to get this info before run
 
     @classmethod
     def setUpClass(self):
-        urllib2.urlopen(self.baseurl + self.basepath)
+        urllib2.urlopen(ConnectionParameters.baseurl + self.basepath)
 
     @classmethod
     def tearDownClass(self):
@@ -64,7 +63,7 @@ class DiscoveryPaneTests(unittest.TestCase):
         self.selenium = selenium(ConnectionParameters.server, 
                                 ConnectionParameters.port,
                                 ConnectionParameters.browser, 
-                                self.baseurl)
+                                ConnectionParameters.baseurl)
         self.selenium.start()
         self.selenium.set_timeout(ConnectionParameters.page_load_timeout)
 
@@ -88,13 +87,14 @@ class DiscoveryPaneTests(unittest.TestCase):
         """ TestCase for Litmus 15065 """
         discovery_pane = DiscoveryPane(self.selenium, self.basepath)
 
-        self.assertTrue(discovery_pane.is_element_present(discovery_pane.mission_section))
+        self.assertTrue(discovery_pane.is_mission_section_visible())
         expected_text = "Thanks for using Firefox and supporting Mozilla's mission!"
-        mission_text = discovery_pane.mission_section_text
+
+        mission_text = discovery_pane.mission_section
         self.assertTrue(expected_text in mission_text)
-        self.assertTrue(discovery_pane.is_element_present(discovery_pane.mozilla_org_link))
+        self.assertTrue(discovery_pane.mozilla_org_link_visible())
         download_count_regex = "Add-ons downloaded: (.+)"
-        self.assertTrue(re.search(download_count_regex, discovery_pane.download_count_text) != None)
+        self.assertTrue(re.search(download_count_regex, discovery_pane.download_count) != None)
         
     def test_that_addons_count_are_equal_between_amo_and_discovert(self):
         """ TestCase for Litmus 15066 """
@@ -103,7 +103,7 @@ class DiscoveryPaneTests(unittest.TestCase):
         amo_download_count = amo_home_page.download_count.replace(",","")
 
         discovery_pane = DiscoveryPane(self.selenium, self.basepath)
-        discovery_download_count_text = discovery_pane.download_count_text
+        discovery_download_count_text = discovery_pane.download_count
         download_count = re.search("Add-ons downloaded: (.+)", discovery_download_count_text).group(1)
         download_count = download_count.replace(",","")
         self.assertEquals(amo_download_count, download_count)
