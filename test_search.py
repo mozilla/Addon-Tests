@@ -43,6 +43,7 @@ import unittest2 as unittest
 import re
 from addons_site import AddonsHomePage
 import sys
+from nose.plugins.multiprocess import MultiProcess
 
 
 class SearchTests(unittest.TestCase):

@@ -45,6 +45,8 @@ from addons_site import DiscoveryPane
 from addons_site import AddonsHomePage
 import sys
 import urllib2
+from nose.plugins.multiprocess import MultiProcess
+
 
 class DiscoveryPaneTests(unittest.TestCase):
     """ This only works with Firefox 4 """    
