@@ -102,6 +102,8 @@ class DiscoveryPane(Page):
     _learn_more_locator = 'link=Learn More' #Using link till 631557 implemented
     _mozilla_org_link_locator = "css=a[href=http://www.mozilla.org/]"
     _download_count_text_locator = "id=download-count"
+    _personas_section_locator = "id=featured-personas"
+    
 
     def __init__(self, selenium, path):
         self.selenium = selenium
@@ -129,3 +131,9 @@ class DiscoveryPane(Page):
     def download_count(self):
         return self.selenium.get_text(self._download_count_text_locator)
 
+    def is_personas_section_visible(self):
+        return self.is_element_visible(self._personas_section_locator)
+
+    @property
+    def personas_count(self):
+        return int(self.selenium.get_xpath_count("//div[@class='persona-preview']"))
