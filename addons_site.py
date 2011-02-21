@@ -104,11 +104,12 @@ class DiscoveryPane(Page):
     _download_count_text_locator = "id=download-count"
     _personas_section_locator = "id=featured-personas"
     _personas_see_all_link = "css=.all[href='/en-US/firefox/personas/']"
-    
+    _personas_locator = "//span[@class='addon-title']/b"
 
     def __init__(self, selenium, path):
         self.selenium = selenium
         self.selenium.open(path)
+        self.selenium.window_maximize()
 
     @property
     def what_are_addons_text(self):
@@ -137,7 +138,27 @@ class DiscoveryPane(Page):
 
     @property
     def personas_count(self):
-        return int(self.selenium.get_xpath_count("//div[@class='persona-preview']"))
+        return int(self.selenium.get_xpath_count(self._personas_locator))
 
     def is_personas_see_all_link_visible(self):
         return self.is_element_visible(self._personas_see_all_link)
+
+    @property
+    def first_persona(self):
+        return self.selenium.get_text(self._personas_locator)
+    
+    def click_on_first_persona(self):
+        self.selenium.click(self._personas_locator)
+        self.selenium.wait_for_page_to_load(page_load_timeout)
+        return PersonasPage(self.selenium)
+
+class PersonasPage(Page):
+
+    _persona_title = 'css=h1.addon'
+
+    def __init__(self, selenium):
+        self.selenium = selenium
+
+    @property
+    def persona_title(self):
+        return self.selenium.get_text(self._persona_title)

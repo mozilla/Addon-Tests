@@ -115,3 +115,16 @@ class DiscoveryPaneTests(unittest.TestCase):
         self.assertTrue(discovery_pane.is_personas_section_visible())
         self.assertEqual(5, discovery_pane.personas_count)
         self.assertTrue(discovery_pane.is_personas_see_all_link_visible())
+
+    def test_that_featured_personas_go_to_their_landing_page_when_clicked(self):
+        """ TestCase for Litmus 15081 """
+        discovery_pane= DiscoveryPane(self.selenium, self.basepath)
+        first_persona = discovery_pane.first_persona
+        first_persona_url = first_persona.lower().replace(" ","-")
+        persona = discovery_pane.click_on_first_persona()
+        self.assertTrue(first_persona_url in discovery_pane.get_url_current_page())
+        self.assertEqual(first_persona, persona.persona_title)
+
+
+if __name__ == "__main__":
+    unittest.main()
