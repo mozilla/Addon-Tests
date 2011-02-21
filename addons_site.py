@@ -105,6 +105,9 @@ class DiscoveryPane(Page):
     _personas_section_locator = "id=featured-personas"
     _personas_see_all_link = "css=.all[href='/en-US/firefox/personas/']"
     _personas_locator = "//span[@class='addon-title']/b"
+    _more_ways_section_locator = "id=more-ways"
+    _more_ways_addons_locator = "id=more-addons"
+    _more_ways_personas_locator = "id=more-personas"
 
     def __init__(self, selenium, path):
         self.selenium = selenium
@@ -151,6 +154,18 @@ class DiscoveryPane(Page):
         self.selenium.click(self._personas_locator)
         self.selenium.wait_for_page_to_load(page_load_timeout)
         return PersonasPage(self.selenium)
+
+    def more_ways_section_visible(self):
+        return self.is_element_visible(self._more_ways_section_locator)
+
+    @property
+    def more_ways_addons(self):
+        return self.selenium.get_text(self._more_ways_addons_locator)
+
+    @property
+    def more_ways_personas(self):
+        return self.selenium.get_text(self._more_ways_personas_locator)
+
 
 class PersonasPage(Page):
 

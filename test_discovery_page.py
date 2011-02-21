@@ -125,6 +125,13 @@ class DiscoveryPaneTests(unittest.TestCase):
         self.assertTrue(first_persona_url in discovery_pane.get_url_current_page())
         self.assertEqual(first_persona, persona.persona_title)
 
+    def test_that_More_Ways_To_Customize_section_is_available(self):
+        " TestCase for Litmus 15082 """
+        discovery_pane = DiscoveryPane(self.selenium, self.basepath)
+        self.assertTrue(discovery_pane.more_ways_section_visible())
+        self.assertEqual("Browse all add-ons", discovery_pane.more_ways_addons)
+        self.assertEqual("See all themes and Personas", discovery_pane.more_ways_personas)
+
 
 if __name__ == "__main__":
     unittest.main()
