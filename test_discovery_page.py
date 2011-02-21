@@ -110,7 +110,8 @@ class DiscoveryPaneTests(unittest.TestCase):
         self.assertEquals(amo_download_count, download_count)
 
     def test_that_featured_personas_is_present_and_has_5_item(self):
-        """ TestCase for Litmus 15079 """
+        """ TestCase for Litmus 15079, 15080 """
         discovery_pane= DiscoveryPane(self.selenium, self.basepath)
         self.assertTrue(discovery_pane.is_personas_section_visible())
         self.assertEqual(5, discovery_pane.personas_count)
+        self.assertTrue(discovery_pane.is_personas_see_all_link_visible())

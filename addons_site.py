@@ -103,6 +103,7 @@ class DiscoveryPane(Page):
     _mozilla_org_link_locator = "css=a[href=http://www.mozilla.org/]"
     _download_count_text_locator = "id=download-count"
     _personas_section_locator = "id=featured-personas"
+    _personas_see_all_link = "css=.all[href='/en-US/firefox/personas/']"
     
 
     def __init__(self, selenium, path):
@@ -137,3 +138,6 @@ class DiscoveryPane(Page):
     @property
     def personas_count(self):
         return int(self.selenium.get_xpath_count("//div[@class='persona-preview']"))
+
+    def is_personas_see_all_link_visible(self):
+        return self.is_element_visible(self._personas_see_all_link)
