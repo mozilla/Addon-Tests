@@ -51,7 +51,7 @@ from nose.plugins.multiprocess import MultiProcess
 class DiscoveryPaneTests(unittest.TestCase):
     """ This only works with Firefox 4 """    
 
-    basepath= '/en-US/firefox/discovery/pane/4.0b10/Darwin' #Need to get this info before run
+    basepath= '/en-US/firefox/discovery/pane/4.0b11/Darwin' #Need to get this info before run
 
     @classmethod
     def setUpClass(self):
