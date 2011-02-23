@@ -108,6 +108,8 @@ class DiscoveryPane(Page):
     _more_ways_section_locator = "id=more-ways"
     _more_ways_addons_locator = "id=more-addons"
     _more_ways_personas_locator = "id=more-personas"
+    _up_and_coming_section = "id=top-addons"
+    _up_and_coming_item = "//section[@id='top-addons']/ul/li/a[@class='addon-title']"
 
     def __init__(self, selenium, path):
         self.selenium = selenium
@@ -166,6 +168,12 @@ class DiscoveryPane(Page):
     def more_ways_personas(self):
         return self.selenium.get_text(self._more_ways_personas_locator)
 
+    def up_and_coming_visible(self):
+        return self.is_element_visible(self._up_and_coming_section)
+
+    @property
+    def up_and_coming_item_count(self):
+        return int(self.selenium.get_xpath_count(self._up_and_coming_item))
 
 class PersonasPage(Page):
 
