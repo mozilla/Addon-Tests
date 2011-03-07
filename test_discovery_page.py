@@ -134,6 +134,7 @@ class DiscoveryPaneTests(unittest.TestCase):
 
     def test_that_up_and_coming_is_present_and_had_5_items(self):
         """ TestCase for Litmus 15074 """
+        self.skipTest("Skipping tests as not enough data in staging. See bug 639493")
         discovery_pane = DiscoveryPane(self.selenium, self.basepath)
         self.assertTrue(discovery_pane.up_and_coming_visible())
         self.assertEqual(5, discovery_pane.up_and_coming_item_count)
