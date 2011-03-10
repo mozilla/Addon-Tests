@@ -87,6 +87,7 @@ class DiscoveryPaneTests(unittest.TestCase):
 
     def test_that_mission_statement_is_on_addons_home_page(self):
         """ TestCase for Litmus 15065 """
+        self.skipTest("Disabled due to bug 640654")
         discovery_pane = DiscoveryPane(self.selenium, self.basepath)
 
         self.assertTrue(discovery_pane.is_mission_section_visible())
@@ -98,7 +99,7 @@ class DiscoveryPaneTests(unittest.TestCase):
         download_count_regex = "Add-ons downloaded: (.+)"
         self.assertTrue(re.search(download_count_regex, discovery_pane.download_count) != None)
         
-    def test_that_addons_count_are_equal_between_amo_and_discovert(self):
+    def test_that_addons_count_are_equal_between_amo_and_discovery(self):
         """ TestCase for Litmus 15066 """
         amo_home_page = AddonsHomePage(self.selenium)
         amo_download_count = amo_home_page.download_count.replace(",","")
