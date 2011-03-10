@@ -101,6 +101,7 @@ class DiscoveryPaneTests(unittest.TestCase):
         
     def test_that_addons_count_are_equal_between_amo_and_discovery(self):
         """ TestCase for Litmus 15066 """
+        self.skipTest("Disabled for bug 640660")
         amo_home_page = AddonsHomePage(self.selenium)
         amo_download_count = amo_home_page.download_count.replace(",","")
 
