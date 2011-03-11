@@ -39,26 +39,27 @@
 
 from selenium import selenium
 from vars import ConnectionParameters
-import unittest2 as unittest
+import unittest
 import re
 from addons_site import DiscoveryPane
 from addons_site import AddonsHomePage
 import sys
 import urllib2
-from nose.plugins.multiprocess import MultiProcess
+import pytest
 
+xfail = pytest.mark.xfail
 
 class DiscoveryPaneTests(unittest.TestCase):
     """ This only works with Firefox 4 """    
 
-    basepath= '/en-US/firefox/discovery/pane/4.0b11/Darwin' #Need to get this info before run
+    basepath= '/en-US/firefox/discovery/pane/4.0/Darwin' #Need to get this info before run
 
     @classmethod
-    def setUpClass(self):
+    def setup_class(self):
         urllib2.urlopen(ConnectionParameters.baseurl + self.basepath)
 
     @classmethod
-    def tearDownClass(self):
+    def teardown_class(self):
         pass
 
     def setUp(self):
@@ -85,9 +86,9 @@ class DiscoveryPaneTests(unittest.TestCase):
 
         self.assertEquals(what_are_addons_expected, discovery_pane.what_are_addons_text)
 
+    @xfail(reason="Disabled due to bug 640654")
     def test_that_mission_statement_is_on_addons_home_page(self):
         """ TestCase for Litmus 15065 """
-        self.skipTest("Disabled due to bug 640654")
         discovery_pane = DiscoveryPane(self.selenium, self.basepath)
 
         self.assertTrue(discovery_pane.is_mission_section_visible())
@@ -99,9 +100,9 @@ class DiscoveryPaneTests(unittest.TestCase):
         download_count_regex = "Add-ons downloaded: (.+)"
         self.assertTrue(re.search(download_count_regex, discovery_pane.download_count) != None)
         
+    @xfail(reason="Disabled for bug 640660")
     def test_that_addons_count_are_equal_between_amo_and_discovery(self):
         """ TestCase for Litmus 15066 """
-        self.skipTest("Disabled for bug 640660")
         amo_home_page = AddonsHomePage(self.selenium)
         amo_download_count = amo_home_page.download_count.replace(",","")
 
@@ -134,9 +135,9 @@ class DiscoveryPaneTests(unittest.TestCase):
         self.assertEqual("Browse all add-ons", discovery_pane.more_ways_addons)
         self.assertEqual("See all themes and Personas", discovery_pane.more_ways_personas)
 
+    @xfail(reason="Skipping tests as not enough data in staging. See bug 639493")
     def test_that_up_and_coming_is_present_and_had_5_items(self):
         """ TestCase for Litmus 15074 """
-        self.skipTest("Skipping tests as not enough data in staging. See bug 639493")
         discovery_pane = DiscoveryPane(self.selenium, self.basepath)
         self.assertTrue(discovery_pane.up_and_coming_visible())
         self.assertEqual(5, discovery_pane.up_and_coming_item_count)
