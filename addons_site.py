@@ -20,7 +20,7 @@
 # Portions created by the Initial Developer are Copyright (C) 2010
 # the Initial Developer. All Rights Reserved.
 #
-# Contributor(s): David Burns
+# Contributor(s): David Burns, Marc George
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -49,6 +49,10 @@ class AddonsHomePage(Page):
     _search_button_locator = "css=input.submit"
     _search_textbox_locator = "name=q"
     _download_count_locator = "css=div.stats > strong"
+    
+    #Categories List
+    #//div[@id='filter_locale']/ul/li
+    _category_list_locator = "//ul[@id='categoriesdropdown']"
 
     def __init__(self, selenium):
         ''' Creates a new instance of the class and gets the page ready for testing '''
@@ -61,6 +65,18 @@ class AddonsHomePage(Page):
         self.selenium.click(self._search_button_locator)
         self.selenium.wait_for_page_to_load(page_load_timeout)
         return AddonsSearchHomePage(self.selenium)
+    
+    def get_xpath_for_category(self, category_name):
+        category_locator = self._category_list_locator + "//li/a[contains(@href, '" + category_name.lower() + "')]"
+        return category_locator
+        
+        
+    def has_category(self, category_name):
+        return self.selenium.get_xpath_count(self.get_xpath_for_category(category_name)) > 0
+        
+    def click_category(self, category_name):
+        category_xpath = "xpath=" + self.get_xpath_for_category(category_name)
+        self.selenium.click(category_xpath)
 
     @property
     def download_count(self):
