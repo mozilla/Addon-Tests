@@ -66,10 +66,7 @@ class ThemeTests(unittest.TestCase):
         amo_home_page = AddonsHomePage(self.selenium)
         self.assertTrue(amo_home_page.has_category("themes"))
         amo_home_page.click_category("themes")
-        self.selenium.wait_for_page_to_load("30000")
-        rx = "^https://addons.allizom.org/.+/firefox/themes/$"
-        result = re.search(rx, self.selenium.get_location())
-        self.assertNotEqual(None, result)
+        self.assertTrue(amo_home_page.current_page_is("themes"))
 
 if __name__ == "__main__":
     unittest.main()

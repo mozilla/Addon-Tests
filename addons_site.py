@@ -40,6 +40,7 @@
 from selenium import selenium
 from vars import ConnectionParameters
 from page import Page
+import re
 
 page_load_timeout = ConnectionParameters.page_load_timeout
 
@@ -51,7 +52,6 @@ class AddonsHomePage(Page):
     _download_count_locator = "css=div.stats > strong"
     
     #Categories List
-    #//div[@id='filter_locale']/ul/li
     _category_list_locator = "//ul[@id='categoriesdropdown']"
 
     def __init__(self, selenium):
@@ -64,24 +64,32 @@ class AddonsHomePage(Page):
         self.selenium.type(self._search_textbox_locator, search_term)
         self.selenium.click(self._search_button_locator)
         self.selenium.wait_for_page_to_load(page_load_timeout)
-        return AddonsSearchHomePage(self.selenium)
-    
-    def get_xpath_for_category(self, category_name):
-        category_locator = self._category_list_locator + "//li/a[contains(@href, '" + category_name.lower() + "')]"
-        return category_locator
-        
+        return AddonsSearchHomePage(self.selenium)        
         
     def has_category(self, category_name):
-        return self.selenium.get_xpath_count(self.get_xpath_for_category(category_name)) > 0
+        ''' Returns whether category_name exists in the category menu links'''
+        locator = self._xpath_for_category(category_name)
+        return self.selenium.get_xpath_count(locator) > 0
         
     def click_category(self, category_name):
-        category_xpath = "xpath=" + self.get_xpath_for_category(category_name)
+        ''' Clicks the named category '''
+        category_xpath = "xpath=" + self._xpath_for_category(category_name)
         self.selenium.click(category_xpath)
-
+        self.selenium.wait_for_page_to_load("30000")
+    
+    def current_page_is(self, page_name_url_segment):
+        rx = "^https://addons.allizom.org/.+/firefox/" + re.escape(page_name_url_segment) + "/$"
+        return re.search(rx, self.get_url_current_page())
+        return result != None
+    
+    def _xpath_for_category(self, category_name):
+        ''' Return a locator for the link to category_name '''
+        category_locator = self._category_list_locator + "//li/a[contains(@href, '" + category_name.lower() + "')]"
+        return category_locator
+    
     @property
     def download_count(self):
         return self.selenium.get_text(self._download_count_locator)
-
 
 class AddonsSearchHomePage(AddonsHomePage):
 
