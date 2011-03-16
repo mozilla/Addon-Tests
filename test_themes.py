@@ -58,17 +58,8 @@ class ThemeTests(unittest.TestCase):
     def tearDown(self):
         self.selenium.stop()
         
-    def test_that_themes_is_listed_as_a_category(self):
-        """ Test for litmus 4839 
-            https://litmus.mozilla.org/show_test.cgi?id=4839
-        """
-        amo_home_page = AddonsHomePage(self.selenium)
-        self.assertTrue(amo_home_page.has_category("themes"))
-        amo_home_page.click_category("themes")
-        self.assertTrue(amo_home_page.current_page_is("themes"))
-
     def test_that_themes_can_be_sorted_by_name(self):
-        """ Test for Litmus 11727 """
+        """ Test for Litmus 11727, 4839 """
         amo_home_page = AddonsHomePage(self.selenium)
         amo_themes_page = amo_home_page.click_themes()
         amo_themes_page.click_sort_by("name")

@@ -81,17 +81,6 @@ class AddonsHomePage(Page):
         self.selenium.wait_for_page_to_load(page_load_timeout)
         return AddonsThemesPage(self.selenium)
         
-    def click_category(self, category_name):
-        ''' Clicks the named category '''
-        category_xpath = "xpath=" + self._xpath_for_category(category_name)
-        self.selenium.click(category_xpath)
-        self.selenium.wait_for_page_to_load("30000")
-    
-    def current_page_is(self, page_name_url_segment):
-        rx = "^https://addons.allizom.org/.+/firefox/" + re.escape(page_name_url_segment) + "/$"
-        return re.search(rx, self.get_url_current_page())
-        return result != None
-    
     def page_forward(self):
         self.selenium.click(self._next_link)
         self.selenium.wait_for_page_to_load("30000")
@@ -100,11 +89,6 @@ class AddonsHomePage(Page):
         self.selenium.click(self._prev_link)
         self.selenium.wait_for_page_to_load("30000")
 
-    def _xpath_for_category(self, category_name):
-        ''' Return a locator for the link to category_name '''
-        category_locator = self._category_list_locator + "//li/a[contains(@href, '" + category_name.lower() + "')]"
-        return category_locator
-    
     @property
     def download_count(self):
         return self.selenium.get_text(self._download_count_locator)
