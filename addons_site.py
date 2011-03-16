@@ -118,7 +118,9 @@ class AddonsThemesPage(AddonsHomePage):
     _sort_by_created_locator = 'name=_t-created'
     _sort_by_downloads_locator = 'name=_t-downloads'
     _sort_by_rating_locator = 'name=_t-rating'
-    _addon_name_locator = "//div[@class='details']/h4/a"
+    _addons_root_locator = "//div[@class='details']"
+    _addon_name_locator = _addons_root_locator + "/h4/a"
+    _addons_updated_date_locator = _addons_root_locator + "/p[@class='meta']"
 
 
     def __init__(self, selenium):
@@ -134,6 +136,14 @@ class AddonsThemesPage(AddonsHomePage):
         _addon_names = [self.selenium.get_text("xpath=(" + self._addon_name_locator + ")[%s]" % str(i+1))
                         for i in xrange(addon_count)]
         return _addon_names
+    
+    @property
+    def addon_update_dates(self):
+        addon_count = int(self.selenium.get_xpath_count(self._addon_name_locator))
+        _addon_dates = [self.selenium.get_text(
+                            "xpath=(" + self._addons_updated_date_locator+ ")[%s]" % str(i+1))[8:]
+                        for i in xrange(addon_count)]
+        return _addon_dates
 
 class DiscoveryPane(Page):
 

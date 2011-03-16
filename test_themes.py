@@ -77,6 +77,25 @@ class ThemeTests(unittest.TestCase):
         addons.sort()
         [self.assertEqual(addons_orig[i], addons[i]) for i in xrange(len(addons))]
 
+    def test_that_themes_can_be_sorted_by_date(self):
+        """ test for litmus 11750"""
+        amo_home_page = AddonsHomePage(self.selenium)
+        amo_themes_page = amo_home_page.click_themes()
+        amo_themes_page.click_sort_by("updated")
+        addons = amo_themes_page.addon_names
+        addons_set = set(addons)
+        self.assertEquals(len(addons), len(addons_set), "There are duplicates in the names")
+        addon_dates = amo_themes_page.addon_update_dates
+        addons_orig = addon_dates
+        addon_dates.sort()
+        addon_dates.reverse()
+        [self.assertEqual(addons_orig[i], addon_dates[i]) for i in xrange(len(addons))]
+        amo_themes_page.page_forward()
+        addon_dates = amo_themes_page.addon_update_dates
+        addons_orig = addon_dates
+        addon_dates.sort()
+        addon_dates.reverse()
+        [self.assertEqual(addons_orig[i], addon_dates[i]) for i in xrange(len(addons))]
 
 
 if __name__ == "__main__":
