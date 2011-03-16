@@ -43,7 +43,6 @@ import unittest2 as unittest
 import re
 from addons_site import AddonsHomePage
 import sys
-from nose.plugins.multiprocess import MultiProcess
 
 
 class ThemeTests(unittest.TestCase):
@@ -67,6 +66,27 @@ class ThemeTests(unittest.TestCase):
         self.assertTrue(amo_home_page.has_category("themes"))
         amo_home_page.click_category("themes")
         self.assertTrue(amo_home_page.current_page_is("themes"))
+
+    def test_that_themes_can_be_sorted_by_name(self):
+        """ Test for Litmus 11727 """
+        amo_home_page = AddonsHomePage(self.selenium)
+        amo_themes_page = amo_home_page.click_themes()
+        amo_themes_page.click_sort_by("name")
+        addons = amo_themes_page.addon_names
+        addons_set = set(addons)
+        self.assertEquals(len(addons), len(addons_set), "There are duplicates in the names")
+        addons_orig = addons
+        addons.sort()
+        [self.assertEqual(addons_orig[i], addons[i]) for i in xrange(len(addons))]
+        amo_themes_page.page_forward()
+        addons = amo_themes_page.addon_names
+        addons_set = set(addons)
+        self.assertEquals(len(addons), len(addons_set), "There are duplicates in the names")
+        addons_orig = addons
+        addons.sort()
+        [self.assertEqual(addons_orig[i], addons[i]) for i in xrange(len(addons))]
+
+
 
 if __name__ == "__main__":
     unittest.main()

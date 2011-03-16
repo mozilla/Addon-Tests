@@ -50,9 +50,14 @@ class AddonsHomePage(Page):
     _search_button_locator = "css=input.submit"
     _search_textbox_locator = "name=q"
     _download_count_locator = "css=div.stats > strong"
+    _themes_link_locator = "id=_t-2"
     
     #Categories List
     _category_list_locator = "//ul[@id='categoriesdropdown']"
+
+    #prev next links
+    _next_link = "link=Next"
+    _prev_link = "link=Prev"
 
     def __init__(self, selenium):
         ''' Creates a new instance of the class and gets the page ready for testing '''
@@ -70,6 +75,11 @@ class AddonsHomePage(Page):
         ''' Returns whether category_name exists in the category menu links'''
         locator = self._xpath_for_category(category_name)
         return self.selenium.get_xpath_count(locator) > 0
+
+    def click_themes(self):
+        self.selenium.click(self._themes_link_locator)
+        self.selenium.wait_for_page_to_load(page_load_timeout)
+        return AddonsThemesPage(self.selenium)
         
     def click_category(self, category_name):
         ''' Clicks the named category '''
@@ -82,6 +92,14 @@ class AddonsHomePage(Page):
         return re.search(rx, self.get_url_current_page())
         return result != None
     
+    def page_forward(self):
+        self.selenium.click(self._next_link)
+        self.selenium.wait_for_page_to_load("30000")
+
+    def page_back(self):
+        self.selenium.click(self._prev_link)
+        self.selenium.wait_for_page_to_load("30000")
+
     def _xpath_for_category(self, category_name):
         ''' Return a locator for the link to category_name '''
         category_locator = self._category_list_locator + "//li/a[contains(@href, '" + category_name.lower() + "')]"
@@ -93,8 +111,6 @@ class AddonsHomePage(Page):
 
 class AddonsSearchHomePage(AddonsHomePage):
 
-    _next_link = "link=Next"
-    _prev_link = "link=Prev"
     _results_count_header = "css=h3.results-count"
     _page_counter = "css=div.num-results"
 
@@ -109,13 +125,31 @@ class AddonsSearchHomePage(AddonsHomePage):
     def page_results_count(self):
         return self.selenium.get_text(self._page_counter)
 
-    def page_forward(self):
-        self.selenium.click(self._next_link)
-        self.selenium.wait_for_page_to_load("30000")
+     
 
-    def page_back(self):
-        self.selenium.click(self._prev_link)
-        self.selenium.wait_for_page_to_load("30000") 
+class AddonsThemesPage(AddonsHomePage):
+
+    _sort_by_name_locator = 'name=_t-name'
+    _sort_by_updated_locator = 'name=_t-updated'
+    _sort_by_created_locator = 'name=_t-created'
+    _sort_by_downloads_locator = 'name=_t-downloads'
+    _sort_by_rating_locator = 'name=_t-rating'
+    _addon_name_locator = "//div[@class='details']/h4/a"
+
+
+    def __init__(self, selenium):
+        self.selenium = selenium
+
+    def click_sort_by(self, type_):
+        self.selenium.click(getattr(self, "_sort_by_%s_locator" % type_))
+        self.selenium.wait_for_page_to_load(page_load_timeout)
+
+    @property
+    def addon_names(self):
+        addon_count = int(self.selenium.get_xpath_count(self._addon_name_locator))
+        _addon_names = [self.selenium.get_text("xpath=(" + self._addon_name_locator + ")[%s]" % str(i+1))
+                        for i in xrange(addon_count)]
+        return _addon_names
 
 class DiscoveryPane(Page):
 
