@@ -149,11 +149,11 @@ class AddonsThemesPage(AddonsHomePage):
     @property
     def addon_download_number(self):
         addon_count = int(self.selenium.get_xpath_count(self._addon_name_locator))
-        _addon_dates = [int(re.search("(\d+)", self.selenium.get_text(
+        _addon_downloads= [int(re.search("(\d+)", self.selenium.get_text(
                             "xpath=(" + self._addons_metadata_locator + ")[%s]" % str(i+1)).replace(
                                 ",","")).group(0))
                         for i in xrange(addon_count)]
-        return _addon_dates
+        return _addon_downloads
 
     @property
     def addon_rating(self):
