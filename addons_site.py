@@ -121,6 +121,7 @@ class AddonsThemesPage(AddonsHomePage):
     _addons_root_locator = "//div[@class='details']"
     _addon_name_locator = _addons_root_locator + "/h4/a"
     _addons_metadata_locator = _addons_root_locator + "/p[@class='meta']"
+    _addons_rating_locator = _addons_metadata_locator + "/span/span"
 
 
     def __init__(self, selenium):
@@ -153,6 +154,14 @@ class AddonsThemesPage(AddonsHomePage):
                                 ",","")).group(0))
                         for i in xrange(addon_count)]
         return _addon_dates
+
+    @property
+    def addon_rating(self):
+        addon_count = int(self.selenium.get_xpath_count(self._addon_name_locator))
+        _addon_ratings = [self.selenium.get_text("xpath=(" + self._addons_rating_locator + ")[%s]" % str(i+1))
+                        for i in xrange(addon_count)]
+        return _addon_ratings
+
 
 class DiscoveryPane(Page):
 
