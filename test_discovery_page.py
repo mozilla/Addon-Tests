@@ -86,7 +86,6 @@ class DiscoveryPaneTests(unittest.TestCase):
 
         self.assertEquals(what_are_addons_expected, discovery_pane.what_are_addons_text)
 
-    @xfail(reason="Disabled due to bug 640654")
     def test_that_mission_statement_is_on_addons_home_page(self):
         """ TestCase for Litmus 15065 """
         discovery_pane = DiscoveryPane(self.selenium, self.basepath)
@@ -100,7 +99,6 @@ class DiscoveryPaneTests(unittest.TestCase):
         download_count_regex = "Add-ons downloaded: (.+)"
         self.assertTrue(re.search(download_count_regex, discovery_pane.download_count) != None)
         
-    @xfail(reason="Disabled for bug 640660")
     def test_that_addons_count_are_equal_between_amo_and_discovery(self):
         """ TestCase for Litmus 15066 """
         amo_home_page = AddonsHomePage(self.selenium)
