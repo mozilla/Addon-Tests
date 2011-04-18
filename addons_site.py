@@ -108,8 +108,8 @@ class DiscoveryPane(Page):
     _more_ways_section_locator = "id=more-ways"
     _more_ways_addons_locator = "id=more-addons"
     _more_ways_personas_locator = "id=more-personas"
-    _up_and_coming_section = "id=top-addons"
-    _up_and_coming_item = "//section[@id='top-addons']/ul/li/a[@class='addon-title']"
+    _up_and_coming_section = "id=up-and-coming"
+    _up_and_coming_item = "//section[@id='up-and-coming']/ul/li/a[@class='addon-title']"
 
     def __init__(self, selenium, path):
         self.selenium = selenium
