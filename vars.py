@@ -39,7 +39,7 @@
 class ConnectionParameters:
     server = "localhost"
     port = 4444
-    browser = "*firefox"
+    browser = "Firefox4b;en-us;MacOSX6"
     baseurl = "http://addons.allizom.org"
     page_load_timeout = 120000
 
