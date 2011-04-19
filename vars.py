@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+
 # ***** BEGIN LICENSE BLOCK *****
 # Version: MPL 1.1/GPL 2.0/LGPL 2.1
 #
@@ -39,7 +39,7 @@
 class ConnectionParameters:
     server = "localhost"
     port = 4444
-    browser = "Firefox4b;en-us;MacOSX6"
+    browser = "*firefox"
     baseurl = "http://addons.allizom.org"
     page_load_timeout = 120000
 

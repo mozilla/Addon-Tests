@@ -138,5 +138,15 @@ class SearchTests(unittest.TestCase):
         matches = re.search(self._total_count_regex, results_count)
         self.assertTrue(int(matches.group(1)) > 1)
 
+    def test_that_blank_search_returns_results(self):
+        """ Litmus 11759
+            https://litmus.mozilla.org/show_test.cgi?id=11759 """               
+        amo_home_page = AddonsHomePage(self.selenium)
+        amo_search_page = amo_home_page.search_for("")     
+        self.assertFalse(amo_search_page.is_text_present("Search is currently unavailable"))
+        self.assertFalse(amo_search_page.is_text_present("No results found."))
+        results_count = amo_search_page.results_count
+        self.assertFalse("0 - 0 of 0" in results_count)
+
 if __name__ == "__main__":
     unittest.main()
