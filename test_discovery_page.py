@@ -45,9 +45,7 @@ from addons_site import DiscoveryPane
 from addons_site import AddonsHomePage
 import sys
 import urllib2
-import pytest
 
-xfail = pytest.mark.xfail
 
 class DiscoveryPaneTests(unittest.TestCase):
     """ This only works with Firefox 4 """    
@@ -133,7 +131,6 @@ class DiscoveryPaneTests(unittest.TestCase):
         self.assertEqual("Browse all add-ons", discovery_pane.more_ways_addons)
         self.assertEqual("See all themes and Personas", discovery_pane.more_ways_personas)
 
-    @xfail(reason="Skipping tests as not enough data in staging. See bug 639493")
     def test_that_up_and_coming_is_present_and_had_5_items(self):
         """ TestCase for Litmus 15074 """
         discovery_pane = DiscoveryPane(self.selenium, self.basepath)
