@@ -19,7 +19,8 @@ class AddOnsAPI(object):
         name_of_first_addon_listed = self.parsed_xml.searchresults.addon.nameTag.contents[0]
         return name_of_first_addon_listed
             
-class APIOnlyTests(unittest.TestCase):    
+#These tests should only call the api.  There should be no tests requiring selenium in this class.
+class APIOnlyTests(unittest.TestCase):
 
     def test_check_that_firebug_is_listed_first_in_addons_search_for_fire(self):  
         """ TestCase for Litmus 15314 """       
