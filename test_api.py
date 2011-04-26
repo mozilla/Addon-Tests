@@ -1,40 +1,55 @@
 #!/usr/bin/env python
 
-# https://addons.allizom.org/en-us/firefox/api/1.5/search/fire
-# https://addons.allizom.org/en-us/firefox/api/1.5/search/firebug 
-
 from BeautifulSoup import BeautifulStoneSoup
-#from selenium import selenium
+from selenium import selenium
 from vars import ConnectionParameters
-import unittest
+import unittest2 as unittest
 import urllib2
+#import sys
+#from nose.plugins.multiprocess import MultiProcess
 #import pytest
 #xfail = pytest.mark.xfail
 
-
+#https://addons.allizom.org/en-us/firefox/api/1.5/search/firebug
 
 class AddOnsAPI(object):
-	
-	
-	_api_base_url = ConnectionParameters.baseurl + '/en-us/firefox/api/1.5/search'	
-	
-	_firebug_url = _api_base_url + '/firebug'		
-		
-	def __init__(self,api_search_term):
-		pass
-			
-class APITests(unittest.TestCase):		
+               
+    def __init__(self, search_extension = 'firebug'):
+        self.api_base_url = ConnectionParameters.baseurl + '/en-us/firefox/api/1.5/search/'
+        self.search_url = self.api_base_url + search_extension      
+        self.parsed_xml = BeautifulStoneSoup(urllib2.urlopen(self.search_url) )
+        
+    def get_name_of_nth_addon(self, n):
+        name_of_first_addon_listed = self.parsed_xml.searchresults.addon.nameTag.contents[0]
+        return name_of_first_addon_listed
+            
+class APITests(unittest.TestCase):
+    
+    def setUp(self):
+        self.selenium = selenium(ConnectionParameters.server, 
+                                    ConnectionParameters.port,
+                                    ConnectionParameters.browser, 
+                                    ConnectionParameters.baseurl)
+        #self.selenium.start()
+        #self.selenium.set_timeout(ConnectionParameters.page_load_timeout)
 
-	def test_check_that_firebug_is_listed_first_on_searching_for_fire(self):  
-		""" TestCase for Litmus 15314 """
-		url = urllib2.urlopen(AddOnsAPI._api_base_url + '/fire')
-		xml_soup = BeautifulStoneSoup(url)
-		name_of_first_addon_listed = xml_soup.searchresults.addon.nameTag.contents[0]
-		self.assertEquals("Firebug", name_of_first_addon_listed)		
-					
+    def tearDown(self):
+       #self.selenium.stop() 
+       pass
+
+    def test_check_that_firebug_is_listed_first_in_addons_search_for_fire(self):  
+        """ TestCase for Litmus 15314 """       
+        addons_xml = AddOnsAPI('fire')
+        self.assertEquals("Firebug", addons_xml.get_name_of_nth_addon(1))
+
+    def test_check_that_firebug_is_listed_first_in_addons_search_for_firebug(self):  
+        """ TestCase for Litmus 15316 """
+        addons_xml = AddOnsAPI()
+        self.assertEquals("Firebug", addons_xml.get_name_of_nth_addon(1))
+                    
 if __name__ == "__main__":
-	unittest.main()
+    unittest.main()
 
-			
-		
-		
+            
+        
+        
