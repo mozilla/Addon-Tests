@@ -11,6 +11,10 @@ class AddOnsAPI(object):
         self.api_base_url = ConnectionParameters.baseurl + '/en-us/firefox/api/1.5/search/'
         self.search_url = self.api_base_url + search_extension      
         self.parsed_xml = BeautifulStoneSoup(urllib2.urlopen(self.search_url) )
+    
+    def get_addon_id(self, addon_name):
+        numeric_id =  xml_soup.find(text='FireGestures').findParent().findParent().attrs[0] #"get id for addon name"
+        return numeric_id[1]
         
     def get_name_of_first_addon(self):
         name_of_first_addon_listed = self.parsed_xml.searchresults.addon.nameTag.contents[0]

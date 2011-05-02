@@ -31,7 +31,6 @@ class APIOnlyTests(unittest.TestCase):
     def test_firebug_version_number(self):
         #Testcase for Litmus 15317"
         addon_xml = AddOnsAPI()
-        #print addon_xml.get_addon_version_number()
         self.assertEquals("1.7.0", addon_xml.get_addon_version_number())
                     
 if __name__ == "__main__":
