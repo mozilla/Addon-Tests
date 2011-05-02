@@ -13,7 +13,7 @@ class AddOnsAPI(object):
         self.parsed_xml = BeautifulStoneSoup(urllib2.urlopen(self.search_url) )
     
     def get_addon_id(self, addon_name):
-        numeric_id =  xml_soup.find(text='FireGestures').findParent().findParent().attrs[0] #"get id for addon name"
+        numeric_id =  self.parsed_xml.find(text=addon_name).findParent().findParent().attrs[0] #"get id for addon name"
         return numeric_id[1]
         
     def get_name_of_first_addon(self):
