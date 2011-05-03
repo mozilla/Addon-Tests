@@ -21,17 +21,17 @@ class APIOnlyTests(unittest.TestCase):
     def test_that_firebug_addon_type_name_is_extension(self):
         #Testcase for Litmus 15316
         addons_xml = AddOnsAPI()
-        self.assertEquals("Extension", addons_xml.get_addon_type_name())
+        self.assertEquals("Extension", addons_xml.get_addon_type_name("Firebug"))
     
     def test_that_firebug_addon_type_id_is_1(self):
         #Testcase for Litmus 15316
         addon_xml = AddOnsAPI()
-        self.assertEquals("1", addon_xml.get_addon_type_id())
+        self.assertEquals("1", addon_xml.get_addon_type_id("Firebug"))
     
     def test_firebug_version_number(self):
         #Testcase for Litmus 15317"
         addon_xml = AddOnsAPI()
-        self.assertEquals("1.7.0", addon_xml.get_addon_version_number())
+        self.assertEquals("1.7.0", addon_xml.get_addon_version_number("Firebug"))
                     
 if __name__ == "__main__":
     unittest.main()
