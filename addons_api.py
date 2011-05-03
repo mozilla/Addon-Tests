@@ -21,15 +21,14 @@ class AddOnsAPI(object):
 
     def get_addon_type_name(self, addon_name):
         addon_xml =  self.get_xml_for_single_addon(addon_name)  
-        addon_type_name = addon_xml.type.string        
-        return addon_type_name
+        return addon_xml.type.string        
+        
         
     def get_addon_type_id(self, addon_name):
         addon_xml = self.get_xml_for_single_addon(addon_name)
-        addon_type_id = addon_xml.type["id"]
-        return addon_type_id
+        return addon_xml.type["id"]
         
     def get_addon_version_number(self, addon_name):
         addon_xml = self.get_xml_for_single_addon(addon_name)
-        addon_version_number = addon_xml.addon.version.string
-        return addon_version_number
+        return addon_xml.version.string
+        
