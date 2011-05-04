@@ -9,27 +9,27 @@ import unittest2 as unittest
 class APIOnlyTests(unittest.TestCase):
 
     def test_that_firebug_is_listed_first_in_addons_search_for_fire(self):  
-        #TestCase for Litmus 15314      
+        """TestCase for Litmus 15314"""      
         addons_xml = AddOnsAPI('fire')
         self.assertEquals("Firebug", addons_xml.get_name_of_first_addon())
 
     def test_that_firebug_is_listed_first_in_addons_search_for_firebug(self):  
-        #TestCase for Litmus 15316
+        """TestCase for Litmus 15316"""
         addons_xml = AddOnsAPI()
         self.assertEquals("Firebug", addons_xml.get_name_of_first_addon())
 
     def test_that_firebug_addon_type_name_is_extension(self):
-        #Testcase for Litmus 15316
+        """Testcase for Litmus 15316"""
         addons_xml = AddOnsAPI()
         self.assertEquals("Extension", addons_xml.get_addon_type_name("Firebug"))
     
     def test_that_firebug_addon_type_id_is_1(self):
-        #Testcase for Litmus 15316
+        """Testcase for Litmus 15316"""
         addon_xml = AddOnsAPI()
         self.assertEquals("1", addon_xml.get_addon_type_id("Firebug"))
     
     def test_firebug_version_number(self):
-        #Testcase for Litmus 15317"
+        """Testcase for Litmus 15317"""
         addon_xml = AddOnsAPI()
         self.assertEquals("1.7.0", addon_xml.get_addon_version_number("Firebug"))
                     
