@@ -1,4 +1,4 @@
-
+#!/usr/bin/env python
 # ***** BEGIN LICENSE BLOCK *****
 # Version: MPL 1.1/GPL 2.0/LGPL 2.1
 #
@@ -12,11 +12,11 @@
 # for the specific language governing rights and limitations under the
 # License.
 #
-# The Original Code is Crash Tests Selenium Tests.
+# The Original Code is UnittestZero.
 #
 # The Initial Developer of the Original Code is
-# Mozilla.
-# Portions created by the Initial Developer are Copyright (C) 2010
+# Portions created by the Initial Developer are Copyright (C) 2011
+
 # the Initial Developer. All Rights Reserved.
 #
 # Contributor(s): David Burns
@@ -36,11 +36,32 @@
 # ***** END LICENSE BLOCK *****
 
 
-class ConnectionParameters:
-    server = "localhost"
-    port = 4444
-    browser = "Firefox-4;en-us;MacOSX6"
-    baseurl = "http://addons.allizom.org"
-    page_load_timeout = 120000
+class Assert:
 
+    @classmethod
+    def equal(self, first, second, msg=None):
+        assert first == second, msg
 
+    @classmethod
+    def not_equal(self, first, second, msg=None):
+        assert first != second, msg
+
+    @classmethod
+    def true(self, first, msg=None):
+        assert first is True, msg
+
+    @classmethod
+    def false(self, first, msg=None):
+        assert first is False, msg
+
+    @classmethod
+    def none(self, first, msg=None):
+        assert first is None, msg
+
+    @classmethod
+    def not_none(self, first, msg=None):
+        assert first is not None, msg
+
+    @classmethod
+    def fail(self, msg):
+        raise AssertionError(msg)

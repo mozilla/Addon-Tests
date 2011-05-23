@@ -17,10 +17,12 @@
 #
 # The Initial Developer of the Original Code is
 # Mozilla.
-# Portions created by the Initial Developer are Copyright (C) 2010
+# Portions created by the Initial Developer are Copyright (C) 2011
 # the Initial Developer. All Rights Reserved.
 #
-# Contributor(s): David Burns, Marc George
+# Contributor(s): David Burns
+#                 Marc George
+#                 Dave Hunt <dhunt@mozilla.com>
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -37,128 +39,109 @@
 # ***** END LICENSE BLOCK *****
 
 
-from selenium import selenium
-from vars import ConnectionParameters
-import unittest2 as unittest
-import re
+from unittestzero import Assert
+
 from addons_site import AddonsHomePage
-import sys
 
 
-class ThemeTests(unittest.TestCase):
+class TestThemes:
     
-    def setUp(self):
-        self.selenium = selenium(ConnectionParameters.server, 
-                                ConnectionParameters.port,
-                                ConnectionParameters.browser, 
-                                ConnectionParameters.baseurl)
-        self.selenium.start()
-        self.selenium.set_timeout(ConnectionParameters.page_load_timeout)
-
-    def tearDown(self):
-        self.selenium.stop()
-        
-    def test_that_themes_can_be_sorted_by_name(self):
+    def test_that_themes_can_be_sorted_by_name(self, testsetup):
         """ Test for Litmus 11727, 4839 """
-        amo_home_page = AddonsHomePage(self.selenium)
+        amo_home_page = AddonsHomePage(testsetup)
         amo_themes_page = amo_home_page.click_themes()
         amo_themes_page.click_sort_by("name")
         addons = amo_themes_page.addon_names
         addons_set = set(addons)
-        self.assertEquals(len(addons), len(addons_set), "There are duplicates in the names")
+        Assert.equal(len(addons), len(addons_set), "There are duplicates in the names")
         addons_orig = addons
         addons.sort()
-        [self.assertEqual(addons_orig[i], addons[i]) for i in xrange(len(addons))]
+        [Assert.equal(addons_orig[i], addons[i]) for i in xrange(len(addons))]
         amo_themes_page.page_forward()
         addons = amo_themes_page.addon_names
         addons_set = set(addons)
-        self.assertEquals(len(addons), len(addons_set), "There are duplicates in the names")
+        Assert.equal(len(addons), len(addons_set), "There are duplicates in the names")
         addons_orig = addons
         addons.sort()
-        [self.assertEqual(addons_orig[i], addons[i]) for i in xrange(len(addons))]
+        [Assert.equal(addons_orig[i], addons[i]) for i in xrange(len(addons))]
 
-    def test_that_themes_can_be_sorted_by_updated_date(self):
+    def test_that_themes_can_be_sorted_by_updated_date(self, testsetup):
         """ test for litmus 11750"""
-        amo_home_page = AddonsHomePage(self.selenium)
+        amo_home_page = AddonsHomePage(testsetup)
         amo_themes_page = amo_home_page.click_themes()
         amo_themes_page.click_sort_by("updated")
         addons = amo_themes_page.addon_names
         addons_set = set(addons)
-        self.assertEquals(len(addons), len(addons_set), "There are duplicates in the names")
+        Assert.equal(len(addons), len(addons_set), "There are duplicates in the names")
         addon_dates = amo_themes_page.addon_update_dates
         addons_orig = addon_dates
         addon_dates.sort()
         addon_dates.reverse()
-        [self.assertEqual(addons_orig[i], addon_dates[i]) for i in xrange(len(addons))]
+        [Assert.equal(addons_orig[i], addon_dates[i]) for i in xrange(len(addons))]
         amo_themes_page.page_forward()
         addon_dates = amo_themes_page.addon_update_dates
         addons_orig = addon_dates
         addon_dates.sort()
         addon_dates.reverse()
-        [self.assertEqual(addons_orig[i], addon_dates[i]) for i in xrange(len(addons))]
+        [Assert.equal(addons_orig[i], addon_dates[i]) for i in xrange(len(addons))]
 
-    def test_that_themes_can_be_sorted_by_created_date(self):
+    def test_that_themes_can_be_sorted_by_created_date(self, testsetup):
         """ test for litmus 11638"""
-        amo_home_page = AddonsHomePage(self.selenium)
+        amo_home_page = AddonsHomePage(testsetup)
         amo_themes_page = amo_home_page.click_themes()
         amo_themes_page.click_sort_by("created")
         addons = amo_themes_page.addon_names
         addons_set = set(addons)
-        self.assertEquals(len(addons), len(addons_set), "There are duplicates in the names")
+        Assert.equal(len(addons), len(addons_set), "There are duplicates in the names")
         addon_dates = amo_themes_page.addon_update_dates
         addons_orig = addon_dates
         addon_dates.sort()
         addon_dates.reverse()
-        [self.assertEqual(addons_orig[i], addon_dates[i]) for i in xrange(len(addons))]
+        [Assert.equal(addons_orig[i], addon_dates[i]) for i in xrange(len(addons))]
         amo_themes_page.page_forward()
         addon_dates = amo_themes_page.addon_update_dates
         addons_orig = addon_dates
         addon_dates.sort()
         addon_dates.reverse()
-        [self.assertEqual(addons_orig[i], addon_dates[i]) for i in xrange(len(addons))]
+        [Assert.equal(addons_orig[i], addon_dates[i]) for i in xrange(len(addons))]
 
 
-    def test_that_themes_can_be_sorted_by_popularity(self):
+    def test_that_themes_can_be_sorted_by_popularity(self, testsetup):
         """ test for litmus 11638"""
-        amo_home_page = AddonsHomePage(self.selenium)
+        amo_home_page = AddonsHomePage(testsetup)
         amo_themes_page = amo_home_page.click_themes()
         amo_themes_page.click_sort_by("updated")
         addons = amo_themes_page.addon_names
         addons_set = set(addons)
-        self.assertEquals(len(addons), len(addons_set), "There are duplicates in the names")
+        Assert.equal(len(addons), len(addons_set), "There are duplicates in the names")
         addon_downloads = amo_themes_page.addon_download_number
         addons_orig = addon_downloads
         addon_downloads.sort()
         addon_downloads.reverse()
-        [self.assertEqual(addons_orig[i], addon_downloads[i]) for i in xrange(len(addons))]
+        [Assert.equal(addons_orig[i], addon_downloads[i]) for i in xrange(len(addons))]
         amo_themes_page.page_forward()
         addon_dates = amo_themes_page.addon_download_number
         addons_orig = addon_downloads
         addon_downloads.sort()
         addon_downloads.reverse()
-        [self.assertEqual(addons_orig[i], addon_downloads[i]) for i in xrange(len(addons))]
+        [Assert.equal(addons_orig[i], addon_downloads[i]) for i in xrange(len(addons))]
 
-    def test_that_themes_can_be_sorted_by_rating(self):
+    def test_that_themes_can_be_sorted_by_rating(self, testsetup):
         """ test for litmus 11638"""
-        amo_home_page = AddonsHomePage(self.selenium)
+        amo_home_page = AddonsHomePage(testsetup)
         amo_themes_page = amo_home_page.click_themes()
         amo_themes_page.click_sort_by("rating")
         addons = amo_themes_page.addon_names
         addons_set = set(addons)
-        self.assertEquals(len(addons), len(addons_set), "There are duplicates in the names")
+        Assert.equal(len(addons), len(addons_set), "There are duplicates in the names")
         addon_rating = amo_themes_page.addon_rating
         addons_orig = addon_rating
         addon_rating.sort()
         addon_rating.reverse()
-        [self.assertEqual(addons_orig[i], addon_rating[i]) for i in xrange(len(addons))]
+        [Assert.equal(addons_orig[i], addon_rating[i]) for i in xrange(len(addons))]
         amo_themes_page.page_forward()
         addon_rating = amo_themes_page.addon_rating
         addons_orig = addon_rating
         addon_rating.sort()
         addon_rating.reverse()
-        [self.assertEqual(addons_orig[i], addon_rating[i]) for i in xrange(len(addons))]
-
-
-
-if __name__ == "__main__":
-    unittest.main()
+        [Assert.equal(addons_orig[i], addon_rating[i]) for i in xrange(len(addons))]
