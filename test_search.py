@@ -17,10 +17,11 @@
 #
 # The Initial Developer of the Original Code is
 # Mozilla.
-# Portions created by the Initial Developer are Copyright (C) 2010
+# Portions created by the Initial Developer are Copyright (C) 2011
 # the Initial Developer. All Rights Reserved.
 #
 # Contributor(s): David Burns
+#                 Dave Hunt <dhunt@mozilla.com>
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -37,36 +38,23 @@
 # ***** END LICENSE BLOCK *****
 
 
-from selenium import selenium
-from vars import ConnectionParameters
-import unittest2 as unittest
 import re
+
+from unittestzero import Assert
+
 from addons_site import AddonsHomePage
-import sys
-from nose.plugins.multiprocess import MultiProcess
 
 
-class SearchTests(unittest.TestCase):
+class TestSearch:
     
     _count_regex = '^.* (\d+) - (\d+)'
     _total_count_regex = '^.* \d+ - \d+ of (\d+)'
 
-    def setUp(self):
-        self.selenium = selenium(ConnectionParameters.server, 
-                                ConnectionParameters.port,
-                                ConnectionParameters.browser, 
-                                ConnectionParameters.baseurl)
-        self.selenium.start()
-        self.selenium.set_timeout(ConnectionParameters.page_load_timeout)
-
-    def tearDown(self):
-        self.selenium.stop()
-
-    def test_that_search_all_add_ons_results_have_pagination_that_moves_through_results(self):
+    def test_that_search_all_add_ons_results_have_pagination_that_moves_through_results(self, testsetup):
         """ Test for litmus 4839 
             https://litmus.mozilla.org/show_test.cgi?id=4839
         """
-        amo_home_page = AddonsHomePage(self.selenium)
+        amo_home_page = AddonsHomePage(testsetup)
         amo_search_page = amo_home_page.search_for("addon")
         first_expected = 1
         second_expected = 20
@@ -82,8 +70,8 @@ class SearchTests(unittest.TestCase):
             
             first_expected += 20
             second_expected += 20
-            self.assertEqual(str(first_expected), first_count)
-            self.assertEqual(str(second_expected), second_count)
+            Assert.equal(str(first_expected), first_count)
+            Assert.equal(str(second_expected), second_count)
 
         # Go Back 10 Times
         for i in range(10):
@@ -96,57 +84,54 @@ class SearchTests(unittest.TestCase):
             
             first_expected -= 20
             second_expected -= 20
-            self.assertEqual(str(first_expected), first_count)
-            self.assertEqual(str(second_expected), second_count)
+            Assert.equal(str(first_expected), first_count)
+            Assert.equal(str(second_expected), second_count)
 
-    def test_that_character_escaping_doesnt_go_into_the_test(self):
+    def test_that_character_escaping_doesnt_go_into_the_test(self, testsetup):
         """ Test for Litmus 4857
             https://litmus.mozilla.org/show_test.cgi?id=4857"""
-        amo_home_page = AddonsHomePage(self.selenium)
+        amo_home_page = AddonsHomePage(testsetup)
         amo_search_page = amo_home_page.search_for("personas%20plus")
-        self.assertTrue(amo_search_page.is_text_present("No results found."))
+        Assert.true(amo_search_page.is_text_present("No results found."))
         results_count = amo_search_page.results_count
-        self.assertTrue("0 - 0 of 0" in results_count)
+        Assert.true("0 - 0 of 0" in results_count)
 
-    def test_that_entering_a_long_string_returns_no_results(self):
+    def test_that_entering_a_long_string_returns_no_results(self, testsetup):
         """ Litmus 4856
             https://litmus.mozilla.org/show_test.cgi?id=4856 """
-        amo_home_page = AddonsHomePage(self.selenium)
+        amo_home_page = AddonsHomePage(testsetup)
         amo_search_page = amo_home_page.search_for("a" * 255)
-        self.assertTrue(amo_search_page.is_text_present("No results found."))
+        Assert.true(amo_search_page.is_text_present("No results found."))
         results_count = amo_search_page.results_count
-        self.assertTrue("0 - 0 of 0" in results_count)
+        Assert.true("0 - 0 of 0" in results_count)
 
-    def test_that_searching_with_unicode_characters_returns_results(self):
+    def test_that_searching_with_unicode_characters_returns_results(self, testsetup):
         """ Litmus 9575
             https://litmus.mozilla.org/show_test.cgi?id=9575 """
-        amo_home_page = AddonsHomePage(self.selenium)
+        amo_home_page = AddonsHomePage(testsetup)
         search_str = u'\u0421\u043b\u043e\u0432\u0430\u0440\u0438 \u042f\u043d\u0434\u0435\u043a\u0441'
         amo_search_page = amo_home_page.search_for(search_str)
-        self.assertTrue(amo_search_page.is_text_present(search_str)) 
+        Assert.true(amo_search_page.is_text_present(search_str)) 
         results_count = amo_search_page.results_count
-        self.assertFalse("0 - 0 of 0" in results_count)
+        Assert.false("0 - 0 of 0" in results_count)
 
-    def test_that_searching_with_substrings_returns_results(self):
+    def test_that_searching_with_substrings_returns_results(self, testsetup):
         """ Litmus 9561
             https://litmus.mozilla.org/show_test.cgi?id=9561 """
-        amo_home_page = AddonsHomePage(self.selenium)
+        amo_home_page = AddonsHomePage(testsetup)
         amo_search_page = amo_home_page.search_for("fox")
-        self.assertFalse(amo_search_page.is_text_present("No results found."))
+        Assert.false(amo_search_page.is_text_present("No results found."))
         results_count = amo_search_page.results_count
-        self.assertFalse("0 - 0 of 0" in results_count)
+        Assert.false("0 - 0 of 0" in results_count)
         matches = re.search(self._total_count_regex, results_count)
-        self.assertTrue(int(matches.group(1)) > 1)
+        Assert.true(int(matches.group(1)) > 1)
 
-    def test_that_blank_search_returns_results(self):
+    def test_that_blank_search_returns_results(self, testsetup):
         """ Litmus 11759
             https://litmus.mozilla.org/show_test.cgi?id=11759 """               
-        amo_home_page = AddonsHomePage(self.selenium)
+        amo_home_page = AddonsHomePage(testsetup)
         amo_search_page = amo_home_page.search_for("")     
-        self.assertFalse(amo_search_page.is_text_present("Search is currently unavailable"))
-        self.assertFalse(amo_search_page.is_text_present("No results found."))
+        Assert.false(amo_search_page.is_text_present("Search is currently unavailable"))
+        Assert.false(amo_search_page.is_text_present("No results found."))
         results_count = amo_search_page.results_count
-        self.assertFalse("0 - 0 of 0" in results_count)
-
-if __name__ == "__main__":
-    unittest.main()
+        Assert.false("0 - 0 of 0" in results_count)
