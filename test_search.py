@@ -49,6 +49,10 @@ class TestSearch:
     
     _count_regex = '^.* (\d+) - (\d+)'
     _total_count_regex = '^.* \d+ - \d+ of (\d+)'
+    """
+    Test for litmus 17339
+    https://litmus.mozilla.org/show_test.cgi?id=17339
+    """
 
     def test_that_search_all_add_ons_results_have_pagination_that_moves_through_results(self, testsetup):
         """ Test for litmus 4839 
@@ -145,3 +149,28 @@ class TestSearch:
         amo_search_page = amo_home_page.search_for("fire")
         Assert.equal(amo_search_page.result(0).name, 'Firebug')
 
+    def test_that_searching_for_twitter_returns_twitter(self,testsetup):
+        """
+        Litmus 17354
+        https://litmus.mozilla.org/show_test.cgi?id=17354
+        """
+        amo_home_page = AddonsHomePage(testsetup)
+        amo_search_page = amo_home_page.search_for("twitter")
+        Assert.equal(amo_search_page.result(0).name, 'Yoono: Twitter Facebook LinkedIn YouTube GTalk AIM')
+
+    def test_that_searching_for_cool_returns_Coolpreviews (self,testsetup):
+        """
+        Litmus 17353
+        https://litmus.mozilla.org/show_test.cgi?id=17353
+        """
+        amo_home_page = AddonsHomePage(testsetup)
+        amo_search_page = amo_home_page.search_for("Cool")
+        Assert.equal(amo_search_page.result(0).name, 'Cooliris')
+
+    def test_the_search_field_placeholder (self, testsetup):
+        """
+        Litmus 4826
+        https://litmus.mozilla.org/show_test.cgi?id=4826
+        """
+        amo_home_page = AddonsHomePage(testsetup)
+        Assert.equal(amo_home_page.search_field_placeholder, 'search for add-ons')
