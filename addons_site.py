@@ -24,6 +24,7 @@
 #                 Marc George
 #                 Dave Hunt <dhunt@mozilla.com>
 #                 Alex Rodionov <p0deje@gmail.com>
+#                 Joel Andersson <janderssn@gmail.com>
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -52,7 +53,8 @@ class AddonsHomePage(Page):
     _search_textbox_locator = "name=q"
     _download_count_locator = "css=div.stats > strong"
     _themes_link_locator = "id=_t-2"
-    
+    _personas_link_locator = "id=_t-9"
+
     #Categories List
     _category_list_locator = "//ul[@id='categoriesdropdown']"
 
@@ -76,6 +78,11 @@ class AddonsHomePage(Page):
         ''' Returns whether category_name exists in the category menu links'''
         locator = self._xpath_for_category(category_name)
         return self.selenium.get_xpath_count(locator) > 0
+
+    def click_personas(self):
+        self.selenium.click(self._personas_link_locator)
+        self.selenium.wait_for_page_to_load(self.timeout)
+        return AddonsPersonasPage(self.testsetup)
 
     def click_themes(self):
         self.selenium.click(self._themes_link_locator)
@@ -165,6 +172,16 @@ class AddonsThemesPage(AddonsHomePage):
         _addon_ratings = [self.selenium.get_text("xpath=(" + self._addons_rating_locator + ")[%s]" % str(i+1))
                         for i in xrange(addon_count)]
         return _addon_ratings
+
+
+class AddonsPersonasPage(AddonsHomePage):
+
+    def __init__(self, testsetup):
+        Page.__init__(self, testsetup)
+
+    @property
+    def page_title(self):
+        return self.selenium.get_title()
 
 
 class DiscoveryPane(Page):
