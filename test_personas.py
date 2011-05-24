@@ -37,11 +37,8 @@
 # ***** END LICENSE BLOCK *****
 
 
-import pytest
 from unittestzero import Assert
-
 from addons_site import AddonsHomePage
-xfail = pytest.mark.xfail
 
 class TestPersonas:
 
@@ -50,5 +47,4 @@ class TestPersonas:
             https://litmus.mozilla.org/show_test.cgi?id=15391"""
         amo_home_page = AddonsHomePage(testsetup)
         amo_personas_page = amo_home_page.click_personas()
-        expected_title = 'Personas :: Add-ons for Firefox'
-        Assert.equal(expected_title, amo_personas_page.page_title)
+        Assert.true(amo_personas_page.is_the_current_page)

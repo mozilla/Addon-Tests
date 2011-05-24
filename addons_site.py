@@ -176,6 +176,8 @@ class AddonsThemesPage(AddonsHomePage):
 
 class AddonsPersonasPage(AddonsHomePage):
 
+    _page_title = 'Personas :: Add-ons for Firefox'
+
     def __init__(self, testsetup):
         Page.__init__(self, testsetup)
 
