@@ -17,10 +17,13 @@
 #
 # The Initial Developer of the Original Code is
 # Mozilla.
-# Portions created by the Initial Developer are Copyright (C) 2010
+# Portions created by the Initial Developer are Copyright (C) 2011
 # the Initial Developer. All Rights Reserved.
 #
-# Contributor(s): David Burns, Marc George
+# Contributor(s): David Burns
+#                 Marc George
+#                 Dave Hunt <dhunt@mozilla.com>
+#                 Alex Rodionov <p0deje@gmail.com>
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -37,12 +40,10 @@
 # ***** END LICENSE BLOCK *****
 
 
-from selenium import selenium
-from vars import ConnectionParameters
-from page import Page
 import re
 
-page_load_timeout = ConnectionParameters.page_load_timeout
+from page import Page
+
 
 class AddonsHomePage(Page):
 
@@ -59,17 +60,17 @@ class AddonsHomePage(Page):
     _next_link = "link=Next"
     _prev_link = "link=Prev"
 
-    def __init__(self, selenium):
+    def __init__(self, testsetup):
         ''' Creates a new instance of the class and gets the page ready for testing '''
-        self.selenium = selenium
+        Page.__init__(self, testsetup)
         self.selenium.open("/") 
         self.selenium.window_maximize()
 
     def search_for(self,search_term):
         self.selenium.type(self._search_textbox_locator, search_term)
         self.selenium.click(self._search_button_locator)
-        self.selenium.wait_for_page_to_load(page_load_timeout)
-        return AddonsSearchHomePage(self.selenium)        
+        self.selenium.wait_for_page_to_load(self.timeout)
+        return AddonsSearchHomePage(self.testsetup)        
         
     def has_category(self, category_name):
         ''' Returns whether category_name exists in the category menu links'''
@@ -78,28 +79,29 @@ class AddonsHomePage(Page):
 
     def click_themes(self):
         self.selenium.click(self._themes_link_locator)
-        self.selenium.wait_for_page_to_load(page_load_timeout)
-        return AddonsThemesPage(self.selenium)
+        self.selenium.wait_for_page_to_load(self.timeout)
+        return AddonsThemesPage(self.testsetup)
         
     def page_forward(self):
         self.selenium.click(self._next_link)
-        self.selenium.wait_for_page_to_load("30000")
+        self.selenium.wait_for_page_to_load(self.timeout)
 
     def page_back(self):
         self.selenium.click(self._prev_link)
-        self.selenium.wait_for_page_to_load("30000")
+        self.selenium.wait_for_page_to_load(self.timeout)
 
     @property
     def download_count(self):
         return self.selenium.get_text(self._download_count_locator)
+
 
 class AddonsSearchHomePage(AddonsHomePage):
 
     _results_count_header = "css=h3.results-count"
     _page_counter = "css=div.num-results"
 
-    def __init__(self, selenium):
-        self.selenium = selenium
+    def __init__(self, testsetup):
+        Page.__init__(self, testsetup)
 
     @property
     def results_count(self):
@@ -112,7 +114,7 @@ class AddonsSearchHomePage(AddonsHomePage):
     @property
     def page_title(self):
         return self.selenium.get_title()
-     
+
 
 class AddonsThemesPage(AddonsHomePage):
 
@@ -126,13 +128,12 @@ class AddonsThemesPage(AddonsHomePage):
     _addons_metadata_locator = _addons_root_locator + "/p[@class='meta']"
     _addons_rating_locator = _addons_metadata_locator + "/span/span"
 
-
-    def __init__(self, selenium):
-        self.selenium = selenium
+    def __init__(self, testsetup):
+        Page.__init__(self, testsetup)
 
     def click_sort_by(self, type_):
         self.selenium.click(getattr(self, "_sort_by_%s_locator" % type_))
-        self.selenium.wait_for_page_to_load(page_load_timeout)
+        self.selenium.wait_for_page_to_load(self.timeout)
 
     @property
     def addon_names(self):
@@ -184,9 +185,9 @@ class DiscoveryPane(Page):
     _up_and_coming_section = "id=up-and-coming"
     _up_and_coming_item = "//section[@id='up-and-coming']/ul/li/a[@class='addon-title']"
 
-    def __init__(self, selenium, path):
-        self.selenium = selenium
-        self.selenium.open(path)
+    def __init__(self, testsetup, path):
+        Page.__init__(self, testsetup)
+        self.selenium.open(testsetup.base_url + path)
         self.selenium.window_maximize()
 
     @property
@@ -195,31 +196,31 @@ class DiscoveryPane(Page):
 
     def click_learn_more(self):
         self.selenium.click(self._learn_more_locator)
-        self.selenium.wait_for_page_to_load("30000")
+        self.selenium.wait_for_page_to_load(self.timeout)
 
     def is_mission_section_visible(self):
-        return self.is_element_visible(self._mission_section_locator)
+        return self.selenium.is_visible(self._mission_section_locator)
 
     @property
     def mission_section(self):
         return self.selenium.get_text(self._mission_section_text_locator)
 
     def mozilla_org_link_visible(self):
-        return self.is_element_visible(self._mozilla_org_link_locator)
+        return self.selenium.is_visible(self._mozilla_org_link_locator)
 
     @property
     def download_count(self):
         return self.selenium.get_text(self._download_count_text_locator)
 
     def is_personas_section_visible(self):
-        return self.is_element_visible(self._personas_section_locator)
+        return self.selenium.is_visible(self._personas_section_locator)
 
     @property
     def personas_count(self):
         return int(self.selenium.get_xpath_count(self._personas_locator))
 
     def is_personas_see_all_link_visible(self):
-        return self.is_element_visible(self._personas_see_all_link)
+        return self.selenium.is_visible(self._personas_see_all_link)
 
     @property
     def first_persona(self):
@@ -227,11 +228,11 @@ class DiscoveryPane(Page):
     
     def click_on_first_persona(self):
         self.selenium.click(self._personas_locator)
-        self.selenium.wait_for_page_to_load(page_load_timeout)
-        return PersonasPage(self.selenium)
+        self.selenium.wait_for_page_to_load(self.timeout)
+        return PersonasPage(self.testsetup)
 
     def more_ways_section_visible(self):
-        return self.is_element_visible(self._more_ways_section_locator)
+        return self.selenium.is_visible(self._more_ways_section_locator)
 
     @property
     def more_ways_addons(self):
@@ -242,7 +243,7 @@ class DiscoveryPane(Page):
         return self.selenium.get_text(self._more_ways_personas_locator)
 
     def up_and_coming_visible(self):
-        return self.is_element_visible(self._up_and_coming_section)
+        return self.selenium.is_visible(self._up_and_coming_section)
 
     @property
     def up_and_coming_item_count(self):
@@ -251,9 +252,6 @@ class DiscoveryPane(Page):
 class PersonasPage(Page):
 
     _persona_title = 'css=h1.addon'
-
-    def __init__(self, selenium):
-        self.selenium = selenium
 
     @property
     def persona_title(self):
