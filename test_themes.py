@@ -39,7 +39,7 @@
 
 from selenium import selenium
 from vars import ConnectionParameters
-import unittest2 as unittest
+import unittest
 import re
 from addons_site import AddonsHomePage
 import sys
