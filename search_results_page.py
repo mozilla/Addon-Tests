@@ -36,9 +36,8 @@
 # ***** END LICENSE BLOCK *****
 
 from page import Page
-import addons_site
 
-class AddonsSearchHomePage(addons_site.AddonsHomePage):
+class AddonsSearchHomePage(Page):
 
     _results_count_header = "css=h3.results-count"
     _page_counter = "css=div.num-results"
