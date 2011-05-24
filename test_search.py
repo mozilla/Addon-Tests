@@ -22,6 +22,7 @@
 #
 # Contributor(s): David Burns
 #                 Dave Hunt <dhunt@mozilla.com>
+#                 Bebe <florin.strugariu@softvision.ro>
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -135,3 +136,13 @@ class TestSearch:
         Assert.false(amo_search_page.is_text_present("No results found."))
         results_count = amo_search_page.results_count
         Assert.false("0 - 0 of 0" in results_count)
+
+    def test_that_searching_for_fire_returns_firebug(self,testsetup):
+        """
+        Litmus 15314
+        https://litmus.mozilla.org/show_test.cgi?id=15314
+        """
+        amo_home_page = AddonsHomePage(testsetup)
+        amo_search_page = amo_home_page.search_for("fire")
+        result_addons = amo_search_page.search_region.addons()
+        Assert.equal(result_addons[0].name , 'Firebug')

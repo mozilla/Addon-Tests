@@ -23,6 +23,7 @@
 # Contributor(s): David Burns
 #                 Marc George
 #                 Dave Hunt <dhunt@mozilla.com>
+#                 Bebe <florin.strugariu@softvision.ro>
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -38,8 +39,9 @@
 #
 # ***** END LICENSE BLOCK *****
 
-
 import re
+import search_region
+
 
 from page import Page
 
@@ -110,6 +112,9 @@ class AddonsSearchHomePage(AddonsHomePage):
     def page_results_count(self):
         return self.selenium.get_text(self._page_counter)
 
+    @property
+    def search_region(self):
+        return search_region.SearchRegion(self.testsetup)
 
 class AddonsThemesPage(AddonsHomePage):
 
