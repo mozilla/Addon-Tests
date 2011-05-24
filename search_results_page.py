@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 # ***** BEGIN LICENSE BLOCK *****
 # Version: MPL 1.1/GPL 2.0/LGPL 2.1
 #
@@ -20,10 +19,7 @@
 # Portions created by the Initial Developer are Copyright (C) 2011
 # the Initial Developer. All Rights Reserved.
 #
-# Contributor(s): David Burns
-#                 Marc George
-#                 Dave Hunt <dhunt@mozilla.com>
-#                 Bebe <florin.strugariu@softvision.ro>
+# Contributor(s): Bebe <florin.strugariu@softvision.ro>
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -41,25 +37,21 @@
 
 from page import Page
 
-class SearchRegion(Page):
+class SearchResults(Page):
 
-    _addons_locator = "css=div.results-inner div.item"
-
-    def __init__(self, testsetup):
-        Page.__init__(self, testsetup)
+    _results_locator = "css=div.results-inner div.item"
 
     @property
-    def addon_count(self):
-        return int(self.selenium.get_css_count(self._addons_locator))
+    def result_count(self):
+        return int(self.selenium.get_css_count(self._results_locator))
 
-    def select_addon(self, type):
-        self.selenium.click("css=div.results-inner div.item h3:contains(%s)" % type)
-        self.selenium.wait_for_page_to_load(self.timeout)
+    def result(self, lookup):
+        return self.Result(self.testsetup, lookup)
 
-    def addons(self):
-        return [self.Addon(self.testsetup, i)for i in range(self.addon_count)]
+    def results(self):
+        return [self.Result(self.testsetup, i)for i in range(self.result_count)]
 
-    class Addon(Page):
+    class Result(Page):
 
         _name_locator = " h3 a"
 
@@ -83,6 +75,6 @@ class SearchRegion(Page):
         def name(self):
             return self.selenium.get_text(self.absolute_locator(self._name_locator))
 
-        def select(self):
+        def click(self):
             self.selenium.click(self.absolute_locator(self._name_locator))
             self.selenium.wait_for_page_to_load(self.timeout)

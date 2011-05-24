@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 # ***** BEGIN LICENSE BLOCK *****
 # Version: MPL 1.1/GPL 2.0/LGPL 2.1
 #
@@ -40,7 +39,7 @@
 # ***** END LICENSE BLOCK *****
 
 import re
-import search_region
+import search_results_page
 
 
 from page import Page
@@ -113,8 +112,8 @@ class AddonsSearchHomePage(AddonsHomePage):
         return self.selenium.get_text(self._page_counter)
 
     @property
-    def search_region(self):
-        return search_region.SearchRegion(self.testsetup)
+    def search_results_pg(self):
+        return search_results_page.SearchResults(self.testsetup)
 
 class AddonsThemesPage(AddonsHomePage):
 

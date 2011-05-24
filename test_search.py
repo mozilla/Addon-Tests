@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 # ***** BEGIN LICENSE BLOCK *****
 # Version: MPL 1.1/GPL 2.0/LGPL 2.1
 #
@@ -144,5 +143,5 @@ class TestSearch:
         """
         amo_home_page = AddonsHomePage(testsetup)
         amo_search_page = amo_home_page.search_for("fire")
-        result_addons = amo_search_page.search_region.addons()
-        Assert.equal(result_addons[0].name , 'Firebug')
+        Assert.equal(amo_search_page.search_results_pg.result(0).name, 'Firebug')
+
