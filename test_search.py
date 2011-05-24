@@ -62,7 +62,7 @@ class TestSearch:
         # Go Forward 10 times
         for i in range(10):
             amo_search_page.page_forward()
-            results_count = amo_search_page.results_count
+            results_count = amo_search_page.results_summary
             
             matches = re.search(self._count_regex, results_count)
             first_count = matches.group(1)
@@ -76,7 +76,7 @@ class TestSearch:
         # Go Back 10 Times
         for i in range(10):
             amo_search_page.page_back()
-            results_count = amo_search_page.results_count
+            results_count = amo_search_page.results_summary
             
             matches = re.search(self._count_regex, results_count)
             first_count = matches.group(1)
@@ -93,7 +93,7 @@ class TestSearch:
         amo_home_page = AddonsHomePage(testsetup)
         amo_search_page = amo_home_page.search_for("personas%20plus")
         Assert.true(amo_search_page.is_text_present("No results found."))
-        results_count = amo_search_page.results_count
+        results_count = amo_search_page.results_summary
         Assert.true("0 - 0 of 0" in results_count)
 
     def test_that_entering_a_long_string_returns_no_results(self, testsetup):
@@ -102,7 +102,7 @@ class TestSearch:
         amo_home_page = AddonsHomePage(testsetup)
         amo_search_page = amo_home_page.search_for("a" * 255)
         Assert.true(amo_search_page.is_text_present("No results found."))
-        results_count = amo_search_page.results_count
+        results_count = amo_search_page.results_summary
         Assert.true("0 - 0 of 0" in results_count)
 
     def test_that_searching_with_unicode_characters_returns_results(self, testsetup):
@@ -112,7 +112,7 @@ class TestSearch:
         search_str = u'\u0421\u043b\u043e\u0432\u0430\u0440\u0438 \u042f\u043d\u0434\u0435\u043a\u0441'
         amo_search_page = amo_home_page.search_for(search_str)
         Assert.true(amo_search_page.is_text_present(search_str)) 
-        results_count = amo_search_page.results_count
+        results_count = amo_search_page.results_summary
         Assert.false("0 - 0 of 0" in results_count)
 
     def test_that_searching_with_substrings_returns_results(self, testsetup):
@@ -121,7 +121,7 @@ class TestSearch:
         amo_home_page = AddonsHomePage(testsetup)
         amo_search_page = amo_home_page.search_for("fox")
         Assert.false(amo_search_page.is_text_present("No results found."))
-        results_count = amo_search_page.results_count
+        results_count = amo_search_page.results_summary
         Assert.false("0 - 0 of 0" in results_count)
         matches = re.search(self._total_count_regex, results_count)
         Assert.true(int(matches.group(1)) > 1)
@@ -133,7 +133,7 @@ class TestSearch:
         amo_search_page = amo_home_page.search_for("")     
         Assert.false(amo_search_page.is_text_present("Search is currently unavailable"))
         Assert.false(amo_search_page.is_text_present("No results found."))
-        results_count = amo_search_page.results_count
+        results_count = amo_search_page.results_summary
         Assert.false("0 - 0 of 0" in results_count)
 
     def test_that_searching_for_fire_returns_firebug(self,testsetup):

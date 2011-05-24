@@ -66,7 +66,7 @@ class AddonsHomePage(Page):
         self.selenium.type(self._search_textbox_locator, search_term)
         self.selenium.click(self._search_button_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
-        return search_results_page.AddonsSearchHomePage(self.testsetup)        
+        return search_results_page.SearchResultsPage(self.testsetup)        
         
     def has_category(self, category_name):
         ''' Returns whether category_name exists in the category menu links'''

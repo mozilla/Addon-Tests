@@ -37,29 +37,29 @@
 
 from page import Page
 
-class AddonsSearchHomePage(Page):
+class SearchResultsPage(Page):
 
-    _results_count_header = "css=h3.results-count"
+    _results_displayed = "css=h3.results-count"
     _page_counter = "css=div.num-results"
     _results_locator = "css=div.results-inner div.item"
             
     @property
-    def results_count(self):
-        return self.selenium.get_text(self._results_count_header)
+    def results_summary(self):
+        return self.selenium.get_text(self._results_displayed)
 
     @property
-    def page_results_count(self):
+    def results_displayed(self):
         return self.selenium.get_text(self._page_counter)
 
     @property
-    def current_page_result_count(self):
+    def result_count(self):
         return int(self.selenium.get_css_count(self._results_locator))
 
     def result(self, lookup):
         return self.Result(self.testsetup, lookup)
 
     def results(self):
-        return [self.Result(self.testsetup, i)for i in range(self.current_page_result_count)]
+        return [self.Result(self.testsetup, i) for i in range(self.result_count)]
 
     class Result(Page):
 
