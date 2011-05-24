@@ -39,7 +39,7 @@
 
 
 import re
-
+import pytest
 from unittestzero import Assert
 
 from addons_site import AddonsHomePage
@@ -129,6 +129,7 @@ class TestSearch:
     def test_that_blank_search_returns_results(self, testsetup):
         """ Litmus 11759
             https://litmus.mozilla.org/show_test.cgi?id=11759 """               
+        pytest.skip("Functionality changed but Litmus test hasnt been updated. See bug 659279")
         amo_home_page = AddonsHomePage(testsetup)
         amo_search_page = amo_home_page.search_for("")     
         Assert.false(amo_search_page.is_text_present("Search is currently unavailable"))
