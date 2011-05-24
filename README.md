@@ -20,29 +20,33 @@ Run
 
 followed by
 
-    sudo pip install nose
-    sudo pip install selenium
+    sudo pip install -r requirements/mozwebqa.txt
+    
+__note__
+
+If you are running on Ubuntu/Debian you will need to do following first
+
+    sudo apt-get install python-setuptools
     
 to install the required Python libraries.
 
 ### Selenium
-Once this is all set up you will need to download and start a Selenium server. You can download the latest Selenium server from [here][Selenium Downloads]. The filename will be something like 'selenium-server-standalone-2.0b1.jar'
+Once this is all set up you will need to download and start a Selenium server. You can download the latest Selenium server from [here][Selenium Downloads]. The filename will be something like 'selenium-server-standalone-2.0b3.jar'
 
 To start the Selenium server run the following command:
 
-    java -jar ~/Downloads/selenium-server-standalone-2.0b1.jar
+    java -jar ~/Downloads/selenium-server-standalone-2.0b3.jar
 
 Change the path/name to the downloaded Selenium server file.
 
 [Selenium Downloads]: http://code.google.com/p/selenium/downloads/list
 
-### vars.py
-Edit the vars.py file to specify the browser you will want to run your tests in. Common values are *\*firefox*, *\*safari*, *\*iexplore*, *\*googlechrome*
+### Running tests locally
 
-Once the above prerequisites have been met you can run the tests using the
-following command:
+To run tests locally its a simple case of calling the command below from this directory
 
-    nosetests .
+    py.test . 
+
 
 Writing Tests
 -------------
