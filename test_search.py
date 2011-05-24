@@ -43,7 +43,7 @@ import pytest
 from unittestzero import Assert
 
 from addons_site import AddonsHomePage
-
+xfail = pytest.mark.xfail
 
 class TestSearch:
     
