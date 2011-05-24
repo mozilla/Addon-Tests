@@ -53,10 +53,6 @@ class Page(object):
     Base class for all Pages
     '''
 
-    #prev next links
-    _next_link = "link=Next"
-    _prev_link = "link=Prev"
-
     def __init__(self, testsetup):
         '''
         Constructor
@@ -86,14 +82,6 @@ class Page(object):
 
     def refresh(self):
         self.selenium.refresh()
-        self.selenium.wait_for_page_to_load(self.timeout)
-
-    def page_forward(self):
-        self.selenium.click(self._next_link)
-        self.selenium.wait_for_page_to_load(self.timeout)
-
-    def page_back(self):
-        self.selenium.click(self._prev_link)
         self.selenium.wait_for_page_to_load(self.timeout)
 
     def wait_for_element_present(self, element):

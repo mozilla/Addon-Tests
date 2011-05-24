@@ -56,18 +56,30 @@ class AddonsHomePage(Page):
     #Categories List
     _category_list_locator = "//ul[@id='categoriesdropdown']"
 
+    #prev next links
+    _next_link = "link=Next"
+    _prev_link = "link=Prev" 
+
     def __init__(self, testsetup):
         ''' Creates a new instance of the class and gets the page ready for testing '''
         Page.__init__(self, testsetup)
         self.selenium.open("/") 
         self.selenium.window_maximize()
 
+    def page_forward(self):
+        self.selenium.click(self._next_link)
+        self.selenium.wait_for_page_to_load(self.timeout)
+
+    def page_back(self):
+        self.selenium.click(self._prev_link)
+        self.selenium.wait_for_page_to_load(self.timeout)
+
     def search_for(self,search_term):
         self.selenium.type(self._search_textbox_locator, search_term)
         self.selenium.click(self._search_button_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
         return search_results_page.SearchResultsPage(self.testsetup)        
-        
+
     def has_category(self, category_name):
         ''' Returns whether category_name exists in the category menu links'''
         locator = self._xpath_for_category(category_name)

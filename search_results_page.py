@@ -39,13 +39,25 @@ from page import Page
 
 class SearchResultsPage(Page):
 
-    _results_displayed = "css=h3.results-count"
+    _results_summary = "css=h3.results-count"
     _page_counter = "css=div.num-results"
     _results_locator = "css=div.results-inner div.item"
-            
+
+    #prev next links
+    _next_link = "link=Next"
+    _prev_link = "link=Prev" 
+    
+    def page_forward(self):
+        self.selenium.click(self._next_link)
+        self.selenium.wait_for_page_to_load(self.timeout)
+
+    def page_back(self):
+        self.selenium.click(self._prev_link)
+        self.selenium.wait_for_page_to_load(self.timeout)
+        
     @property
     def results_summary(self):
-        return self.selenium.get_text(self._results_displayed)
+        return self.selenium.get_text(self._results_summary)
 
     @property
     def results_displayed(self):
