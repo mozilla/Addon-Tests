@@ -20,7 +20,7 @@
 # Portions created by the Initial Developer are Copyright (C) 2010
 # the Initial Developer. All Rights Reserved.
 #
-# Contributor(s): David Burns
+# Contributor(s): David Burns, Alex Rodionov
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -151,11 +151,11 @@ class SearchTests(unittest.TestCase):
     def test_that_page_with_search_results_has_correct_title(self):
         """ Litmus 17338
             https://litmus.mozilla.org/show_test.cgi?id=17338 """
-        amo_home_page = AddonsHomePage(self.selenium)
+        amo_home_page = AddonsHomePage(testsetup)
         search_keyword = 'Search term'
         amo_search_page = amo_home_page.search_for(search_keyword)
-        expected_title = 'Add-on Search Results for ' + search_keyword + ' :: Add-ons for Firefox'
-        self.assertEqual(expected_title, amo_search_page.page_title)
+        expected_title = 'Add-on Search Results for %s :: Add-ons for Firefox' % search_keyword
+        Assert.equal(expected_title, amo_search_page.page_title)
 
         
 if __name__ == "__main__":
