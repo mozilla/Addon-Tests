@@ -39,11 +39,11 @@
 # ***** END LICENSE BLOCK *****
 
 import re
-import search_results_page
+
 
 
 from page import Page
-
+import search_results_page
 
 class AddonsHomePage(Page):
 
@@ -70,7 +70,7 @@ class AddonsHomePage(Page):
         self.selenium.type(self._search_textbox_locator, search_term)
         self.selenium.click(self._search_button_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
-        return AddonsSearchHomePage(self.testsetup)        
+        return search_results_page.AddonsSearchHomePage(self.testsetup)        
         
     def has_category(self, category_name):
         ''' Returns whether category_name exists in the category menu links'''
@@ -93,27 +93,6 @@ class AddonsHomePage(Page):
     @property
     def download_count(self):
         return self.selenium.get_text(self._download_count_locator)
-
-
-class AddonsSearchHomePage(AddonsHomePage):
-
-    _results_count_header = "css=h3.results-count"
-    _page_counter = "css=div.num-results"
-
-    def __init__(self, testsetup):
-        Page.__init__(self, testsetup)
-
-    @property
-    def results_count(self):
-        return self.selenium.get_text(self._results_count_header)
-
-    @property
-    def page_results_count(self):
-        return self.selenium.get_text(self._page_counter)
-
-    @property
-    def search_results_pg(self):
-        return search_results_page.SearchResults(self.testsetup)
 
 class AddonsThemesPage(AddonsHomePage):
 

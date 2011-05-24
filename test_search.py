@@ -143,5 +143,5 @@ class TestSearch:
         """
         amo_home_page = AddonsHomePage(testsetup)
         amo_search_page = amo_home_page.search_for("fire")
-        Assert.equal(amo_search_page.search_results_pg.result(0).name, 'Firebug')
+        Assert.equal(amo_search_page.result(0).name, 'Firebug')
 

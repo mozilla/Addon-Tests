@@ -36,20 +36,31 @@
 # ***** END LICENSE BLOCK *****
 
 from page import Page
+import addons_site
 
-class SearchResults(Page):
+class AddonsSearchHomePage(addons_site.AddonsHomePage):
 
+    _results_count_header = "css=h3.results-count"
+    _page_counter = "css=div.num-results"
     _results_locator = "css=div.results-inner div.item"
+            
+    @property
+    def results_count(self):
+        return self.selenium.get_text(self._results_count_header)
 
     @property
-    def result_count(self):
+    def page_results_count(self):
+        return self.selenium.get_text(self._page_counter)
+
+    @property
+    def current_page_result_count(self):
         return int(self.selenium.get_css_count(self._results_locator))
 
     def result(self, lookup):
         return self.Result(self.testsetup, lookup)
 
     def results(self):
-        return [self.Result(self.testsetup, i)for i in range(self.result_count)]
+        return [self.Result(self.testsetup, i)for i in range(self.current_page_result_count)]
 
     class Result(Page):
 
