@@ -148,5 +148,15 @@ class SearchTests(unittest.TestCase):
         results_count = amo_search_page.results_count
         self.assertFalse("0 - 0 of 0" in results_count)
 
+    def test_that_page_with_search_results_has_correct_title(self):
+        """ Litmus 17338
+            https://litmus.mozilla.org/show_test.cgi?id=17338 """
+        amo_home_page = AddonsHomePage(self.selenium)
+        search_keyword = 'Search term'
+        amo_search_page = amo_home_page.search_for(search_keyword)
+        expected_title = 'Add-on Search Results for ' + search_keyword + ' :: Add-ons for Firefox'
+        self.assertEqual(expected_title, amo_search_page.page_title)
+
+        
 if __name__ == "__main__":
     unittest.main()

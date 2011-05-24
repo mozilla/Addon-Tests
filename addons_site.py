@@ -108,7 +108,10 @@ class AddonsSearchHomePage(AddonsHomePage):
     @property
     def page_results_count(self):
         return self.selenium.get_text(self._page_counter)
-
+    
+    @property
+    def page_title(self):
+        return self.selenium.get_title()
      
 
 class AddonsThemesPage(AddonsHomePage):
