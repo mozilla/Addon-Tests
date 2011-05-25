@@ -61,6 +61,16 @@ class AddonsHomePage(Page):
     #prev next links
     _next_link = "link=Next"
     _prev_link = "link=Prev"
+    
+    #browse add-ons
+    _popular_addons_locator = "css=li#popular a"
+    _popular_addons_items_locator = "//div[@id='list-popular']/div[@class='item']"
+    
+    #addons detail page
+    _review_details_locator = "css=.review-detail"
+    _all_reviews_link_locator = "//div[@id='addon']/div[@class='article']/p/a"
+    _review_locator = "css=.primary div.review"
+    
 
     def __init__(self, testsetup):
         ''' Creates a new instance of the class and gets the page ready for testing '''
@@ -88,7 +98,27 @@ class AddonsHomePage(Page):
         self.selenium.click(self._themes_link_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
         return AddonsThemesPage(self.testsetup)
-        
+
+    def click_popular_addons_category(self):
+        self.selenium.click(self._popular_addons_locator)
+        self.selenium.wait_for_page_to_load(self.timeout)
+
+    def click_popular_addon_by_index(self, index):
+        self.selenium.click(self._popular_addons_items_locator + "["+str(index)+"]" + "/h3/a")
+        self.selenium.wait_for_page_to_load(self.timeout)
+
+    def click_all_reviews_link(self):
+        self.selenium.click(self._all_reviews_link_locator)
+        self.selenium.wait_for_page_to_load(self.timeout)
+
+    @property
+    def review_count(self):
+        return self.selenium.get_css_count(self._review_locator)
+
+    @property
+    def has_reviews(self):
+        return self.selenium.get_css_count(self._review_details_locator) > 0
+
     def page_forward(self):
         self.selenium.click(self._next_link)
         self.selenium.wait_for_page_to_load(self.timeout)
