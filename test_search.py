@@ -66,9 +66,9 @@ class TestSearch:
         # Go Forward 10 times
         for i in range(10):
             amo_search_page.page_forward()
-            results_count = amo_search_page.results_summary
+            results_summary = amo_search_page.results_summary
             
-            matches = re.search(self._count_regex, results_count)
+            matches = re.search(self._count_regex, results_summary)
             first_count = matches.group(1)
             second_count = matches.group(2)
             
@@ -80,9 +80,9 @@ class TestSearch:
         # Go Back 10 Times
         for i in range(10):
             amo_search_page.page_back()
-            results_count = amo_search_page.results_summary
+            results_summary = amo_search_page.results_summary
             
-            matches = re.search(self._count_regex, results_count)
+            matches = re.search(self._count_regex, results_summary)
             first_count = matches.group(1)
             second_count = matches.group(2)
             
@@ -97,8 +97,8 @@ class TestSearch:
         amo_home_page = AddonsHomePage(testsetup)
         amo_search_page = amo_home_page.search_for("personas%20plus")
         Assert.true(amo_search_page.is_text_present("No results found."))
-        results_count = amo_search_page.results_summary
-        Assert.true("0 - 0 of 0" in results_count)
+        results_summary = amo_search_page.results_summary
+        Assert.true("0 - 0 of 0" in results_summary)
 
     def test_that_entering_a_long_string_returns_no_results(self, testsetup):
         """ Litmus 4856
@@ -106,8 +106,8 @@ class TestSearch:
         amo_home_page = AddonsHomePage(testsetup)
         amo_search_page = amo_home_page.search_for("a" * 255)
         Assert.true(amo_search_page.is_text_present("No results found."))
-        results_count = amo_search_page.results_summary
-        Assert.true("0 - 0 of 0" in results_count)
+        results_summary = amo_search_page.results_summary
+        Assert.true("0 - 0 of 0" in results_summary)
 
     def test_that_searching_with_unicode_characters_returns_results(self, testsetup):
         """ Litmus 9575
@@ -116,8 +116,8 @@ class TestSearch:
         search_str = u'\u0421\u043b\u043e\u0432\u0430\u0440\u0438 \u042f\u043d\u0434\u0435\u043a\u0441'
         amo_search_page = amo_home_page.search_for(search_str)
         Assert.true(amo_search_page.is_text_present(search_str)) 
-        results_count = amo_search_page.results_summary
-        Assert.false("0 - 0 of 0" in results_count)
+        results_summary = amo_search_page.results_summary
+        Assert.false("0 - 0 of 0" in results_summary)
 
     def test_that_searching_with_substrings_returns_results(self, testsetup):
         """ Litmus 9561
@@ -125,9 +125,9 @@ class TestSearch:
         amo_home_page = AddonsHomePage(testsetup)
         amo_search_page = amo_home_page.search_for("fox")
         Assert.false(amo_search_page.is_text_present("No results found."))
-        results_count = amo_search_page.results_summary
-        Assert.false("0 - 0 of 0" in results_count)
-        matches = re.search(self._total_count_regex, results_count)
+        results_summary = amo_search_page.results_summary
+        Assert.false("0 - 0 of 0" in results_summary)
+        matches = re.search(self._total_count_regex, results_summary)
         Assert.true(int(matches.group(1)) > 1)
 
     def test_that_blank_search_returns_results(self, testsetup):
@@ -137,8 +137,8 @@ class TestSearch:
         amo_search_page = amo_home_page.search_for("")     
         Assert.false(amo_search_page.is_text_present("Search is currently unavailable"))
         Assert.false(amo_search_page.is_text_present("No results found."))
-        results_count = amo_search_page.results_summary
-        Assert.false("0 - 0 of 0" in results_count)
+        results_summary = amo_search_page.results_summary
+        Assert.false("0 - 0 of 0" in results_summary)
 
     def test_that_searching_for_fire_returns_firebug(self,testsetup):
         """
@@ -149,7 +149,7 @@ class TestSearch:
         amo_search_page = amo_home_page.search_for("fire")
         Assert.equal(amo_search_page.result(0).name, 'Firebug')
 
-    def test_that_searching_for_twitter_returns_twitter(self,testsetup):
+    def test_that_searching_for_twitter_returns_yoono(self, testsetup):
         """
         Litmus 17354
         https://litmus.mozilla.org/show_test.cgi?id=17354
@@ -158,7 +158,7 @@ class TestSearch:
         amo_search_page = amo_home_page.search_for("twitter")
         Assert.equal(amo_search_page.result(0).name, 'Yoono: Twitter Facebook LinkedIn YouTube GTalk AIM')
 
-    def test_that_searching_for_cool_returns_Coolpreviews (self,testsetup):
+    def test_that_searching_for_cool_returns_cooliris(self, testsetup):
         """
         Litmus 17353
         https://litmus.mozilla.org/show_test.cgi?id=17353
@@ -167,7 +167,7 @@ class TestSearch:
         amo_search_page = amo_home_page.search_for("Cool")
         Assert.equal(amo_search_page.result(0).name, 'Cooliris')
 
-    def test_the_search_field_placeholder (self, testsetup):
+    def test_the_search_field_placeholder(self, testsetup):
         """
         Litmus 4826
         https://litmus.mozilla.org/show_test.cgi?id=4826
