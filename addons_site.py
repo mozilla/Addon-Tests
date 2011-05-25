@@ -181,10 +181,6 @@ class AddonsPersonasPage(AddonsHomePage):
     def __init__(self, testsetup):
         Page.__init__(self, testsetup)
 
-    @property
-    def page_title(self):
-        return self.selenium.get_title()
-
 
 class DiscoveryPane(Page):
 
