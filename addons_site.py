@@ -57,6 +57,7 @@ class AddonsHomePage(Page):
 
     #Categories List
     _category_list_locator = "//ul[@id='categoriesdropdown']"
+    _category_item_locator = "//li/a[text()='%s']"
 
     #prev next links
     _next_link = "link=Next"
@@ -73,10 +74,10 @@ class AddonsHomePage(Page):
         self.selenium.click(self._search_button_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
         return AddonsSearchHomePage(self.testsetup)        
-        
+
     def has_category(self, category_name):
-        ''' Returns whether category_name exists in the category menu links'''
-        locator = self._xpath_for_category(category_name)
+        ''' Returns whether category_name exists in the category menu links '''
+        locator = (self._category_list_locator + self._category_item_locator) % category_name
         return self.selenium.get_xpath_count(locator) > 0
 
     def click_personas(self):
@@ -177,6 +178,7 @@ class AddonsThemesPage(AddonsHomePage):
 class AddonsPersonasPage(AddonsHomePage):
 
     _page_title = 'Personas :: Add-ons for Firefox'
+    _category_name = "Personas"
 
     def __init__(self, testsetup):
         Page.__init__(self, testsetup)

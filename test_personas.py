@@ -20,7 +20,7 @@
 # Portions created by the Initial Developer are Copyright (C) 2011
 # the Initial Developer. All Rights Reserved.
 #
-# Contributor(s): Joel Andersson
+# Contributor(s): Joel Andersson <janderssn@gmail.com>
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -38,10 +38,16 @@
 
 
 from unittestzero import Assert
-from addons_site import AddonsHomePage
+from addons_site import AddonsHomePage, AddonsPersonasPage
 
 
 class TestPersonas:
+
+    def test_that_personas_is_listed_as_a_category(self, testsetup):
+        """ Test for Litmus 9589
+            https://litmus.mozilla.org/show_test.cgi?id=9589"""
+        amo_home_page = AddonsHomePage(testsetup)
+        Assert.true(amo_home_page.has_category(AddonsPersonasPage._category_name))
 
     def test_page_title_for_personas_landing_page(self, testsetup):
         """ Test for Litmus 15391
