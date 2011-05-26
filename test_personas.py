@@ -38,7 +38,7 @@
 
 
 from unittestzero import Assert
-from addons_site import AddonsHomePage, AddonsPersonasPage
+from addons_site import AddonsHomePage
 
 
 class TestPersonas:
@@ -47,7 +47,7 @@ class TestPersonas:
         """ Test for Litmus 9589
             https://litmus.mozilla.org/show_test.cgi?id=9589"""
         amo_home_page = AddonsHomePage(testsetup)
-        Assert.true(amo_home_page.has_category(AddonsPersonasPage._category_name))
+        Assert.true(amo_home_page.has_category("Personas"))
 
     def test_page_title_for_personas_landing_page(self, testsetup):
         """ Test for Litmus 15391
