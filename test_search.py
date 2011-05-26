@@ -167,6 +167,7 @@ class TestSearch:
         amo_search_page = amo_home_page.search_for("Cool")
         Assert.equal(amo_search_page.result(0).name, 'Cooliris')
 
+    :TODO To be merged into a layout test
     def test_the_search_field_placeholder(self, testsetup):
         """
         Litmus 4826
