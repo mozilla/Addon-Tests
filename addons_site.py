@@ -62,14 +62,13 @@ class AddonsHomePage(Page):
     _next_link = "link=Next"
     _prev_link = "link=Prev"
     
-    #browse add-ons
-    _popular_addons_locator = "css=li#popular a"
-    _popular_addons_items_locator = "//div[@id='list-popular']/div[@class='item']"
-    
     #addons detail page
     _review_details_locator = "css=.review-detail"
-    _all_reviews_link_locator = "//div[@id='addon']/div[@class='article']/p/a"
+    _all_reviews_link_locator = "css=#addon #reviews+.article a.more-info"
+    _current_page_locator = "css=.pagination li.selected a"
     _review_locator = "css=.primary div.review"
+    _last_page_link_locator = "css=.pagination a:not([rel]):last"
+    _first_page_link_locator = "css=.pagination a:not([rel]):first"
     
 
     def __init__(self, testsetup):
@@ -99,12 +98,8 @@ class AddonsHomePage(Page):
         self.selenium.wait_for_page_to_load(self.timeout)
         return AddonsThemesPage(self.testsetup)
 
-    def click_popular_addons_category(self):
-        self.selenium.click(self._popular_addons_locator)
-        self.selenium.wait_for_page_to_load(self.timeout)
-
-    def click_popular_addon_by_index(self, index):
-        self.selenium.click(self._popular_addons_items_locator + "["+str(index)+"]" + "/h3/a")
+    def open_details_page_for_id(self, id):
+        self.selenium.open("/en-US/firefox/addon/"+str(id))
         self.selenium.wait_for_page_to_load(self.timeout)
 
     def click_all_reviews_link(self):
@@ -125,6 +120,26 @@ class AddonsHomePage(Page):
 
     def page_back(self):
         self.selenium.click(self._prev_link)
+        self.selenium.wait_for_page_to_load(self.timeout)
+
+    @property
+    def is_next_link_visible(self):
+        return self.selenium.is_element_present(self._next_link)
+
+    @property
+    def is_prev_link_visible(self):
+        return self.selenium.is_element_present(self._prev_link)
+
+    @property
+    def current_page(self):
+        return int(self.selenium.get_text(self._current_page_locator))
+
+    def go_to_first_page(self):
+        self.selenium.click(self._first_page_link_locator)
+        self.selenium.wait_for_page_to_load(self.timeout)
+
+    def go_to_last_page(self):
+        self.selenium.click(self._last_page_link_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
 
     @property

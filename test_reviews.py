@@ -50,13 +50,30 @@ class TestReviews:
             https://litmus.mozilla.org/show_test.cgi?id=4843
         """
         amo_home_page = AddonsHomePage(testsetup)
-
-        amo_home_page.click_popular_addons_category()
-        amo_home_page.click_popular_addon_by_index(1)
+        amo_home_page.open_details_page_for_id(1865)
         Assert.true(amo_home_page.has_reviews)
 
         amo_home_page.click_all_reviews_link()
         Assert.equal(amo_home_page.review_count, 20)
         
+        #Go to the last page and check that the next button is not present
+        amo_home_page.go_to_last_page()
+        Assert.false(amo_home_page.is_next_link_visible)
+        
+        #Go one page back, check that it has 20 reviews
+        #and that the page number decreases
+        page_number = amo_home_page.current_page
+        amo_home_page.page_back()
+        Assert.equal(amo_home_page.review_count, 20)
+        Assert.equal(amo_home_page.current_page, page_number-1)
+
+        #Go to the first page and check that the prev button is not present
+        amo_home_page.go_to_first_page()
+        Assert.false(amo_home_page.is_prev_link_visible)
+        
+        #Go one page forward, check that it has 20 reviews
+        # and that the page number increases
+        page_number = amo_home_page.current_page
         amo_home_page.page_forward()
         Assert.equal(amo_home_page.review_count, 20)
+        Assert.equal(amo_home_page.current_page, page_number+1)
