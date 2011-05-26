@@ -42,10 +42,12 @@
 from unittestzero import Assert
 
 from addons_site import AddonsHomePage
-
+import pytest
+xfail = pytest.mark.xfail
 
 class TestThemes:
     
+    @xfail(reason="Test disabled due to bug 659290")
     def test_that_themes_can_be_sorted_by_name(self, testsetup):
         """ Test for Litmus 11727, 4839 """
         amo_home_page = AddonsHomePage(testsetup)

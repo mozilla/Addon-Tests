@@ -43,7 +43,6 @@ Created on Jun 21, 2010
 '''
 import re
 import time
-import vars
 import base64
 
 http_regex = re.compile('https?://((\w+\.)+\w+\.\w+)')
