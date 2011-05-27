@@ -55,7 +55,7 @@ class TestSearch:
     Test for litmus 17339
     https://litmus.mozilla.org/show_test.cgi?id=17339
     """
-    '''
+
     def test_that_search_all_add_ons_results_have_pagination_that_moves_through_results(self, testsetup):
         """ Test for litmus 4839
             https://litmus.mozilla.org/show_test.cgi?id=4839
@@ -205,16 +205,14 @@ class TestSearch:
         amo_home_page = AddonsHomePage(testsetup)
         amo_search_page = amo_home_page.search_for("text")
         Assert.equal(amo_search_page.breadcrumbs_value, 'Add-ons for Firefox Search')
-    '''
 
     def test(self, testsetup):
-
+        """
+        Litmus 7848
+        https://litmus.mozilla.org/show_test.cgi?id=7848
+        """
         amo_home_page = AddonsHomePage(testsetup)
-        amo_search_page = amo_home_page.search_for("text")
-        print amo_search_page.refine_results.tag_count
-        tags = amo_search_page.refine_results.tags()
-
-        for tag in tags:
-            print tag.name
-
-        tags[0].name()
+        amo_search_page = amo_home_page.search_for("development")
+        Assert.true(amo_search_page.result_count > 0)
+        Assert.equal(amo_search_page.refine_results.tag("development").name, "development")
+        Assert.true(amo_search_page.refine_results.tag_count > 1)
