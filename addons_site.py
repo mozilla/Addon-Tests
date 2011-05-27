@@ -161,9 +161,75 @@ class AddonsThemesPage(AddonsHomePage):
 class AddonsPersonasPage(AddonsHomePage):
 
     _page_title = 'Personas :: Add-ons for Firefox'
+    _featured_personas_locator = 'css=.personas-featured li:first-child a'
 
     def __init__(self, testsetup):
         Page.__init__(self, testsetup)
+
+    def click_first_featured_persona(self):
+        """ Click on the first featured persona in the page. """
+        self.selenium.click(self._featured_personas_locator)
+        self.selenium.wait_for_page_to_load(self.timeout)
+        return AddonsPersonasDetailPage(self.testsetup)
+
+    def open_persona_detail(self, persona_id):
+        self.selenium.open("/en-us/firefox/addon/" + str(persona_id))
+        self.selenium.wait_for_page_to_load(self.timeout)
+        return AddonsPersonasDetailPage(self.testsetup)
+
+
+class AddonsPersonasDetailPage(AddonsHomePage):
+
+    _personas_title_locator = 'css=h2.addon'
+    _breadcrumb_locator = '//ol[@class="breadcrumbs"]'
+    _breadcrumb_item_index_locator = '/li[%s]//'
+    _breadcrumb_item_text_locator = '/li//*[text()="%s"]'
+
+    def __init__(self, testsetup):
+        Page.__init__(self, testsetup)
+
+    @property
+    def is_the_current_page(self):
+        # This overrides the method in the Page super class.
+        # TODO: Is there any better way to identify the personas detail page?
+        if not (self.selenium.is_element_present('css=div#persona.primary') and 
+                self.selenium.is_element_present('css=div#persona-side.secondary')):
+            self.record_error()
+            raise Exception('Expected the current page to be the personas detail page.')
+        return True
+
+    @property
+    def personas_title(self):
+        """ Returns the title of the currently displayed persona. """
+        return self.selenium.get_text(self._personas_title_locator)
+
+    def get_breadcrumb_item_locator(self, item):
+        """ Returns an xpath locator for the given item.
+            If item is an int, the item with the given index (1..N) will be located.
+            If item is a str, the item with the given link text will be located.
+        """
+        if isinstance(item, int):
+            return (self._breadcrumb_locator + self._breadcrumb_item_index_locator) % str(item)
+        elif isinstance(item, str):
+            return (self._breadcrumb_locator + self._breadcrumb_item_text_locator) % str(item)
+        else:
+            raise Exception("The type of item must be either int or str.")
+
+    def get_breadcrumb_item_text(self, item):
+        """ Returns the label of the given item in the breadcrumb menu. """
+        locator = self.get_breadcrumb_item_locator(item) + 'text()'
+        return self.selenium.get_text(locator)
+
+    def get_breadcrumb_item_href(self, item):
+        """ Returns the value of the href attribute for the given item in the breadcrumb menu. """
+        locator = self.get_breadcrumb_item_locator(item) + '@href'
+        return self.selenium.get_attribute(locator)
+
+    def click_breadcrumb_item(self, item):
+        """ Clicks on the given item in the breadcrumb menu. """
+        locator = self.get_breadcrumb_item_locator(item)
+        self.selenium.click(locator)
+        self.selenium.wait_for_page_to_load(self.timeout)
 
 
 class DiscoveryPane(Page):

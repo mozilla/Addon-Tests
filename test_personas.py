@@ -38,7 +38,7 @@
 
 
 from unittestzero import Assert
-from addons_site import AddonsHomePage
+from addons_site import AddonsHomePage, AddonsPersonasPage
 
 
 class TestPersonas:
@@ -55,3 +55,35 @@ class TestPersonas:
         amo_home_page = AddonsHomePage(testsetup)
         amo_personas_page = amo_home_page.click_personas()
         Assert.true(amo_personas_page.is_the_current_page)
+
+    def test_breadcrumb_menu_in_persona_details_page(self, testsetup):
+        """ Test for Litmus 12046
+            https://litmus.mozilla.org/show_test.cgi?id=12046"""
+        amo_home_page = AddonsHomePage(testsetup)
+        amo_personas_page = amo_home_page.click_personas()
+        Assert.true(amo_personas_page.is_the_current_page)
+        # Step 3: Click on any persona.
+        amo_personas_detail_page = amo_personas_page.click_first_featured_persona()
+        Assert.true(amo_personas_detail_page.is_the_current_page)
+        # Step 3: Verify breadcrumb menu format, i.e. Add-ons for Firefox > Personas > {Persona Name}.
+        persona_title = amo_personas_detail_page.personas_title
+        Assert.equal("Add-ons for Firefox", amo_personas_detail_page.get_breadcrumb_item_text(1))
+        Assert.equal("Personas", amo_personas_detail_page.get_breadcrumb_item_text(2))
+        Assert.equal(persona_title, amo_personas_detail_page.get_breadcrumb_item_text(3))
+        # Step 4: Click on the Personas breadcrumb link.
+        amo_personas_detail_page.click_breadcrumb_item("Personas")
+        Assert.true(amo_personas_page.is_the_current_page)
+        # Step 4: Click on the Add-ons for Firefox breadcrumb link.
+        amo_personas_detail_page = amo_personas_page.click_first_featured_persona()
+        Assert.true(amo_personas_detail_page.is_the_current_page)
+        amo_personas_detail_page.click_breadcrumb_item("Add-ons for Firefox")
+
+    def test_breadcrumb_menu_for_rainbow_firefox_persona(self, testsetup):
+        """ Verify the breadcrumb menu for a known persona.
+            https://preview.addons.mozilla.org/en-us/firefox/addon/37329/"""
+        amo_personas_page = AddonsPersonasPage(testsetup)
+        amo_personas_detail_page = amo_personas_page.open_persona_detail(37329)
+        Assert.equal("rainbow firefox", amo_personas_detail_page.personas_title)
+        Assert.equal("Add-ons for Firefox", amo_personas_detail_page.get_breadcrumb_item_text(1))
+        Assert.equal("Personas", amo_personas_detail_page.get_breadcrumb_item_text(2))
+        Assert.equal("rainbow firefox", amo_personas_detail_page.get_breadcrumb_item_text(3))
