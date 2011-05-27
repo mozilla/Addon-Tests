@@ -228,7 +228,7 @@ class DiscoveryPane(Page):
     def click_on_first_persona(self):
         self.selenium.click(self._personas_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
-        return PersonasPage(self.testsetup)
+        return DiscoveryPersonasDetailPage(self.testsetup)
 
     def more_ways_section_visible(self):
         return self.selenium.is_visible(self._more_ways_section_locator)
@@ -248,7 +248,7 @@ class DiscoveryPane(Page):
     def up_and_coming_item_count(self):
         return int(self.selenium.get_xpath_count(self._up_and_coming_item))
 
-class PersonasPage(Page):
+class DiscoveryPersonasDetailPage(Page):
 
     _persona_title = 'css=h1.addon'
 
