@@ -59,6 +59,7 @@ class AddonsHomePage(Page):
 
     #Categories List
     _category_list_locator = "//ul[@id='categoriesdropdown']"
+    _category_item_locator = "//li/a[text()='%s']"
 
     #prev next links
     _next_link_locator = "link=Next"
@@ -89,8 +90,8 @@ class AddonsHomePage(Page):
         return self.selenium.get_attribute(self._search_textbox_locator + '@placeholder')
 
     def has_category(self, category_name):
-        ''' Returns whether category_name exists in the category menu links'''
-        locator = self._xpath_for_category(category_name)
+        ''' Returns whether category_name exists in the category menu links '''
+        locator = (self._category_list_locator + self._category_item_locator) % category_name
         return self.selenium.get_xpath_count(locator) > 0
 
     def click_personas(self):
