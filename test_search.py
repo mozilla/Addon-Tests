@@ -131,7 +131,7 @@ class TestSearch:
         matches = re.search(self._total_count_regex, results_summary)
         Assert.true(int(matches.group(1)) > 1)
 
-    @xfail(reason="disabled due to bug 619052")
+    @pytest.mark.skip(reason="disabled due to bug 619052")
     def test_that_blank_search_returns_results(self, testsetup):
         """ Litmus 11759
             https://litmus.mozilla.org/show_test.cgi?id=11759 """
