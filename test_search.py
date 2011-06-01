@@ -131,10 +131,10 @@ class TestSearch:
         matches = re.search(self._total_count_regex, results_summary)
         Assert.true(int(matches.group(1)) > 1)
 
-    @pytest.mark.skip(reason="disabled due to bug 619052")
     def test_that_blank_search_returns_results(self, testsetup):
         """ Litmus 11759
             https://litmus.mozilla.org/show_test.cgi?id=11759 """
+        pytest.skip("disabled due to bug 619052")
         amo_home_page = AddonsHomePage(testsetup)
         amo_search_page = amo_home_page.search_for("")
         Assert.false(amo_search_page.is_text_present("Search is currently unavailable"))
