@@ -160,15 +160,22 @@ class AddonsThemesPage(AddonsHomePage):
 
 class AddonsPersonasPage(AddonsHomePage):
 
-    _page_title = 'Personas :: Add-ons for Firefox'
-    _featured_personas_locator = 'css=.personas-featured li:first-child a'
+    _page_title = "Personas :: Add-ons for Firefox"
+    _personas_locator = "//div[@class='persona persona-small']"
 
     def __init__(self, testsetup):
         Page.__init__(self, testsetup)
 
-    def click_first_featured_persona(self):
-        """ Click on the first featured persona in the page. """
-        self.selenium.click(self._featured_personas_locator)
+    @property
+    def persona_count(self):
+        """ Returns the total number of persona links in the page. """
+        return self.selenium.get_xpath_count(self._personas_locator)
+
+    def click_persona(self, index):
+        """ Clicks on the persona with the given index in the page. """
+        if index not in xrange(1, self.persona_count + 1):
+            raise Exception("index must be between 1 and %s" % self.persona_count)
+        self.selenium.click("xpath=(" + self._personas_locator + ")[%s]//a" % str(index))
         self.selenium.wait_for_page_to_load(self.timeout)
         return AddonsPersonasDetailPage(self.testsetup)
 

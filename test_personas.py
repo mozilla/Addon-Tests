@@ -37,6 +37,8 @@
 # ***** END LICENSE BLOCK *****
 
 
+import random
+
 from unittestzero import Assert
 from addons_site import AddonsHomePage, AddonsPersonasPage
 
@@ -63,7 +65,10 @@ class TestPersonas:
         amo_personas_page = amo_home_page.click_personas()
         Assert.true(amo_personas_page.is_the_current_page)
         # Step 3: Click on any persona.
-        amo_personas_detail_page = amo_personas_page.click_first_featured_persona()
+        random_persona_index = random.randint(1, amo_personas_page.persona_count)
+        print 'random_persona_index: ' + str(random_persona_index)
+        amo_personas_detail_page = amo_personas_page.click_persona(random_persona_index)
+        print 'url_current_page:     ' + str(amo_personas_detail_page.get_url_current_page())
         Assert.true(amo_personas_detail_page.is_the_current_page)
         # Step 3: Verify breadcrumb menu format, i.e. Add-ons for Firefox > Personas > {Persona Name}.
         persona_title = amo_personas_detail_page.personas_title
@@ -74,7 +79,7 @@ class TestPersonas:
         amo_personas_detail_page.click_breadcrumb_item("Personas")
         Assert.true(amo_personas_page.is_the_current_page)
         # Step 4: Click on the Add-ons for Firefox breadcrumb link.
-        amo_personas_detail_page = amo_personas_page.click_first_featured_persona()
+        amo_personas_detail_page = amo_personas_page.click_persona(random_persona_index)
         Assert.true(amo_personas_detail_page.is_the_current_page)
         amo_personas_detail_page.click_breadcrumb_item("Add-ons for Firefox")
 
