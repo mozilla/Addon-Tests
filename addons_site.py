@@ -179,8 +179,8 @@ class AddonsPersonasPage(AddonsHomePage):
         self.selenium.wait_for_page_to_load(self.timeout)
         return AddonsPersonasDetailPage(self.testsetup)
 
-    def open_persona_detail(self, persona_id):
-        self.selenium.open("/en-us/firefox/addon/" + str(persona_id))
+    def open_persona_detail_page(self, persona_key):
+        self.selenium.open("/en-us/firefox/addon/" + str(persona_key))
         self.selenium.wait_for_page_to_load(self.timeout)
         return AddonsPersonasDetailPage(self.testsetup)
 

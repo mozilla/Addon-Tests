@@ -85,9 +85,9 @@ class TestPersonas:
 
     def test_breadcrumb_menu_for_rainbow_firefox_persona(self, testsetup):
         """ Verify the breadcrumb menu for a known persona.
-            https://preview.addons.mozilla.org/en-us/firefox/addon/37329/"""
+            https://preview.addons.mozilla.org/en-us/firefox/addon/rainbow-firefox/"""
         amo_personas_page = AddonsPersonasPage(testsetup)
-        rainbow_personas_detail_page = amo_personas_page.open_persona_detail(37329)
+        rainbow_personas_detail_page = amo_personas_page.open_persona_detail_page("rainbow-firefox")
         Assert.equal("rainbow firefox", rainbow_personas_detail_page.personas_title)
         Assert.equal("Add-ons for Firefox", rainbow_personas_detail_page.get_breadcrumb_item_text(1))
         Assert.equal("Personas", rainbow_personas_detail_page.get_breadcrumb_item_text(2))
