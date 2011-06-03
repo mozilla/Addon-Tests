@@ -37,7 +37,7 @@
 
 from page import Page
 
-class SearchResultsPage(Page):
+class AddonsSearchHomePage(Page):
 
     _results_summary_locator = "css=h3.results-count"
     _results_displayed_locator = "css=div.num-results"
