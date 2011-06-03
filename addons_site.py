@@ -175,8 +175,6 @@ class AddonsPersonasPage(AddonsHomePage):
 
     def click_persona(self, index):
         """ Clicks on the persona with the given index in the page. """
-        if index not in xrange(1, self.persona_count + 1):
-            raise Exception("index must be between 1 and %s" % self.persona_count)
         self.selenium.click("xpath=(%s)[%d]//a" % (self._personas_locator, index))
         self.selenium.wait_for_page_to_load(self.timeout)
         return AddonsPersonasDetailPage(self.testsetup)
@@ -189,6 +187,7 @@ class AddonsPersonasPage(AddonsHomePage):
 
 class AddonsPersonasDetailPage(AddonsHomePage):
 
+    _page_title_regex = '.+ :: Add-ons for Firefox'
     _personas_title_locator = 'css=h2.addon'
     _breadcrumb_locator = '//ol[@class="breadcrumbs"]'
     _breadcrumb_item_index_locator = '/li[%s]//'
@@ -200,9 +199,7 @@ class AddonsPersonasDetailPage(AddonsHomePage):
     @property
     def is_the_current_page(self):
         # This overrides the method in the Page super class.
-        # TODO: Is there any better way to identify the personas detail page?
-        if not (self.selenium.is_element_present('css=div#persona.primary') and 
-                self.selenium.is_element_present('css=div#persona-side.secondary')):
+        if not (re.match(self._page_title_regex, self.selenium.get_title())):
             self.record_error()
             raise Exception('Expected the current page to be the personas detail page.')
         return True
@@ -221,8 +218,6 @@ class AddonsPersonasDetailPage(AddonsHomePage):
             return (self._breadcrumb_locator + self._breadcrumb_item_index_locator) % str(item)
         elif isinstance(item, str):
             return (self._breadcrumb_locator + self._breadcrumb_item_text_locator) % str(item)
-        else:
-            raise Exception("The type of item must be either int or str.")
 
     def get_breadcrumb_item_text(self, item):
         """ Returns the label of the given item in the breadcrumb menu. """
