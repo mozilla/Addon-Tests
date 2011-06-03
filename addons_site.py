@@ -49,6 +49,8 @@ import search_results_page
 
 class AddonsHomePage(Page):
 
+    _page_title = "Add-ons for Firefox"
+
     #Search box
     _search_button_locator = "css=input.submit"
     _search_textbox_locator = "name=q"
@@ -175,7 +177,7 @@ class AddonsPersonasPage(AddonsHomePage):
         """ Clicks on the persona with the given index in the page. """
         if index not in xrange(1, self.persona_count + 1):
             raise Exception("index must be between 1 and %s" % self.persona_count)
-        self.selenium.click("xpath=(" + self._personas_locator + ")[%s]//a" % str(index))
+        self.selenium.click("xpath=(%s)[%d]//a" % (self._personas_locator, index))
         self.selenium.wait_for_page_to_load(self.timeout)
         return AddonsPersonasDetailPage(self.testsetup)
 
