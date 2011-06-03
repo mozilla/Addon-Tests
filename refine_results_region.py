@@ -115,7 +115,6 @@ class RefineResults(Page):
             try:
                 if self.selenium.get_attribute(self._absolute_locator(self._selected_locator)) == 'selected':
                     return True
-                else:
-                    return False
             except:
-                return False
+                pass
+            return False
