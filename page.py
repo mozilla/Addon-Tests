@@ -80,6 +80,10 @@ class Page(object):
     def is_text_present(self,text):
         return self.selenium.is_text_present(text)
 
+    def return_to_previous_page(self):
+        self.selenium.go_back()
+        self.selenium.wait_for_page_to_load(self.timeout)
+
     def refresh(self):
         self.selenium.refresh()
         self.selenium.wait_for_page_to_load(self.timeout)
