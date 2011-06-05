@@ -65,7 +65,7 @@ class TestReviews:
         page_number = amo_home_page.current_page
         amo_home_page.page_back()
         Assert.equal(amo_home_page.review_count, 20)
-        Assert.equal(amo_home_page.current_page, page_number-1)
+        Assert.equal(amo_home_page.current_page, page_number - 1)
 
         #Go to the first page and check that the prev button is not present
         amo_home_page.go_to_first_page()
@@ -76,4 +76,4 @@ class TestReviews:
         page_number = amo_home_page.current_page
         amo_home_page.page_forward()
         Assert.equal(amo_home_page.review_count, 20)
-        Assert.equal(amo_home_page.current_page, page_number+1)
+        Assert.equal(amo_home_page.current_page, page_number + 1)
