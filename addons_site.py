@@ -45,7 +45,7 @@ import re
 
 
 from page import Page
-import search_results_page
+import addons_search_home_page
 
 class AddonsHomePage(Page):
 
@@ -82,7 +82,7 @@ class AddonsHomePage(Page):
         self.selenium.type(self._search_textbox_locator, search_term)
         self.selenium.click(self._search_button_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
-        return search_results_page.AddonsSearchHomePage(self.testsetup)
+        return addons_search_home_page.AddonsSearchHomePage(self.testsetup)
 
     @property
     def search_field_placeholder(self):
