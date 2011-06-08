@@ -40,12 +40,13 @@
 #
 # ***** END LICENSE BLOCK *****
 
+
 import re
-
-
+from datetime import datetime
 
 from page import Page
 import addons_search_home_page
+
 
 class AddonsHomePage(Page):
 
@@ -112,7 +113,7 @@ class AddonsThemesPage(AddonsHomePage):
     _sort_by_name_locator = 'name=_t-name'
     _sort_by_updated_locator = 'name=_t-updated'
     _sort_by_created_locator = 'name=_t-created'
-    _sort_by_downloads_locator = 'name=_t-popular'
+    _sort_by_popular_locator = 'name=_t-popular'
     _sort_by_rating_locator = 'name=_t-rating'
     _addons_root_locator = "//div[@class='details']"
     _addon_name_locator = _addons_root_locator + "/h4/a"
@@ -133,13 +134,25 @@ class AddonsThemesPage(AddonsHomePage):
                         for i in xrange(addon_count)]
         return _addon_names
 
-    @property
-    def addon_update_dates(self):
+    def _extract_addon_metadata_dates(self, format):
         addon_count = int(self.selenium.get_xpath_count(self._addon_name_locator))
-        _addon_dates = [self.selenium.get_text(
-                            "xpath=(" + self._addons_metadata_locator + ")[%s]" % str(i + 1))[8:]
-                        for i in xrange(addon_count)]
-        return _addon_dates
+        addon_metadata = [
+            self.selenium.get_text("xpath=(%s)[%d]" % (self._addons_metadata_locator, i))
+            for i in xrange(1, addon_count + 1)
+        ]
+        addon_dates = [
+            datetime.strptime(metadata, format).isoformat()
+            for metadata in addon_metadata
+        ]
+        return addon_dates
+
+    @property
+    def addon_updated_dates(self):
+        return self._extract_addon_metadata_dates("Updated %B %d, %Y")
+
+    @property
+    def addon_created_dates(self):
+        return self._extract_addon_metadata_dates("Added %B %d, %Y")
 
     @property
     def addon_download_number(self):
