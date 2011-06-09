@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 # ***** BEGIN LICENSE BLOCK *****
 # Version: MPL 1.1/GPL 2.0/LGPL 2.1
 #
@@ -25,6 +24,7 @@
 #                 Dave Hunt <dhunt@mozilla.com>
 #                 Alex Rodionov <p0deje@gmail.com>
 #                 Joel Andersson <janderssn@gmail.com>
+#                 Bebe <florin.strugariu@softvision.ro>
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -40,11 +40,12 @@
 #
 # ***** END LICENSE BLOCK *****
 
-
 import re
 
-from page import Page
 
+
+from page import Page
+import addons_search_home_page
 
 class AddonsHomePage(Page):
 
@@ -57,8 +58,11 @@ class AddonsHomePage(Page):
 
     #Categories List
     _category_list_locator = "//ul[@id='categoriesdropdown']"
+    _category_item_locator = "//li/a[text()='%s']"
 
     #prev next links
+    _next_link_locator = "link=Next"
+    _previous_link_locator = "link=Prev"
     _next_link = "link=Next"
     _prev_link = "link=Prev"
     
@@ -74,18 +78,30 @@ class AddonsHomePage(Page):
     def __init__(self, testsetup):
         ''' Creates a new instance of the class and gets the page ready for testing '''
         Page.__init__(self, testsetup)
-        self.selenium.open("/") 
+        self.selenium.open("/")
         self.selenium.window_maximize()
 
-    def search_for(self,search_term):
+    def page_forward(self):
+        self.selenium.click(self._next_link_locator)
+        self.selenium.wait_for_page_to_load(self.timeout)
+
+    def page_back(self):
+        self.selenium.click(self._previous_link_locator)
+        self.selenium.wait_for_page_to_load(self.timeout)
+
+    def search_for(self, search_term):
         self.selenium.type(self._search_textbox_locator, search_term)
         self.selenium.click(self._search_button_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
-        return AddonsSearchHomePage(self.testsetup)        
-        
+        return addons_search_home_page.AddonsSearchHomePage(self.testsetup)
+
+    @property
+    def search_field_placeholder(self):
+        return self.selenium.get_attribute(self._search_textbox_locator + '@placeholder')
+
     def has_category(self, category_name):
-        ''' Returns whether category_name exists in the category menu links'''
-        locator = self._xpath_for_category(category_name)
+        ''' Returns whether category_name exists in the category menu links '''
+        locator = (self._category_list_locator + self._category_item_locator) % category_name
         return self.selenium.get_xpath_count(locator) > 0
 
     def click_personas(self):
@@ -198,31 +214,31 @@ class AddonsThemesPage(AddonsHomePage):
     @property
     def addon_names(self):
         addon_count = int(self.selenium.get_xpath_count(self._addon_name_locator))
-        _addon_names = [self.selenium.get_text("xpath=(" + self._addon_name_locator + ")[%s]" % str(i+1))
+        _addon_names = [self.selenium.get_text("xpath=(" + self._addon_name_locator + ")[%s]" % str(i + 1))
                         for i in xrange(addon_count)]
         return _addon_names
-    
+
     @property
     def addon_update_dates(self):
         addon_count = int(self.selenium.get_xpath_count(self._addon_name_locator))
         _addon_dates = [self.selenium.get_text(
-                            "xpath=(" + self._addons_metadata_locator + ")[%s]" % str(i+1))[8:]
+                            "xpath=(" + self._addons_metadata_locator + ")[%s]" % str(i + 1))[8:]
                         for i in xrange(addon_count)]
         return _addon_dates
 
     @property
     def addon_download_number(self):
         addon_count = int(self.selenium.get_xpath_count(self._addon_name_locator))
-        _addon_downloads= [int(re.search("(\d+)", self.selenium.get_text(
-                            "xpath=(" + self._addons_metadata_locator + ")[%s]" % str(i+1)).replace(
-                                ",","")).group(0))
+        _addon_downloads = [int(re.search("(\d+)", self.selenium.get_text(
+                            "xpath=(" + self._addons_metadata_locator + ")[%s]" % str(i + 1)).replace(
+                                ",", "")).group(0))
                         for i in xrange(addon_count)]
         return _addon_downloads
 
     @property
     def addon_rating(self):
         addon_count = int(self.selenium.get_xpath_count(self._addon_name_locator))
-        _addon_ratings = [self.selenium.get_text("xpath=(" + self._addons_rating_locator + ")[%s]" % str(i+1))
+        _addon_ratings = [self.selenium.get_text("xpath=(" + self._addons_rating_locator + ")[%s]" % str(i + 1))
                         for i in xrange(addon_count)]
         return _addon_ratings
 
@@ -293,6 +309,7 @@ class DiscoveryPane(Page):
     @property
     def first_persona(self):
         return self.selenium.get_text(self._personas_locator)
+
     
     def click_on_first_persona(self):
         self.selenium.click(self._personas_locator)
