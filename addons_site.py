@@ -123,12 +123,20 @@ class AddonsHomePage(Page):
         self.selenium.wait_for_page_to_load(self.timeout)
 
     @property
-    def is_next_link_visible(self):
+    def is_next_link_present(self):
         return self.selenium.is_element_present(self._next_link)
 
     @property
-    def is_prev_link_visible(self):
+    def is_next_link_visible(self):
+        return self.selenium.is_visible(self._next_link)
+
+    @property
+    def is_prev_link_present(self):
         return self.selenium.is_element_present(self._prev_link)
+
+    @property
+    def is_prev_link_visible(self):
+        return self.selenium.is_visible(self._prev_link)
 
     @property
     def current_page(self):
