@@ -70,7 +70,7 @@ class TestThemes:
         [Assert.equal(addons_orig[i], addons[i]) for i in xrange(len(addons))]
 
     def test_that_themes_can_be_sorted_by_updated_date(self, testsetup):
-        """ test for litmus 11750 """
+        """ test for litmus 11638 """
         amo_home_page = AddonsHomePage(testsetup)
         amo_themes_page = amo_home_page.click_themes()
         amo_themes_page.click_sort_by("updated")
