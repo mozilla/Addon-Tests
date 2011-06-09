@@ -4,3 +4,4 @@
 selenium
 pytest
 pytest-xdist
+unittestzero
