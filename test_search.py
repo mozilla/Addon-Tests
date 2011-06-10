@@ -46,6 +46,7 @@ from unittestzero import Assert
 from addons_site import AddonsHomePage
 xfail = pytest.mark.xfail
 
+
 class TestSearch:
 
     _count_regex = '^.* (\d+) - (\d+)'
@@ -56,7 +57,7 @@ class TestSearch:
     """
 
     def test_that_search_all_add_ons_results_have_pagination_that_moves_through_results(self, testsetup):
-        """ Test for litmus 4839 
+        """ Test for litmus 4839
             https://litmus.mozilla.org/show_test.cgi?id=4839
         """
         amo_home_page = AddonsHomePage(testsetup)
@@ -187,3 +188,31 @@ class TestSearch:
         amo_home_page = AddonsHomePage(testsetup)
         Assert.equal(amo_home_page.search_field_placeholder, 'search for add-ons')
 
+    def test_that_searching_with_numerals_returns_results(self, testsetup):
+        """
+        Litmus 17347
+        https://litmus.mozilla.org/show_test.cgi?id=17347
+        """
+        amo_home_page = AddonsHomePage(testsetup)
+        amo_search_page = amo_home_page.search_for("1")
+        Assert.true(amo_search_page.result_count > 0)
+
+    def test_that_breadcrumbs_appear_after_search(self, testsetup):
+        """
+        Litmus 17341
+        https://litmus.mozilla.org/show_test.cgi?id=17341
+        """
+        amo_home_page = AddonsHomePage(testsetup)
+        amo_search_page = amo_home_page.search_for("text")
+        Assert.equal(amo_search_page.breadcrumbs_value, 'Add-ons for Firefox Search')
+
+    def test_that_searching_for_a_tag_returns_results(self, testsetup):
+        """
+        Litmus 7848
+        https://litmus.mozilla.org/show_test.cgi?id=7848
+        """
+        amo_home_page = AddonsHomePage(testsetup)
+        amo_search_page = amo_home_page.search_for("development")
+        Assert.true(amo_search_page.result_count > 0)
+        Assert.equal(amo_search_page.refine_results.tag("development").name, "development")
+        Assert.true(amo_search_page.refine_results.tag_count > 1)
