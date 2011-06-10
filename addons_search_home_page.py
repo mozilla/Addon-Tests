@@ -47,6 +47,8 @@ class AddonsSearchHomePage(Page):
     _next_link_locator = "link=Next"
     _previous_link_locator = "link=Prev"
 
+    _breadcrumbs_locator = "css=ol.breadcrumbs"
+
     def page_forward(self):
         self.selenium.click(self._next_link_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
@@ -54,6 +56,10 @@ class AddonsSearchHomePage(Page):
     def page_back(self):
         self.selenium.click(self._previous_link_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
+
+    @property
+    def breadcrumbs_value(self):
+        return self.selenium.get_text(self._breadcrumbs_locator)
 
     @property
     def page_title(self):
