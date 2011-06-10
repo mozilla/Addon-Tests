@@ -52,16 +52,27 @@ def pytest_runtest_setup(item):
         TestSetup.skip_selenium = False
         TestSetup.selenium = selenium(item.host, item.port,
             item.browser, TestSetup.base_url)
-
-        TestSetup.selenium.start()
+         
+        if item.config.option.capturenetwork:
+            TestSetup.selenium.start("captureNetworkTraffic=true")
+        else:
+            TestSetup.selenium.start()
+       
         TestSetup.selenium.set_timeout(TestSetup.timeout)
+        TestSetup.selenium.set_context("sauce:job-name=%s" % item.keywords.keys()[0])
     else:
         TestSetup.skip_selenium = True
 
 
 def pytest_runtest_teardown(item):
     if not TestSetup.skip_selenium:
-        TestSetup.selenium.stop()
+        if item.config.option.capturenetwork:
+            traffic = TestSetup.selenium.captureNetworkTraffic("json")
+            TestSetup.selenium.stop()
+            filename = item.keywords.keys()[0]
+            f = open("%s.json" % filename, "w")
+            f.write(traffic)
+            f.close()
 
 
 def pytest_funcarg__testsetup(request):
@@ -79,6 +90,9 @@ def pytest_addoption(parser):
         help="specify the AUT")
     parser.addoption("--timeout", action="store", default=120000,
         help="specify the timeout")
+    parser.addoption("--capturenetwork", action="store_true", default=False,
+        help="Tells the Selenium server to capture the network traffic. This will \
+              store the results in test_method_name.json")
 
 
 class TestSetup:
