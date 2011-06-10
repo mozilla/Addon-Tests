@@ -70,7 +70,7 @@ class TestThemes:
         [Assert.equal(addons_orig[i], addons[i]) for i in xrange(len(addons))]
 
     def test_that_themes_can_be_sorted_by_updated_date(self, testsetup):
-        """ test for litmus 11750 """
+        """ test for litmus 11638 """
         amo_home_page = AddonsHomePage(testsetup)
         amo_themes_page = amo_home_page.click_themes()
         amo_themes_page.click_sort_by("updated")
@@ -78,10 +78,10 @@ class TestThemes:
         addons_set = set(addons)
         Assert.equal(len(addons), len(addons_set), "There are duplicates in the names")
         updated_dates = amo_themes_page.addon_updated_dates
-        Assert.true(is_sorted(updated_dates))
+        Assert.is_sorted_descending(updated_dates)
         amo_themes_page.page_forward()
         updated_dates.extend(amo_themes_page.addon_updated_dates)
-        Assert.true(is_sorted(updated_dates))
+        Assert.is_sorted_descending(updated_dates)
 
     def test_that_themes_can_be_sorted_by_created_date(self, testsetup):
         """ test for litmus 11638 """
@@ -92,10 +92,10 @@ class TestThemes:
         addons_set = set(addons)
         Assert.equal(len(addons), len(addons_set), "There are duplicates in the names")
         created_dates = amo_themes_page.addon_created_dates
-        Assert.true(is_sorted(created_dates))
+        Assert.is_sorted_descending(created_dates)
         amo_themes_page.page_forward()
         created_dates.extend(amo_themes_page.addon_created_dates)
-        Assert.true(is_sorted(created_dates))
+        Assert.is_sorted_descending(created_dates)
 
     def test_that_themes_can_be_sorted_by_popularity(self, testsetup):
         """ test for litmus 11638 """
@@ -106,10 +106,10 @@ class TestThemes:
         addons_set = set(addons)
         Assert.equal(len(addons), len(addons_set), "There are duplicates in the names")
         downloads = amo_themes_page.addon_download_number
-        Assert.true(is_sorted(downloads))
+        Assert.is_sorted_descending(downloads)
         amo_themes_page.page_forward()
         downloads.extend(amo_themes_page.addon_download_number)
-        Assert.true(is_sorted(downloads))
+        Assert.is_sorted_descending(downloads)
 
     def test_that_themes_can_be_sorted_by_rating(self, testsetup):
         """ test for litmus 11638 """
@@ -120,11 +120,7 @@ class TestThemes:
         addons_set = set(addons)
         Assert.equal(len(addons), len(addons_set), "There are duplicates in the names")
         ratings = amo_themes_page.addon_rating
-        Assert.true(is_sorted(ratings))
+        Assert.is_sorted_descending(ratings)
         amo_themes_page.page_forward()
         ratings.extend(amo_themes_page.addon_rating)
-        Assert.true(is_sorted(ratings))
-
-def is_sorted(items):
-    """ Returns true if the given list is sorted in descending order, otherwise returns false. """
-    return all(items[i] >= items[i + 1] for i in xrange(len(items) - 1))
+        Assert.is_sorted_descending(ratings)
