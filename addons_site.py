@@ -51,6 +51,8 @@ import addons_search_home_page
 
 class AddonsHomePage(Page):
 
+    _page_title = "Add-ons for Firefox"
+
     #Search box
     _search_button_locator = "css=input.submit"
     _search_textbox_locator = "name=q"
@@ -212,10 +214,78 @@ class AddonsThemesPage(AddonsHomePage):
 
 class AddonsPersonasPage(AddonsHomePage):
 
-    _page_title = 'Personas :: Add-ons for Firefox'
+    _page_title = "Personas :: Add-ons for Firefox"
+    _personas_locator = "//div[@class='persona persona-small']"
 
     def __init__(self, testsetup):
         Page.__init__(self, testsetup)
+
+    @property
+    def persona_count(self):
+        """ Returns the total number of persona links in the page. """
+        return self.selenium.get_xpath_count(self._personas_locator)
+
+    def click_persona(self, index):
+        """ Clicks on the persona with the given index in the page. """
+        self.selenium.click("xpath=(%s)[%d]//a" % (self._personas_locator, index))
+        self.selenium.wait_for_page_to_load(self.timeout)
+        return AddonsPersonasDetailPage(self.testsetup)
+
+    def open_persona_detail_page(self, persona_key):
+        self.selenium.open("/en-us/firefox/addon/" + str(persona_key))
+        self.selenium.wait_for_page_to_load(self.timeout)
+        return AddonsPersonasDetailPage(self.testsetup)
+
+
+class AddonsPersonasDetailPage(AddonsHomePage):
+
+    _page_title_regex = '.+ :: Add-ons for Firefox'
+    _personas_title_locator = 'css=h2.addon'
+    _breadcrumb_locator = '//ol[@class="breadcrumbs"]'
+    _breadcrumb_item_index_locator = '/li[%s]//'
+    _breadcrumb_item_text_locator = '/li//*[text()="%s"]'
+
+    def __init__(self, testsetup):
+        Page.__init__(self, testsetup)
+
+    @property
+    def is_the_current_page(self):
+        # This overrides the method in the Page super class.
+        if not (re.match(self._page_title_regex, self.selenium.get_title())):
+            self.record_error()
+            raise Exception('Expected the current page to be the personas detail page.')
+        return True
+
+    @property
+    def personas_title(self):
+        """ Returns the title of the currently displayed persona. """
+        return self.selenium.get_text(self._personas_title_locator)
+
+    def get_breadcrumb_item_locator(self, item):
+        """ Returns an xpath locator for the given item.
+            If item is an int, the item with the given index (1..N) will be located.
+            If item is a str, the item with the given link text will be located.
+        """
+        if isinstance(item, int):
+            return (self._breadcrumb_locator + self._breadcrumb_item_index_locator) % str(item)
+        elif isinstance(item, str):
+            return (self._breadcrumb_locator + self._breadcrumb_item_text_locator) % str(item)
+
+    def get_breadcrumb_item_text(self, item):
+        """ Returns the label of the given item in the breadcrumb menu. """
+        locator = self.get_breadcrumb_item_locator(item) + 'text()'
+        return self.selenium.get_text(locator)
+
+    def get_breadcrumb_item_href(self, item):
+        """ Returns the value of the href attribute for the given item in the breadcrumb menu. """
+        locator = self.get_breadcrumb_item_locator(item) + '@href'
+        return self.selenium.get_attribute(locator)
+
+    def click_breadcrumb_item(self, item):
+        """ Clicks on the given item in the breadcrumb menu. """
+        locator = self.get_breadcrumb_item_locator(item)
+        self.selenium.click(locator)
+        self.selenium.wait_for_page_to_load(self.timeout)
 
 
 class DiscoveryPane(Page):
@@ -280,7 +350,7 @@ class DiscoveryPane(Page):
     def click_on_first_persona(self):
         self.selenium.click(self._personas_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
-        return PersonasPage(self.testsetup)
+        return DiscoveryPersonasDetailPage(self.testsetup)
 
     def more_ways_section_visible(self):
         return self.selenium.is_visible(self._more_ways_section_locator)
@@ -300,7 +370,7 @@ class DiscoveryPane(Page):
     def up_and_coming_item_count(self):
         return int(self.selenium.get_xpath_count(self._up_and_coming_item))
 
-class PersonasPage(Page):
+class DiscoveryPersonasDetailPage(Page):
 
     _persona_title = 'css=h1.addon'
 

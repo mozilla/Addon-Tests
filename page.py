@@ -86,6 +86,10 @@ class Page(object):
     def is_element_present(self, locator):
         return self.selenium.is_element_present( locator )
 
+    def return_to_previous_page(self):
+        self.selenium.go_back()
+        self.selenium.wait_for_page_to_load(self.timeout)
+
     def refresh(self):
         self.selenium.refresh()
         self.selenium.wait_for_page_to_load(self.timeout)
