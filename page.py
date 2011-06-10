@@ -76,9 +76,15 @@ class Page(object):
 
     def get_url_current_page(self):
         return(self.selenium.get_location())
+    
+    def get_text(self, text):
+        return(self.selenium.get_text(text))
 
     def is_text_present(self,text):
         return self.selenium.is_text_present(text)
+    
+    def is_element_present(self, locator):
+        return self.selenium.is_element_present( locator )
 
     def refresh(self):
         self.selenium.refresh()

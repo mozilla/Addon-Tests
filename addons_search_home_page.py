@@ -36,6 +36,7 @@
 # ***** END LICENSE BLOCK *****
 
 from page import Page
+import addons_site
 
 class AddonsSearchHomePage(Page):
 
@@ -69,6 +70,10 @@ class AddonsSearchHomePage(Page):
     @property
     def result_count(self):
         return int(self.selenium.get_css_count(self._results_locator))
+    
+    def click_addon(self, addon_name):
+        self.selenium.click("link=" + addon_name)
+        return addons_site.AddonsDetailsPage(self.testsetup, addon_name)
 
     def result(self, lookup):
         return self.Result(self.testsetup, lookup)

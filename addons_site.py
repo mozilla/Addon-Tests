@@ -25,6 +25,7 @@
 #                 Alex Rodionov <p0deje@gmail.com>
 #                 Joel Andersson <janderssn@gmail.com>
 #                 Bebe <florin.strugariu@softvision.ro>
+#                 Marlena Compton <mcompton@mozilla.com>
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -70,7 +71,7 @@ class AddonsHomePage(Page):
         Page.__init__(self, testsetup)
         self.selenium.open("/")
         self.selenium.window_maximize()
-
+    
     def page_forward(self):
         self.selenium.click(self._next_link_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
@@ -107,9 +108,47 @@ class AddonsHomePage(Page):
     @property
     def download_count(self):
         return self.selenium.get_text(self._download_count_locator)
+      
+class AddonsDetailsPage(AddonsHomePage):
 
+    _addon_detail_base_url =  "/firefox/addon/"
+    _version_number_locator = "css=span.version" 
+    _authors_locator = "//h4[@class='author']/a"
+    _summary_locator = "css=div[id=addon-summary] > p"
+    _ratings_locator = "css=span[itemprop='rating']"
+    _install_button_locator = "css=p[class='install-button'] > a"
+    _contribute_button_locator = "css=a[id='contribute-button']"
+    _addon_rating_locator = "css=span[itemprop='rating']"
+
+    def __init__(self, testsetup, addon_name):
+        #formats name for url
+        self.addon_name = addon_name.replace(' ', '-').lower()  
+        Page.__init__(self, testsetup)
+        self.selenium.open(self._addon_detail_base_url + self.addon_name)  
+    
+    @property
+    def page_title(self):
+        return self.selenium.get_title()      
+
+    @property    
+    def version_number(self):
+        return self.selenium.get_text(self._version_number_locator)
+
+    @property
+    def authors(self):       
+        return [ self.selenium.get_text(self._authors_locator + "[%i]" % (i+1)) 
+            for i in range(self.selenium.get_xpath_count(self._authors_locator)) ]     
+
+    @property
+    def summary(self):
+        return self.selenium.get_text(self._summary_locator)             
+
+    @property
+    def rating(self):
+        return self.selenium.get_text(self._addon_rating_locator)
+               
 class AddonsThemesPage(AddonsHomePage):
-
+    
     _sort_by_name_locator = 'name=_t-name'
     _sort_by_updated_locator = 'name=_t-updated'
     _sort_by_created_locator = 'name=_t-created'
