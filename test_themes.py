@@ -121,6 +121,11 @@ class TestThemes:
         Assert.equal(len(addons), len(addons_set), "There are duplicates in the names")
         ratings = amo_themes_page.addon_rating
         Assert.is_sorted_descending(ratings)
+        # find a page where not all themes have the same number of stars
+        while (all([ratings[i] == ratings[i + 1] for i in xrange(len(ratings) - 1)])):
+            amo_themes_page.page_forward()
+            ratings.extend(amo_themes_page.addon_rating)
+        # try one page more for good measure
         amo_themes_page.page_forward()
         ratings.extend(amo_themes_page.addon_rating)
         Assert.is_sorted_descending(ratings)
