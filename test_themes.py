@@ -111,6 +111,7 @@ class TestThemes:
         downloads.extend(amo_themes_page.addon_download_number)
         Assert.is_sorted_descending(downloads)
 
+    @xfail(reason="Test disabled due to bug 663710")
     def test_that_themes_can_be_sorted_by_rating(self, testsetup):
         """ test for litmus 11638 """
         amo_home_page = AddonsHomePage(testsetup)
