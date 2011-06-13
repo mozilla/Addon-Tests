@@ -4,11 +4,12 @@ from addons_api import AddOnsAPI
 from unittestzero import Assert
 import pytest
 
-#These tests should only call the api.  There should be no tests requiring selenium in this class.
-class APIOnlyTests:
+#These tests should only call the api.
+#There should be no tests requiring selenium in this class.
 
-    def test_that_firebug_is_listed_first_in_addons_search_for_fire(self, testsetup):  
-        """TestCase for Litmus 15314"""      
+class APIOnlyTests:
+    def test_that_firebug_is_listed_first_in_addons_search_for_fire(self, testsetup):
+        """TestCase for Litmus 15314"""
         addons_xml = AddOnsAPI('fire')
         Assert.equal("Firebug", addons_xml.get_name_of_first_addon())
 
