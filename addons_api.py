@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 from BeautifulSoup import BeautifulStoneSoup
-from vars import ConnectionParameters
 import urllib2
 
 class AddOnsAPI(object):
