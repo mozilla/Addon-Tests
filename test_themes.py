@@ -110,23 +110,3 @@ class TestThemes:
         amo_themes_page.page_forward()
         downloads.extend(amo_themes_page.addon_download_number)
         Assert.is_sorted_descending(downloads)
-
-    @xfail(reason="Test disabled due to bug 663710")
-    def test_that_themes_can_be_sorted_by_rating(self, testsetup):
-        """ test for litmus 11638 """
-        amo_home_page = AddonsHomePage(testsetup)
-        amo_themes_page = amo_home_page.click_themes()
-        amo_themes_page.click_sort_by("rating")
-        addons = amo_themes_page.addon_names
-        addons_set = set(addons)
-        Assert.equal(len(addons), len(addons_set), "There are duplicates in the names")
-        ratings = amo_themes_page.addon_rating
-        Assert.is_sorted_descending(ratings)
-        # find a page where not all themes have the same number of stars
-        while (all([ratings[i] == ratings[i + 1] for i in xrange(len(ratings) - 1)])):
-            amo_themes_page.page_forward()
-            ratings.extend(amo_themes_page.addon_rating)
-        # try one page more for good measure
-        amo_themes_page.page_forward()
-        ratings.extend(amo_themes_page.addon_rating)
-        Assert.is_sorted_descending(ratings)
