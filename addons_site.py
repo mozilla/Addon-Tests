@@ -252,6 +252,8 @@ class AddonsPersonasPage(AddonsHomePage):
 
     _page_title = "Personas :: Add-ons for Firefox"
     _personas_locator = "//div[@class='persona persona-small']"
+    _start_exploring_locator = "css=#featured-addons.personas-home a.more-info"
+    _featured_addons_locator = "css=#featured-addons.personas-home"
 
     def __init__(self, testsetup):
         Page.__init__(self, testsetup)
@@ -271,6 +273,14 @@ class AddonsPersonasPage(AddonsHomePage):
         self.selenium.open("/en-us/firefox/addon/" + str(persona_key))
         self.selenium.wait_for_page_to_load(self.timeout)
         return AddonsPersonasDetailPage(self.testsetup)
+
+    def is_featured_addons_present(self):
+        return self.selenium.get_css_count(self._featured_addons_locator) > 0
+
+    def click_start_exploring(self):
+        self.selenium.click(self._start_exploring_locator)
+        self.selenium.wait_for_page_to_load(self.timeout)
+        return AddonsPersonasPage(self.testsetup)
 
 
 class AddonsPersonasDetailPage(AddonsHomePage):

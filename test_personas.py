@@ -52,6 +52,17 @@ class TestPersonas:
         amo_home_page = AddonsHomePage(testsetup)
         Assert.true(amo_home_page.has_category("Personas"))
 
+    def test_start_exploring_link_in_the_promo_box(self, testsetup):
+        """ Test for Litmus 12037
+            https://litmus.mozilla.org/show_test.cgi?id=12037"""
+        amo_home_page = AddonsHomePage(testsetup)
+        amo_personas_page = amo_home_page.click_personas()
+        Assert.true(amo_personas_page.is_the_current_page)
+        Assert.true(amo_personas_page.is_featured_addons_present())
+        upcoming_personas_page = amo_personas_page.click_start_exploring()
+        Assert.true(upcoming_personas_page.get_url_current_page().endswith("?sort=up-and-coming"))
+        Assert.true(upcoming_personas_page.is_text_present("Up & Coming Personas"))
+
     def test_page_title_for_personas_landing_page(self, testsetup):
         """ Test for Litmus 15391
             https://litmus.mozilla.org/show_test.cgi?id=15391"""
