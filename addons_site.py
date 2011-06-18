@@ -110,7 +110,50 @@ class AddonsHomePage(Page):
     @property
     def download_count(self):
         return self.selenium.get_text(self._download_count_locator)
-      
+
+    def _extract_iso_dates(self, xpath_locator, date_format, count):
+        """
+        Returns a list of iso formatted date strings extracted from
+        the text elements matched by the given xpath_locator and
+        original date_format.
+
+        So for example, given the following elements:
+          <p>Added May 09, 2010</p>
+          <p>Added June 11, 2011</p>
+
+        A call to:
+          _extract_iso_dates("//p", "Added %B %d, %Y", 2)
+
+        Returns:
+          ['2010-05-09T00:00:00','2011-06-11T00:00:00']
+
+        """
+        addon_dates = [
+            self.selenium.get_text("xpath=(%s)[%d]" % (xpath_locator, i))
+            for i in xrange(1, count + 1)
+        ]
+        iso_dates = [
+            datetime.strptime(s, date_format).isoformat()
+            for s in addon_dates
+        ]
+        return iso_dates
+
+    def _extract_integers(self, xpath_locator, regex_pattern, count):
+        """
+        Returns a list of integers extracted from the text elements
+        matched by the given xpath_locator and regex_pattern.
+        """
+        addon_numbers = [
+            self.selenium.get_text("xpath=(%s)[%d]" % (xpath_locator, i))
+            for i in xrange(1, count + 1)
+        ]
+        integer_numbers = [
+            int(re.search(regex_pattern, str(x).replace(",","")).group(1))
+            for x in addon_numbers
+        ]
+        return integer_numbers
+
+
 class AddonsDetailsPage(AddonsHomePage):
 
     _addon_detail_base_url =  "/firefox/addon/"
@@ -175,41 +218,34 @@ class AddonsThemesPage(AddonsHomePage):
                         for i in xrange(addon_count)]
         return _addon_names
 
-    def _extract_addon_metadata_dates(self, format):
-        addon_count = int(self.selenium.get_xpath_count(self._addon_name_locator))
-        addon_metadata = [
-            self.selenium.get_text("xpath=(%s)[%d]" % (self._addons_metadata_locator, i))
-            for i in xrange(1, addon_count + 1)
-        ]
-        addon_dates = [
-            datetime.strptime(metadata, format).isoformat()
-            for metadata in addon_metadata
-        ]
-        return addon_dates
+    @property
+    def addon_count(self):
+        count = self.selenium.get_xpath_count(self._addon_name_locator)
+        return int(count)
 
     @property
     def addon_updated_dates(self):
-        return self._extract_addon_metadata_dates("Updated %B %d, %Y")
+        count = self.addon_count
+        return self._extract_iso_dates(self._addons_metadata_locator, "Updated %B %d, %Y", count)
 
     @property
     def addon_created_dates(self):
-        return self._extract_addon_metadata_dates("Added %B %d, %Y")
+        count = self.addon_count
+        return self._extract_iso_dates(self._addons_metadata_locator, "Added %B %d, %Y", count)
 
     @property
     def addon_download_number(self):
-        addon_count = int(self.selenium.get_xpath_count(self._addon_name_locator))
-        _addon_downloads = [int(re.search("(\d+)", self.selenium.get_text(
-                            "xpath=(" + self._addons_metadata_locator + ")[%s]" % str(i + 1)).replace(
-                                ",", "")).group(0))
-                        for i in xrange(addon_count)]
-        return _addon_downloads
+        pattern = "(\d+(?:[,]\d+)*) weekly downloads"
+        downloads_locator = self._addons_metadata_locator
+        downloads = self._extract_integers(downloads_locator, pattern, self.addon_count);
+        return downloads
 
     @property
     def addon_rating(self):
-        addon_count = int(self.selenium.get_xpath_count(self._addon_name_locator))
-        _addon_ratings = [self.selenium.get_text("xpath=(" + self._addons_rating_locator + ")[%s]" % str(i + 1))
-                        for i in xrange(addon_count)]
-        return _addon_ratings
+        pattern = "(\d)"
+        ratings_locator = self._addons_rating_locator
+        ratings = self._extract_integers(ratings_locator, pattern, self.addon_count);
+        return ratings
 
 
 class AddonsPersonasPage(AddonsHomePage):
