@@ -78,6 +78,16 @@ class TestPersonas:
         Assert.true(amo_personas_page.is_the_current_page)
         Assert.equal(6, amo_personas_page.featured_personas_count)
 
+    def test_the_recently_added_section(self, testsetup):
+        """ Test for Litmus 15393
+            https://litmus.mozilla.org/show_test.cgi?id=15393"""
+        amo_home_page = AddonsHomePage(testsetup)
+        amo_personas_page = amo_home_page.click_personas()
+        Assert.true(amo_personas_page.is_the_current_page)
+        Assert.equal(6, amo_personas_page.recently_added_count)
+        recently_added_dates = amo_personas_page.recently_added_dates
+        Assert.is_sorted_descending(recently_added_dates)
+
     def test_breadcrumb_menu_in_persona_details_page(self, testsetup):
         """ Test for Litmus 12046
             https://litmus.mozilla.org/show_test.cgi?id=12046"""

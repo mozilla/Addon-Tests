@@ -255,6 +255,7 @@ class AddonsPersonasPage(AddonsHomePage):
     _start_exploring_locator = "css=#featured-addons.personas-home a.more-info"
     _featured_addons_locator = "css=#featured-addons.personas-home"
     _featured_personas_locator = "css=.personas-featured .persona.persona-small"
+    _addons_column_locator = '//div[@class="addons-column"]'
 
     def __init__(self, testsetup):
         Page.__init__(self, testsetup)
@@ -286,6 +287,21 @@ class AddonsPersonasPage(AddonsHomePage):
     @property
     def featured_personas_count(self):
         return self.selenium.get_css_count(self._featured_personas_locator)
+
+    def _persona_in_column_locator(self, column_index):
+        """ Returns a locator for personas in the column with the given index. """
+        return "%s[%d]%s" % (self._addons_column_locator, column_index, self._personas_locator)
+
+    @property
+    def recently_added_count(self):
+        locator = self._persona_in_column_locator(1)
+        return self.selenium.get_xpath_count(locator)
+
+    @property
+    def recently_added_dates(self):
+        locator = self._persona_in_column_locator(1)
+        iso_dates = self._extract_iso_dates(locator, "Added %B %d, %Y", self.recently_added_count)
+        return iso_dates
 
 
 class AddonsPersonasDetailPage(AddonsHomePage):
