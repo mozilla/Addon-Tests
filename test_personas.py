@@ -70,6 +70,14 @@ class TestPersonas:
         amo_personas_page = amo_home_page.click_personas()
         Assert.true(amo_personas_page.is_the_current_page)
 
+    def test_the_featured_personas_section(self, testsetup):
+        """ Test for Litmus 15392
+            https://litmus.mozilla.org/show_test.cgi?id=15392"""
+        amo_home_page = AddonsHomePage(testsetup)
+        amo_personas_page = amo_home_page.click_personas()
+        Assert.true(amo_personas_page.is_the_current_page)
+        Assert.equal(6, amo_personas_page.featured_personas_count)
+
     def test_breadcrumb_menu_in_persona_details_page(self, testsetup):
         """ Test for Litmus 12046
             https://litmus.mozilla.org/show_test.cgi?id=12046"""

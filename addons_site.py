@@ -254,6 +254,7 @@ class AddonsPersonasPage(AddonsHomePage):
     _personas_locator = "//div[@class='persona persona-small']"
     _start_exploring_locator = "css=#featured-addons.personas-home a.more-info"
     _featured_addons_locator = "css=#featured-addons.personas-home"
+    _featured_personas_locator = "css=.personas-featured .persona.persona-small"
 
     def __init__(self, testsetup):
         Page.__init__(self, testsetup)
@@ -281,6 +282,10 @@ class AddonsPersonasPage(AddonsHomePage):
         self.selenium.click(self._start_exploring_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
         return AddonsPersonasPage(self.testsetup)
+
+    @property
+    def featured_personas_count(self):
+        return self.selenium.get_css_count(self._featured_personas_locator)
 
 
 class AddonsPersonasDetailPage(AddonsHomePage):
