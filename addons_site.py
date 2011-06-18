@@ -314,6 +314,17 @@ class AddonsPersonasPage(AddonsHomePage):
         pattern = "(\d+(?:[,]\d+)*)\s+users"
         return self._extract_integers(locator, pattern, self.most_popular_count)
 
+    @property
+    def top_rated_count(self):
+        locator = self._persona_in_column_locator(3)
+        return self.selenium.get_xpath_count(locator)
+
+    @property
+    def top_rated_ratings(self):
+        locator = self._persona_in_column_locator(3)
+        pattern = "Rated\s+(\d)\s+.*"
+        return self._extract_integers(locator, pattern, self.top_rated_count)
+
 
 class AddonsPersonasDetailPage(AddonsHomePage):
 

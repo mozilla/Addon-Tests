@@ -98,6 +98,16 @@ class TestPersonas:
         downloads = amo_personas_page.most_popular_downloads
         Assert.is_sorted_descending(downloads)
 
+    def test_the_top_rated_section(self, testsetup):
+        """ Test for Litmus 15395
+            https://litmus.mozilla.org/show_test.cgi?id=15395"""
+        amo_home_page = AddonsHomePage(testsetup)
+        amo_personas_page = amo_home_page.click_personas()
+        Assert.true(amo_personas_page.is_the_current_page)
+        Assert.equal(6, amo_personas_page.top_rated_count)
+        ratings = amo_personas_page.top_rated_ratings
+        Assert.is_sorted_descending(ratings)
+
     def test_breadcrumb_menu_in_persona_details_page(self, testsetup):
         """ Test for Litmus 12046
             https://litmus.mozilla.org/show_test.cgi?id=12046"""
