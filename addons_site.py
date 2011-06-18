@@ -303,6 +303,17 @@ class AddonsPersonasPage(AddonsHomePage):
         iso_dates = self._extract_iso_dates(locator, "Added %B %d, %Y", self.recently_added_count)
         return iso_dates
 
+    @property
+    def most_popular_count(self):
+        locator = self._persona_in_column_locator(2)
+        return self.selenium.get_xpath_count(locator)
+
+    @property
+    def most_popular_downloads(self):
+        locator = self._persona_in_column_locator(2)
+        pattern = "(\d+(?:[,]\d+)*)\s+users"
+        return self._extract_integers(locator, pattern, self.most_popular_count)
+
 
 class AddonsPersonasDetailPage(AddonsHomePage):
 
