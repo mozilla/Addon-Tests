@@ -40,6 +40,8 @@
 
 import re
 import urllib2
+import pytest
+xfail = pytest.mark.xfail
 
 from unittestzero import Assert
 
@@ -48,18 +50,18 @@ from addons_site import AddonsHomePage
 
 
 class TestDiscoveryPane:
-    """ This only works with Firefox 4 """    
+    """ This only works with Firefox 4 """
 
     basepath= '/en-US/firefox/discovery/pane/4.0/Darwin' #Need to get this info before run
 
     def test_that_users_with_less_than_3_addons_get_what_are_addons(self, testsetup):
-        """ Test case for litmus 15063 - 
+        """ Test case for litmus 15063 -
         Since Selenium starts with a clean profile all the time this will always have
         less than 3 addons
         """
         discovery_pane = DiscoveryPane(testsetup, self.basepath)
-        what_are_addons_expected = "Add-ons are applications that let you personalize "  
-        what_are_addons_expected += "Firefox with extra functionality or style. Try a time-saving" 
+        what_are_addons_expected = "Add-ons are applications that let you personalize "
+        what_are_addons_expected += "Firefox with extra functionality or style. Try a time-saving"
         what_are_addons_expected += " sidebar, a weather notifier, or a themed look to make "
         what_are_addons_expected += "Firefox your own. Learn More"
 
@@ -77,7 +79,7 @@ class TestDiscoveryPane:
         Assert.true(discovery_pane.mozilla_org_link_visible())
         download_count_regex = "Add-ons downloaded: (.+)"
         Assert.true(re.search(download_count_regex, discovery_pane.download_count) != None)
-        
+
     def test_that_addons_count_are_equal_between_amo_and_discovery(self, testsetup):
         """ TestCase for Litmus 15066 """
         amo_home_page = AddonsHomePage(testsetup)
@@ -112,6 +114,7 @@ class TestDiscoveryPane:
         Assert.equal("Browse all add-ons", discovery_pane.more_ways_addons)
         Assert.equal("See all themes and Personas", discovery_pane.more_ways_personas)
 
+    @xfail(reason="xfailing due to staging not always having up-to-date data; see bug 665117.")
     def test_that_up_and_coming_is_present_and_had_5_items(self, testsetup):
         """ TestCase for Litmus 15074 """
         discovery_pane = DiscoveryPane(testsetup, self.basepath)
