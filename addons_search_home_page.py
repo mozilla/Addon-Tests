@@ -36,6 +36,8 @@
 # ***** END LICENSE BLOCK *****
 
 from page import Page
+import addons_site
+import  refine_results_region
 
 class AddonsSearchHomePage(Page):
 
@@ -46,6 +48,8 @@ class AddonsSearchHomePage(Page):
     _next_link_locator = "link=Next"
     _previous_link_locator = "link=Prev"
 
+    _breadcrumbs_locator = "css=ol.breadcrumbs"
+
     def page_forward(self):
         self.selenium.click(self._next_link_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
@@ -53,6 +57,14 @@ class AddonsSearchHomePage(Page):
     def page_back(self):
         self.selenium.click(self._previous_link_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
+
+    @property
+    def refine_results(self):
+        return refine_results_region.RefineResults(self.testsetup)
+
+    @property
+    def breadcrumbs_value(self):
+        return self.selenium.get_text(self._breadcrumbs_locator)
 
     @property
     def page_title(self):
@@ -69,6 +81,10 @@ class AddonsSearchHomePage(Page):
     @property
     def result_count(self):
         return int(self.selenium.get_css_count(self._results_locator))
+    
+    def click_addon(self, addon_name):
+        self.selenium.click("link=" + addon_name)
+        return addons_site.AddonsDetailsPage(self.testsetup, addon_name)
 
     def result(self, lookup):
         return self.Result(self.testsetup, lookup)

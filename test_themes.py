@@ -23,6 +23,7 @@
 # Contributor(s): David Burns
 #                 Marc George
 #                 Dave Hunt <dhunt@mozilla.com>
+#                 Joel Andersson <janderssn@gmail.com>
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -45,8 +46,9 @@ from addons_site import AddonsHomePage
 import pytest
 xfail = pytest.mark.xfail
 
+
 class TestThemes:
-    
+
     @xfail(reason="Test disabled due to bug 659290")
     def test_that_themes_can_be_sorted_by_name(self, testsetup):
         """ Test for Litmus 11727, 4839 """
@@ -68,82 +70,43 @@ class TestThemes:
         [Assert.equal(addons_orig[i], addons[i]) for i in xrange(len(addons))]
 
     def test_that_themes_can_be_sorted_by_updated_date(self, testsetup):
-        """ test for litmus 11750"""
+        """ test for litmus 11638 """
         amo_home_page = AddonsHomePage(testsetup)
         amo_themes_page = amo_home_page.click_themes()
         amo_themes_page.click_sort_by("updated")
         addons = amo_themes_page.addon_names
         addons_set = set(addons)
         Assert.equal(len(addons), len(addons_set), "There are duplicates in the names")
-        addon_dates = amo_themes_page.addon_update_dates
-        addons_orig = addon_dates
-        addon_dates.sort()
-        addon_dates.reverse()
-        [Assert.equal(addons_orig[i], addon_dates[i]) for i in xrange(len(addons))]
+        updated_dates = amo_themes_page.addon_updated_dates
+        Assert.is_sorted_descending(updated_dates)
         amo_themes_page.page_forward()
-        addon_dates = amo_themes_page.addon_update_dates
-        addons_orig = addon_dates
-        addon_dates.sort()
-        addon_dates.reverse()
-        [Assert.equal(addons_orig[i], addon_dates[i]) for i in xrange(len(addons))]
+        updated_dates.extend(amo_themes_page.addon_updated_dates)
+        Assert.is_sorted_descending(updated_dates)
 
     def test_that_themes_can_be_sorted_by_created_date(self, testsetup):
-        """ test for litmus 11638"""
+        """ test for litmus 11638 """
         amo_home_page = AddonsHomePage(testsetup)
         amo_themes_page = amo_home_page.click_themes()
         amo_themes_page.click_sort_by("created")
         addons = amo_themes_page.addon_names
         addons_set = set(addons)
         Assert.equal(len(addons), len(addons_set), "There are duplicates in the names")
-        addon_dates = amo_themes_page.addon_update_dates
-        addons_orig = addon_dates
-        addon_dates.sort()
-        addon_dates.reverse()
-        [Assert.equal(addons_orig[i], addon_dates[i]) for i in xrange(len(addons))]
+        created_dates = amo_themes_page.addon_created_dates
+        Assert.is_sorted_descending(created_dates)
         amo_themes_page.page_forward()
-        addon_dates = amo_themes_page.addon_update_dates
-        addons_orig = addon_dates
-        addon_dates.sort()
-        addon_dates.reverse()
-        [Assert.equal(addons_orig[i], addon_dates[i]) for i in xrange(len(addons))]
-
+        created_dates.extend(amo_themes_page.addon_created_dates)
+        Assert.is_sorted_descending(created_dates)
 
     def test_that_themes_can_be_sorted_by_popularity(self, testsetup):
-        """ test for litmus 11638"""
+        """ test for litmus 11638 """
         amo_home_page = AddonsHomePage(testsetup)
         amo_themes_page = amo_home_page.click_themes()
-        amo_themes_page.click_sort_by("updated")
+        amo_themes_page.click_sort_by("popular")
         addons = amo_themes_page.addon_names
         addons_set = set(addons)
         Assert.equal(len(addons), len(addons_set), "There are duplicates in the names")
-        addon_downloads = amo_themes_page.addon_download_number
-        addons_orig = addon_downloads
-        addon_downloads.sort()
-        addon_downloads.reverse()
-        [Assert.equal(addons_orig[i], addon_downloads[i]) for i in xrange(len(addons))]
+        downloads = amo_themes_page.addon_download_number
+        Assert.is_sorted_descending(downloads)
         amo_themes_page.page_forward()
-        addon_dates = amo_themes_page.addon_download_number
-        addons_orig = addon_downloads
-        addon_downloads.sort()
-        addon_downloads.reverse()
-        [Assert.equal(addons_orig[i], addon_downloads[i]) for i in xrange(len(addons))]
-
-    def test_that_themes_can_be_sorted_by_rating(self, testsetup):
-        """ test for litmus 11638"""
-        amo_home_page = AddonsHomePage(testsetup)
-        amo_themes_page = amo_home_page.click_themes()
-        amo_themes_page.click_sort_by("rating")
-        addons = amo_themes_page.addon_names
-        addons_set = set(addons)
-        Assert.equal(len(addons), len(addons_set), "There are duplicates in the names")
-        addon_rating = amo_themes_page.addon_rating
-        addons_orig = addon_rating
-        addon_rating.sort()
-        addon_rating.reverse()
-        [Assert.equal(addons_orig[i], addon_rating[i]) for i in xrange(len(addons))]
-        amo_themes_page.page_forward()
-        addon_rating = amo_themes_page.addon_rating
-        addons_orig = addon_rating
-        addon_rating.sort()
-        addon_rating.reverse()
-        [Assert.equal(addons_orig[i], addon_rating[i]) for i in xrange(len(addons))]
+        downloads.extend(amo_themes_page.addon_download_number)
+        Assert.is_sorted_descending(downloads)
