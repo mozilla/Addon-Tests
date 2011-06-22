@@ -26,6 +26,7 @@
 #                 Joel Andersson <janderssn@gmail.com>
 #                 Bebe <florin.strugariu@softvision.ro>
 #                 Marlena Compton <mcompton@mozilla.com>
+#                 Teodosia Pop <teodosia.pop@softvision.ro>
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -160,6 +161,8 @@ class AddonsThemesPage(AddonsHomePage):
     _addon_name_locator = _addons_root_locator + "/h4/a"
     _addons_metadata_locator = _addons_root_locator + "/p[@class='meta']"
     _addons_rating_locator = _addons_metadata_locator + "/span/span"
+    _breadcrumb_locator = "css=ol.breadcrumbs"
+    _category_locator = "css=#c-30 > a"
 
     def __init__(self, testsetup):
         Page.__init__(self, testsetup)
@@ -167,6 +170,28 @@ class AddonsThemesPage(AddonsHomePage):
     def click_sort_by(self, type_):
         self.selenium.click(getattr(self, "_sort_by_%s_locator" % type_))
         self.selenium.wait_for_page_to_load(self.timeout)
+
+    def click_on_first_addon(self):
+        self.selenium.click(self._addon_name_locator)
+        self.selenium.wait_for_page_to_load(self.timeout)
+        return AddonsThemePage(self.testsetup)
+
+    def click_on_first_category(self):
+        self.selenium.click(self._category_locator)
+        self.selenium.wait_for_page_to_load(self.timeout)
+        return AddonsThemesCategoryPage(self.testsetup)
+
+    @property
+    def page_title(self):
+        return self.selenium.get_title()
+
+    @property
+    def themes_breadcrumb(self):
+        return self.selenium.get_text(self._breadcrumb_locator)
+
+    @property
+    def themes_category(self):
+        return self.selenium.get_text(self._category_locator)
 
     @property
     def addon_names(self):
@@ -211,6 +236,28 @@ class AddonsThemesPage(AddonsHomePage):
                         for i in xrange(addon_count)]
         return _addon_ratings
 
+
+class AddonsThemePage(Page):
+
+    _addon_title = "css=h2.addon > span"
+
+    @property
+    def addon_title(self):
+        return self.selenium.get_text(self._addon_title)
+
+
+class AddonsThemesCategoryPage(Page):
+
+    _title_locator = "css=h2"
+    _breadcrumb_locator = "css=ol.breadcrumbs"
+
+    @property
+    def title(self):
+        return self.selenium.get_text(self._title_locator)
+
+    @property
+    def breadcrumb(self):
+        return self.selenium.get_text(self._breadcrumb_locator)
 
 class AddonsPersonasPage(AddonsHomePage):
 

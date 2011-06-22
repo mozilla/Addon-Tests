@@ -24,6 +24,7 @@
 #                 Marc George
 #                 Dave Hunt <dhunt@mozilla.com>
 #                 Joel Andersson <janderssn@gmail.com>
+#                 Teodosia Pop <teodosia.pop@softvision.ro>
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -97,6 +98,7 @@ class TestThemes:
         created_dates.extend(amo_themes_page.addon_created_dates)
         Assert.is_sorted_descending(created_dates)
 
+
     def test_that_themes_can_be_sorted_by_popularity(self, testsetup):
         """ test for litmus 11638 """
         amo_home_page = AddonsHomePage(testsetup)
@@ -110,3 +112,41 @@ class TestThemes:
         amo_themes_page.page_forward()
         downloads.extend(amo_themes_page.addon_download_number)
         Assert.is_sorted_descending(downloads)
+
+    def test_that_themes_loads_themes_landing_page(self, testsetup):
+        """test for litmus 15339"""
+        amo_home_page = AddonsHomePage(testsetup)
+        amo_themes_page = amo_home_page.click_themes()
+        url_current_page = amo_themes_page.get_url_current_page()
+        Assert.true(url_current_page.endswith("/themes/"))
+
+    def test_that_clicking_on_theme_name_loads_its_detail_page(self, testsetup):
+        """test for litmus 15363"""
+        amo_home_page = AddonsHomePage(testsetup)
+        amo_themes_page = amo_home_page.click_themes()
+        addon_name = amo_themes_page.addon_names[0]
+        amo_theme_page = amo_themes_page.click_on_first_addon()
+        Assert.equal(addon_name, amo_theme_page.addon_title)
+
+    def test_that_themes_page_has_correct_title(self, testsetup):
+        """test for litmus 15340"""
+        amo_home_page = AddonsHomePage(testsetup)
+        amo_themes_page = amo_home_page.click_themes()
+        expected_title = "Most Popular :: Themes :: Add-ons for Firefox"
+        Assert.equal(expected_title, amo_themes_page.page_title)
+
+    def test_themes_page_breadcrumb(self, testsetup):
+        """test for litmus 15344"""
+        amo_home_page = AddonsHomePage(testsetup)
+        amo_themes_page = amo_home_page.click_themes()
+        expected_breadcrumb = "Add-ons for Firefox Themes"
+        Assert.equal(expected_breadcrumb, amo_themes_page.themes_breadcrumb)
+
+    def test_that_clicking_on_a_subcategory_loads_expected_page(self, testsetup):
+        """test for litmus 15949"""
+        amo_home_page = AddonsHomePage(testsetup)
+        amo_themes_page = amo_home_page.click_themes()
+        selected_category = amo_themes_page.themes_category
+        amo_category_page = amo_themes_page.click_on_first_category()
+        Assert.equal(selected_category, amo_category_page.title)
+
