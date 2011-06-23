@@ -59,7 +59,6 @@ def pytest_runtest_setup(item):
             TestSetup.selenium.start()
        
         TestSetup.selenium.set_timeout(TestSetup.timeout)
-        TestSetup.selenium.set_context("sauce:job-name=%s" % item.keywords.keys()[0])
     else:
         TestSetup.skip_selenium = True
 
@@ -68,11 +67,12 @@ def pytest_runtest_teardown(item):
     if not TestSetup.skip_selenium:
         if item.config.option.capturenetwork:
             traffic = TestSetup.selenium.captureNetworkTraffic("json")
-            TestSetup.selenium.stop()
             filename = item.keywords.keys()[0]
             f = open("%s.json" % filename, "w")
             f.write(traffic)
             f.close()
+        
+        TestSetup.selenium.stop()
 
 
 def pytest_funcarg__testsetup(request):
