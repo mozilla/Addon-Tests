@@ -118,7 +118,7 @@ class AddonsHomePage(Page):
         return AddonsThemesPage(self.testsetup)
 
     def open_details_page_for_id(self, id):
-        self.selenium.open("/en-US/firefox/addon/"+str(id))
+        self.selenium.open("/en-US/firefox/addon/%s" % id)
         self.selenium.wait_for_page_to_load(self.timeout)
 
     def click_all_reviews_link(self):

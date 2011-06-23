@@ -50,6 +50,8 @@ class TestReviews:
             https://litmus.mozilla.org/show_test.cgi?id=4843
         """
         amo_home_page = AddonsHomePage(testsetup)
+        
+        #Open details page for Adblock Plus
         amo_home_page.open_details_page_for_id(1865)
         Assert.true(amo_home_page.has_reviews)
 
