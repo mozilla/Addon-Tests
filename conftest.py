@@ -91,8 +91,7 @@ def pytest_addoption(parser):
     parser.addoption("--timeout", action="store", default=120000,
         help="specify the timeout")
     parser.addoption("--capturenetwork", action="store_true", default=False,
-        help="Tells the Selenium server to capture the network traffic. This will \
-              store the results in test_method_name.json")
+        help="tells the Selenium server to capture the network traffic. this will store the results in test_method_name.json")
 
 
 class TestSetup:
