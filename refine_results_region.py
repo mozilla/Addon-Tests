@@ -35,10 +35,11 @@
 #
 # ***** END LICENSE BLOCK *****
 
+from addons_base_page import AddonsBasePage
 from page import Page
 
 
-class RefineResults(Page):
+class RefineResults(AddonsBasePage):
 
     _platforms_locator = "css=#refine-platform"
     _compatible_locator = "css=#refine-compatibility"
