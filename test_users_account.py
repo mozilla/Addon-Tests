@@ -35,46 +35,32 @@
 #
 # ***** END LICENSE BLOCK *****
 
-from page import Page
+from unittestzero import Assert
+import addons_site
+import addons_user_page
 
 
-class AddonsBasePage(Page):
+class TestAccounts:
 
-    def __init__(self, testsetup):
-        Page.__init__(self, testsetup)
+    def test_user_login_and_logout(self, testsetup):
+        """ Test for litmus 7857
+            https://litmus.mozilla.org/show_test.cgi?id=7857
 
-    class HeaderRegion(Page):
-        #Not LogedIn
-        _login_locator = "css=p.context > a:nth(1)"
-        _register_locator = "css=p.context > a:nth(0)"
+            Test for litmus 4859
+            https://litmus.mozilla.org/show_test.cgi?id=4859
+        """
+        amo_home_page = addons_site.AddonsHomePage(testsetup)
 
-        #LogedIn
-        _account_controller_locator = 'css=div#aux-nav ul.account li a.controller'
-        _dropdown_locator = "css=div#aux-nav ul.account li ul"
+        header_region = amo_home_page.HeaderRegion(testsetup)
 
-        def __init__(self, testsetup):
-            Page.__init__(self, testsetup)
+        Assert.false(header_region.is_user_loged_in)
+        header_region.click_login()
 
-        def click_my_account(self):
-            self.selenium.click(self._account_controller_locator)
-            self.wait_for_element_visible(self._dropdown_locator)
+        addons_login_page = addons_user_page.AddonsLoginPage(testsetup)
 
-        def click_login(self):
-            self.selenium.click(self._login_locator)
-            self.selenium.wait_for_page_to_load(self.timeout)
+        addons_login_page.login('<User>', '<Password>')
+        Assert.true(header_region.is_user_loged_in)
 
-        def click_logout(self):
-            self.click_my_account()
-            if self.selenium.get_text('%s > li:nth(3) a' % self._dropdown_locator) == "Log out":
-                self.selenium.click('%s > li:nth(3) a' % self._dropdown_locator)
-            else:
-                self.selenium.click('%s > li:nth(4) a' % self._dropdown_locator)
-            self.selenium.wait_for_page_to_load(self.timeout)
+        header_region.click_logout()
 
-        @property
-        def is_user_loged_in(self):
-            try:
-                return self.selenium.is_visible(self._account_controller_locator)
-            except:
-                pass
-            return False
+        Assert.false(header_region.is_user_loged_in)
