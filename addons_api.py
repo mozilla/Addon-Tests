@@ -48,6 +48,17 @@ class AddOnsAPI(object):
             return addon_xml.version.string
         except AttributeError:
             self._print_search_error()
+    
+    def get_list_of_addon_author_names(self, addon_name):
+        try:
+            addon_xml = self.get_xml_for_single_addon(addon_name)
+            name_tags = addon_xml.authors.findAll('name')
+                        
+            return [ BeautifulStoneSoup(str(name_tags[i])).find('name').string
+                for i in range(len(name_tags)) ]
+        
+        except AttributeError:
+            self._print_search_error()
         
     def _print_search_error(self):
         print('The addon is not in the search results.')
