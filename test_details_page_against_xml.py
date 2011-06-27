@@ -2,6 +2,7 @@ from selenium import selenium
 from addons_site import AddonsHomePage
 from addons_site import AddonsDetailsPage
 from addons_search_home_page import AddonsSearchHomePage
+from addons_api import AddOnsAPI
 import pytest
 from unittestzero import Assert
 import re
@@ -21,14 +22,23 @@ class TestDetailsPageAgainstXML:
         Assert.true(len (str(firebug_page.version_number)) > 0)
 
     def test_that_firebug_authors_is_correct(self, testsetup):
-        firebug_page = AddonsDetailsPage(testsetup, self.firebug)
-        authors = firebug_page.authors
-        Assert.equal("Joe Hewitt", authors[0])
-        Assert.equal("johnjbarton", authors[1])
-        Assert.equal("robcee", authors[2])
-        Assert.equal("FirebugWorkingGroup", authors[3])
-        Assert.equal("Jan Odvarko", authors[4])
+        """litmus 15319"""
         
+        #get authors from browser
+        firebug_page = AddonsDetailsPage(testsetup, self.firebug)
+        browser_authors = firebug_page.authors
+        
+        #get authors from xml
+        addons_xml = AddOnsAPI(testsetup)
+        xml_authors = addons_xml.get_list_of_addon_author_names("Firebug")
+        
+        #check that both lists have the same number of authors
+        Assert.equal(len(browser_authors), len(xml_authors))
+        
+        #cross check both lists with each other
+        for i in range(len(xml_authors)):
+            Assert.equal(xml_authors[i], browser_authors[i])        
+                
     def test_that_firebug_summary_is_correct(self, testsetup):
         firebug_page = AddonsDetailsPage(testsetup, self.firebug)
         summary = "Firebug integrates with Firefox to put a wealth of development tools at your fingertips while you browse. You can edit, debug, and monitor CSS, HTML, and JavaScript live in any web page"
