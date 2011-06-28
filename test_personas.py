@@ -58,7 +58,7 @@ class TestPersonas:
         amo_home_page = AddonsHomePage(testsetup)
         amo_personas_page = amo_home_page.click_personas()
         Assert.true(amo_personas_page.is_the_current_page)
-        Assert.true(amo_personas_page.is_featured_addons_present())
+        Assert.true(amo_personas_page.is_featured_addons_present)
         upcoming_personas_page = amo_personas_page.click_start_exploring()
         Assert.true(upcoming_personas_page.get_url_current_page().endswith("?sort=up-and-coming"))
         Assert.true(upcoming_personas_page.is_text_present("Up & Coming Personas"))

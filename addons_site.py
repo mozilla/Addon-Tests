@@ -276,6 +276,7 @@ class AddonsPersonasPage(AddonsHomePage):
         self.selenium.wait_for_page_to_load(self.timeout)
         return AddonsPersonasDetailPage(self.testsetup)
 
+    @property
     def is_featured_addons_present(self):
         return self.selenium.get_css_count(self._featured_addons_locator) > 0
 
