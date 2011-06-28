@@ -42,7 +42,7 @@ class AddOnsAPI(object):
             return addon_xml.type["id"]
         except AttributeError:
             self._print_search_error()
-        
+
     def get_addon_version_number(self, addon_name):
         try:
             addon_xml = self.get_xml_for_single_addon(addon_name)
@@ -55,8 +55,8 @@ class AddOnsAPI(object):
             addon_xml = self.get_xml_for_single_addon(addon_name)
             description = addon_xml.description.string
             for i in re.findall("&lt;.+?&gt;", addon_xml.description.string):
-                description = description.replace(i,"")
-            return description 
+                description = description.replace(i, "")
+            return description
     
     def get_list_of_addon_author_names(self, addon_name):
         try:
