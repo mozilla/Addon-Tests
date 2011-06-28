@@ -38,6 +38,7 @@
 from unittestzero import Assert
 import addons_site
 import addons_user_page
+import pytest
 
 
 class TestAccounts:
@@ -49,6 +50,9 @@ class TestAccounts:
             Test for litmus 4859
             https://litmus.mozilla.org/show_test.cgi?id=4859
         """
+        if testsetup.userinfo == None:
+            pytest.skip("No User Account data provided")
+
         amo_home_page = addons_site.AddonsHomePage(testsetup)
 
         header_region = amo_home_page.HeaderRegion(testsetup)
@@ -58,7 +62,7 @@ class TestAccounts:
 
         addons_login_page = addons_user_page.AddonsLoginPage(testsetup)
 
-        addons_login_page.login('<User>', '<Password>')
+        addons_login_page.login(testsetup.userinfo['login'], testsetup.userinfo['pwd'])
         Assert.true(header_region.is_user_loged_in)
 
         header_region.click_logout()
