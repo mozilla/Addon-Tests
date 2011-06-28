@@ -2,6 +2,7 @@ from selenium import selenium
 from addons_site import AddonsHomePage
 from addons_site import AddonsDetailsPage
 from addons_search_home_page import AddonsSearchHomePage
+from addons_api import AddOnsAPI
 import pytest
 from unittestzero import Assert
 import re
@@ -38,7 +39,14 @@ class TestDetailsPageAgainstXML:
     def test_that_firebug_rating_is_correct(self, testsetup):
         firebug_page = AddonsDetailsPage(testsetup, self.firebug)
         Assert.equal("5", firebug_page.rating)
-    
+
+    def test_that_description_text_is_correct(self, testsetup):
+        #browser
+        firebug_page = AddonsDetailsPage(testsetup, self.firebug)
+        browser_description = firebug_page.description
         
-if __name__ == "__main__":
-    unittest.main()
+        #api
+        addons_xml = AddOnsAPI(testsetup)
+        xml_description = addons_xml.get_addon_description("Firebug")
+        
+        Assert.equal(browser_description,xml_description)  
