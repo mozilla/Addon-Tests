@@ -21,6 +21,7 @@
 # the Initial Developer. All Rights Reserved.
 #
 # Contributor(s): Dave Hunt <dhunt@mozilla.com>
+#                 Bebe <florin.strugariu@softvision.ro>
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -51,7 +52,7 @@ def pytest_runtest_setup(item):
 
     if item.config.option.userinfo is not  None:
         try:
-            TestSetup.userinfo = ast.literal_eval(item.config.option.userinfo)
+            TestSetup.userinfo = ast.literal_eval(item.config.option.userinfo)  # Convert string to dictionary
         except:
             TestSetup.userinfo = None
     else:
@@ -100,7 +101,7 @@ def pytest_addoption(parser):
     parser.addoption("--timeout", action="store", default=120000,
         help="specify the timeout")
     parser.addoption("--userinfo", action="store", default=None,
-        help="specify the user account information in a dictionary form")
+        help="specify the user account information in a dictionary form")  # example: --userinfo={'login':'%email%', 'pwd':'%password%'}
     parser.addoption("--capturenetwork", action="store_true", default=False,
         help="tells the Selenium server to capture the network traffic. this will store the results in test_method_name.json")
 

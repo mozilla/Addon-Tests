@@ -40,9 +40,6 @@ from page import Page
 
 class AddonsBasePage(Page):
 
-    def __init__(self, testsetup):
-        Page.__init__(self, testsetup)
-
     class HeaderRegion(Page):
         #Not LogedIn
         _login_locator = "css=p.context > a:nth(1)"
