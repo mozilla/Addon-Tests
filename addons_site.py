@@ -283,7 +283,7 @@ class AddonsPersonasPage(AddonsHomePage):
     def click_start_exploring(self):
         self.selenium.click(self._start_exploring_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
-        return AddonsPersonasPage(self.testsetup)
+        return AddonsPersonasBrowsePage(self.testsetup)
 
     @property
     def featured_personas_count(self):
@@ -376,6 +376,39 @@ class AddonsPersonasDetailPage(AddonsHomePage):
         locator = self.get_breadcrumb_item_locator(item)
         self.selenium.click(locator)
         self.selenium.wait_for_page_to_load(self.timeout)
+
+
+class AddonsPersonasBrowsePage(AddonsHomePage):
+    """
+    The personas browse page allows browsing the personas according to
+    some sort criteria (eg. top rated or most downloaded).
+
+    """
+
+    _selected_sort_by_locator = "css=#addon-list-options li.selected a"
+    _personas_grid_locator = "css=.featured.listing ul.personas-grid"
+
+    def __init__(self, testsetup):
+        Page.__init__(self, testsetup)
+
+    @property
+    def sort_key(self):
+        """ Returns the current value of the sort request parameter. """
+        url = self.get_url_current_page()
+        return re.search("[/][?]sort=(.+)[&]?", url).group(1)
+
+    @property
+    def sort_by(self):
+        """ Returns the label of the currently selected sort option. """
+        return self.selenium.get_text(self._selected_sort_by_locator)
+
+    @property
+    def is_the_current_page(self):
+        # This overrides the method in the Page super class.
+        if not (self.is_element_present(self._personas_grid_locator)):
+            self.record_error()
+            raise Exception('Expected the current page to be the personas browse page.')
+        return True
 
 
 class DiscoveryPane(Page):

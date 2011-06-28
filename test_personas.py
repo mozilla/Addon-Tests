@@ -59,9 +59,10 @@ class TestPersonas:
         amo_personas_page = amo_home_page.click_personas()
         Assert.true(amo_personas_page.is_the_current_page)
         Assert.true(amo_personas_page.is_featured_addons_present)
-        upcoming_personas_page = amo_personas_page.click_start_exploring()
-        Assert.true(upcoming_personas_page.get_url_current_page().endswith("?sort=up-and-coming"))
-        Assert.true(upcoming_personas_page.is_text_present("Up & Coming Personas"))
+        browse_personas_page = amo_personas_page.click_start_exploring()
+        Assert.true(browse_personas_page.is_the_current_page)
+        Assert.equal("up-and-coming", browse_personas_page.sort_key)
+        Assert.equal("Up & Coming", browse_personas_page.sort_by)
 
     def test_page_title_for_personas_landing_page(self, testsetup):
         """ Test for Litmus 15391
