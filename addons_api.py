@@ -4,6 +4,7 @@ from BeautifulSoup import BeautifulStoneSoup
 import urllib2
 import pytest
 import py
+import re
 
 
 class AddOnsAPI(object):
@@ -46,6 +47,17 @@ class AddOnsAPI(object):
         try:
             addon_xml = self.get_xml_for_single_addon(addon_name)
             return addon_xml.version.string
+        except AttributeError:
+            self._print_search_error()
+            
+    def get_addon_description(self, addon_name):
+        try:
+            addon_xml = self.get_xml_for_single_addon(addon_name)
+            description = addon_xml.description.string
+            for i in re.findall("&lt;.+?&gt;", addon_xml.description.string):
+                description = description.replace(i,"")
+            return description 
+            
         except AttributeError:
             self._print_search_error()
         
