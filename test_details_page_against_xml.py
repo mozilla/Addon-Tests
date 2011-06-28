@@ -49,6 +49,7 @@ class TestDetailsPageAgainstXML:
         Assert.equal("5", firebug_page.rating)
 
     def test_that_description_text_is_correct(self, testsetup):
+        """litmus 15321"""
         #browser
         firebug_page = AddonsDetailsPage(testsetup, self.firebug)
         browser_description = firebug_page.description
