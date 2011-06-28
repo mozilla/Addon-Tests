@@ -173,11 +173,12 @@ class AddonsHomePage(Page):
     @property
     def download_count(self):
         return self.selenium.get_text(self._download_count_locator)
-      
+
+
 class AddonsDetailsPage(AddonsHomePage):
 
-    _addon_detail_base_url =  "/firefox/addon/"
-    _version_number_locator = "css=span.version" 
+    _addon_detail_base_url = "/firefox/addon/"
+    _version_number_locator = "css=span.version"
     _authors_locator = "//h4[@class='author']/a"
     _summary_locator = "css=div[id=addon-summary] > p"
     _ratings_locator = "css=span[itemprop='rating']"
@@ -188,7 +189,7 @@ class AddonsDetailsPage(AddonsHomePage):
 
     def __init__(self, testsetup, addon_name):
         #formats name for url
-        self.addon_name = addon_name.replace(' ', '-').lower()  
+        self.addon_name = addon_name.replace(' ', '-').lower()
         Page.__init__(self, testsetup)
         self.selenium.open(self._addon_detail_base_url + self.addon_name)  
     
@@ -202,8 +203,8 @@ class AddonsDetailsPage(AddonsHomePage):
 
     @property
     def authors(self):       
-        return [ self.selenium.get_text(self._authors_locator + "[%i]" % (i+1)) 
-            for i in range(self.selenium.get_xpath_count(self._authors_locator)) ]     
+        return [ self.selenium.get_text(self._authors_locator + "[%i]" % (i+1))
+            for i in range(self.selenium.get_xpath_count(self._authors_locator)) ] 
 
     @property
     def summary(self):
@@ -216,6 +217,7 @@ class AddonsDetailsPage(AddonsHomePage):
     @property
     def description(self):
         return self.selenium.get_text(self._description_locator)
+
                
 class AddonsThemesPage(AddonsHomePage):
     
