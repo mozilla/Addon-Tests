@@ -148,7 +148,7 @@ class AddonsHomePage(Page):
             for i in xrange(1, count + 1)
         ]
         integer_numbers = [
-            int(re.search(regex_pattern, str(x).replace(",","")).group(1))
+            int(re.search(regex_pattern, str(x).replace(",", "")).group(1))
             for x in addon_numbers
         ]
         return integer_numbers
@@ -237,14 +237,14 @@ class AddonsThemesPage(AddonsHomePage):
     def addon_download_number(self):
         pattern = "(\d+(?:[,]\d+)*) weekly downloads"
         downloads_locator = self._addons_metadata_locator
-        downloads = self._extract_integers(downloads_locator, pattern, self.addon_count);
+        downloads = self._extract_integers(downloads_locator, pattern, self.addon_count)
         return downloads
 
     @property
     def addon_rating(self):
         pattern = "(\d)"
         ratings_locator = self._addons_rating_locator
-        ratings = self._extract_integers(ratings_locator, pattern, self.addon_count);
+        ratings = self._extract_integers(ratings_locator, pattern, self.addon_count)
         return ratings
 
 
