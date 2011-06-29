@@ -1,4 +1,4 @@
-mfrom selenium import selenium
+from selenium import selenium
 from addons_site import AddonsHomePage
 from addons_site import AddonsDetailsPage
 from addons_search_home_page import AddonsSearchHomePage
