@@ -74,7 +74,6 @@ class AddonsHomePage(AddonsBasePage):
         AddonsBasePage.__init__(self, testsetup)
         self.selenium.open("/")
         self.selenium.window_maximize()
-
     def page_forward(self):
         self.selenium.click(self._next_link_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
