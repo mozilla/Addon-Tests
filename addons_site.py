@@ -68,6 +68,8 @@ class AddonsHomePage(AddonsBasePage):
     #prev next links
     _next_link_locator = "link=Next"
     _previous_link_locator = "link=Prev"
+    _next_link = "link=Next"
+    _prev_link = "link=Prev"
 
     #addons detail page
     _review_details_locator = "css=.review-detail"
