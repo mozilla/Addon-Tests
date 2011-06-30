@@ -185,7 +185,7 @@ class AddonsDetailsPage(AddonsHomePage):
     _install_button_locator = "css=p[class='install-button'] > a"
     _contribute_button_locator = "css=a[id='contribute-button']"
     _addon_rating_locator = "css=span[itemprop='rating']"
-    _description_locator = "css=div[class='article userinput']>p"
+    _description_locator = "css=div[class='article userinput'] > p"
 
     def __init__(self, testsetup, addon_name):
         #formats name for url
@@ -203,7 +203,7 @@ class AddonsDetailsPage(AddonsHomePage):
 
     @property
     def authors(self):       
-        return [ self.selenium.get_text(self._authors_locator + "[%i]" % (i+1))
+        return [ self.selenium.get_text(self._authors_locator + "[%i]" % (i + 1))
             for i in range(self.selenium.get_xpath_count(self._authors_locator)) ] 
 
     @property
