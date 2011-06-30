@@ -58,4 +58,4 @@ class TestDetailsPageAgainstXML:
         addons_xml = AddOnsAPI(testsetup)
         xml_description = addons_xml.get_addon_description("Firebug")
         
-        Assert.equal(browser_description,xml_description)  
+        Assert.equal(browser_description, xml_description)  
