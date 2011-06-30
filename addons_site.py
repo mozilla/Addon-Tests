@@ -435,7 +435,7 @@ class AddonsPersonasPage(AddonsHomePage):
         return self._extract_integers(locator, pattern, self.top_rated_count)
 
 
-class AddonsPersonasDetailPage(AddonsHomePage):
+class AddonsPersonasDetailPage(AddonsBasePage):
 
     _page_title_regex = '.+ :: Add-ons for Firefox'
     _personas_title_locator = 'css=h2.addon'
@@ -486,7 +486,7 @@ class AddonsPersonasDetailPage(AddonsHomePage):
         self.selenium.wait_for_page_to_load(self.timeout)
 
 
-class AddonsPersonasBrowsePage(AddonsHomePage):
+class AddonsPersonasBrowsePage(AddonsBasePage):
     """
     The personas browse page allows browsing the personas according to
     some sort criteria (eg. top rated or most downloaded).
@@ -497,7 +497,7 @@ class AddonsPersonasBrowsePage(AddonsHomePage):
     _personas_grid_locator = "css=.featured.listing ul.personas-grid"
 
     def __init__(self, testsetup):
-        Page.__init__(self, testsetup)
+        AddonsBasePage.__init__(self, testsetup)
 
     @property
     def sort_key(self):
@@ -519,7 +519,7 @@ class AddonsPersonasBrowsePage(AddonsHomePage):
         return True
 
 
-class DiscoveryPane(Page):
+class DiscoveryPane(AddonsBasePage):
 
     _what_are_addons_section_locator = 'id=intro'
     _what_are_addons_text_locator = 'css=#intro p'
