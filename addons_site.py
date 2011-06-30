@@ -139,7 +139,7 @@ class AddonsDetailsPage(AddonsHomePage):
 
     @property
     def authors(self):
-        return [ self.selenium.get_text(self._authors_locator + "[%i]" % (i + 1))
+        return [ self.selenium.get_text(self._authors_locator + "[%s]" % (i + 1))
             for i in range(self.selenium.get_xpath_count(self._authors_locator)) ]
 
     @property
