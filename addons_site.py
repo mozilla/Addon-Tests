@@ -210,7 +210,7 @@ class AddonsDetailsPage(AddonsHomePage):
 
     @property
     def authors(self):
-        return [self.selenium.get_text(self._authors_locator + "[%i]" % (i + 1))
+        return [self.selenium.get_text(self._authors_locator + "[%s]" % (i + 1))
             for i in range(self.selenium.get_xpath_count(self._authors_locator))]
 
     @property
@@ -238,11 +238,11 @@ class AddonsDetailsPage(AddonsHomePage):
         return self.selenium.get_css_count(self._other_addons_link_list_locator)
 
     def other_addos_link_list(self):
-        return [self.selenium.get_text(self._other_addons_link_list_locator + ':nth(' + "%i" % i + ') a')
-            for i in range(self.other_addons_link_list_count)]
+        return [self.selenium.get_text("{0}:nth({1}) a".format(self._other_addons_link_list_locator, pos))
+            for pos in range(self.other_addons_link_list_count)]
 
     def other_addons_link_list_click(self, value):
-        self.selenium.click(self._other_addons_link_list_locator + ':contains(' + value + ') a')
+        self.selenium.click('{0}:contains({1}) a'.format(self._other_addons_link_list_locator, value))
         self.selenium.wait_for_page_to_load(self.timeout)
 
 
