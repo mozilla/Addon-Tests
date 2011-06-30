@@ -35,11 +35,12 @@
 #
 # ***** END LICENSE BLOCK *****
 
+from addons_base_page import AddonsBasePage
 from page import Page
 import addons_site
 import  refine_results_region
 
-class AddonsSearchHomePage(Page):
+class AddonsSearchHomePage(AddonsBasePage):
 
     _results_summary_locator = "css=h3.results-count"
     _results_displayed_locator = "css=div.num-results"
@@ -81,7 +82,7 @@ class AddonsSearchHomePage(Page):
     @property
     def result_count(self):
         return int(self.selenium.get_css_count(self._results_locator))
-    
+
     def click_addon(self, addon_name):
         self.selenium.click("link=" + addon_name)
         return addons_site.AddonsDetailsPage(self.testsetup, addon_name)
