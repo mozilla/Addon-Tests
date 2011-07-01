@@ -231,7 +231,6 @@ class AddonsDetailsPage(AddonsHomePage):
     def __init__(self, testsetup, addon_name):
         #formats name for url
         self.addon_name = addon_name.replace(' ', '-').lower()
-        Page.__init__(self, testsetup)
         AddonsBasePage.__init__(self, testsetup)
         self.selenium.open(self._addon_detail_base_url + self.addon_name)
 
@@ -256,7 +255,7 @@ class AddonsDetailsPage(AddonsHomePage):
     def rating(self):
         return self.selenium.get_text(self._addon_rating_locator)
 
-    def click_whats_this_licence(self):
+    def click_whats_this_license(self):
         self.selenium.click(self._whats_this_license_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
         return UserFAQPage(self.testsetup)
@@ -618,9 +617,15 @@ class DiscoveryPersonasDetailPage(AddonsBasePage):
         return self.selenium.get_text(self._persona_title)
 
 
-class UserFAQPage(Page):
+class UserFAQPage(AddonsBasePage):
 
-    _license_locator = "css=#license"
+    _license_question_locator = "css=#license"
+    _license_answer_locator = "//dd[11]/p"
 
-    def is_license_visible(self):
-        return self.selenium.is_visible(self._license_locator)
+    @property
+    def license_question(self):
+        return self.selenium.get_text(self._license_question_locator)
+
+    @property
+    def license_answer(self):
+        return self.selenium.get_text(self._license_answer_locator)
