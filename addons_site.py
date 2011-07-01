@@ -117,6 +117,7 @@ class AddonsHomePage(AddonsBasePage):
         self.selenium.click(self._themes_link_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
         return AddonsThemesPage(self.testsetup)
+
     def open_details_page_for_id(self, id):
         self.selenium.open("/en-US/firefox/addon/%s" % id)
         self.selenium.wait_for_page_to_load(self.timeout)
@@ -243,10 +244,9 @@ class AddonsDetailsPage(AddonsHomePage):
         return self.selenium.get_text(self._version_number_locator)
 
     @property
-
-    def authors(self):       
-        return [ self.selenium.get_text(self._authors_locator + "[%s]" % (i + 1))
-            for i in range(self.selenium.get_xpath_count(self._authors_locator)) ] 
+    def authors(self):
+        return [self.selenium.get_text(self._authors_locator + "[%s]" % (i + 1))
+            for i in range(self.selenium.get_xpath_count(self._authors_locator))]
 
     @property
     def summary(self):
@@ -255,7 +255,7 @@ class AddonsDetailsPage(AddonsHomePage):
     @property
     def rating(self):
         return self.selenium.get_text(self._addon_rating_locator)
-        
+
     @property
     def description(self):
         return self.selenium.get_text(self._description_locator)
@@ -362,6 +362,7 @@ class AddonsThemesCategoryPage(AddonsBasePage):
     @property
     def breadcrumb(self):
         return self.selenium.get_text(self._breadcrumb_locator)
+
 
 class AddonsPersonasPage(AddonsHomePage):
 
@@ -532,7 +533,7 @@ class DiscoveryPane(AddonsBasePage):
     _what_are_addons_text_locator = 'css=#intro p'
     _mission_section_locator = 'id=mission'
     _mission_section_text_locator = 'css=#mission > p'
-    _learn_more_locator = 'link=Learn More' #Using link till 631557 implemented
+    _learn_more_locator = 'link=Learn More'  # Using link till 631557 implemented
     _mozilla_org_link_locator = "css=a[href=http://www.mozilla.org/]"
     _download_count_text_locator = "id=download-count"
     _personas_section_locator = "id=featured-personas"
@@ -607,6 +608,7 @@ class DiscoveryPane(AddonsBasePage):
     @property
     def up_and_coming_item_count(self):
         return int(self.selenium.get_xpath_count(self._up_and_coming_item))
+
 
 class DiscoveryPersonasDetailPage(AddonsBasePage):
 

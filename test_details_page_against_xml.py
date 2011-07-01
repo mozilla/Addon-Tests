@@ -53,9 +53,9 @@ class TestDetailsPageAgainstXML:
         #browser
         firebug_page = AddonsDetailsPage(testsetup, self.firebug)
         browser_description = firebug_page.description
-        
+
         #api
         addons_xml = AddOnsAPI(testsetup)
         xml_description = addons_xml.get_addon_description(self.firebug)
-        
-        Assert.equal(browser_description, xml_description)  
+
+        Assert.equal(browser_description, xml_description)
