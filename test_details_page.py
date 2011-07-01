@@ -35,14 +35,12 @@
 # ***** END LICENSE BLOCK *****
 
 from unittestzero import Assert
-import pytest
 from addons_site import AddonsDetailsPage
-xfail = pytest.mark.xfail
 
 
 class TestAddonDetails:
 
-     def test_details_more_images(self, testsetup):
+    def test_details_more_images(self, testsetup):
         """
         Litmus 4846
         https://litmus.mozilla.org/show_test.cgi?id=4846
@@ -57,22 +55,25 @@ class TestAddonDetails:
         img_count = amo_detail_page.screenshot_count
         for img_no in range(0, img_count):
             amo_detail_page.screenshot_click(img_no)
+            Assert.equal(img_no + 2 , int(amo_detail_page.viewer_image_count.split(' ')[1]))
             Assert.true(amo_detail_page.is_viewer_visible)
             amo_detail_page.viewer_close()
             Assert.false(amo_detail_page.is_viewer_visible)
+
 
         amo_detail_page.screenshot_click()
         Assert.true(amo_detail_page.is_viewer_visible)
         img_count = int(amo_detail_page.viewer_image_count.split(' ')[3])
         img_current = int(amo_detail_page.viewer_image_count.split(' ')[1])
 
-        for current in range(img_current, img_count):
+        for current in range(img_current, img_count + 1):
             Assert.true(amo_detail_page.is_viewer_visible)
             Assert.equal(current , int(amo_detail_page.viewer_image_count.split(' ')[1]))
             if current != img_count:
                 amo_detail_page.viewer_next()
 
         for current in range(img_count, 0, -1):
-            amo_detail_page.viewer_next()
             Assert.true(amo_detail_page.is_viewer_visible)
             Assert.equal(current , int(amo_detail_page.viewer_image_count.split(' ')[1]))
+            if current != 1:
+                amo_detail_page.viewer_previous()

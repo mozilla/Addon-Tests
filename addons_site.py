@@ -277,7 +277,7 @@ class AddonsDetailsPage(AddonsHomePage):
         return self.selenium.get_css_count(self._screenshots_locator)
 
     def screenshot_click(self, img_no=0):
-        self.selenium.click("{0}:nth(1)".format(self._screenshots_locator, img_no))
+        self.selenium.click("%s:nth(%s)" % (self._screenshots_locator, img_no))
         self.wait_for_element_present(self._image_viewer_locator)
         self.wait_for_element_not_visible(self._image_viewer_loading_locator)
 
