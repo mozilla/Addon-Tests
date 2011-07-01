@@ -70,7 +70,7 @@ class AddonsHomePage(Page):
     _previous_link_locator = "link=Prev"
     _next_link = "link=Next"
     _prev_link = "link=Prev"
-    
+
     #addons detail page
     _review_details_locator = "css=.review-detail"
     _all_reviews_link_locator = "css=#addon #reviews+.article a.more-info"
@@ -78,7 +78,7 @@ class AddonsHomePage(Page):
     _review_locator = "css=.primary div.review"
     _last_page_link_locator = "css=.pagination a:not([rel]):last"
     _first_page_link_locator = "css=.pagination a:not([rel]):first"
-    
+
 
     def __init__(self, testsetup):
         ''' Creates a new instance of the class and gets the page ready for testing '''
@@ -219,44 +219,98 @@ class AddonsHomePage(Page):
 
 class AddonsDetailsPage(AddonsHomePage):
 
-    _addon_detail_base_url =  "/firefox/addon/"
-    _version_number_locator = "css=span.version" 
+    _addon_detail_base_url = "/firefox/addon/"
+    _version_number_locator = "css=span.version"
     _authors_locator = "//h4[@class='author']/a"
     _summary_locator = "css=div[id=addon-summary] > p"
     _ratings_locator = "css=span[itemprop='rating']"
     _install_button_locator = "css=p[class='install-button'] > a"
     _contribute_button_locator = "css=a[id='contribute-button']"
     _addon_rating_locator = "css=span[itemprop='rating']"
+    _addon_image_locator = "css=a.screenshot.thumbnail"
+
+    #more about this addon
+    _screenshots_locator = "css=div.article.userinput > a.screenshot.thumbnail"
+
+    #image viewer
+    _image_viewer_locator = "id=jquery-lightbox"
+    _image_viewer_loading_locator = "id=lightbox-loading"
+    _image_viewer_close_locator = "id=lightbox-secNav-btnClose"
+    _image_viewer_count_locator = "id=lightbox-image-details-currentNumber"
+    _image_viewer_next_locator = "id=lightbox-nav-btnNext"
+    _image_viewer_previous_locator = "id=lightbox-nav-btnPrev"
 
     def __init__(self, testsetup, addon_name):
         #formats name for url
-        self.addon_name = addon_name.replace(' ', '-').lower()  
+        self.addon_name = addon_name.replace(' ', '-').lower()
         Page.__init__(self, testsetup)
-        self.selenium.open(self._addon_detail_base_url + self.addon_name)  
-    
+        self.selenium.open(self._addon_detail_base_url + self.addon_name)
+
     @property
     def page_title(self):
-        return self.selenium.get_title()      
+        return self.selenium.get_title()
 
-    @property    
+    @property
     def version_number(self):
         return self.selenium.get_text(self._version_number_locator)
 
     @property
-    def authors(self):       
-        return [ self.selenium.get_text(self._authors_locator + "[%i]" % (i+1)) 
-            for i in range(self.selenium.get_xpath_count(self._authors_locator)) ]     
+    def authors(self):
+        return [ self.selenium.get_text(self._authors_locator + "[%i]" % (i + 1))
+            for i in range(self.selenium.get_xpath_count(self._authors_locator)) ]
 
     @property
     def summary(self):
-        return self.selenium.get_text(self._summary_locator)             
+        return self.selenium.get_text(self._summary_locator)
 
     @property
     def rating(self):
         return self.selenium.get_text(self._addon_rating_locator)
-               
+
+    def click_addon_image(self):
+        self.selenium.click(self._addon_image_locator)
+        self.wait_for_element_present(self._image_viewer_locator)
+        self.wait_for_element_not_visible(self._image_viewer_loading_locator)
+
+    @property
+    def screenshot_count(self):
+        return self.selenium.get_css_count(self._screenshots_locator)
+
+    def screenshot_click(self, img_no=0):
+        self.selenium.click("{0}:nth(1)".format(self._screenshots_locator, img_no))
+        self.wait_for_element_present(self._image_viewer_locator)
+        self.wait_for_element_not_visible(self._image_viewer_loading_locator)
+
+    @property
+    def is_viewer_visible(self):
+        try:
+            return self.selenium.is_visible(self._image_viewer_locator)
+        except:
+            pass
+        return False
+
+    def viewer_close(self):
+        self.selenium.click(self._image_viewer_close_locator)
+        self.wait_for_element_not_present(self._image_viewer_locator)
+
+    @property
+    def viewer_image_count(self):
+        return self.selenium.get_text(self._image_viewer_count_locator)
+
+
+    def viewer_next(self):
+        self.selenium.click(self._image_viewer_next_locator)
+        self.wait_for_element_visible(self._image_viewer_loading_locator)
+        self.wait_for_element_not_visible(self._image_viewer_loading_locator)
+
+
+    def viewer_previous(self):
+        self.selenium.click(self._image_viewer_previous_locator)
+        self.wait_for_element_visible(self._image_viewer_loading_locator)
+        self.wait_for_element_not_visible(self._image_viewer_loading_locator)
+
 class AddonsThemesPage(AddonsHomePage):
-    
+
     _sort_by_name_locator = 'name=_t-name'
     _sort_by_updated_locator = 'name=_t-updated'
     _sort_by_created_locator = 'name=_t-created'
