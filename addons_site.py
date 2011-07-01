@@ -226,6 +226,10 @@ class AddonsDetailsPage(AddonsHomePage):
         return self.selenium.get_text("%s > h4" % self._other_addons_by_authors_locator)
 
     @property
+    def is_other_addons_dropdown_present(self):
+        return self.selenium.is_element_present(self._other_addons_dropdown_locator)
+
+    @property
     def other_addons_dropdown_values(self):
         return self.selenium.get_select_options(self._other_addons_dropdown_locator)
 

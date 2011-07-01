@@ -41,7 +41,7 @@ from addons_site import AddonsDetailsPage
 
 class TestAddonDetails:
 
-    def test_navigating_to_other_addons_by_the_same_authors_via_dropdown(self, testsetup):
+    def test_other_addons_the_same_author_text_value(self, testsetup):
         """
         Litmus 11926
         https://litmus.mozilla.org/show_test.cgi?id=11926
@@ -52,22 +52,25 @@ class TestAddonDetails:
         Assert.true(len(amo_detail_page.authors) > 1)
         Assert.equal(amo_detail_page.other_addons_by_authors_text, 'Other add-ons by these authors')
 
-        addons = amo_detail_page.other_addons_dropdown_values
-        for i in range(len(addons) - 1, 0, -1): # Not checking the first item in the drop-down https://bugzilla.mozilla.org/show_bug.cgi?id=660706
-            amo_detail_page.select_other_addons_dropdown_value(addons[i])
-            print addons[i]
-            Assert.true(amo_detail_page.name.startswith(addons[i].rstrip('.')))
-            AddonsDetailsPage(testsetup, 'firebug')
+    def test_other_addons_multiple_authors_text_value(self, testsetup):
+        """
+        Litmus 11926
+        https://litmus.mozilla.org/show_test.cgi?id=11926
+        """
+        addon_with_one_authors = 'adblock-plus'
+        amo_detail_page = AddonsDetailsPage(testsetup, addon_with_one_authors)
 
-    def test_navigating_to_other_addons_by_the_same_authors_via_link_list(self, testsetup):
+        Assert.equal(len(amo_detail_page.authors), 1)
+        Assert.equal(amo_detail_page.other_addons_by_authors_text, "Other add-ons by %s" % amo_detail_page.authors[0])
+
+    def test_navigating_to_other_addons_with_less_than_x_other_addons(self, testsetup):
         """
         Litmus 11926
         https://litmus.mozilla.org/show_test.cgi?id=1192"""
         addon_with_one_authors = 'adblock-plus'
         amo_detail_page = AddonsDetailsPage(testsetup, addon_with_one_authors)
 
-        Assert.equal(len(amo_detail_page.authors), 1)
-        Assert.equal(amo_detail_page.other_addons_by_authors_text, "Other add-ons by %s" % amo_detail_page.authors[0])
+        Assert.false(amo_detail_page.is_other_addons_dropdown_present)  # fails when the number of addons is bigger then X
 
         addons = amo_detail_page.other_addons_link_list()
         for i in range(amo_detail_page.other_addons_link_list_count):
@@ -75,3 +78,17 @@ class TestAddonDetails:
             print addons[i]
             Assert.true(amo_detail_page.name.startswith(addons[i].rstrip('.')))
             AddonsDetailsPage(testsetup, 'adblock-plus')
+
+    def test_navigating_to_other_addons_with_more_than_x_other_addons(self, testsetup):
+        """
+        Litmus 11926
+        https://litmus.mozilla.org/show_test.cgi?id=1192"""
+        addon_with_multiple_authors = 'firebug'
+        amo_detail_page = AddonsDetailsPage(testsetup, addon_with_multiple_authors)
+
+        addons = amo_detail_page.other_addons_dropdown_values
+        for i in range(len(addons) - 1, 0, -1):  # Not checking the first item in the drop-down https://bugzilla.mozilla.org/show_bug.cgi?id=660706
+            amo_detail_page.select_other_addons_dropdown_value(addons[i])
+            print addons[i]
+            Assert.true(amo_detail_page.name.startswith(addons[i].rstrip('.')))
+            AddonsDetailsPage(testsetup, 'firebug')
