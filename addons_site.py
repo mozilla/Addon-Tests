@@ -237,12 +237,12 @@ class AddonsDetailsPage(AddonsHomePage):
     def other_addons_link_list_count(self):
         return self.selenium.get_css_count(self._other_addons_link_list_locator)
 
-    def other_addos_link_list(self):
+    def other_addons_link_list(self):
         return [self.selenium.get_text("{0}:nth({1}) a".format(self._other_addons_link_list_locator, pos))
             for pos in range(self.other_addons_link_list_count)]
 
-    def other_addons_link_list_click(self, value):
-        self.selenium.click('{0}:contains({1}) a'.format(self._other_addons_link_list_locator, value))
+    def click_other_addon_by_this_author(self, value):
+        self.selenium.click('%s:contains(%s) a' % (self._other_addons_link_list_locator, value))
         self.selenium.wait_for_page_to_load(self.timeout)
 
 
@@ -438,7 +438,7 @@ class DiscoveryPane(Page):
     _what_are_addons_text_locator = 'css=#intro p'
     _mission_section_locator = 'id=mission'
     _mission_section_text_locator = 'css=#mission > p'
-    _learn_more_locator = 'link=Learn More'  # Using link till 631557 implemented
+    _learn_more_locator = 'id=learn-more'
     _mozilla_org_link_locator = "css=a[href=http://www.mozilla.org/]"
     _download_count_text_locator = "id=download-count"
     _personas_section_locator = "id=featured-personas"

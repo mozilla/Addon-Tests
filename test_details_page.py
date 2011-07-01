@@ -36,42 +36,42 @@
 # ***** END LICENSE BLOCK *****
 
 from unittestzero import Assert
-import pytest
 from addons_site import AddonsDetailsPage
-xfail = pytest.mark.xfail
 
 
 class TestAddonDetails:
 
-    def test_other_addons_dropdown(self, testsetup):
+    def test_navigating_to_other_addons_by_the_same_authors_via_dropdown(self, testsetup):
         """
         Litmus 11926
         https://litmus.mozilla.org/show_test.cgi?id=11926
         """
-        amo_detail_page = AddonsDetailsPage(testsetup, 'firebug')
+        addon_with_multiple_authors = 'firebug'
+        amo_detail_page = AddonsDetailsPage(testsetup, addon_with_multiple_authors)
 
         Assert.true(len(amo_detail_page.authors) > 1)
-        Assert.true(amo_detail_page.other_addons_by_authors_text.endswith('these authors'))
+        Assert.equal(amo_detail_page.other_addons_by_authors_text, 'Other add-ons by these authors')
 
         addons = amo_detail_page.other_addons_dropdown_values
         for i in range(len(addons) - 1, 0, -1): # Not checking the first item in the drop-down https://bugzilla.mozilla.org/show_bug.cgi?id=660706
             amo_detail_page.select_other_addons_dropdown_value(addons[i])
+            print addons[i]
             Assert.true(amo_detail_page.name.startswith(addons[i].rstrip('.')))
             AddonsDetailsPage(testsetup, 'firebug')
 
-    def test_other_addons_links(self, testsetup):
+    def test_navigating_to_other_addons_by_the_same_authors_via_link_list(self, testsetup):
         """
         Litmus 11926
         https://litmus.mozilla.org/show_test.cgi?id=1192"""
-
-        amo_detail_page = AddonsDetailsPage(testsetup, 'adblock-plus')
+        addon_with_one_authors = 'adblock-plus'
+        amo_detail_page = AddonsDetailsPage(testsetup, addon_with_one_authors)
 
         Assert.equal(len(amo_detail_page.authors), 1)
-        Assert.true(amo_detail_page.other_addons_by_authors_text.endswith(amo_detail_page.authors[0]))
+        Assert.equal(amo_detail_page.other_addons_by_authors_text, "Other add-ons by %s" % amo_detail_page.authors[0])
 
-        addons = amo_detail_page.other_addos_link_list()
-
+        addons = amo_detail_page.other_addons_link_list()
         for i in range(amo_detail_page.other_addons_link_list_count):
-            amo_detail_page.other_addons_link_list_click(addons[i])
+            amo_detail_page.click_other_addon_by_this_author(addons[i])
+            print addons[i]
             Assert.true(amo_detail_page.name.startswith(addons[i].rstrip('.')))
             AddonsDetailsPage(testsetup, 'adblock-plus')
