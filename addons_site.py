@@ -70,7 +70,7 @@ class AddonsHomePage(Page):
     _previous_link_locator = "link=Prev"
     _next_link = "link=Next"
     _prev_link = "link=Prev"
-    
+
     #addons detail page
     _review_details_locator = "css=.review-detail"
     _all_reviews_link_locator = "css=#addon #reviews+.article a.more-info"
@@ -78,7 +78,7 @@ class AddonsHomePage(Page):
     _review_locator = "css=.primary div.review"
     _last_page_link_locator = "css=.pagination a:not([rel]):last"
     _first_page_link_locator = "css=.pagination a:not([rel]):first"
-    
+
 
     def __init__(self, testsetup):
         ''' Creates a new instance of the class and gets the page ready for testing '''
@@ -173,47 +173,56 @@ class AddonsHomePage(Page):
     @property
     def download_count(self):
         return self.selenium.get_text(self._download_count_locator)
-      
+
+
 class AddonsDetailsPage(AddonsHomePage):
 
-    _addon_detail_base_url =  "/firefox/addon/"
-    _version_number_locator = "css=span.version" 
+    _addon_detail_base_url = "/firefox/addon/"
+    _version_number_locator = "css=span.version"
     _authors_locator = "//h4[@class='author']/a"
     _summary_locator = "css=div[id=addon-summary] > p"
     _ratings_locator = "css=span[itemprop='rating']"
     _install_button_locator = "css=p[class='install-button'] > a"
     _contribute_button_locator = "css=a[id='contribute-button']"
     _addon_rating_locator = "css=span[itemprop='rating']"
+    _whats_this_license_locator = "css=h5 > span > a"
 
     def __init__(self, testsetup, addon_name):
         #formats name for url
-        self.addon_name = addon_name.replace(' ', '-').lower()  
+        self.addon_name = addon_name.replace(' ', '-').lower()
         Page.__init__(self, testsetup)
-        self.selenium.open(self._addon_detail_base_url + self.addon_name)  
-    
+        self.selenium.open(self._addon_detail_base_url + self.addon_name)
+
     @property
     def page_title(self):
-        return self.selenium.get_title()      
+        return self.selenium.get_title()
 
-    @property    
+    @property
     def version_number(self):
         return self.selenium.get_text(self._version_number_locator)
 
     @property
-    def authors(self):       
-        return [ self.selenium.get_text(self._authors_locator + "[%i]" % (i+1)) 
-            for i in range(self.selenium.get_xpath_count(self._authors_locator)) ]     
+    def authors(self):
+        return [ self.selenium.get_text(self._authors_locator + "[%i]" % (i + 1))
+            for i in range(self.selenium.get_xpath_count(self._authors_locator)) ]
 
     @property
     def summary(self):
-        return self.selenium.get_text(self._summary_locator)             
+        return self.selenium.get_text(self._summary_locator)
 
     @property
     def rating(self):
         return self.selenium.get_text(self._addon_rating_locator)
-               
+
+    def click_whats_this_licence(self):
+        self.selenium.click(self._whats_this_license_locator)
+        self.selenium.wait_for_page_to_load(self.timeout)
+        return UserFAQPage(self.testsetup)
+
+
+
 class AddonsThemesPage(AddonsHomePage):
-    
+
     _sort_by_name_locator = 'name=_t-name'
     _sort_by_updated_locator = 'name=_t-updated'
     _sort_by_created_locator = 'name=_t-created'
@@ -486,3 +495,11 @@ class DiscoveryPersonasDetailPage(Page):
     @property
     def persona_title(self):
         return self.selenium.get_text(self._persona_title)
+
+
+class UserFAQPage(Page):
+
+    _license_locator = "css=#license"
+
+    def is_license_visible(self):
+        return self.selenium.is_visible(self._license_locator)
