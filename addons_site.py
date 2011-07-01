@@ -46,11 +46,11 @@
 import re
 from datetime import datetime
 
-from page import Page
+from addons_base_page import AddonsBasePage
 import addons_search_home_page
 
 
-class AddonsHomePage(Page):
+class AddonsHomePage(AddonsBasePage):
 
     _page_title = "Add-ons for Firefox"
 
@@ -82,9 +82,10 @@ class AddonsHomePage(Page):
 
     def __init__(self, testsetup):
         ''' Creates a new instance of the class and gets the page ready for testing '''
-        Page.__init__(self, testsetup)
+        AddonsBasePage.__init__(self, testsetup)
         self.selenium.open("/")
         self.selenium.window_maximize()
+
     def page_forward(self):
         self.selenium.click(self._next_link_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
@@ -117,7 +118,6 @@ class AddonsHomePage(Page):
         self.selenium.click(self._themes_link_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
         return AddonsThemesPage(self.testsetup)
-
     def open_details_page_for_id(self, id):
         self.selenium.open("/en-US/firefox/addon/%s" % id)
         self.selenium.wait_for_page_to_load(self.timeout)
@@ -243,7 +243,7 @@ class AddonsDetailsPage(AddonsHomePage):
     def __init__(self, testsetup, addon_name):
         #formats name for url
         self.addon_name = addon_name.replace(' ', '-').lower()
-        Page.__init__(self, testsetup)
+        AddonsBasePage.__init__(self, testsetup)
         self.selenium.open(self._addon_detail_base_url + self.addon_name)
 
     @property
@@ -256,7 +256,7 @@ class AddonsDetailsPage(AddonsHomePage):
 
     @property
     def authors(self):
-        return [ self.selenium.get_text(self._authors_locator + "[%i]" % (i + 1))
+        return [ self.selenium.get_text(self._authors_locator + "[%s]" % (i + 1))
             for i in range(self.selenium.get_xpath_count(self._authors_locator)) ]
 
     @property
@@ -324,7 +324,7 @@ class AddonsThemesPage(AddonsHomePage):
     _category_locator = "css=#c-30 > a"
 
     def __init__(self, testsetup):
-        Page.__init__(self, testsetup)
+        AddonsBasePage.__init__(self, testsetup)
 
     def click_sort_by(self, type_):
         self.selenium.click(getattr(self, "_sort_by_%s_locator" % type_))
@@ -389,7 +389,7 @@ class AddonsThemesPage(AddonsHomePage):
         return ratings
 
 
-class AddonsThemePage(Page):
+class AddonsThemePage(AddonsBasePage):
 
     _addon_title = "css=h2.addon > span"
 
@@ -398,7 +398,7 @@ class AddonsThemePage(Page):
         return self.selenium.get_text(self._addon_title)
 
 
-class AddonsThemesCategoryPage(Page):
+class AddonsThemesCategoryPage(AddonsBasePage):
 
     _title_locator = "css=h2"
     _breadcrumb_locator = "css=ol.breadcrumbs"
@@ -421,7 +421,7 @@ class AddonsPersonasPage(AddonsHomePage):
     _addons_column_locator = '//div[@class="addons-column"]'
 
     def __init__(self, testsetup):
-        Page.__init__(self, testsetup)
+        AddonsBasePage.__init__(self, testsetup)
 
     @property
     def persona_count(self):
@@ -490,7 +490,7 @@ class AddonsPersonasPage(AddonsHomePage):
         return self._extract_integers(locator, pattern, self.top_rated_count)
 
 
-class AddonsPersonasDetailPage(AddonsHomePage):
+class AddonsPersonasDetailPage(AddonsBasePage):
 
     _page_title_regex = '.+ :: Add-ons for Firefox'
     _personas_title_locator = 'css=h2.addon'
@@ -499,7 +499,7 @@ class AddonsPersonasDetailPage(AddonsHomePage):
     _breadcrumb_item_text_locator = '/li//*[text()="%s"]'
 
     def __init__(self, testsetup):
-        Page.__init__(self, testsetup)
+        AddonsBasePage.__init__(self, testsetup)
 
     @property
     def is_the_current_page(self):
@@ -541,7 +541,7 @@ class AddonsPersonasDetailPage(AddonsHomePage):
         self.selenium.wait_for_page_to_load(self.timeout)
 
 
-class AddonsPersonasBrowsePage(AddonsHomePage):
+class AddonsPersonasBrowsePage(AddonsBasePage):
     """
     The personas browse page allows browsing the personas according to
     some sort criteria (eg. top rated or most downloaded).
@@ -552,7 +552,7 @@ class AddonsPersonasBrowsePage(AddonsHomePage):
     _personas_grid_locator = "css=.featured.listing ul.personas-grid"
 
     def __init__(self, testsetup):
-        Page.__init__(self, testsetup)
+        AddonsBasePage.__init__(self, testsetup)
 
     @property
     def sort_key(self):
@@ -574,7 +574,7 @@ class AddonsPersonasBrowsePage(AddonsHomePage):
         return True
 
 
-class DiscoveryPane(Page):
+class DiscoveryPane(AddonsBasePage):
 
     _what_are_addons_section_locator = 'id=intro'
     _what_are_addons_text_locator = 'css=#intro p'
@@ -593,7 +593,7 @@ class DiscoveryPane(Page):
     _up_and_coming_item = "//section[@id='up-and-coming']/ul/li/a[@class='addon-title']"
 
     def __init__(self, testsetup, path):
-        Page.__init__(self, testsetup)
+        AddonsBasePage.__init__(self, testsetup)
         self.selenium.open(testsetup.base_url + path)
         self.selenium.window_maximize()
 
@@ -656,7 +656,7 @@ class DiscoveryPane(Page):
     def up_and_coming_item_count(self):
         return int(self.selenium.get_xpath_count(self._up_and_coming_item))
 
-class DiscoveryPersonasDetailPage(Page):
+class DiscoveryPersonasDetailPage(AddonsBasePage):
 
     _persona_title = 'css=h1.addon'
 
