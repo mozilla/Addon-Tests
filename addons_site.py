@@ -134,19 +134,19 @@ class AddonsHomePage(AddonsBasePage):
 
     @property
     def is_next_link_present(self):
-        return self.selenium.is_element_present(self._next_link)
+        return self.selenium.is_element_present(self._next_link_locator)
 
     @property
     def is_next_link_visible(self):
-        return self.selenium.is_visible(self._next_link)
+        return self.selenium.is_visible(self._next_link_locator)
 
     @property
     def is_prev_link_present(self):
-        return self.selenium.is_element_present(self._prev_link)
+        return self.selenium.is_element_present(self._previous_link_locator)
 
     @property
     def is_prev_link_visible(self):
-        return self.selenium.is_visible(self._prev_link)
+        return self.selenium.is_visible(self._previous_link_locator)
 
     @property
     def current_page(self):
