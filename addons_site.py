@@ -258,12 +258,22 @@ class AddonsDetailsPage(AddonsHomePage):
     def description(self):
         return self.selenium.get_text(self._description_locator)
 
-
     def click_addon_image(self):
         self.selenium.click(self._featured_image_locator)
         image_viewer = image_viewer_region.ImageViewer(self.testsetup)
         image_viewer.wait_for_viewer_to_be_visibile()
         return image_viewer
+
+    @property
+    def additional_images_count(self):
+        return self.selenium.get_css_count(self._additional_images_locator)
+
+    def click_additional_image(self, index):
+        self.selenium.click("%s:nth(%s)" % (self._additional_images_locator, index - 1))
+        image_viewer = image_viewer_region.ImageViewer(self.testsetup)
+        image_viewer.wait_for_viewer_to_be_visibile()
+        return image_viewer
+
 class AddonsThemesPage(AddonsHomePage):
 
     _sort_by_name_locator = 'name=_t-name'
