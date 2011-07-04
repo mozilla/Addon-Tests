@@ -45,9 +45,6 @@ class AddonsLoginPage(AddonsBasePage):
     _password_locator = 'id=LoginPassword'
     _login_button_locator = 'css=#login button.prominent'  # Using css till 668749 implemented
 
-    def get_credentials_of_user(self, username):
-        return self.parse_yaml_file(self.credentials)[username]
-
     def login(self, email, password):
         self.selenium.type(self._email_locator, email)
         self.selenium.type(self._password_locator, password)
