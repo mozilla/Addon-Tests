@@ -70,8 +70,6 @@ class AddonsHomePage(AddonsBasePage):
     #prev next links
     _next_link_locator = "link=Next"
     _previous_link_locator = "link=Prev"
-    _next_link = "link=Next"
-    _prev_link = "link=Prev"
 
     #addons detail page
     _review_details_locator = "css=.review-detail"
@@ -120,6 +118,7 @@ class AddonsHomePage(AddonsBasePage):
         self.selenium.click(self._themes_link_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
         return AddonsThemesPage(self.testsetup)
+
     def open_details_page_for_id(self, id):
         self.selenium.open("/en-US/firefox/addon/%s" % id)
         self.selenium.wait_for_page_to_load(self.timeout)
@@ -136,29 +135,21 @@ class AddonsHomePage(AddonsBasePage):
     def has_reviews(self):
         return self.selenium.get_css_count(self._review_details_locator) > 0
 
-    def page_forward(self):
-        self.selenium.click(self._next_link)
-        self.selenium.wait_for_page_to_load(self.timeout)
-
-    def page_back(self):
-        self.selenium.click(self._prev_link)
-        self.selenium.wait_for_page_to_load(self.timeout)
-
     @property
     def is_next_link_present(self):
-        return self.selenium.is_element_present(self._next_link)
+        return self.selenium.is_element_present(self._next_link_locator)
 
     @property
     def is_next_link_visible(self):
-        return self.selenium.is_visible(self._next_link)
+        return self.selenium.is_visible(self._next_link_locator)
 
     @property
     def is_prev_link_present(self):
-        return self.selenium.is_element_present(self._prev_link)
+        return self.selenium.is_element_present(self._previous_link_locator)
 
     @property
     def is_prev_link_visible(self):
-        return self.selenium.is_visible(self._prev_link)
+        return self.selenium.is_visible(self._previous_link_locator)
 
     @property
     def current_page(self):
@@ -229,6 +220,7 @@ class AddonsDetailsPage(AddonsHomePage):
     _install_button_locator = "css=p[class='install-button'] > a"
     _contribute_button_locator = "css=a[id='contribute-button']"
     _addon_rating_locator = "css=span[itemprop='rating']"
+    _description_locator = "css=div[class='article userinput'] > p"
     _featured_image_locator = "css=#addon .featured .screenshot"
 
     #more about this addon
@@ -251,8 +243,8 @@ class AddonsDetailsPage(AddonsHomePage):
 
     @property
     def authors(self):
-        return [ self.selenium.get_text(self._authors_locator + "[%s]" % (i + 1))
-            for i in range(self.selenium.get_xpath_count(self._authors_locator)) ]
+        return [self.selenium.get_text(self._authors_locator + "[%s]" % (i + 1))
+            for i in range(self.selenium.get_xpath_count(self._authors_locator))]
 
     @property
     def summary(self):
@@ -262,23 +254,16 @@ class AddonsDetailsPage(AddonsHomePage):
     def rating(self):
         return self.selenium.get_text(self._addon_rating_locator)
 
+    @property
+    def description(self):
+        return self.selenium.get_text(self._description_locator)
+
+
     def click_addon_image(self):
         self.selenium.click(self._featured_image_locator)
         image_viewer = image_viewer_region.ImageViewer(self.testsetup)
         image_viewer.wait_for_viewer_to_be_visibile()
         return image_viewer
-
-    @property
-    def additional_images_count(self):
-        return self.selenium.get_css_count(self._additional_images_locator)
-
-    def click_additional_image(self, index):
-        self.selenium.click("%s:nth(%s)" % (self._additional_images_locator, index - 1))
-        image_viewer = image_viewer_region.ImageViewer(self.testsetup)
-        image_viewer.wait_for_viewer_to_be_visibile()
-        return image_viewer
-
-
 class AddonsThemesPage(AddonsHomePage):
 
     _sort_by_name_locator = 'name=_t-name'
@@ -380,6 +365,7 @@ class AddonsThemesCategoryPage(AddonsBasePage):
     @property
     def breadcrumb(self):
         return self.selenium.get_text(self._breadcrumb_locator)
+
 
 class AddonsPersonasPage(AddonsHomePage):
 
@@ -550,7 +536,7 @@ class DiscoveryPane(AddonsBasePage):
     _what_are_addons_text_locator = 'css=#intro p'
     _mission_section_locator = 'id=mission'
     _mission_section_text_locator = 'css=#mission > p'
-    _learn_more_locator = 'link=Learn More' #Using link till 631557 implemented
+    _learn_more_locator = 'link=Learn More'  # Using link till 631557 implemented
     _mozilla_org_link_locator = "css=a[href=http://www.mozilla.org/]"
     _download_count_text_locator = "id=download-count"
     _personas_section_locator = "id=featured-personas"
@@ -625,6 +611,7 @@ class DiscoveryPane(AddonsBasePage):
     @property
     def up_and_coming_item_count(self):
         return int(self.selenium.get_xpath_count(self._up_and_coming_item))
+
 
 class DiscoveryPersonasDetailPage(AddonsBasePage):
 
