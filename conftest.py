@@ -39,7 +39,6 @@
 
 import pytest
 import py
-import ast
 from selenium import selenium
 
 
@@ -49,14 +48,7 @@ def pytest_runtest_setup(item):
     item.port = item.config.option.port
     TestSetup.base_url = item.config.option.site
     TestSetup.timeout = item.config.option.timeout
-
-    if item.config.option.userinfo is not  None:
-        try:
-            TestSetup.userinfo = ast.literal_eval(item.config.option.userinfo)  # Convert string to dictionary
-        except:
-            TestSetup.userinfo = None
-    else:
-        TestSetup.userinfo = None
+    TestSetup.credentials = item.config.option.credentialsfile
 
     if not 'skip_selenium' in item.keywords:
         TestSetup.skip_selenium = False
@@ -100,10 +92,10 @@ def pytest_addoption(parser):
         help="specify the AUT")
     parser.addoption("--timeout", action="store", default=120000,
         help="specify the timeout")
-    parser.addoption("--userinfo", action="store", default=None,
-        help="specify the user account information in a dictionary form")  # example: --userinfo={'login':'%email%', 'pwd':'%password%'}
     parser.addoption("--capturenetwork", action="store_true", default=False,
         help="tells the Selenium server to capture the network traffic. this will store the results in test_method_name.json")
+    parser.addoption("--credentialsfile", action="store", default="credentials.yaml",
+        help="provide the credentials filename")
 
 
 class TestSetup:
