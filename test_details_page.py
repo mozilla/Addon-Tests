@@ -38,7 +38,7 @@
 
 from unittestzero import Assert
 
-from addons_site import AddonsHomePage, AddonsDetailsPage
+from addons_site import AddonsDetailsPage
 
 class TestDetailsPage:
     
