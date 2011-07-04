@@ -68,8 +68,6 @@ class AddonsHomePage(AddonsBasePage):
     #prev next links
     _next_link_locator = "link=Next"
     _previous_link_locator = "link=Prev"
-    _next_link = "link=Next"
-    _prev_link = "link=Prev"
 
     #addons detail page
     _review_details_locator = "css=.review-detail"
@@ -133,14 +131,6 @@ class AddonsHomePage(AddonsBasePage):
     @property
     def has_reviews(self):
         return self.selenium.get_css_count(self._review_details_locator) > 0
-
-    def page_forward(self):
-        self.selenium.click(self._next_link)
-        self.selenium.wait_for_page_to_load(self.timeout)
-
-    def page_back(self):
-        self.selenium.click(self._prev_link)
-        self.selenium.wait_for_page_to_load(self.timeout)
 
     @property
     def is_next_link_present(self):
