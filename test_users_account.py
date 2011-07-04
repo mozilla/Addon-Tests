@@ -52,16 +52,16 @@ class TestAccounts:
         amo_home_page = addons_site.AddonsHomePage(testsetup)
         header_region = amo_home_page.HeaderRegion(testsetup)
 
-        credentials = amo_home_page.get_credentials_of_user('default')
+        credentials = amo_home_page.credentials_of_user('default')
 
-        Assert.false(header_region.is_user_loged_in)
+        Assert.false(header_region.is_user_logged_in)
 
         header_region.click_login()
 
         addons_login_page = addons_user_page.AddonsLoginPage(testsetup)
         addons_login_page.login(credentials['email'], credentials['password'])
 
-        Assert.true(header_region.is_user_loged_in)
+        Assert.true(header_region.is_user_logged_in)
 
         header_region.click_logout()
-        Assert.false(header_region.is_user_loged_in)
+        Assert.false(header_region.is_user_logged_in)
