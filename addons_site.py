@@ -48,6 +48,8 @@ from datetime import datetime
 
 from addons_base_page import AddonsBasePage
 import addons_search_home_page
+import image_viewer_region
+from conftest import TestSetup
 
 
 class AddonsHomePage(AddonsBasePage):
@@ -227,18 +229,11 @@ class AddonsDetailsPage(AddonsHomePage):
     _install_button_locator = "css=p[class='install-button'] > a"
     _contribute_button_locator = "css=a[id='contribute-button']"
     _addon_rating_locator = "css=span[itemprop='rating']"
-    _addon_image_locator = "css=a.screenshot.thumbnail"
+    _featured_image_locator = "css=#addon .featured .screenshot"
 
     #more about this addon
-    _screenshots_locator = "css=div.article.userinput > a.screenshot.thumbnail"
+    _additional_images_locator = "css=#addon .article .screenshot"
 
-    #image viewer
-    _image_viewer_locator = "id=jquery-lightbox"
-    _image_viewer_loading_locator = "id=lightbox-loading"
-    _image_viewer_close_locator = "id=lightbox-secNav-btnClose"
-    _image_viewer_count_locator = "id=lightbox-image-details-currentNumber"
-    _image_viewer_next_locator = "id=lightbox-nav-btnNext"
-    _image_viewer_previous_locator = "id=lightbox-nav-btnPrev"
 
     def __init__(self, testsetup, addon_name):
         #formats name for url
@@ -268,46 +263,21 @@ class AddonsDetailsPage(AddonsHomePage):
         return self.selenium.get_text(self._addon_rating_locator)
 
     def click_addon_image(self):
-        self.selenium.click(self._addon_image_locator)
-        self.wait_for_element_present(self._image_viewer_locator)
-        self.wait_for_element_not_visible(self._image_viewer_loading_locator)
+        self.selenium.click(self._featured_image_locator)
+        image_viewer = image_viewer_region.ImageViewer(self.testsetup)
+        image_viewer.wait_for_viewer_to_be_visibile()
+        return image_viewer
 
     @property
-    def screenshot_count(self):
-        return self.selenium.get_css_count(self._screenshots_locator)
+    def additional_images_count(self):
+        return self.selenium.get_css_count(self._additional_images_locator)
 
-    def screenshot_click(self, img_no=0):
-        self.selenium.click("%s:nth(%s)" % (self._screenshots_locator, img_no))
-        self.wait_for_element_present(self._image_viewer_locator)
-        self.wait_for_element_not_visible(self._image_viewer_loading_locator)
+    def click_additional_image(self, index):
+        self.selenium.click("%s:nth(%s)" % (self._additional_images_locator, index - 1))
+        image_viewer = image_viewer_region.ImageViewer(self.testsetup)
+        image_viewer.wait_for_viewer_to_be_visibile()
+        return image_viewer
 
-    @property
-    def is_viewer_visible(self):
-        try:
-            return self.selenium.is_visible(self._image_viewer_locator)
-        except:
-            pass
-        return False
-
-    def viewer_close(self):
-        self.selenium.click(self._image_viewer_close_locator)
-        self.wait_for_element_not_present(self._image_viewer_locator)
-
-    @property
-    def viewer_image_count(self):
-        return self.selenium.get_text(self._image_viewer_count_locator)
-
-
-    def viewer_next(self):
-        self.selenium.click(self._image_viewer_next_locator)
-        self.wait_for_element_visible(self._image_viewer_loading_locator)
-        self.wait_for_element_not_visible(self._image_viewer_loading_locator)
-
-
-    def viewer_previous(self):
-        self.selenium.click(self._image_viewer_previous_locator)
-        self.wait_for_element_visible(self._image_viewer_loading_locator)
-        self.wait_for_element_not_visible(self._image_viewer_loading_locator)
 
 class AddonsThemesPage(AddonsHomePage):
 
