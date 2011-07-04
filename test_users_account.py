@@ -42,7 +42,7 @@ import addons_user_page
 
 class TestAccounts:
 
-    def test_user_login_and_logout(self, testsetup):
+    def test_user_can_login_and_logout(self, testsetup):
         """ Test for litmus 7857
             https://litmus.mozilla.org/show_test.cgi?id=7857
             Test for litmus 4859

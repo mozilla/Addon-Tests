@@ -40,7 +40,7 @@ from page import Page
 
 class AddonsBasePage(Page):
 
-    def get_credentials_of_user(self, username):
+    def credentials_of_user(self, username):
         return self.parse_yaml_file(self.credentials)[username]
 
     class HeaderRegion(Page):
@@ -72,7 +72,7 @@ class AddonsBasePage(Page):
             self.selenium.wait_for_page_to_load(self.timeout)
 
         @property
-        def is_user_loged_in(self):
+        def is_user_logged_in(self):
             try:
                 return self.selenium.is_visible(self._account_controller_locator)
             except:
