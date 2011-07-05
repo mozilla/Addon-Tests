@@ -46,8 +46,7 @@ class TestDetailsPage:
 
     def test_that_whats_this_link_for_source_license_links_to_an_answer_in_faq(self, testsetup):
         """ Test for Litmus 11530"""
-        firebug = "Firebug"
-        amo_details_page = AddonsDetailsPage(testsetup, firebug)
+        amo_details_page = AddonsDetailsPage(testsetup, "Firebug")
         user_faq_page = amo_details_page.click_whats_this_license()
         Assert.not_equal(user_faq_page.license_question, "")
         Assert.not_equal(user_faq_page.license_answer, "")
