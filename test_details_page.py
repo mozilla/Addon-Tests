@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+
 # ***** BEGIN LICENSE BLOCK *****
 # Version: MPL 1.1/GPL 2.0/LGPL 2.1
 #
@@ -14,6 +15,7 @@
 #
 # The Original Code is Mozilla WebQA Selenium Tests.
 #
+# The Initial Developer of the Original Code is
 # Mozilla.
 # Portions created by the Initial Developer are Copyright (C) 2011
 # the Initial Developer. All Rights Reserved.
@@ -55,7 +57,7 @@ class TestAddonDetails:
         additional_images_count = amo_detail_page.additional_images_count
         for i in range(1, additional_images_count):
             image_viewer = amo_detail_page.click_additional_image(i)
-            Assert.equal(i + 1 , image_viewer.current_image)
+            Assert.equal(i + 1, image_viewer.current_image)
             Assert.true(image_viewer.is_visible)
             image_viewer.close()
             Assert.false(image_viewer.is_visible)
@@ -63,35 +65,37 @@ class TestAddonDetails:
         image_viewer = amo_detail_page.click_additional_image(1)
         Assert.true(image_viewer.is_visible)
 
-        current_image = image_viewer.current_image
-        while image_viewer.is_next_image_available:
+        for i in range(image_viewer.current_image, image_viewer.total_images_count):
             Assert.true(image_viewer.is_visible)
-            Assert.equal(current_image , image_viewer.current_image)
+            Assert.equal(i, image_viewer.current_image)
             Assert.true(image_viewer.is_close_visible)
-            Assert.equal("Image %s of %s" % (image_viewer.current_image, image_viewer.total_images_count),
-                         image_viewer.current_number_string)
-            image_viewer.next()
-            current_image = current_image + 1
+            Assert.equal("Image %s of %s" % (i, additional_images_count + 1),
+                         image_viewer.current_number)
+            image_viewer.click_next()
 
-        Assert.false(image_viewer.is_next_image_available)
-        Assert.true(image_viewer.is_previous_image_available)
+        Assert.true(image_viewer.is_visible)
         Assert.equal(image_viewer.current_image, image_viewer.total_images_count)
-        Assert.equal("Image %s of %s" % (image_viewer.current_image, image_viewer.total_images_count),
-                     image_viewer.current_number_string)
+        Assert.equal("Image %s of %s" % (additional_images_count + 1, additional_images_count + 1),
+                     image_viewer.current_number)
+        Assert.true(image_viewer.is_close_visible)
+        Assert.false(image_viewer.is_next_link_visible)
+        Assert.true(image_viewer.is_previous_link_visible)
 
-        while image_viewer.is_previous_image_available:
+        for i in range(image_viewer.total_images_count, 1, -1):
             Assert.true(image_viewer.is_visible)
-            Assert.equal(current_image , image_viewer.current_image)
+            Assert.equal(i, image_viewer.current_image)
             Assert.true(image_viewer.is_close_visible)
-            Assert.equal("Image %s of %s" % (image_viewer.current_image, image_viewer.total_images_count),
-                         image_viewer.current_number_string)
-            image_viewer.previous()
-            current_image = current_image - 1
+            Assert.equal("Image %s of %s" % (i, additional_images_count + 1),
+                         image_viewer.current_number)
+            image_viewer.click_previous()
 
-        Assert.false(image_viewer.is_previous_image_available)
-        Assert.true(image_viewer.is_next_image_available)
-        Assert.equal("Image %s of %s" % (image_viewer.current_image, image_viewer.total_images_count),
-                     image_viewer.current_number_string)
+        Assert.true(image_viewer.is_visible)
+        Assert.equal(image_viewer.current_image, 1)
+        Assert.equal("Image %s of %s" % (1, additional_images_count + 1),
+                     image_viewer.current_number)
+        Assert.true(image_viewer.is_close_visible)
+        Assert.true(image_viewer.is_next_link_visible)
+        Assert.false(image_viewer.is_previous_link_visible)
 
-        image_viewer.previous()
+        image_viewer.click_previous()
         Assert.false(image_viewer.is_visible)

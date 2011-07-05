@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+
 # ***** BEGIN LICENSE BLOCK *****
 # Version: MPL 1.1/GPL 2.0/LGPL 2.1
 #
@@ -14,6 +15,7 @@
 #
 # The Original Code is Mozilla WebQA Selenium Tests.
 #
+# The Initial Developer of the Original Code is
 # Mozilla.
 # Portions created by the Initial Developer are Copyright (C) 2011
 # the Initial Developer. All Rights Reserved.
@@ -33,7 +35,6 @@
 # the terms of any one of the MPL, the GPL or the LGPL.
 #
 # ***** END LICENSE BLOCK *****
-
 from page import Page
 
 
@@ -63,24 +64,24 @@ class ImageViewer(Page):
         return False
 
     def wait_for_viewer_to_finish_animating(self):
-        self.selenium.wait_for_condition("window.document.getElementById('jquery-lightbox').scrollHeight == 406", self.timeout)
+        self.selenium.wait_for_condition("window.document.getElementById('lightbox-image-details').scrollHeight == 38", self.timeout)
 
     #information
     @property
-    def caption_string(self):
+    def caption(self):
         return self.get_text(self._caption_locator)
 
     @property
-    def current_number_string(self):
+    def current_number(self):
         return self.selenium.get_text(self._current_number_locator)
 
     @property
     def current_image(self):
-        return int(self.current_number_string.split(' ')[1])
+        return int(self.current_number.split(' ')[1])
 
     @property
     def total_images_count(self):
-        return int(self.current_number_string.split(' ')[3])
+        return int(self.current_number.split(' ')[3])
 
     #navigation
     def close(self):
@@ -89,10 +90,10 @@ class ImageViewer(Page):
 
     @property
     def is_close_visible(self):
-        return  self.selenium.is_visible(self._close_locator)
+        return self.selenium.is_visible(self._close_locator)
 
-    def next(self):
-        if self.is_next_image_available:
+    def click_next(self):
+        if self.is_next_link_visible:
             self.selenium.click(self._next_locator)
             self.wait_for_viewer_to_finish_animating()
         else:
@@ -100,11 +101,11 @@ class ImageViewer(Page):
             self.wait_for_element_not_present(self._overlay_locator)
 
     @property
-    def is_next_image_available(self):
+    def is_next_link_visible(self):
         return  self.selenium.is_visible(self._next_locator)
 
-    def previous(self):
-        if self.is_previous_image_available:
+    def click_previous(self):
+        if self.is_previous_link_visible:
             self.selenium.click(self._previous_locator)
             self.wait_for_viewer_to_finish_animating()
         else:
@@ -112,5 +113,5 @@ class ImageViewer(Page):
             self.wait_for_element_not_present(self._overlay_locator)
 
     @property
-    def is_previous_image_available(self):
+    def is_previous_link_visible(self):
         return self.selenium.is_visible(self._previous_locator)
