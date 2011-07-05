@@ -218,6 +218,7 @@ class AddonsDetailsPage(AddonsHomePage):
     _contribute_button_locator = "css=a[id='contribute-button']"
     _addon_rating_locator = "css=span[itemprop='rating']"
     _description_locator = "css=div[class='article userinput'] > p"
+    _icon_locator = "css=img[class='icon']"
 
     def __init__(self, testsetup, addon_name):
         #formats name for url
@@ -249,6 +250,8 @@ class AddonsDetailsPage(AddonsHomePage):
     @property
     def description(self):
         return self.selenium.get_text(self._description_locator)
+
+
 
 
 class AddonsThemesPage(AddonsHomePage):
