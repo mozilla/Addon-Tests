@@ -80,6 +80,9 @@ class Page(object):
     def get_text(self, text):
         return(self.selenium.get_text(text))
 
+    def get_attribute(self, locator):
+        return(self.selenium.get_attribute(locator))
+
     def is_text_present(self,text):
         return self.selenium.is_text_present(text)
     
