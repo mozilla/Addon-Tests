@@ -251,7 +251,9 @@ class AddonsDetailsPage(AddonsHomePage):
     def description(self):
         return self.selenium.get_text(self._description_locator)
 
-
+    @property
+    def icon_url(self):
+        return self.selenium.get_attribute(self._icon_locator + "%s" %"@src")
 
 
 class AddonsThemesPage(AddonsHomePage):
