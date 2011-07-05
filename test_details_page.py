@@ -63,14 +63,13 @@ class TestAddonDetails:
         image_viewer = amo_detail_page.click_additional_image(1)
         Assert.true(image_viewer.is_visible)
 
-
         current_image = image_viewer.current_image
         while image_viewer.is_next_image_available:
             Assert.true(image_viewer.is_visible)
             Assert.equal(current_image , image_viewer.current_image)
             Assert.true(image_viewer.is_close_visible)
             Assert.equal("Image %s of %s" % (image_viewer.current_image, image_viewer.total_images_count),
-             image_viewer.current_number_string)
+                         image_viewer.current_number_string)
             image_viewer.next()
             current_image = current_image + 1
 
@@ -85,7 +84,7 @@ class TestAddonDetails:
             Assert.equal(current_image , image_viewer.current_image)
             Assert.true(image_viewer.is_close_visible)
             Assert.equal("Image %s of %s" % (image_viewer.current_image, image_viewer.total_images_count),
-             image_viewer.current_number_string)
+                         image_viewer.current_number_string)
             image_viewer.previous()
             current_image = current_image - 1
 

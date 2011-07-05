@@ -62,23 +62,20 @@ class ImageViewer(Page):
             pass
         return False
 
-    def wait_for_viewer_to_be_visibile(self):
-        self.wait_for_element_present(self._overlay_locator)
-        self.wait_for_element_present(self._viewer_locator)
-        self.wait_for_element_not_visible(self._loading_locator)
-        self.wait_for_element_visible(self._image_data_locator)
-
+    def wait_for_viewer_to_finish_animating(self):
+        self.selenium.wait_for_condition("window.document.getElementById('jquery-lightbox').scrollHeight == 406", self.timeout)
 
     #information
     @property
     def caption_string(self):
         return self.get_text(self._caption_locator)
+
     @property
     def current_number_string(self):
         return self.selenium.get_text(self._current_number_locator)
 
     @property
-    def current_image (self):
+    def current_image(self):
         return int(self.current_number_string.split(' ')[1])
 
     @property
@@ -97,8 +94,7 @@ class ImageViewer(Page):
     def next(self):
         if self.is_next_image_available:
             self.selenium.click(self._next_locator)
-            self.wait_for_element_visible(self._loading_locator)
-            self.wait_for_element_not_visible(self._loading_locator)
+            self.wait_for_viewer_to_finish_animating()
         else:
             self.selenium.click(self._next_locator)
             self.wait_for_element_not_present(self._overlay_locator)
@@ -110,8 +106,7 @@ class ImageViewer(Page):
     def previous(self):
         if self.is_previous_image_available:
             self.selenium.click(self._previous_locator)
-            self.wait_for_element_visible(self._loading_locator)
-            self.wait_for_element_not_visible(self._loading_locator)
+            self.wait_for_viewer_to_finish_animating()
         else:
             self.selenium.click(self._previous_locator)
             self.wait_for_element_not_present(self._overlay_locator)

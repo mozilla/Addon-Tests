@@ -49,7 +49,6 @@ from datetime import datetime
 from addons_base_page import AddonsBasePage
 import addons_search_home_page
 import image_viewer_region
-from conftest import TestSetup
 
 
 class AddonsHomePage(AddonsBasePage):
@@ -78,7 +77,6 @@ class AddonsHomePage(AddonsBasePage):
     _review_locator = "css=.primary div.review"
     _last_page_link_locator = "css=.pagination a:not([rel]):last"
     _first_page_link_locator = "css=.pagination a:not([rel]):first"
-
 
     def __init__(self, testsetup):
         ''' Creates a new instance of the class and gets the page ready for testing '''
@@ -226,7 +224,6 @@ class AddonsDetailsPage(AddonsHomePage):
     #more about this addon
     _additional_images_locator = "css=#addon .article .screenshot"
 
-
     def __init__(self, testsetup, addon_name):
         #formats name for url
         self.addon_name = addon_name.replace(' ', '-').lower()
@@ -261,7 +258,7 @@ class AddonsDetailsPage(AddonsHomePage):
     def click_addon_image(self):
         self.selenium.click(self._featured_image_locator)
         image_viewer = image_viewer_region.ImageViewer(self.testsetup)
-        image_viewer.wait_for_viewer_to_be_visibile()
+        image_viewer.wait_for_viewer_to_finish_animating()
         return image_viewer
 
     @property
@@ -271,8 +268,9 @@ class AddonsDetailsPage(AddonsHomePage):
     def click_additional_image(self, index):
         self.selenium.click("%s:nth(%s)" % (self._additional_images_locator, index - 1))
         image_viewer = image_viewer_region.ImageViewer(self.testsetup)
-        image_viewer.wait_for_viewer_to_be_visibile()
+        image_viewer.wait_for_viewer_to_finish_animating()
         return image_viewer
+
 
 class AddonsThemesPage(AddonsHomePage):
 
