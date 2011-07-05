@@ -67,11 +67,17 @@ class TestDetailsPageAgainstXML:
         firebug_page = AddonsDetailsPage(testsetup, self.firebug)
         Assert.true(firebug_page.is_element_present("css=img[class='icon']"))
         
-        #now I know where the icon is on the page, but how to get at the url in the src attribute
-        #get attribute?
+        
+        
+        #try get_attribute(locator) to see if that will return the html string for icon locator
+        #javadoc:
+        #http://release.seleniumhq.org/selenium-remote-control/0.9.2/doc/java/com/thoughtworks/selenium/Selenium.html
         
         #xml
         addons_xml = AddOnsAPI(testsetup)
         xml_icon_url = addons_xml.get_icon_url(self.firebug)
         
+        Assert.equal( firebug_page.selenium.get_attribute("css=img[class='icon']@src"), xml_icon_url )
+        
+        the_url = 'https://gs1.adn.edgecastcdn.net/801237/addons-cdn.allizom.org/images/addon_icon/1843-32.png?modified=1308640553'
         Assert.equal('https://gs1.adn.edgecastcdn.net/801237/addons-cdn.allizom.org/images/addon_icon/1843-32.png?modified=1308640553', xml_icon_url)
