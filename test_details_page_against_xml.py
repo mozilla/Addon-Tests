@@ -39,10 +39,17 @@ class TestDetailsPageAgainstXML:
             Assert.equal(xml_authors[i], browser_authors[i])
 
     def test_that_firebug_summary_is_correct(self, testsetup):
+        """litmus 15320"""
+
+        #browser
         firebug_page = AddonsDetailsPage(testsetup, self.firebug)
-        summary = "Firebug integrates with Firefox to put a wealth of development tools at your fingertips while you browse. You can edit, debug, and monitor CSS, HTML, and JavaScript live in any web page"
-        summary += "...\n\nThis is our production release. For Firefox 4.0b, see below."
-        Assert.equal(summary, firebug_page.summary)
+        browser_summary = firebug_page.summary
+
+        #xml
+        addons_xml = AddOnsAPI(testsetup)
+        xml_summary = addons_xml.get_addon_summary(self.firebug)
+
+        Assert.equal(xml_summary, browser_summary)
 
     def test_that_firebug_rating_is_correct(self, testsetup):
         firebug_page = AddonsDetailsPage(testsetup, self.firebug)
