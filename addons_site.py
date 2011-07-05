@@ -620,7 +620,7 @@ class DiscoveryPersonasDetailPage(AddonsBasePage):
 class UserFAQPage(AddonsBasePage):
 
     _license_question_locator = "css=#license"
-    _license_answer_locator = "//dd[11]/p"
+    _license_answer_locator = "css=#license + dd"
 
     @property
     def license_question(self):

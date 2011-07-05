@@ -44,11 +44,10 @@ from addons_site import AddonsDetailsPage
 
 class TestDetailsPage:
 
-    firebug = "Firebug"
-
     def test_that_whats_this_link_for_source_license_links_to_an_answer_in_faq(self, testsetup):
         """ Test for Litmus 11530"""
-        amo_details_page = AddonsDetailsPage(testsetup, self.firebug)
+        firebug = "Firebug"
+        amo_details_page = AddonsDetailsPage(testsetup, firebug)
         user_faq_page = amo_details_page.click_whats_this_license()
         Assert.not_equal(user_faq_page.license_question, "")
         Assert.not_equal(user_faq_page.license_answer, "")
