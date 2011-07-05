@@ -59,3 +59,19 @@ class TestDetailsPageAgainstXML:
         xml_description = addons_xml.get_addon_description(self.firebug)
 
         Assert.equal(browser_description, xml_description)
+        
+    def test_that_icon_is_correct(self, testsetup):
+        """litmus """
+        
+        #browser
+        firebug_page = AddonsDetailsPage(testsetup, self.firebug)
+        Assert.true(firebug_page.is_element_present("css=img[class='icon']"))
+        
+        #now I know where the icon is on the page, but how to get at the url in the src attribute
+        #get attribute?
+        
+        #xml
+        addons_xml = AddOnsAPI(testsetup)
+        xml_icon_url = addons_xml.get_icon_url(self.firebug)
+        
+        Assert.equal('https://gs1.adn.edgecastcdn.net/801237/addons-cdn.allizom.org/images/addon_icon/1843-32.png?modified=1308640553', xml_icon_url)
