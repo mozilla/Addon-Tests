@@ -218,6 +218,7 @@ class AddonsDetailsPage(AddonsHomePage):
     _install_button_locator = "css=p[class='install-button'] > a"
     _contribute_button_locator = "css=a[id='contribute-button']"
     _addon_rating_locator = "css=span[itemprop='rating']"
+    _whats_this_license_locator = "css=h5 > span > a"
     _description_locator = "css=div[class='article userinput'] > p"
 
     _other_addons_by_authors_locator = "css=div.other-author-addons"
@@ -254,6 +255,11 @@ class AddonsDetailsPage(AddonsHomePage):
     @property
     def rating(self):
         return self.selenium.get_text(self._addon_rating_locator)
+
+    def click_whats_this_license(self):
+        self.selenium.click(self._whats_this_license_locator)
+        self.selenium.wait_for_page_to_load(self.timeout)
+        return UserFAQPage(self.testsetup)
 
     @property
     def description(self):
@@ -645,3 +651,17 @@ class DiscoveryPersonasDetailPage(AddonsBasePage):
     @property
     def persona_title(self):
         return self.selenium.get_text(self._persona_title)
+
+
+class UserFAQPage(AddonsBasePage):
+
+    _license_question_locator = "css=#license"
+    _license_answer_locator = "css=#license + dd"
+
+    @property
+    def license_question(self):
+        return self.selenium.get_text(self._license_question_locator)
+
+    @property
+    def license_answer(self):
+        return self.selenium.get_text(self._license_answer_locator)

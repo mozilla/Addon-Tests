@@ -20,7 +20,7 @@
 # Portions created by the Initial Developer are Copyright (C) 2011
 # the Initial Developer. All Rights Reserved.
 #
-# Contributor(s): 
+# Contributor(s): Teodosia Pop <teodosia.pop@softvision.ro>
 #                 Bebe <florin.strugariu@softvision.ro>
 #
 # Alternatively, the contents of this file may be used under the terms of
@@ -37,11 +37,21 @@
 #
 # ***** END LICENSE BLOCK *****
 
+import re
+
 from unittestzero import Assert
+from addons_site import UserFAQPage
 from addons_site import AddonsDetailsPage
 
 
-class TestAddonDetails:
+class TestDetailsPage:
+
+    def test_that_whats_this_link_for_source_license_links_to_an_answer_in_faq(self, testsetup):
+        """ Test for Litmus 11530"""
+        amo_details_page = AddonsDetailsPage(testsetup, "Firebug")
+        user_faq_page = amo_details_page.click_whats_this_license()
+        Assert.not_none(re.match('(\w+\s*){3,}', user_faq_page.license_question))
+        Assert.not_none(re.match('(\w+\s*){3,}', user_faq_page.license_answer))
 
     def test_other_addons_label_when_there_are_multiple_authors(self, testsetup):
         """
