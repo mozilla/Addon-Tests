@@ -35,10 +35,10 @@
 #
 # ***** END LICENSE BLOCK *****
 
-from addons_base_page import AddonsBasePage
+from page import Page
 
 
-class AddonsLoginPage(AddonsBasePage):
+class AddonsLoginPage(Page):
 
     _page_title = 'User Login :: Add-ons for Firefox'
     _email_locator = 'id=LoginEmail'

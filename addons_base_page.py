@@ -36,24 +36,26 @@
 # ***** END LICENSE BLOCK *****
 
 from page import Page
+import addons_user_page
 
 
 class AddonsBasePage(Page):
 
-    def credentials_of_user(self, username):
-        return self.parse_yaml_file(self.credentials)[username]
+    def credentials_of_user(self, user):
+        return self.parse_yaml_file(self.credentials)[user]
+
+    @property
+    def header(self):
+        return AddonsBasePage.HeaderRegion(self.testsetup)
 
     class HeaderRegion(Page):
         #Not LogedIn
-        _login_locator = "css=p.context > a:nth(1)"
-        _register_locator = "css=p.context > a:nth(0)"
+        _login_locator = "css=.amo-header .context a:nth(1)"  # Until https://bugzilla.mozilla.org/show_bug.cgi?id=669646
+        _register_locator = "css=.amo-header .context a:nth(0)"
 
         #LogedIn
-        _account_controller_locator = 'css=div#aux-nav ul.account li a.controller'
-        _dropdown_locator = "css=div#aux-nav ul.account li ul"
-
-        def __init__(self, testsetup):
-            Page.__init__(self, testsetup)
+        _account_controller_locator = 'css=#aux-nav .account .controller'
+        _dropdown_locator = "css=#aux-nav .account ul"
 
         def click_my_account(self):
             self.selenium.click(self._account_controller_locator)
@@ -62,10 +64,11 @@ class AddonsBasePage(Page):
         def click_login(self):
             self.selenium.click(self._login_locator)
             self.selenium.wait_for_page_to_load(self.timeout)
+            return  addons_user_page.AddonsLoginPage(self.testsetup)
 
         def click_logout(self):
             self.click_my_account()
-            if self.selenium.get_text('%s > li:nth(3) a' % self._dropdown_locator) == "Log out":
+            if self.selenium.get_text('%s > li:nth(3) a' % self._dropdown_locator) == "Log out":  #Until the https://bugzilla.mozilla.org/show_bug.cgi?id=669650
                 self.selenium.click('%s > li:nth(3) a' % self._dropdown_locator)
             else:
                 self.selenium.click('%s > li:nth(4) a' % self._dropdown_locator)
