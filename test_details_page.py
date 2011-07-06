@@ -50,5 +50,5 @@ class TestDetailsPage:
         """ Test for Litmus 11530"""
         amo_details_page = AddonsDetailsPage(testsetup, "Firebug")
         user_faq_page = amo_details_page.click_whats_this_license()
-        Assert.not_none(re.match('\w+', user_faq_page.license_question))
         Assert.not_none(re.match('(\w+\s*){3,}', user_faq_page.license_question))
+        Assert.not_none(re.match('(\w+\s*){3,}', user_faq_page.license_answer))
