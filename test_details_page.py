@@ -65,37 +65,27 @@ class TestAddonDetails:
         image_viewer = amo_detail_page.click_additional_image(1)
         Assert.true(image_viewer.is_visible)
 
-        for i in range(image_viewer.current_image, image_viewer.total_images_count):
+        for i in range(2, image_viewer.total_images_count + 1):
             Assert.true(image_viewer.is_visible)
             Assert.equal(i, image_viewer.current_image)
             Assert.true(image_viewer.is_close_visible)
-            Assert.equal("Image %s of %s" % (i, additional_images_count + 1),
-                         image_viewer.current_number)
-            image_viewer.click_next()
+            Assert.equal("Image %s of %s" % (i, additional_images_count + 1), image_viewer.current_number)
+            if image_viewer.is_next_link_visible:
+                image_viewer.click_next()
 
-        Assert.true(image_viewer.is_visible)
-        Assert.equal(image_viewer.current_image, image_viewer.total_images_count)
-        Assert.equal("Image %s of %s" % (additional_images_count + 1, additional_images_count + 1),
-                     image_viewer.current_number)
-        Assert.true(image_viewer.is_close_visible)
         Assert.false(image_viewer.is_next_link_visible)
         Assert.true(image_viewer.is_previous_link_visible)
 
-        for i in range(image_viewer.total_images_count, 1, -1):
+        for i in range(image_viewer.total_images_count, 0, -1):
             Assert.true(image_viewer.is_visible)
             Assert.equal(i, image_viewer.current_image)
             Assert.true(image_viewer.is_close_visible)
-            Assert.equal("Image %s of %s" % (i, additional_images_count + 1),
-                         image_viewer.current_number)
-            image_viewer.click_previous()
+            Assert.equal("Image %s of %s" % (i, additional_images_count + 1), image_viewer.current_number)
+            if image_viewer.is_previous_link_visible:
+                image_viewer.click_previous()
 
-        Assert.true(image_viewer.is_visible)
-        Assert.equal(image_viewer.current_image, 1)
-        Assert.equal("Image %s of %s" % (1, additional_images_count + 1),
-                     image_viewer.current_number)
-        Assert.true(image_viewer.is_close_visible)
         Assert.true(image_viewer.is_next_link_visible)
         Assert.false(image_viewer.is_previous_link_visible)
 
-        image_viewer.click_previous()
+        image_viewer.close()
         Assert.false(image_viewer.is_visible)

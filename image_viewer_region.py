@@ -64,7 +64,8 @@ class ImageViewer(Page):
         return False
 
     def wait_for_viewer_to_finish_animating(self):
-        self.selenium.wait_for_condition("window.document.getElementById('lightbox-image-details').scrollHeight == 38", self.timeout)
+        self.wait_for_element_not_visible(self._image_data_locator)
+        self.wait_for_element_visible(self._image_data_locator)
 
     #information
     @property
@@ -93,24 +94,17 @@ class ImageViewer(Page):
         return self.selenium.is_visible(self._close_locator)
 
     def click_next(self):
-        if self.is_next_link_visible:
             self.selenium.click(self._next_locator)
             self.wait_for_viewer_to_finish_animating()
-        else:
-            self.selenium.click(self._next_locator)
-            self.wait_for_element_not_present(self._overlay_locator)
 
     @property
     def is_next_link_visible(self):
         return  self.selenium.is_visible(self._next_locator)
 
     def click_previous(self):
-        if self.is_previous_link_visible:
             self.selenium.click(self._previous_locator)
             self.wait_for_viewer_to_finish_animating()
-        else:
-            self.selenium.click(self._previous_locator)
-            self.wait_for_element_not_present(self._overlay_locator)
+
 
     @property
     def is_previous_link_visible(self):
