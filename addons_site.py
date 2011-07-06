@@ -281,7 +281,7 @@ class AddonsDetailsPage(AddonsHomePage):
         return self.selenium.get_css_count(self._other_addons_link_list_locator)
 
     def other_addons_link_list(self):
-        return [self.selenium.get_text("{0}:nth({1}) a".format(self._other_addons_link_list_locator, pos))
+        return [self.selenium.get_text("%s:nth(%s) a" % (self._other_addons_link_list_locator, pos))
             for pos in range(self.other_addons_link_list_count)]
 
     def click_other_addon_by_this_author(self, value):
