@@ -41,17 +41,15 @@ from unittestzero import Assert
 from addons_site import AddonsDetailsPage
 
 class TestDetailsPage:
-    
-    _adblock_plus_id = 1865
-    _adblock_plus_website_url = 'http://adblockplus.org/'
-    
+        
     def test_that_external_link_leads_to_addon_website(self, testsetup):
         """ Litmus 11809
             https://litmus.mozilla.org/show_test.cgi?id=11809 """
         # Step 1 - Open AMO homepage
         # Step 2 - Open Adblock Plus details page
         details_page = AddonsDetailsPage(testsetup, 'Adblock Plus')
-        Assert.equal(details_page.website, self._adblock_plus_website_url)
+        website_link = details_page.website
+        Assert.true(website_link != '')
         # Step 3 - Follow external website link
-        details_page.go_to_addon_website()
-        Assert.true(self._adblock_plus_website_url in details_page.get_url_current_page())
+        details_page.click_website_link()
+        Assert.true(website_link in details_page.get_url_current_page())

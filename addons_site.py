@@ -255,7 +255,7 @@ class AddonsDetailsPage(AddonsHomePage):
     def website(self):
         return self.selenium.get_text(self._website_locator)
     
-    def go_to_addon_website(self):
+    def click_website_link(self):
         self.selenium.open(self.website)
     
     
