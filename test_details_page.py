@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+
 # ***** BEGIN LICENSE BLOCK *****
 # Version: MPL 1.1/GPL 2.0/LGPL 2.1
 #
@@ -19,7 +20,8 @@
 # Portions created by the Initial Developer are Copyright (C) 2011
 # the Initial Developer. All Rights Reserved.
 #
-# Contributor(s): Bebe <florin.strugariu@softvision.ro>
+# Contributor(s): 
+#                 Bebe <florin.strugariu@softvision.ro>
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -70,8 +72,6 @@ class TestAddonDetails:
         addon_with_less_than_five_addons_by_the_same_author = 'adblock-plus'
         amo_detail_page = AddonsDetailsPage(testsetup, addon_with_less_than_five_addons_by_the_same_author)
 
-        Assert.true(amo_detail_page.other_addons_link_list_count < 5)
-
         addons = amo_detail_page.other_addons_link_list()
         Assert.true(len(addons) < 5)
         for i in range(amo_detail_page.other_addons_link_list_count):
@@ -80,17 +80,17 @@ class TestAddonDetails:
             Assert.true(amo_detail_page.name.startswith(addons[i].rstrip('.')))
             AddonsDetailsPage(testsetup, addon_with_less_than_five_addons_by_the_same_author)
 
-    def test_navigating_to_other_addons_by_the_same_author_when_there_are_more_than_for_other_addons(self, testsetup):
+    def test_navigating_to_other_addons_by_the_same_author_when_there_are_more_than_four_other_addons(self, testsetup):
         """
         Litmus 11926
         https://litmus.mozilla.org/show_test.cgi?id=1192"""
-        addon_with_more_than_for_addons_by_the_same_author = 'firebug'
-        amo_detail_page = AddonsDetailsPage(testsetup, addon_with_more_than_for_addons_by_the_same_author)
+        addon_with_more_than_four_addons_by_the_same_author = 'firebug'
+        amo_detail_page = AddonsDetailsPage(testsetup, addon_with_more_than_four_addons_by_the_same_author)
 
         addons = amo_detail_page.other_addons_dropdown_values
-        Assert.true(len(addons) >= 5)
+        Assert.true(len(addons) > 4)
         for i in range(len(addons) - 1, 0, -1):  # Not checking the first item in the drop-down https://bugzilla.mozilla.org/show_bug.cgi?id=660706
             amo_detail_page.select_other_addons_dropdown_value(addons[i])
             print addons[i]
             Assert.true(amo_detail_page.name.startswith(addons[i].rstrip('.')))
-            AddonsDetailsPage(testsetup, addon_with_more_than_for_addons_by_the_same_author)
+            AddonsDetailsPage(testsetup, addon_with_more_than_four_addons_by_the_same_author)
