@@ -70,8 +70,10 @@ class TestDiscoveryPane:
     def test_that_mission_statement_is_on_addons_home_page(self, testsetup):
         """ TestCase for Litmus 15065 """
         discovery_pane = DiscoveryPane(testsetup, self.basepath)
-        discovery_pane.wait_for_element_visible(self._mission_section_locator)
-
+        try:
+            discovery_pane.wait_for_element_visible(self._mission_section_locator)
+        except AttributeError:
+            print "Mission is not visible if window size is < 1000."
         Assert.true(discovery_pane.is_mission_section_visible())
         expected_text = "Thanks for using Firefox and supporting Mozilla's mission!"
 
