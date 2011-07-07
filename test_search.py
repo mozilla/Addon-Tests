@@ -206,6 +206,33 @@ class TestSearch:
         amo_search_page = amo_home_page.search_for("text")
         Assert.equal(amo_search_page.breadcrumbs_value, 'Add-ons for Firefox Search')
 
+    def test_sorting_by_downloads(self, testsetup):
+        """ Litmus 17342
+            https://litmus.mozilla.org/show_test.cgi?id=17342 """
+        amo_search_page = AddonsHomePage(testsetup).search_for('firebug').sort_by('downloads')
+        Assert.true('sort=weeklydownloads' in amo_search_page.get_url_current_page())
+        Assert.is_sorted_descending([i.downloads for i in amo_search_page.results()])
+
+    def test_sorting_by_created_date(self, testsetup):
+        """ Litmus 17343
+            https://litmus.mozilla.org/show_test.cgi?id=17343 """
+        amo_search_page = AddonsHomePage(testsetup).search_for('firebug').sort_by('created')
+        Assert.true('sort=newest' in amo_search_page.get_url_current_page())
+        Assert.is_sorted_descending([i.created_date for i in amo_search_page.results()])
+
+    def test_sorting_by_updated_date(self, testsetup):
+        """ Litmus 17345
+            https://litmus.mozilla.org/show_test.cgi?id=17345 """
+        amo_search_page = AddonsHomePage(testsetup).search_for('firebug').sort_by('updated')
+        Assert.true('sort=updated' in amo_search_page.get_url_current_page())
+        Assert.is_sorted_descending([i.updated_date for i in amo_search_page.results()])
+
+    def test_sorting_by_users_number(self, testsetup):
+        """Litmus 24867"""
+        amo_search_page = AddonsHomePage(testsetup).search_for('firebug').sort_by('users')
+        Assert.true('sort=users' in amo_search_page.get_url_current_page())
+        Assert.is_sorted_descending([i.users for i in amo_search_page.results()])
+
     def test_that_searching_for_a_tag_returns_results(self, testsetup):
         """
         Litmus 7848
