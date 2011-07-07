@@ -52,7 +52,8 @@ from addons_site import AddonsHomePage
 class TestDiscoveryPane:
     """ This only works with Firefox 4 """
 
-    basepath= '/en-US/firefox/discovery/pane/4.0/Darwin' #Need to get this info before run
+    #Need to get this info before run
+    basepath = '/en-US/firefox/discovery/pane/4.0/Darwin'  
 
     def test_that_users_with_less_than_3_addons_get_what_are_addons(self, testsetup):
         """ Test case for litmus 15063 -
@@ -86,26 +87,26 @@ class TestDiscoveryPane:
     def test_that_addons_count_are_equal_between_amo_and_discovery(self, testsetup):
         """ TestCase for Litmus 15066 """
         amo_home_page = AddonsHomePage(testsetup)
-        amo_download_count = amo_home_page.download_count.replace(",","")
+        amo_download_count = amo_home_page.download_count.replace(",", "")
 
         discovery_pane = DiscoveryPane(testsetup, self.basepath)
         discovery_download_count_text = discovery_pane.download_count
         download_count = re.search("Add-ons downloaded: (.+)", discovery_download_count_text).group(1)
-        download_count = download_count.replace(",","")
+        download_count = download_count.replace(",", "")
         Assert.equal(amo_download_count, download_count)
 
     def test_that_featured_personas_is_present_and_has_5_item(self, testsetup):
         """ TestCase for Litmus 15079, 15080 """
-        discovery_pane= DiscoveryPane(testsetup, self.basepath)
+        discovery_pane = DiscoveryPane(testsetup, self.basepath)
         Assert.true(discovery_pane.is_personas_section_visible())
         Assert.equal(5, discovery_pane.personas_count)
         Assert.true(discovery_pane.is_personas_see_all_link_visible())
 
     def test_that_featured_personas_go_to_their_landing_page_when_clicked(self, testsetup):
         """ TestCase for Litmus 15081 """
-        discovery_pane= DiscoveryPane(testsetup, self.basepath)
+        discovery_pane = DiscoveryPane(testsetup, self.basepath)
         first_persona = discovery_pane.first_persona
-        first_persona_url = first_persona.lower().replace(" ","-")
+        first_persona_url = first_persona.lower().replace(" ", "-")
         persona = discovery_pane.click_on_first_persona()
         Assert.true(first_persona_url in discovery_pane.get_url_current_page())
         Assert.equal(first_persona, persona.persona_title)
