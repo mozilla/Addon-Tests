@@ -538,7 +538,9 @@ class DiscoveryPane(AddonsBasePage):
     def __init__(self, testsetup, path):
         AddonsBasePage.__init__(self, testsetup)
         self.selenium.open(testsetup.base_url + path)
-        self.selenium.window_maximize()
+        #resizing this page for elements that disappear when the window is < 1000
+        self.selenium.get_eval("window.resizeTo(10000,10000); window.moveTo(0,0)")
+
 
     @property
     def what_are_addons_text(self):
