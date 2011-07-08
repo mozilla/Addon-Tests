@@ -145,7 +145,7 @@ class TestDetailsPage:
             Assert.equal(i, image_viewer.current_image)
             Assert.true(image_viewer.is_close_visible)
             Assert.equal("Image %s of %s" % (i, additional_images_count + 1), image_viewer.current_number)
-            if image_viewer.is_next_link_visible:
+            if not i == image_viewer.total_images_count:
                 image_viewer.click_next()
 
         Assert.false(image_viewer.is_next_link_visible)
@@ -156,7 +156,7 @@ class TestDetailsPage:
             Assert.equal(i, image_viewer.current_image)
             Assert.true(image_viewer.is_close_visible)
             Assert.equal("Image %s of %s" % (i, additional_images_count + 1), image_viewer.current_number)
-            if image_viewer.is_previous_link_visible:
+            if not i == 1:
                 image_viewer.click_previous()
 
         Assert.true(image_viewer.is_next_link_visible)
