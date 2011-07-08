@@ -36,7 +36,6 @@
 # ***** END LICENSE BLOCK *****
 
 from page import Page
-import addons_user_page
 
 
 class AddonsBasePage(Page):
@@ -64,7 +63,6 @@ class AddonsBasePage(Page):
         def click_login(self):
             self.selenium.click(self._login_locator)
             self.selenium.wait_for_page_to_load(self.timeout)
-            return  addons_user_page.AddonsLoginPage(self.testsetup)
 
         def click_logout(self):
             self.click_my_account()

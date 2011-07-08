@@ -53,10 +53,11 @@ class TestAccounts:
         credentials = amo_home_page.credentials_of_user('default')
 
         Assert.false(amo_home_page.header.is_user_logged_in)
-        addons_login_page = amo_home_page.header.click_login()
+        amo_home_page.header.click_login()
+        addons_login_page = addons_user_page.AddonsLoginPage(testsetup)
 
         addons_login_page.login(credentials['email'], credentials['password'])
         Assert.true(amo_home_page.header.is_user_logged_in)
-        amo_home_page.header.click_logout()
 
+        amo_home_page.header.click_logout()
         Assert.false(amo_home_page.header.is_user_logged_in)
