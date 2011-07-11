@@ -47,7 +47,10 @@ import re
 from datetime import datetime
 
 from addons_base_page import AddonsBasePage
+from item import Item
+from addons_user_page import AddonsUserPage
 import addons_search_home_page
+
 
 
 class AddonsHomePage(AddonsBasePage):
@@ -207,9 +210,9 @@ class AddonsHomePage(AddonsBasePage):
         return integer_numbers
 
 
-class AddonsDetailsPage(AddonsHomePage):
+class AddonsDetailsPage(AddonsBasePage):
 
-    _addon_detail_base_url = "/firefox/addon/"
+    _addon_detail_base_url = "/firefox/i/addon/"
     _name_locator = "css=h2.addon > span"
     _version_number_locator = "css=span.version"
     _authors_locator = "//h4[@class='author']/a"
@@ -226,10 +229,14 @@ class AddonsDetailsPage(AddonsHomePage):
     _other_addons_dropdown_locator = "id=addons-author-addons-select"
     _other_addons_link_list_locator = "css=div.other-author-addons ul li"
 
+    _review_region_locator = "id=reviews"
+    _reviews_locator = "css=#reviews div"
+
     def __init__(self, testsetup, addon_name):
         #formats name for url
         self.addon_name = addon_name.replace(' ', '-').lower()
         AddonsBasePage.__init__(self, testsetup)
+        self.selenium.window_maximize()
         self.selenium.open(self._addon_detail_base_url + self.addon_name)
 
     @property
@@ -265,14 +272,14 @@ class AddonsDetailsPage(AddonsHomePage):
     @property
     def description(self):
         return self.selenium.get_text(self._description_locator)
-    
+
     @property
     def website(self):
         return self.selenium.get_text(self._website_locator)
-    
+
     def click_website_link(self):
         self.selenium.open(self.website)
-    
+
     @property
     def other_addons_by_authors_text(self):
         return self.selenium.get_text("%s > h4" % self._other_addons_by_authors_locator)
@@ -300,6 +307,36 @@ class AddonsDetailsPage(AddonsHomePage):
     def click_other_addon_by_this_author(self, value):
         self.selenium.click('%s:contains(%s) a' % (self._other_addons_link_list_locator, value))
         self.selenium.wait_for_page_to_load(self.timeout)
+
+    def review(self, lookup):
+        return self.Reviews(self.testsetup, self._reviews_locator, lookup)
+
+    def reviews(self):
+        return [self.Reviews(self.testsetup, self._reviews_locator, i) for i in range(self.review_count)]
+
+    @property
+    def review_count(self):
+        return int(self.selenium.get_css_count(self._reviews_locator))
+
+    def wait_for_the_reviews_to_load(self):
+        self.wait_for_element_visible(self._reviews_locator)
+
+    class Reviews (AddonsBasePage, Item):
+
+        _user_name_locator = "p.byline  a"
+        def __init__(self, testsetup, locator, lookup):
+            AddonsBasePage.__init__(self, testsetup)
+            self.locator = locator
+            self.lookup = lookup
+
+        @property
+        def username(self):
+            return self.selenium.get_text(self.absolute_locator(self._user_name_locator))
+
+        def click_username(self):
+            self.selenium.click(self.absolute_locator(self._user_name_locator))
+            self.selenium.wait_for_page_to_load(self.timeout)
+            return AddonsUserPage(self.testsetup)
 
 
 class AddonsThemesPage(AddonsHomePage):

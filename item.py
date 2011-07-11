@@ -19,7 +19,8 @@
 # Portions created by the Initial Developer are Copyright (C) 2011
 # the Initial Developer. All Rights Reserved.
 #
-# Contributor(s): Bebe <florin.strugariu@softvision.ro>
+# Contributor(s): 
+#                 Bebe <florin.strugariu@softvision.ro>
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -36,25 +37,16 @@
 # ***** END LICENSE BLOCK *****
 
 
-from addons_base_page import AddonsBasePage
+class Item:
 
-class AddonsLoginPage(AddonsBasePage):
+    def absolute_locator(self, relative_locator):
+        return self._root_locator + relative_locator
 
-    _page_title = 'User Login :: Add-ons for Firefox'
-    _email_locator = 'id=LoginEmail'
-    _password_locator = 'id=LoginPassword'
-    _login_button_locator = 'css=#login button.prominent' # Using css till 668749 implemented
-
-    def login(self, email, password):
-        self.selenium.type(self._email_locator, email)
-        self.selenium.type(self._password_locator, password)
-        self.selenium.click(self._login_button_locator)
-        self.selenium.wait_for_page_to_load(self.timeout)
-
-class AddonsUserPage(AddonsBasePage):
-
-        _username_locator = "css=div.vcard h2.fn"
-
-        @property
-        def username(self):
-            return self.selenium.get_text(self._username_locator)
+    @property
+    def _root_locator(self):
+        if type(self.lookup) == int:
+            # lookup by index
+            return "%s:nth(%s) " % (self.locator, self.lookup)
+        else:
+            # lookup by name
+            return "%s:contains(%s) " % (self.locator, self.lookup)
