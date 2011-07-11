@@ -265,14 +265,14 @@ class AddonsDetailsPage(AddonsHomePage):
     @property
     def description(self):
         return self.selenium.get_text(self._description_locator)
-    
+
     @property
     def website(self):
         return self.selenium.get_text(self._website_locator)
-    
+
     def click_website_link(self):
         self.selenium.open(self.website)
-    
+
     @property
     def other_addons_by_authors_text(self):
         return self.selenium.get_text("%s > h4" % self._other_addons_by_authors_locator)
@@ -315,6 +315,8 @@ class AddonsThemesPage(AddonsHomePage):
     _addons_rating_locator = _addons_metadata_locator + "/span/span"
     _breadcrumb_locator = "css=ol.breadcrumbs"
     _category_locator = "css=#c-30 > a"
+    _top_counter_locator = "css=b"
+    _bottom_counter_locator = "css=strong:nth(2)"
 
     def __init__(self, testsetup):
         AddonsBasePage.__init__(self, testsetup)
@@ -380,6 +382,14 @@ class AddonsThemesPage(AddonsHomePage):
         ratings_locator = self._addons_rating_locator
         ratings = self._extract_integers(ratings_locator, pattern, self.addon_count)
         return ratings
+
+    @property
+    def top_counter(self):
+        return self.selenium.get_text(self._top_counter_locator)
+
+    @property
+    def bottom_counter(self):
+        return self.selenium.get_text(self._bottom_counter_locator)
 
 
 class AddonsThemePage(AddonsBasePage):
