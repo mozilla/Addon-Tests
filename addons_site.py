@@ -47,11 +47,11 @@
 import re
 from datetime import datetime
 
-from page import Page
+from addons_base_page import AddonsBasePage
 import addons_search_home_page
 
 
-class AddonsHomePage(Page):
+class AddonsHomePage(AddonsBasePage):
 
     _page_title = "Add-ons for Firefox"
 
@@ -69,9 +69,7 @@ class AddonsHomePage(Page):
     #prev next links
     _next_link_locator = "link=Next"
     _previous_link_locator = "link=Prev"
-    _next_link = "link=Next"
-    _prev_link = "link=Prev"
-    
+
     #addons detail page
     _review_details_locator = "css=.review-detail"
     _all_reviews_link_locator = "css=#addon #reviews+.article a.more-info"
@@ -79,13 +77,13 @@ class AddonsHomePage(Page):
     _review_locator = "css=.primary div.review"
     _last_page_link_locator = "css=.pagination a:not([rel]):last"
     _first_page_link_locator = "css=.pagination a:not([rel]):first"
-    
 
     def __init__(self, testsetup):
         ''' Creates a new instance of the class and gets the page ready for testing '''
-        Page.__init__(self, testsetup)
+        AddonsBasePage.__init__(self, testsetup)
         self.selenium.open("/")
         self.selenium.window_maximize()
+
     def page_forward(self):
         self.selenium.click(self._next_link_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
@@ -135,29 +133,21 @@ class AddonsHomePage(Page):
     def has_reviews(self):
         return self.selenium.get_css_count(self._review_details_locator) > 0
 
-    def page_forward(self):
-        self.selenium.click(self._next_link)
-        self.selenium.wait_for_page_to_load(self.timeout)
-
-    def page_back(self):
-        self.selenium.click(self._prev_link)
-        self.selenium.wait_for_page_to_load(self.timeout)
-
     @property
     def is_next_link_present(self):
-        return self.selenium.is_element_present(self._next_link)
+        return self.selenium.is_element_present(self._next_link_locator)
 
     @property
     def is_next_link_visible(self):
-        return self.selenium.is_visible(self._next_link)
+        return self.selenium.is_visible(self._next_link_locator)
 
     @property
     def is_prev_link_present(self):
-        return self.selenium.is_element_present(self._prev_link)
+        return self.selenium.is_element_present(self._previous_link_locator)
 
     @property
     def is_prev_link_visible(self):
-        return self.selenium.is_visible(self._prev_link)
+        return self.selenium.is_visible(self._previous_link_locator)
 
     @property
     def current_page(self):
@@ -174,47 +164,147 @@ class AddonsHomePage(Page):
     @property
     def download_count(self):
         return self.selenium.get_text(self._download_count_locator)
-      
+
+    def _extract_iso_dates(self, xpath_locator, date_format, count):
+        """
+        Returns a list of iso formatted date strings extracted from
+        the text elements matched by the given xpath_locator and
+        original date_format.
+
+        So for example, given the following elements:
+          <p>Added May 09, 2010</p>
+          <p>Added June 11, 2011</p>
+
+        A call to:
+          _extract_iso_dates("//p", "Added %B %d, %Y", 2)
+
+        Returns:
+          ['2010-05-09T00:00:00','2011-06-11T00:00:00']
+
+        """
+        addon_dates = [
+            self.selenium.get_text("xpath=(%s)[%d]" % (xpath_locator, i))
+            for i in xrange(1, count + 1)
+        ]
+        iso_dates = [
+            datetime.strptime(s, date_format).isoformat()
+            for s in addon_dates
+        ]
+        return iso_dates
+
+    def _extract_integers(self, xpath_locator, regex_pattern, count):
+        """
+        Returns a list of integers extracted from the text elements
+        matched by the given xpath_locator and regex_pattern.
+        """
+        addon_numbers = [
+            self.selenium.get_text("xpath=(%s)[%d]" % (xpath_locator, i))
+            for i in xrange(1, count + 1)
+        ]
+        integer_numbers = [
+            int(re.search(regex_pattern, str(x).replace(",", "")).group(1))
+            for x in addon_numbers
+        ]
+        return integer_numbers
+
+
 class AddonsDetailsPage(AddonsHomePage):
 
-    _addon_detail_base_url =  "/firefox/addon/"
-    _version_number_locator = "css=span.version" 
+    _addon_detail_base_url = "/firefox/addon/"
+    _name_locator = "css=h2.addon > span"
+    _version_number_locator = "css=span.version"
     _authors_locator = "//h4[@class='author']/a"
     _summary_locator = "css=div[id=addon-summary] > p"
     _ratings_locator = "css=span[itemprop='rating']"
     _install_button_locator = "css=p[class='install-button'] > a"
     _contribute_button_locator = "css=a[id='contribute-button']"
     _addon_rating_locator = "css=span[itemprop='rating']"
+    _whats_this_license_locator = "css=h5 > span > a"
+    _description_locator = "css=div[class='article userinput'] > p"
+    _website_locator = "css=div#addon-summary tr:contains('Website') a"
+
+    _other_addons_by_authors_locator = "css=div.other-author-addons"
+    _other_addons_dropdown_locator = "id=addons-author-addons-select"
+    _other_addons_link_list_locator = "css=div.other-author-addons ul li"
 
     def __init__(self, testsetup, addon_name):
         #formats name for url
-        self.addon_name = addon_name.replace(' ', '-').lower()  
-        Page.__init__(self, testsetup)
-        self.selenium.open(self._addon_detail_base_url + self.addon_name)  
-    
+        self.addon_name = addon_name.replace(' ', '-').lower()
+        AddonsBasePage.__init__(self, testsetup)
+        self.selenium.open(self._addon_detail_base_url + self.addon_name)
+
     @property
     def page_title(self):
-        return self.selenium.get_title()      
+        return self.selenium.get_title()
 
-    @property    
+    @property
+    def name(self):
+        return self.selenium.get_text(self._name_locator)
+
+    @property
     def version_number(self):
         return self.selenium.get_text(self._version_number_locator)
 
     @property
-    def authors(self):       
-        return [ self.selenium.get_text(self._authors_locator + "[%i]" % (i+1)) 
-            for i in range(self.selenium.get_xpath_count(self._authors_locator)) ]     
+    def authors(self):
+        return [self.selenium.get_text(self._authors_locator + "[%s]" % (i + 1))
+            for i in range(self.selenium.get_xpath_count(self._authors_locator))]
 
     @property
     def summary(self):
-        return self.selenium.get_text(self._summary_locator)             
+        return self.selenium.get_text(self._summary_locator)
 
     @property
     def rating(self):
         return self.selenium.get_text(self._addon_rating_locator)
-               
-class AddonsThemesPage(AddonsHomePage):
+
+    def click_whats_this_license(self):
+        self.selenium.click(self._whats_this_license_locator)
+        self.selenium.wait_for_page_to_load(self.timeout)
+        return UserFAQPage(self.testsetup)
+
+    @property
+    def description(self):
+        return self.selenium.get_text(self._description_locator)
     
+    @property
+    def website(self):
+        return self.selenium.get_text(self._website_locator)
+    
+    def click_website_link(self):
+        self.selenium.open(self.website)
+    
+    @property
+    def other_addons_by_authors_text(self):
+        return self.selenium.get_text("%s > h4" % self._other_addons_by_authors_locator)
+
+    @property
+    def is_other_addons_dropdown_present(self):
+        return self.selenium.is_element_present(self._other_addons_dropdown_locator)
+
+    @property
+    def other_addons_dropdown_values(self):
+        return self.selenium.get_select_options(self._other_addons_dropdown_locator)
+
+    def select_other_addons_dropdown_value(self, value):
+        self.selenium.select(self._other_addons_dropdown_locator, value)
+        self.selenium.wait_for_page_to_load(self.timeout)
+
+    @property
+    def other_addons_link_list_count(self):
+        return self.selenium.get_css_count(self._other_addons_link_list_locator)
+
+    def other_addons_link_list(self):
+        return [self.selenium.get_text("%s:nth(%s) a" % (self._other_addons_link_list_locator, pos))
+            for pos in range(self.other_addons_link_list_count)]
+
+    def click_other_addon_by_this_author(self, value):
+        self.selenium.click('%s:contains(%s) a' % (self._other_addons_link_list_locator, value))
+        self.selenium.wait_for_page_to_load(self.timeout)
+
+
+class AddonsThemesPage(AddonsHomePage):
+
     _sort_by_name_locator = 'name=_t-name'
     _sort_by_updated_locator = 'name=_t-updated'
     _sort_by_created_locator = 'name=_t-created'
@@ -228,7 +318,7 @@ class AddonsThemesPage(AddonsHomePage):
     _category_locator = "css=#c-30 > a"
 
     def __init__(self, testsetup):
-        Page.__init__(self, testsetup)
+        AddonsBasePage.__init__(self, testsetup)
 
     def click_sort_by(self, type_):
         self.selenium.click(getattr(self, "_sort_by_%s_locator" % type_))
@@ -263,44 +353,37 @@ class AddonsThemesPage(AddonsHomePage):
                         for i in xrange(addon_count)]
         return _addon_names
 
-    def _extract_addon_metadata_dates(self, format):
-        addon_count = int(self.selenium.get_xpath_count(self._addon_name_locator))
-        addon_metadata = [
-            self.selenium.get_text("xpath=(%s)[%d]" % (self._addons_metadata_locator, i))
-            for i in xrange(1, addon_count + 1)
-        ]
-        addon_dates = [
-            datetime.strptime(metadata, format).isoformat()
-            for metadata in addon_metadata
-        ]
-        return addon_dates
+    @property
+    def addon_count(self):
+        count = self.selenium.get_xpath_count(self._addon_name_locator)
+        return int(count)
 
     @property
     def addon_updated_dates(self):
-        return self._extract_addon_metadata_dates("Updated %B %d, %Y")
+        count = self.addon_count
+        return self._extract_iso_dates(self._addons_metadata_locator, "Updated %B %d, %Y", count)
 
     @property
     def addon_created_dates(self):
-        return self._extract_addon_metadata_dates("Added %B %d, %Y")
+        count = self.addon_count
+        return self._extract_iso_dates(self._addons_metadata_locator, "Added %B %d, %Y", count)
 
     @property
     def addon_download_number(self):
-        addon_count = int(self.selenium.get_xpath_count(self._addon_name_locator))
-        _addon_downloads = [int(re.search("(\d+)", self.selenium.get_text(
-                            "xpath=(" + self._addons_metadata_locator + ")[%s]" % str(i + 1)).replace(
-                                ",", "")).group(0))
-                        for i in xrange(addon_count)]
-        return _addon_downloads
+        pattern = "(\d+(?:[,]\d+)*) weekly downloads"
+        downloads_locator = self._addons_metadata_locator
+        downloads = self._extract_integers(downloads_locator, pattern, self.addon_count)
+        return downloads
 
     @property
     def addon_rating(self):
-        addon_count = int(self.selenium.get_xpath_count(self._addon_name_locator))
-        _addon_ratings = [self.selenium.get_text("xpath=(" + self._addons_rating_locator + ")[%s]" % str(i + 1))
-                        for i in xrange(addon_count)]
-        return _addon_ratings
+        pattern = "(\d)"
+        ratings_locator = self._addons_rating_locator
+        ratings = self._extract_integers(ratings_locator, pattern, self.addon_count)
+        return ratings
 
 
-class AddonsThemePage(Page):
+class AddonsThemePage(AddonsBasePage):
 
     _addon_title = "css=h2.addon > span"
 
@@ -309,7 +392,7 @@ class AddonsThemePage(Page):
         return self.selenium.get_text(self._addon_title)
 
 
-class AddonsThemesCategoryPage(Page):
+class AddonsThemesCategoryPage(AddonsBasePage):
 
     _title_locator = "css=h2"
     _breadcrumb_locator = "css=ol.breadcrumbs"
@@ -322,13 +405,18 @@ class AddonsThemesCategoryPage(Page):
     def breadcrumb(self):
         return self.selenium.get_text(self._breadcrumb_locator)
 
+
 class AddonsPersonasPage(AddonsHomePage):
 
     _page_title = "Personas :: Add-ons for Firefox"
     _personas_locator = "//div[@class='persona persona-small']"
+    _start_exploring_locator = "css=#featured-addons.personas-home a.more-info"
+    _featured_addons_locator = "css=#featured-addons.personas-home"
+    _featured_personas_locator = "css=.personas-featured .persona.persona-small"
+    _addons_column_locator = '//div[@class="addons-column"]'
 
     def __init__(self, testsetup):
-        Page.__init__(self, testsetup)
+        AddonsBasePage.__init__(self, testsetup)
 
     @property
     def persona_count(self):
@@ -346,8 +434,58 @@ class AddonsPersonasPage(AddonsHomePage):
         self.selenium.wait_for_page_to_load(self.timeout)
         return AddonsPersonasDetailPage(self.testsetup)
 
+    @property
+    def is_featured_addons_present(self):
+        return self.selenium.get_css_count(self._featured_addons_locator) > 0
 
-class AddonsPersonasDetailPage(AddonsHomePage):
+    def click_start_exploring(self):
+        self.selenium.click(self._start_exploring_locator)
+        self.selenium.wait_for_page_to_load(self.timeout)
+        return AddonsPersonasBrowsePage(self.testsetup)
+
+    @property
+    def featured_personas_count(self):
+        return self.selenium.get_css_count(self._featured_personas_locator)
+
+    def _persona_in_column_locator(self, column_index):
+        """ Returns a locator for personas in the column with the given index. """
+        return "%s[%d]%s" % (self._addons_column_locator, column_index, self._personas_locator)
+
+    @property
+    def recently_added_count(self):
+        locator = self._persona_in_column_locator(1)
+        return self.selenium.get_xpath_count(locator)
+
+    @property
+    def recently_added_dates(self):
+        locator = self._persona_in_column_locator(1)
+        iso_dates = self._extract_iso_dates(locator, "Added %B %d, %Y", self.recently_added_count)
+        return iso_dates
+
+    @property
+    def most_popular_count(self):
+        locator = self._persona_in_column_locator(2)
+        return self.selenium.get_xpath_count(locator)
+
+    @property
+    def most_popular_downloads(self):
+        locator = self._persona_in_column_locator(2)
+        pattern = "(\d+(?:[,]\d+)*)\s+users"
+        return self._extract_integers(locator, pattern, self.most_popular_count)
+
+    @property
+    def top_rated_count(self):
+        locator = self._persona_in_column_locator(3)
+        return self.selenium.get_xpath_count(locator)
+
+    @property
+    def top_rated_ratings(self):
+        locator = self._persona_in_column_locator(3)
+        pattern = "Rated\s+(\d)\s+.*"
+        return self._extract_integers(locator, pattern, self.top_rated_count)
+
+
+class AddonsPersonasDetailPage(AddonsBasePage):
 
     _page_title_regex = '.+ :: Add-ons for Firefox'
     _personas_title_locator = 'css=h2.addon'
@@ -356,7 +494,7 @@ class AddonsPersonasDetailPage(AddonsHomePage):
     _breadcrumb_item_text_locator = '/li//*[text()="%s"]'
 
     def __init__(self, testsetup):
-        Page.__init__(self, testsetup)
+        AddonsBasePage.__init__(self, testsetup)
 
     @property
     def is_the_current_page(self):
@@ -398,13 +536,46 @@ class AddonsPersonasDetailPage(AddonsHomePage):
         self.selenium.wait_for_page_to_load(self.timeout)
 
 
-class DiscoveryPane(Page):
+class AddonsPersonasBrowsePage(AddonsBasePage):
+    """
+    The personas browse page allows browsing the personas according to
+    some sort criteria (eg. top rated or most downloaded).
+
+    """
+
+    _selected_sort_by_locator = "css=#addon-list-options li.selected a"
+    _personas_grid_locator = "css=.featured.listing ul.personas-grid"
+
+    def __init__(self, testsetup):
+        AddonsBasePage.__init__(self, testsetup)
+
+    @property
+    def sort_key(self):
+        """ Returns the current value of the sort request parameter. """
+        url = self.get_url_current_page()
+        return re.search("[/][?]sort=(.+)[&]?", url).group(1)
+
+    @property
+    def sort_by(self):
+        """ Returns the label of the currently selected sort option. """
+        return self.selenium.get_text(self._selected_sort_by_locator)
+
+    @property
+    def is_the_current_page(self):
+        # This overrides the method in the Page super class.
+        if not (self.is_element_present(self._personas_grid_locator)):
+            self.record_error()
+            raise Exception('Expected the current page to be the personas browse page.')
+        return True
+
+
+class DiscoveryPane(AddonsBasePage):
 
     _what_are_addons_section_locator = 'id=intro'
     _what_are_addons_text_locator = 'css=#intro p'
     _mission_section_locator = 'id=mission'
     _mission_section_text_locator = 'css=#mission > p'
-    _learn_more_locator = 'link=Learn More' #Using link till 631557 implemented
+    _learn_more_locator = 'id=learn-more'
     _mozilla_org_link_locator = "css=a[href=http://www.mozilla.org/]"
     _download_count_text_locator = "id=download-count"
     _personas_section_locator = "id=featured-personas"
@@ -417,7 +588,7 @@ class DiscoveryPane(Page):
     _up_and_coming_item = "//section[@id='up-and-coming']/ul/li/a[@class='addon-title']"
 
     def __init__(self, testsetup, path):
-        Page.__init__(self, testsetup)
+        AddonsBasePage.__init__(self, testsetup)
         self.selenium.open(testsetup.base_url + path)
         self.selenium.window_maximize()
 
@@ -480,10 +651,25 @@ class DiscoveryPane(Page):
     def up_and_coming_item_count(self):
         return int(self.selenium.get_xpath_count(self._up_and_coming_item))
 
-class DiscoveryPersonasDetailPage(Page):
+
+class DiscoveryPersonasDetailPage(AddonsBasePage):
 
     _persona_title = 'css=h1.addon'
 
     @property
     def persona_title(self):
         return self.selenium.get_text(self._persona_title)
+
+
+class UserFAQPage(AddonsBasePage):
+
+    _license_question_locator = "css=#license"
+    _license_answer_locator = "css=#license + dd"
+
+    @property
+    def license_question(self):
+        return self.selenium.get_text(self._license_question_locator)
+
+    @property
+    def license_answer(self):
+        return self.selenium.get_text(self._license_answer_locator)
