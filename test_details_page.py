@@ -119,8 +119,8 @@ class TestDetailsPage:
 
     def test_that_review_usernames_are_clickable(self, testsetup):
         """
-        Litmus 11926
-        https://litmus.mozilla.org/show_test.cgi?id=11926
+        Litmus 4842
+        https://litmus.mozilla.org/show_test.cgi?id=4842
         """
         addon_name = 'firebug'
         amo_detail_page = AddonsDetailsPage(testsetup, addon_name)
