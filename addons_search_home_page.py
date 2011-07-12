@@ -20,7 +20,7 @@
 # the Initial Developer. All Rights Reserved.
 #
 # Contributor(s): Bebe <florin.strugariu@softvision.ro>
-#                 Alex Rodionov <p0deje@gmail.com>        
+#                 Alex Rodionov <p0deje@gmail.com>
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -43,17 +43,19 @@ from page import Page
 import addons_site
 import refine_results_region
 
+
 class AddonsSearchHomePage(AddonsBasePage):
 
     _results_summary_locator = "css=h3.results-count"
     _results_displayed_locator = "css=div.num-results"
     _results_locator = "css=div.results-inner div.item"
 
+    _pagination = "css=div.listing-footer li"
     _next_link_locator = "link=Next"
     _previous_link_locator = "link=Prev"
 
     _breadcrumbs_locator = "css=ol.breadcrumbs"
-    
+
     _sort_by_keyword_match_locator = "css=div.listing-header a:contains('Keyword Match')"
     _sort_by_created_locator = "css=div.listing-header a:contains('Created')"
     _sort_by_updated_locator = "css=div.listing-header a:contains('Updated')"
@@ -101,15 +103,20 @@ class AddonsSearchHomePage(AddonsBasePage):
         self.selenium.click(getattr(self, '_sort_by_%s_locator' % type))
         self.selenium.wait_for_page_to_load(self.timeout)
         return self
-    
+
     def result(self, lookup):
         return self.Result(self.testsetup, lookup)
 
     def results(self):
         return [self.Result(self.testsetup, i) for i in range(self.result_count)]
 
-    class Result(Page):
+    def click_last_results_page(self):
+        count = self.selenium.get_css_count(self._pagination)
+        if self.selenium.get_text("%s:nth(%s) a" % (self._pagination, count - 1)) == "Next":
+            self.selenium.click("%s:nth(%s) a" % (self._pagination, count - 2))
+            self.selenium.wait_for_page_to_load(self.timeout)
 
+    class Result(Page):
         _name_locator = " h3 a"
 
         def __init__(self, testsetup, lookup):
@@ -126,7 +133,7 @@ class AddonsSearchHomePage(AddonsBasePage):
                 return "css=div.results-inner div.item:nth(%s)" % self.lookup
             else:
                 # lookup by name
- 
+
                 return "css=div.results-inner div.item:contains(%s)" % self.lookup
 
         @property
@@ -141,17 +148,17 @@ class AddonsSearchHomePage(AddonsBasePage):
         def downloads(self):
             locator = self.root_locator + ' div.item-info p.downloads strong'
             return int(self.selenium.get_text(locator).replace(',', ''))
-        
+
         @property
         def users(self):
             """ Alias for self.downloads """
             return self.downloads
-            
+
         @property
         def rating(self):
             locator = self.root_locator + ' div.item-info p.addon-rating span span'
             return int(self.selenium.get_text(locator))
-        
+
         @property
         def created_date(self):
             """ Returns created date of result in POSIX format """

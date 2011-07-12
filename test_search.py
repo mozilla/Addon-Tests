@@ -243,3 +243,35 @@ class TestSearch:
         Assert.true(amo_search_page.result_count > 0)
         Assert.equal(amo_search_page.refine_results.tag("development").name, "development")
         Assert.true(amo_search_page.refine_results.tag_count > 1)
+
+    def test_that_search_results_return_20_results_pre_page(self, testsetup):
+        """
+        Litmus 17346
+        https://litmus.mozilla.org/show_test.cgi?id=17346
+        """
+        amo_home_page = AddonsHomePage(testsetup)
+        amo_search_page = amo_home_page.search_for("fire")
+
+        first_expected = 1
+        second_expected = 20
+
+        for i in range(10):
+            results_summary = amo_search_page.results_displayed
+            results = re.split("\W+", results_summary)
+            first_count = results[1]
+            second_count = results[2]
+
+            Assert.equal(str(first_expected), first_count)
+            Assert.equal(str(second_expected), second_count)
+
+            amo_search_page.page_forward()
+            first_expected += 20
+            second_expected += 20
+
+        amo_search_page.click_last_results_page()
+        number = int(re.split("\W+", results_summary)[4]) % 20
+
+        if number == 0:
+            Assert.equal(amo_search_page.result_count, 20)
+        else:
+            Assert.equal(amo_search_page.result_count, number)
