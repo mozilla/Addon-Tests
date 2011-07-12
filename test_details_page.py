@@ -45,7 +45,7 @@ from addons_site import AddonsDetailsPage
 
 
 class TestDetailsPage:
-    '''
+
     def test_that_external_link_leads_to_addon_website(self, testsetup):
         """ Litmus 11809
             https://litmus.mozilla.org/show_test.cgi?id=11809 """
@@ -116,7 +116,7 @@ class TestDetailsPage:
             print addons[i]
             Assert.true(amo_detail_page.name.startswith(addons[i].rstrip('.')))
             AddonsDetailsPage(testsetup, addon_with_more_than_four_addons_by_the_same_author)
-    '''
+
     def test_that_review_usernames_are_clickable(self, testsetup):
         """
         Litmus 11926
