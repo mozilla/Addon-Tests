@@ -107,6 +107,15 @@ class Page(object):
                 self.record_error()
                 raise Exception(element + ' has not loaded')
 
+    def wait_for_element_not_present(self, element):
+        count = 0
+        while  self.selenium.is_element_present(element):
+            time.sleep(1)
+            count += 1
+            if count == self.timeout / 1000:
+                self.record_error()
+                raise Exception(element + ' is still loaded')
+
     def wait_for_element_visible(self, element):
         self.wait_for_element_present(element)
         count = 0
