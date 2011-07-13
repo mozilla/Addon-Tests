@@ -22,6 +22,7 @@
 #
 # Contributor(s): David Burns
 #                 Dave Hunt <dhunt@mozilla.com>
+#                 Marlena Compton <mcompton@mozilla.com
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -53,7 +54,7 @@ class TestDiscoveryPane:
     """ This only works with Firefox 4 """
 
     #Need to get this info before run
-    basepath = '/en-US/firefox/discovery/pane/4.0/Darwin'  
+    basepath = '/en-US/firefox/discovery/pane/4.0/Darwin'
 
     def test_that_users_with_less_than_3_addons_get_what_are_addons(self, testsetup):
         """ Test case for litmus 15063 -
@@ -71,10 +72,7 @@ class TestDiscoveryPane:
     def test_that_mission_statement_is_on_addons_home_page(self, testsetup):
         """ TestCase for Litmus 15065 """
         discovery_pane = DiscoveryPane(testsetup, self.basepath)
-        try:
-            discovery_pane.wait_for_element_visible(self._mission_section_locator)
-        except AttributeError:
-            print "Mission is not visible if window size is < 1000."
+        discovery_pane.wait_for_mission_visible
         Assert.true(discovery_pane.is_mission_section_visible())
         expected_text = "Thanks for using Firefox and supporting Mozilla's mission!"
 
