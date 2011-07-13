@@ -47,6 +47,7 @@ import re
 from datetime import datetime
 
 from addons_base_page import AddonsBasePage
+from addons_collection_page import AddonsCollesctionsPage
 import addons_search_home_page
 import image_viewer_region
 
@@ -61,6 +62,7 @@ class AddonsHomePage(AddonsBasePage):
     _download_count_locator = "css=div.stats > strong"
     _themes_link_locator = "id=_t-2"
     _personas_link_locator = "id=_t-9"
+    _collections_link_locator = "id=_t-99"
 
     #Categories List
     _category_list_locator = "//ul[@id='categoriesdropdown']"
@@ -116,6 +118,11 @@ class AddonsHomePage(AddonsBasePage):
         self.selenium.click(self._themes_link_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
         return AddonsThemesPage(self.testsetup)
+
+    def click_collections(self):
+        self.selenium.click(self._collections_link_locator)
+        self.selenium.wait_for_page_to_load(self.timeout)
+        return AddonsCollesctionsPage(self.testsetup)
 
     def open_details_page_for_id(self, id):
         self.selenium.open("/en-US/firefox/addon/%s" % id)
