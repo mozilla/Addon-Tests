@@ -164,3 +164,12 @@ class TestDetailsPage:
 
         image_viewer.close()
         Assert.false(image_viewer.is_visible)
+
+    def test_that_details_page_has_breadcrumb(self, testsetup):
+        """
+        Litmus 11922
+        https://litmus.mozilla.org/show_test.cgi?id=11922
+        """
+        amo_detail_page = AddonsDetailsPage(testsetup, 'firebug')
+
+        Assert.equal(amo_detail_page.breadcrumb, 'Add-ons for Firefox Extensions Firebug')
