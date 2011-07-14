@@ -44,6 +44,8 @@ Created on Jun 21, 2010
 import re
 import time
 import base64
+import yaml
+
 
 http_regex = re.compile('https?://((\w+\.)+\w+\.\w+)')
 
@@ -61,6 +63,7 @@ class Page(object):
         self.base_url = testsetup.base_url
         self.selenium = testsetup.selenium
         self.timeout = testsetup.timeout
+        self.credentials = testsetup.credentials
 
     @property
     def is_the_current_page(self):
@@ -161,3 +164,7 @@ class Page(object):
         f.write(base64.decodestring(
             self.selenium.capture_entire_page_screenshot_to_string('')))
         f.close()
+
+    def parse_yaml_file(self, file_name):
+        stream = file(file_name, 'r')
+        return yaml.load(stream)
