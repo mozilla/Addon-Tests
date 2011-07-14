@@ -83,7 +83,7 @@ class TestDetailsPageAgainstXML:
         firebug_page = AddonsDetailsPage(testsetup, self.firebug)
         browser_summary = firebug_page.summary
 
-        #xml
+        #api
         addons_xml = AddOnsAPI(testsetup)
         xml_summary = addons_xml.get_addon_summary(self.firebug)
 
