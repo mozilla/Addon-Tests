@@ -315,8 +315,8 @@ class AddonsThemesPage(AddonsHomePage):
     _addons_rating_locator = _addons_metadata_locator + "/span/span"
     _breadcrumb_locator = "css=ol.breadcrumbs"
     _category_locator = "css=#c-30 > a"
-    _top_counter_locator = "css=b"
-    _bottom_counter_locator = "css=strong:nth(2)"
+    _top_counter_locator = "css=div.primary>header b"
+    _bottom_counter_locator = "css=div.num-results > strong:nth(2)"
 
     def __init__(self, testsetup):
         AddonsBasePage.__init__(self, testsetup)
