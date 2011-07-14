@@ -625,10 +625,7 @@ class DiscoveryPane(AddonsBasePage):
         return self.selenium.is_visible(self._mission_section_locator)
 
     def wait_for_mission_visible(self):
-        try:
-            self.selenium.wait_for_element_visible(self._mission_section_locator)
-        except AttributeError:
-            print "Mission is not visible if window size is < 1000."
+            self.wait_for_element_visible(self._mission_section_locator)
 
     @property
     def mission_section(self):
@@ -639,11 +636,7 @@ class DiscoveryPane(AddonsBasePage):
 
     @property
     def download_count(self):
-        try:
-            self.selenium.wait_for_element_visible(self._download_count_text_locator)
-        except AttributeError:
-            print "Download count attribute not found"
-
+        self.wait_for_element_visible(self._download_count_text_locator)
         return self.selenium.get_text(self._download_count_text_locator)
 
     def is_personas_section_visible(self):
