@@ -19,7 +19,7 @@
 # Portions created by the Initial Developer are Copyright (C) 2011
 # the Initial Developer. All Rights Reserved.
 #
-# Contributor(s): 
+# Contributor(s):
 #                 Bebe <florin.strugariu@softvision.ro>
 #
 # Alternatively, the contents of this file may be used under the terms of
@@ -36,12 +36,32 @@
 #
 # ***** END LICENSE BLOCK *****
 
+'''
+This class is used to access  all the enumerations in the AMO pages.
+
+Usage:
+
+Create a class with the area name that will inherit the Item class ex:
+
+class Results (AddonsBasePage, Item):
+
+add a constuctor for that class ex:
+
+         def __init__(self, testsetup, locator, lookup):
+            AddonsBasePage.__init__(self, testsetup)
+            self.locator = locator        #enumeration root locator
+            self.lookup = lookup          # Item Number or Name
+
+Access the Items with:
+    List of all Items:
+        results = [Results(self.testsetup, self._results_locator, i) for i in range(self.results_count)]
+    One item by number or name:
+        result = Results(self.testsetup, self._results_locator, 1)
+        result = Results(self.testsetup, self._results_locator, 'First Item')
+'''
+
 
 class Item:
-
-    def __init__(self, testsetup, locator, lookup):
-        self.locator = locator
-        self.lookup = lookup
 
     def absolute_locator(self, relative_locator):
         return self._root_locator + relative_locator

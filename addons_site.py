@@ -53,7 +53,6 @@ import addons_search_home_page
 import image_viewer_region
 
 
-
 class AddonsHomePage(AddonsBasePage):
 
     _page_title = "Add-ons for Firefox"
@@ -213,8 +212,8 @@ class AddonsHomePage(AddonsBasePage):
 
 class AddonsDetailsPage(AddonsBasePage):
 
-    #_addon_detail_base_url = "/firefox/addon/" # Used for the old pages 
-    _addon_detail_base_url = "/firefox/i/addon/" #Used for the new pages 
+    #_addon_detail_base_url = "/firefox/addon/"  # Used for the old pages
+    _addon_detail_base_url = "/firefox/i/addon/"  # Used for the new pages
     _name_locator = "css=h2.addon > span"
     _version_number_locator = "css=span.version"
     _authors_locator = "//h4[@class='author']/a"
@@ -332,6 +331,7 @@ class AddonsDetailsPage(AddonsBasePage):
 
     def review(self, lookup):
         return self.Reviews(self.testsetup, self._reviews_locator, lookup)
+
     def reviews(self):
         return [self.Reviews(self.testsetup, self._reviews_locator, i) for i in range(self.review_count)]
 
@@ -345,6 +345,11 @@ class AddonsDetailsPage(AddonsBasePage):
     class Reviews (AddonsBasePage, Item):
 
         _user_name_locator = "p.byline  a"
+
+        def __init__(self, testsetup, locator, lookup):
+            AddonsBasePage.__init__(self, testsetup)
+            self.locator = locator  # Reviews area root locator
+            self.lookup = lookup    # The Item that we are searching for
 
         @property
         def username(self):
