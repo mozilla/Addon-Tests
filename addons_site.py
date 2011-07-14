@@ -50,6 +50,7 @@ from addons_base_page import AddonsBasePage
 from item import Item
 from addons_user_page import AddonsUserPage
 import addons_search_home_page
+import image_viewer_region
 
 
 
@@ -224,6 +225,10 @@ class AddonsDetailsPage(AddonsBasePage):
     _addon_rating_locator = "css=span[itemprop='rating']"
     _whats_this_license_locator = "css=h5 > span > a"
     _description_locator = "css=div[class='article userinput'] > p"
+    _featured_image_locator = "css=#addon .featured .screenshot"
+
+    #more about this addon
+    _additional_images_locator = "css=#addon .article .screenshot"
     _website_locator = "css=div#addon-summary tr:contains('Website') a"
 
     _other_addons_by_authors_locator = "css=div.other-author-addons"
@@ -309,9 +314,24 @@ class AddonsDetailsPage(AddonsBasePage):
         self.selenium.click('%s:contains(%s) a' % (self._other_addons_link_list_locator, value))
         self.selenium.wait_for_page_to_load(self.timeout)
 
+    def click_addon_image(self):
+        self.selenium.click(self._featured_image_locator)
+        image_viewer = image_viewer_region.ImageViewer(self.testsetup)
+        image_viewer.wait_for_viewer_to_finish_animating()
+        return image_viewer
+
+    @property
+    def additional_images_count(self):
+        return self.selenium.get_css_count(self._additional_images_locator)
+
+    def click_additional_image(self, index):
+        self.selenium.click("%s:nth(%s)" % (self._additional_images_locator, index - 1))
+        image_viewer = image_viewer_region.ImageViewer(self.testsetup)
+        image_viewer.wait_for_viewer_to_finish_animating()
+        return image_viewer
+
     def review(self, lookup):
         return self.Reviews(self.testsetup, self._reviews_locator, lookup)
-
     def reviews(self):
         return [self.Reviews(self.testsetup, self._reviews_locator, i) for i in range(self.review_count)]
 
@@ -325,7 +345,6 @@ class AddonsDetailsPage(AddonsBasePage):
     class Reviews (AddonsBasePage, Item):
 
         _user_name_locator = "p.byline  a"
-
 
         @property
         def username(self):
