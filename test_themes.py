@@ -150,3 +150,7 @@ class TestThemes:
         amo_category_page = amo_themes_page.click_on_first_category()
         Assert.equal(selected_category, amo_category_page.title)
 
+    def test_that_themes_is_listed_as_a_category(self, testsetup):
+        """ test for litmus 15338"""
+        amo_home_page = AddonsHomePage(testsetup)
+        Assert.true(amo_home_page.has_category("Themes"))
