@@ -140,8 +140,10 @@ def pytest_addoption(parser):
                      action="store",
                      dest="sauce_labs_api",
                      help="sauce labs api key")
-    parser.addoption("--credentialsfile", action="store", default="credentials.yaml",
-        help="provide the credentials filename")
+    parser.addoption("--credentialsfile",
+                     action="store",
+                     default="credentials.yaml",
+                     help="provide the credentials filename")
 
 
 class TestSetup:
