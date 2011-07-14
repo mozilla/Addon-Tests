@@ -21,6 +21,7 @@
 #
 # Contributor(s): Bebe <florin.strugariu@softvision.ro>
 #
+#
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
 # the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
@@ -35,19 +36,16 @@
 #
 # ***** END LICENSE BLOCK *****
 
-from page import Page
+from unittestzero import Assert
+from addons_site import AddonsHomePage
 
 
-class AddonsBasePage(Page):
+class TestDetailsPage:
 
-    @property
-    def header(self):
-        return AddonsBasePage.HeaderRegion(self.testsetup)
-
-    class HeaderRegion(Page):
-
-        _other_apps_locator = "id=other-apps"
-
-        @property
-        def other_applications_tooltip(self):
-            return self.selenium.get_attribute("%s@title" % self._other_apps_locator)
+    def test_that_verifies_the_tooltip_for_Other_Applications(self, testsetup):
+        """
+        Litmus 22925
+        https://litmus.mozilla.org/show_test.cgi?id=22925
+        """
+        amo_home_page = AddonsHomePage(testsetup)
+        Assert.equal(amo_home_page.header.other_applications_tooltip, 'Find add-ons for other applications')
