@@ -154,5 +154,5 @@ class TestThemes:
         amo_themes_page = amo_home_page.click_themes()
         selected_category = amo_themes_page.themes_category
         amo_category_page = amo_themes_page.click_on_first_category()
-        expected_breadcrumb = "Add-ons for Firefox Themes " + selected_category
+        expected_breadcrumb = "Add-ons for Firefox Themes %s" % selected_category
         Assert.equal(expected_breadcrumb, amo_category_page.breadcrumb)
