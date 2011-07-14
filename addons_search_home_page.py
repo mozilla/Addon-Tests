@@ -50,7 +50,7 @@ class AddonsSearchHomePage(AddonsBasePage):
     _results_displayed_locator = "css=div.num-results"
     _results_locator = "css=div.results-inner div.item"
 
-    _pagination = "css=div.listing-footer li"
+    _pagination_loctor = "css=div.listing-footer li"
     _next_link_locator = "link=Next"
     _previous_link_locator = "link=Prev"
 
@@ -111,9 +111,9 @@ class AddonsSearchHomePage(AddonsBasePage):
         return [self.Result(self.testsetup, i) for i in range(self.result_count)]
 
     def click_last_results_page(self):
-        count = self.selenium.get_css_count(self._pagination)
-        if self.selenium.get_text("%s:nth(%s) a" % (self._pagination, count - 1)) == "Next":
-            self.selenium.click("%s:nth(%s) a" % (self._pagination, count - 2))
+        count = self.selenium.get_css_count(self._pagination_loctor)
+        if self.selenium.get_text("%s:nth(%s) a" % (self._pagination_loctor, count - 1)) == "Next":
+            self.selenium.click("%s:nth(%s) a" % (self._pagination_loctor, count - 2))
             self.selenium.wait_for_page_to_load(self.timeout)
 
     class Result(Page):

@@ -244,7 +244,7 @@ class TestSearch:
         Assert.equal(amo_search_page.refine_results.tag("development").name, "development")
         Assert.true(amo_search_page.refine_results.tag_count > 1)
 
-    def test_that_search_results_return_20_results_pre_page(self, testsetup):
+    def test_that_search_results_return_20_results_per_page(self, testsetup):
         """
         Litmus 17346
         https://litmus.mozilla.org/show_test.cgi?id=17346
