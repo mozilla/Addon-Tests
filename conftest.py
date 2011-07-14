@@ -37,23 +37,41 @@
 #
 # ***** END LICENSE BLOCK *****
 
+import json
+
 import pytest
 import py
 from selenium import selenium
 
 
 def pytest_runtest_setup(item):
-    item.host = item.config.option.hub
-    item.browser = item.config.option.browser
+    item.host = item.config.option.host
     item.port = item.config.option.port
-    TestSetup.base_url = item.config.option.site
+    item.browser_name = item.config.option.browser_name
+    item.browser_version = item.config.option.browser_version
+    item.platform = item.config.option.platform
+    TestSetup.base_url = item.config.option.base_url
     TestSetup.timeout = item.config.option.timeout
     TestSetup.credentials = item.config.option.credentialsfile
+    item.sauce_labs_username = item.config.option.sauce_labs_username
+    item.sauce_labs_api = item.config.option.sauce_labs_api
 
     if not 'skip_selenium' in item.keywords:
         TestSetup.skip_selenium = False
-        TestSetup.selenium = selenium(item.host, item.port,
-            item.browser, TestSetup.base_url)
+        if item.sauce_labs_username:
+            TestSetup.selenium = selenium('ondemand.saucelabs.com', '80',
+                                          json.dumps({
+                                            'username': item.sauce_labs_username,
+                                            'access-key':  item.sauce_labs_api,
+                                            'os': item.platform,
+                                            'browser': item.browser_name,
+                                            'browser-version': item.browser_version,
+                                            'name': item.keywords.keys()[0],
+                                            'public': True,
+                                            'tags': ['amo']}),
+                                          TestSetup.base_url)
+        else:
+            TestSetup.selenium = selenium(item.host, item.port, item.browser_name, TestSetup.base_url)
 
         if item.config.option.capturenetwork:
             TestSetup.selenium.start("captureNetworkTraffic=true")
@@ -82,18 +100,46 @@ def pytest_funcarg__testsetup(request):
 
 
 def pytest_addoption(parser):
-    parser.addoption("--hub", action="store", default="localhost",
-        help="specify where to run")
-    parser.addoption("--port", action="store", default="4444",
-        help="specify where to run")
-    parser.addoption("--browser", action="store", default="*firefox",
-        help="specify the browser")
-    parser.addoption("--site", action="store", default="http://addons.allizom.org",
-        help="specify the AUT")
-    parser.addoption("--timeout", action="store", default=120000,
-        help="specify the timeout")
-    parser.addoption("--capturenetwork", action="store_true", default=False,
-        help="tells the Selenium server to capture the network traffic. this will store the results in test_method_name.json")
+    parser.addoption("--host",
+                     action="store",
+                     default="localhost",
+                     help="host that Selenium server is listening on")
+    parser.addoption("--port",
+                     action="store",
+                     default="4444",
+                     help="port that Selenium server is listening on")
+    parser.addoption("--browser-name",
+                     action="store",
+                     dest="browser_name",
+                     help="target browser")
+    parser.addoption("--browser-version",
+                     action="store",
+                     dest="browser_version",
+                     help="target browser version")
+    parser.addoption("--platform",
+                     action="store",
+                     help="target platform")
+    parser.addoption("--base-url",
+                     action="store",
+                     dest="base_url",
+                     default="http://addons.allizom.org",
+                     help="base URL for the application under test")
+    parser.addoption("--timeout",
+                     action="store",
+                     default=120000,
+                     help="timeout for page loads, etc")
+    parser.addoption("--capturenetwork",
+                     action="store_true",
+                     default=False,
+                     help="tells the Selenium server to capture the network traffic. this will store the results in test_method_name.json")
+    parser.addoption("--sauce-labs-username",
+                     action="store",
+                     dest="sauce_labs_username",
+                     help="sauce labs username")
+    parser.addoption("--sauce-labs-api",
+                     action="store",
+                     dest="sauce_labs_api",
+                     help="sauce labs api key")
     parser.addoption("--credentialsfile", action="store", default="credentials.yaml",
         help="provide the credentials filename")
 
