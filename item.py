@@ -39,6 +39,10 @@
 
 class Item:
 
+    def __init__(self, testsetup, locator, lookup):
+        self.locator = locator
+        self.lookup = lookup
+
     def absolute_locator(self, relative_locator):
         return self._root_locator + relative_locator
 

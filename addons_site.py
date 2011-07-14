@@ -325,10 +325,7 @@ class AddonsDetailsPage(AddonsBasePage):
     class Reviews (AddonsBasePage, Item):
 
         _user_name_locator = "p.byline  a"
-        def __init__(self, testsetup, locator, lookup):
-            AddonsBasePage.__init__(self, testsetup)
-            self.locator = locator
-            self.lookup = lookup
+
 
         @property
         def username(self):
