@@ -221,8 +221,7 @@ class AddonsDetailsPage(AddonsHomePage):
     _addon_rating_locator = "css=span[itemprop='rating']"
     _whats_this_license_locator = "css=h5 > span > a"
     _description_locator = "css=div[class='article userinput'] > p"
-    _icon_locator = "css=img[class='icon']"
-
+    _icon_locator = "css=img.icon"
     _featured_image_locator = "css=#addon .featured .screenshot"
 
     #more about this addon
@@ -231,7 +230,6 @@ class AddonsDetailsPage(AddonsHomePage):
     _other_addons_by_authors_locator = "css=div.other-author-addons"
     _other_addons_dropdown_locator = "id=addons-author-addons-select"
     _other_addons_link_list_locator = "css=div.other-author-addons ul li"
-
 
     def __init__(self, testsetup, addon_name):
         #formats name for url
@@ -275,7 +273,7 @@ class AddonsDetailsPage(AddonsHomePage):
 
     @property
     def icon_url(self):
-        return self.selenium.get_attribute(self._icon_locator + "%s" %"@src")
+        return self.selenium.get_attribute(self._icon_locator + "%s" % "@src")
 
     def website(self):
         return self.selenium.get_text(self._website_locator)
