@@ -54,7 +54,7 @@ class AddOnsAPI(object):
         try:
             addon_xml = self.get_xml_for_single_addon(addon_name)
             description = addon_xml.description.string
-            return self.strip_links_from_text(description)
+            return self._strip_links_from_text(description)
         except AttributeError:
             self._print_search_error()
 
@@ -62,7 +62,7 @@ class AddOnsAPI(object):
         try:
             addon_xml = self.get_xml_for_single_addon(addon_name)
             summary = addon_xml.summary.string
-            return self.strip_links_from_text(summary)
+            return self._strip_links_from_text(summary)
         except AttributeError:
             self._print_search_error()
 
@@ -77,7 +77,7 @@ class AddOnsAPI(object):
         except AttributeError:
             self._print_search_error()
 
-    def strip_links_from_text(self, text):
+    def _strip_links_from_text(self, text):
         for i in re.findall("&lt;.+?&gt;", text, re.MULTILINE):
             text = text.replace(i, "")
         return text
