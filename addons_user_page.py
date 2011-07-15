@@ -50,3 +50,13 @@ class AddonsLoginPage(AddonsBasePage):
         self.selenium.type(self._password_locator, password)
         self.selenium.click(self._login_button_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
+
+
+class AddonsEditProfilePage(AddonsBasePage):
+
+    _page_title = 'Account Settings :: Add-ons for Firefox'
+    _title_locator = 'css=div.primary h2'
+
+    @property
+    def page_title(self):
+        return self.selenium.get_text(self._title_locator)

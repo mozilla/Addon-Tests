@@ -61,3 +61,24 @@ class TestAccounts:
 
         amo_home_page.header.click_logout()
         Assert.false(amo_home_page.header.is_user_logged_in)
+
+    def test_user_can_acess_theedit_profile_page(self, testsetup):
+        """
+            Test for litmus 4859
+            https://litmus.mozilla.org/show_test.cgi?id=4859
+        """
+
+        amo_home_page = addons_site.AddonsHomePage(testsetup)
+        credentials = amo_home_page.credentials_of_user('default')
+
+        Assert.false(amo_home_page.header.is_user_logged_in)
+        amo_home_page.header.click_login()
+        addons_login_page = addons_user_page.AddonsLoginPage(testsetup)
+
+        addons_login_page.login(credentials['email'], credentials['password'])
+        Assert.true(amo_home_page.header.is_user_logged_in)
+
+        amo_home_page.header.click_edit_profile()
+        amo_user_edit_page = addons_user_page.AddonsEditProfilePage(testsetup)
+
+        Assert.equal(amo_user_edit_page.page_title, 'Account Settings')
