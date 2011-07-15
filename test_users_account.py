@@ -64,8 +64,8 @@ class TestAccounts:
 
     def test_user_can_acess_theedit_profile_page(self, testsetup):
         """
-            Test for litmus 4859
-            https://litmus.mozilla.org/show_test.cgi?id=4859
+            Test for litmus 5039
+            https://litmus.mozilla.org/show_test.cgi?id=5039
         """
 
         amo_home_page = addons_site.AddonsHomePage(testsetup)
