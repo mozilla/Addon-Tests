@@ -70,7 +70,7 @@ class AddOnsAPI(object):
         try:
             addon_xml = self.get_xml_for_single_addon(addon_name)
             name_tags = addon_xml.authors.findAll('name')
-2
+
             return [BeautifulStoneSoup(str(name_tags[i])).find('name').string
                 for i in range(len(name_tags))]
 
