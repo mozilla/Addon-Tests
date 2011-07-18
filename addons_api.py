@@ -54,9 +54,15 @@ class AddOnsAPI(object):
         try:
             addon_xml = self.get_xml_for_single_addon(addon_name)
             description = addon_xml.description.string
-            for i in re.findall("&lt;.+?&gt;", addon_xml.description.string, re.MULTILINE):
-                description = description.replace(i, "")
-            return description
+            return self._strip_links_from_text(description)
+        except AttributeError:
+            self._print_search_error()
+
+    def get_addon_summary(self, addon_name):
+        try:
+            addon_xml = self.get_xml_for_single_addon(addon_name)
+            summary = addon_xml.summary.string
+            return self._strip_links_from_text(summary)
         except AttributeError:
             self._print_search_error()
 
@@ -64,7 +70,7 @@ class AddOnsAPI(object):
         try:
             addon_xml = self.get_xml_for_single_addon(addon_name)
             name_tags = addon_xml.authors.findAll('name')
-
+2
             return [BeautifulStoneSoup(str(name_tags[i])).find('name').string
                 for i in range(len(name_tags))]
 
@@ -77,6 +83,11 @@ class AddOnsAPI(object):
             return addon_xml.icon.string
         except:
             self._print_search_error()
+
+    def _strip_links_from_text(self, text):
+        for i in re.findall("&lt;.+?&gt;", text, re.MULTILINE):
+            text = text.replace(i, "")
+        return text
 
     def _print_search_error(self):
         print('The addon is not in the search results.')

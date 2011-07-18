@@ -339,6 +339,8 @@ class AddonsThemesPage(AddonsHomePage):
     _addons_rating_locator = _addons_metadata_locator + "/span/span"
     _breadcrumb_locator = "css=ol.breadcrumbs"
     _category_locator = "css=#c-30 > a"
+    _top_counter_locator = "css=div.primary>header b"
+    _bottom_counter_locator = "css=div.num-results > strong:nth(2)"
 
     def __init__(self, testsetup):
         AddonsBasePage.__init__(self, testsetup)
@@ -404,6 +406,14 @@ class AddonsThemesPage(AddonsHomePage):
         ratings_locator = self._addons_rating_locator
         ratings = self._extract_integers(ratings_locator, pattern, self.addon_count)
         return ratings
+
+    @property
+    def top_counter(self):
+        return self.selenium.get_text(self._top_counter_locator)
+
+    @property
+    def bottom_counter(self):
+        return self.selenium.get_text(self._bottom_counter_locator)
 
 
 class AddonsThemePage(AddonsBasePage):
@@ -613,7 +623,8 @@ class DiscoveryPane(AddonsBasePage):
     def __init__(self, testsetup, path):
         AddonsBasePage.__init__(self, testsetup)
         self.selenium.open(testsetup.base_url + path)
-        self.selenium.window_maximize()
+        #resizing this page for elements that disappear when the window is < 1000
+        self.selenium.get_eval("window.resizeTo(10000,10000); window.moveTo(0,0)")
 
     @property
     def what_are_addons_text(self):
@@ -626,6 +637,9 @@ class DiscoveryPane(AddonsBasePage):
     def is_mission_section_visible(self):
         return self.selenium.is_visible(self._mission_section_locator)
 
+    def wait_for_mission_visible(self):
+            self.wait_for_element_visible(self._mission_section_locator)
+
     @property
     def mission_section(self):
         return self.selenium.get_text(self._mission_section_text_locator)
@@ -635,6 +649,7 @@ class DiscoveryPane(AddonsBasePage):
 
     @property
     def download_count(self):
+        self.wait_for_element_visible(self._download_count_text_locator)
         return self.selenium.get_text(self._download_count_text_locator)
 
     def is_personas_section_visible(self):
