@@ -35,18 +35,29 @@
 #
 # ***** END LICENSE BLOCK *****
 
-from addons_base_page import AddonsBasePage
+from unittestzero import Assert
+import addons_site
+import addons_user_page
 
 
-class AddonsLoginPage(AddonsBasePage):
+class TestAccounts:
 
-    _page_title = 'User Login :: Add-ons for Firefox'
-    _email_locator = 'id=LoginEmail'
-    _password_locator = 'id=LoginPassword'
-    _login_button_locator = 'css=#login button.prominent'  # Using css till 668749 implemented
+    def test_user_can_login_and_logout(self, testsetup):
+        """ Test for litmus 7857
+            https://litmus.mozilla.org/show_test.cgi?id=7857
+            Test for litmus 4859
+            https://litmus.mozilla.org/show_test.cgi?id=4859
+        """
 
-    def login(self, email, password):
-        self.selenium.type(self._email_locator, email)
-        self.selenium.type(self._password_locator, password)
-        self.selenium.click(self._login_button_locator)
-        self.selenium.wait_for_page_to_load(self.timeout)
+        amo_home_page = addons_site.AddonsHomePage(testsetup)
+        credentials = amo_home_page.credentials_of_user('default')
+
+        Assert.false(amo_home_page.header.is_user_logged_in)
+        amo_home_page.header.click_login()
+        addons_login_page = addons_user_page.AddonsLoginPage(testsetup)
+
+        addons_login_page.login(credentials['email'], credentials['password'])
+        Assert.true(amo_home_page.header.is_user_logged_in)
+
+        amo_home_page.header.click_logout()
+        Assert.false(amo_home_page.header.is_user_logged_in)
