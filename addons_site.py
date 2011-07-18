@@ -336,6 +336,8 @@ class AddonsThemesPage(AddonsHomePage):
     _addons_rating_locator = _addons_metadata_locator + "/span/span"
     _breadcrumb_locator = "css=ol.breadcrumbs"
     _category_locator = "css=#c-30 > a"
+    _top_counter_locator = "css=div.primary>header b"
+    _bottom_counter_locator = "css=div.num-results > strong:nth(2)"
 
     def __init__(self, testsetup):
         AddonsBasePage.__init__(self, testsetup)
@@ -401,6 +403,14 @@ class AddonsThemesPage(AddonsHomePage):
         ratings_locator = self._addons_rating_locator
         ratings = self._extract_integers(ratings_locator, pattern, self.addon_count)
         return ratings
+
+    @property
+    def top_counter(self):
+        return self.selenium.get_text(self._top_counter_locator)
+
+    @property
+    def bottom_counter(self):
+        return self.selenium.get_text(self._bottom_counter_locator)
 
 
 class AddonsThemePage(AddonsBasePage):
