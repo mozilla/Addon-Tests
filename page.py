@@ -44,6 +44,8 @@ Created on Jun 21, 2010
 import re
 import time
 import base64
+import yaml
+
 
 http_regex = re.compile('https?://((\w+\.)+\w+\.\w+)')
 
@@ -61,6 +63,7 @@ class Page(object):
         self.base_url = testsetup.base_url
         self.selenium = testsetup.selenium
         self.timeout = testsetup.timeout
+        self.credentials = testsetup.credentials
 
     @property
     def is_the_current_page(self):
@@ -76,15 +79,15 @@ class Page(object):
 
     def get_url_current_page(self):
         return(self.selenium.get_location())
-    
+
     def get_text(self, text):
         return(self.selenium.get_text(text))
 
-    def is_text_present(self,text):
+    def is_text_present(self, text):
         return self.selenium.is_text_present(text)
-    
+
     def is_element_present(self, locator):
-        return self.selenium.is_element_present( locator )
+        return self.selenium.is_element_present(locator)
 
     def return_to_previous_page(self):
         self.selenium.go_back()
@@ -102,6 +105,15 @@ class Page(object):
             if count == self.timeout / 1000:
                 self.record_error()
                 raise Exception(element + ' has not loaded')
+
+    def wait_for_element_not_present(self, element):
+        count = 0
+        while  self.selenium.is_element_present(element):
+            time.sleep(1)
+            count += 1
+            if count == self.timeout / 1000:
+                self.record_error()
+                raise Exception(element + ' is still loaded')
 
     def wait_for_element_visible(self, element):
         self.wait_for_element_present(element)
@@ -148,3 +160,7 @@ class Page(object):
         f.write(base64.decodestring(
             self.selenium.capture_entire_page_screenshot_to_string('')))
         f.close()
+
+    def parse_yaml_file(self, file_name):
+        stream = file(file_name, 'r')
+        return yaml.load(stream)

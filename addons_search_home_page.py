@@ -20,6 +20,7 @@
 # the Initial Developer. All Rights Reserved.
 #
 # Contributor(s): Bebe <florin.strugariu@softvision.ro>
+#                 Alex Rodionov <p0deje@gmail.com>        
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -35,11 +36,14 @@
 #
 # ***** END LICENSE BLOCK *****
 
+from time import strptime, mktime
+
+from addons_base_page import AddonsBasePage
 from page import Page
 import addons_site
-import  refine_results_region
+import refine_results_region
 
-class AddonsSearchHomePage(Page):
+class AddonsSearchHomePage(AddonsBasePage):
 
     _results_summary_locator = "css=h3.results-count"
     _results_displayed_locator = "css=div.num-results"
@@ -49,6 +53,13 @@ class AddonsSearchHomePage(Page):
     _previous_link_locator = "link=Prev"
 
     _breadcrumbs_locator = "css=ol.breadcrumbs"
+    
+    _sort_by_keyword_match_locator = "css=div.listing-header a:contains('Keyword Match')"
+    _sort_by_created_locator = "css=div.listing-header a:contains('Created')"
+    _sort_by_updated_locator = "css=div.listing-header a:contains('Updated')"
+    _sort_by_rating_locator = "css=div.listing-header a:contains('Rating')"
+    _sort_by_downloads_locator = "css=div.listing-header a:contains('Downloads')"
+    _sort_by_users_locator = "css=div.listing-header a:contains('Users')"
 
     def page_forward(self):
         self.selenium.click(self._next_link_locator)
@@ -81,11 +92,16 @@ class AddonsSearchHomePage(Page):
     @property
     def result_count(self):
         return int(self.selenium.get_css_count(self._results_locator))
-    
+
     def click_addon(self, addon_name):
         self.selenium.click("link=" + addon_name)
         return addons_site.AddonsDetailsPage(self.testsetup, addon_name)
 
+    def sort_by(self, type):
+        self.selenium.click(getattr(self, '_sort_by_%s_locator' % type))
+        self.selenium.wait_for_page_to_load(self.timeout)
+        return self
+    
     def result(self, lookup):
         return self.Result(self.testsetup, lookup)
 
@@ -110,6 +126,7 @@ class AddonsSearchHomePage(Page):
                 return "css=div.results-inner div.item:nth(%s)" % self.lookup
             else:
                 # lookup by name
+ 
                 return "css=div.results-inner div.item:contains(%s)" % self.lookup
 
         @property
@@ -119,3 +136,36 @@ class AddonsSearchHomePage(Page):
         def click(self):
             self.selenium.click(self.absolute_locator(self._name_locator))
             self.selenium.wait_for_page_to_load(self.timeout)
+
+        @property
+        def downloads(self):
+            locator = self.root_locator + ' div.item-info p.downloads strong'
+            return int(self.selenium.get_text(locator).replace(',', ''))
+        
+        @property
+        def users(self):
+            """ Alias for self.downloads """
+            return self.downloads
+            
+        @property
+        def rating(self):
+            locator = self.root_locator + ' div.item-info p.addon-rating span span'
+            return int(self.selenium.get_text(locator))
+        
+        @property
+        def created_date(self):
+            """ Returns created date of result in POSIX format """
+            locator = self.root_locator + ' div.item-info p.updated'
+            date = self.selenium.get_text(locator).strip().replace('Added ', '')
+            # convert to POSIX format
+            date = strptime(date, '%B %d, %Y')
+            return mktime(date)
+
+        @property
+        def updated_date(self):
+            """ Returns updated date of result in POSIX format """
+            locator = self.root_locator + ' div.item-info p.updated'
+            date = self.selenium.get_text(locator).strip().replace('Updated ', '')
+            # convert to POSIX format
+            date = strptime(date, '%B %d, %Y')
+            return mktime(date)
