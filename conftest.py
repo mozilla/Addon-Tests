@@ -21,6 +21,7 @@
 # the Initial Developer. All Rights Reserved.
 #
 # Contributor(s): Dave Hunt <dhunt@mozilla.com>
+#                 Bebe <florin.strugariu@softvision.ro>
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -51,6 +52,7 @@ def pytest_runtest_setup(item):
     item.platform = item.config.option.platform
     TestSetup.base_url = item.config.option.base_url
     TestSetup.timeout = item.config.option.timeout
+    TestSetup.credentials = item.config.option.credentialsfile
     item.sauce_labs_username = item.config.option.sauce_labs_username
     item.sauce_labs_api = item.config.option.sauce_labs_api
 
@@ -70,12 +72,12 @@ def pytest_runtest_setup(item):
                                           TestSetup.base_url)
         else:
             TestSetup.selenium = selenium(item.host, item.port, item.browser_name, TestSetup.base_url)
-         
+
         if item.config.option.capturenetwork:
             TestSetup.selenium.start("captureNetworkTraffic=true")
         else:
             TestSetup.selenium.start()
-       
+
         TestSetup.selenium.set_timeout(TestSetup.timeout)
     else:
         TestSetup.skip_selenium = True
@@ -89,7 +91,7 @@ def pytest_runtest_teardown(item):
             f = open("%s.json" % filename, "w")
             f.write(traffic)
             f.close()
-        
+
         TestSetup.selenium.stop()
 
 
@@ -138,6 +140,10 @@ def pytest_addoption(parser):
                      action="store",
                      dest="sauce_labs_api",
                      help="sauce labs api key")
+    parser.addoption("--credentialsfile",
+                     action="store",
+                     default="credentials.yaml",
+                     help="provide the credentials filename")
 
 
 class TestSetup:

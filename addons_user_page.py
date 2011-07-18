@@ -35,15 +35,15 @@
 #
 # ***** END LICENSE BLOCK *****
 
-
 from addons_base_page import AddonsBasePage
+
 
 class AddonsLoginPage(AddonsBasePage):
 
     _page_title = 'User Login :: Add-ons for Firefox'
     _email_locator = 'id=LoginEmail'
     _password_locator = 'id=LoginPassword'
-    _login_button_locator = 'css=#login button.prominent' # Using css till 668749 implemented
+    _login_button_locator = 'css=#login button.prominent'  # Using css till 668749 implemented
 
     def login(self, email, password):
         self.selenium.type(self._email_locator, email)

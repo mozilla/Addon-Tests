@@ -35,47 +35,29 @@
 #
 # ***** END LICENSE BLOCK *****
 
-from page import Page
+from unittestzero import Assert
+import addons_site
+import addons_user_page
 
 
-class AddonsBasePage(Page):
+class TestAccounts:
 
-    def credentials_of_user(self, user):
-        return self.parse_yaml_file(self.credentials)[user]
+    def test_user_can_login_and_logout(self, testsetup):
+        """ Test for litmus 7857
+            https://litmus.mozilla.org/show_test.cgi?id=7857
+            Test for litmus 4859
+            https://litmus.mozilla.org/show_test.cgi?id=4859
+        """
 
-    @property
-    def header(self):
-        return AddonsBasePage.HeaderRegion(self.testsetup)
+        amo_home_page = addons_site.AddonsHomePage(testsetup)
+        credentials = amo_home_page.credentials_of_user('default')
 
-    class HeaderRegion(Page):
-        #Not LogedIn
-        _login_locator = "css=.amo-header .context a:nth(1)"  # Until https://bugzilla.mozilla.org/show_bug.cgi?id=669646
-        _register_locator = "css=.amo-header .context a:nth(0)"
+        Assert.false(amo_home_page.header.is_user_logged_in)
+        amo_home_page.header.click_login()
+        addons_login_page = addons_user_page.AddonsLoginPage(testsetup)
 
-        #LogedIn
-        _account_controller_locator = 'css=#aux-nav .account .controller'
-        _dropdown_locator = "css=#aux-nav .account ul"
+        addons_login_page.login(credentials['email'], credentials['password'])
+        Assert.true(amo_home_page.header.is_user_logged_in)
 
-        def click_my_account(self):
-            self.selenium.click(self._account_controller_locator)
-            self.wait_for_element_visible(self._dropdown_locator)
-
-        def click_login(self):
-            self.selenium.click(self._login_locator)
-            self.selenium.wait_for_page_to_load(self.timeout)
-
-        def click_logout(self):
-            self.click_my_account()
-            if self.selenium.get_text('%s > li:nth(3) a' % self._dropdown_locator) == "Log out":  #Until the https://bugzilla.mozilla.org/show_bug.cgi?id=669650
-                self.selenium.click('%s > li:nth(3) a' % self._dropdown_locator)
-            else:
-                self.selenium.click('%s > li:nth(4) a' % self._dropdown_locator)
-            self.selenium.wait_for_page_to_load(self.timeout)
-
-        @property
-        def is_user_logged_in(self):
-            try:
-                return self.selenium.is_visible(self._account_controller_locator)
-            except:
-                pass
-            return False
+        amo_home_page.header.click_logout()
+        Assert.false(amo_home_page.header.is_user_logged_in)
