@@ -72,6 +72,11 @@ class AddonsBasePage(Page):
                 self.selenium.click('%s > li:nth(4) a' % self._dropdown_locator)
             self.selenium.wait_for_page_to_load(self.timeout)
 
+        def click_view_profile(self):
+            self.click_my_account
+            self.selenium.click('%s > li:nth(0) a' % self._dropdown_locator)
+            self.selenium.wait_for_page_to_load(self.timeout)
+
         @property
         def is_user_logged_in(self):
             try:
