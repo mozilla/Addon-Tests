@@ -285,11 +285,12 @@ class AddonsDetailsPage(AddonsHomePage):
         
     @property
     def support_url(self):
-        #using regular expression to parse certificate stuff in the link
         support_url = self.selenium.get_attribute(self._zamboni_support_link_locator + "%s" % "@href")
-        url_pieces = re.split('\/\/.+\/\/', support_url)
-        support_url = url_pieces[0] + "//" + url_pieces[1]
-        return support_url
+        return self._parse_certificate_from_link(support_url)
+
+    def _parse_certificate_from_link(self, url):
+        url_pieces = re.split('\/\/.+\/\/', url)
+        return url_pieces[0] + "//" + url_pieces[1]
 
     @property
     def other_addons_by_authors_text(self):
