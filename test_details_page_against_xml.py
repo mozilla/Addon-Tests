@@ -123,5 +123,9 @@ class TestDetailsPageAgainstXML:
         
         #browser
         firebug_page = AddonsDetailsPage(testsetup, self.firebug)
-        support_url = firebug_page.support_url
-        Assert.equal(support_url, "https://getfirebug.com")
+        browser_support_url = firebug_page.support_url
+        
+        #api
+        addons_xml = AddOnsAPI(testsetup)
+        xml_support_url = addons_xml.get_support_url("firebug")
+        Assert.equal(xml_support_url, "https://getfirebug.com")
