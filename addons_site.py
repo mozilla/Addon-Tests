@@ -223,6 +223,8 @@ class AddonsDetailsPage(AddonsHomePage):
     _description_locator = "css=div[class='article userinput'] > p"
     _icon_locator = "css=img.icon"
     _featured_image_locator = "css=#addon .featured .screenshot"
+    _zamboni_support_link_locator = "css=ul.xoxo > li > a"
+    _impala_support_link_locator = "css=a.support"
 
     #more about this addon
     _additional_images_locator = "css=#addon .article .screenshot"
@@ -280,6 +282,14 @@ class AddonsDetailsPage(AddonsHomePage):
 
     def click_website_link(self):
         self.selenium.open(self.website)
+        
+    @property
+    def support_url(self):
+        #using regular expression to parse certificate stuff in the link
+        support_url = self.selenium.get_attribute(self._zamboni_support_link_locator + "%s" % "@href")
+        url_pieces = re.split('\/\/.+\/\/', support_url)
+        support_url = url_pieces[0] + "//" + url_pieces[1]
+        return support_url
 
     @property
     def other_addons_by_authors_text(self):
