@@ -15,7 +15,6 @@
 # The Original Code is Mozilla WebQA Selenium Tests.
 #
 # The Initial Developer of the Original Code is
-# The Initial Developer of the Original Code is
 # Mozilla.
 # Portions created by the Initial Developer are Copyright (C) 2011
 # the Initial Developer. All Rights Reserved.
