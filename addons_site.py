@@ -609,7 +609,7 @@ class DiscoveryPane(AddonsBasePage):
     _mission_section_locator = 'id=mission'
     _mission_section_text_locator = 'css=#mission > p'
     _learn_more_locator = 'id=learn-more'
-    _mozilla_org_link_locator = "css=a[href=http://www.mozilla.org/]"
+    _mozilla_org_link_locator = "css=#mission a"
     _download_count_text_locator = "id=download-count"
     _personas_section_locator = "id=featured-personas"
     _personas_see_all_link = "css=.all[href='/en-US/firefox/personas/']"
