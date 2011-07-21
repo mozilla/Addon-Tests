@@ -66,15 +66,6 @@ class AddonsHomePage(AddonsBasePage):
     _category_list_locator = "//ul[@id='categoriesdropdown']"
     _category_item_locator = "//li/a[text()='%s']"
 
-    #prev next links
-
-    #addons detail page
-
-
-
-
-
-
     def __init__(self, testsetup):
         ''' Creates a new instance of the class and gets the page ready for testing '''
         AddonsBasePage.__init__(self, testsetup)
@@ -312,7 +303,6 @@ class AddonsDetailsPage(AddonsBasePage):
     def go_to_first_page(self):
         self.selenium.click(self._first_page_link_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
-
 
     def click_other_addon_by_this_author(self, value):
         self.selenium.click('%s:contains(%s) a' % (self._other_addons_link_list_locator, value))
