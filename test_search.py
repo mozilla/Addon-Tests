@@ -260,12 +260,12 @@ class TestSearch:
         https://litmus.mozilla.org/show_test.cgi?id=17346
         """
         amo_home_page = AddonsHomePage(testsetup)
-        amo_search_page = amo_home_page.search_for("fire")
+        amo_search_page = amo_home_page.search_for("deutsch")
 
         first_expected = 1
         second_expected = 20
 
-        for i in range(10):
+        while(amo_search_page.is_forword_present):
             results_summary = amo_search_page.results_displayed
             results = re.split("\W+", results_summary)
             first_count = results[1]
@@ -278,7 +278,6 @@ class TestSearch:
             first_expected += 20
             second_expected += 20
 
-        amo_search_page.click_last_results_page()
         number = int(re.split("\W+", results_summary)[4]) % 20
 
         if number == 0:

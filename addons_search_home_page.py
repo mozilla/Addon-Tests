@@ -72,6 +72,10 @@ class AddonsSearchHomePage(AddonsBasePage):
         self.selenium.wait_for_page_to_load(self.timeout)
 
     @property
+    def is_forword_present(self):
+        return self.is_element_present(self._next_link_locator)
+
+    @property
     def refine_results(self):
         return refine_results_region.RefineResults(self.testsetup)
 
@@ -105,10 +109,10 @@ class AddonsSearchHomePage(AddonsBasePage):
         return self
 
     def result(self, lookup):
-        return self.Result(self.testsetup, lookup)
+        return self.SearchResult(self.testsetup, lookup)
 
     def results(self):
-        return [self.Result(self.testsetup, i) for i in range(self.result_count)]
+        return [self.SearchResult(self.testsetup, i) for i in range(self.result_count)]
 
     def click_last_results_page(self):
         count = self.selenium.get_css_count(self._pagination_loctor)
@@ -116,7 +120,7 @@ class AddonsSearchHomePage(AddonsBasePage):
             self.selenium.click("%s:nth(%s) a" % (self._pagination_loctor, count - 2))
             self.selenium.wait_for_page_to_load(self.timeout)
 
-    class Result(Page):
+    class SearchResult(Page):
         _name_locator = " h3 a"
 
         def __init__(self, testsetup, lookup):
