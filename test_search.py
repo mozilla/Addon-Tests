@@ -244,6 +244,16 @@ class TestSearch:
         Assert.equal(amo_search_page.refine_results.tag("development").name, "development")
         Assert.true(amo_search_page.refine_results.tag_count > 1)
 
+    def test_that_search_returns_top_1000_results(self, testsetup):
+
+        amo_home_page = AddonsHomePage(testsetup)
+        amo_search_page = amo_home_page.search_for("a")
+
+        results = amo_search_page.results_summary
+        total_results = results.split(' ')[5]
+
+        Assert.equal(total_results, '1000')
+
     def test_that_search_results_return_20_results_per_page(self, testsetup):
         """
         Litmus 17346
