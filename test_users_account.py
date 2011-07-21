@@ -62,7 +62,7 @@ class TestAccounts:
         amo_home_page.header.click_logout()
         Assert.false(amo_home_page.header.is_user_logged_in)
 
-    def test_user_can_acess_the_view_profile_page(self, testsetup):
+    def test_user_can_access_the_view_profile_page(self, testsetup):
         """
         Test for litmus 15400
         https://litmus.mozilla.org/show_test.cgi?id=15400
@@ -71,7 +71,6 @@ class TestAccounts:
         amo_home_page = addons_site.AddonsHomePage(testsetup)
         credentials = amo_home_page.credentials_of_user('default')
 
-        Assert.false(amo_home_page.header.is_user_logged_in)
         amo_home_page.header.click_login()
         addons_login_page = addons_user_page.AddonsLoginPage(testsetup)
 
