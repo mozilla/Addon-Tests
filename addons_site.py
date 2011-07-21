@@ -212,8 +212,8 @@ class AddonsHomePage(AddonsBasePage):
 
 class AddonsDetailsPage(AddonsBasePage):
 
-    #_addon_detail_base_url = "/firefox/addon/"  # Used for the old pages
-    _addon_detail_base_url = "/firefox/i/addon/"  # Used for the new pages
+    _addon_detail_base_url = "/firefox/addon/"  # Used for the staging
+    #_addon_detail_base_url = "/firefox/i/addon/"  # Used for the impala
     _name_locator = "css=h2.addon > span"
     _version_number_locator = "css=span.version"
     _authors_locator = "//h4[@class='author']/a"

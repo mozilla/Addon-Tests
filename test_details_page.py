@@ -38,10 +38,13 @@
 # ***** END LICENSE BLOCK *****
 
 import re
+import pytest
 
 from unittestzero import Assert
 from addons_site import UserFAQPage
 from addons_site import AddonsDetailsPage
+
+xfail = pytest.mark.xfail
 
 
 class TestDetailsPage:
@@ -165,6 +168,7 @@ class TestDetailsPage:
         image_viewer.close()
         Assert.false(image_viewer.is_visible)
 
+    @pytest.mark.impala
     def test_that_review_usernames_are_clickable(self, testsetup):
         """
         Litmus 4842
