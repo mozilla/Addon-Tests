@@ -57,25 +57,25 @@ class TestReviews:
         Assert.equal(amo_details_page.review_count, 20)
 
         #Go to the last page and check that the next button is not present
-        amo_details_page.go_to_last_page()
-        Assert.false(amo_details_page.is_next_link_present)
+        amo_details_page.pagination.go_to_last_page()
+        Assert.false(amo_details_page.pagination.is_next_link_present)
 
         #Go one page back, check that it has 20 reviews
         #that the page number decreases and that the next link is visible
-        page_number = amo_details_page.current_page
-        amo_details_page.page_back()
-        Assert.true(amo_details_page.is_next_link_visible)
+        page_number = amo_details_page.pagination.current_page
+        amo_details_page.pagination.page_back()
+        Assert.true(amo_details_page.pagination.is_next_link_visible)
         Assert.equal(amo_details_page.review_count, 20)
-        Assert.equal(amo_details_page.current_page, page_number - 1)
+        Assert.equal(amo_details_page.pagination.current_page, page_number - 1)
 
         #Go to the first page and check that the prev button is not present
-        amo_details_page.go_to_first_page()
-        Assert.false(amo_details_page.is_prev_link_present)
+        amo_details_page.pagination.go_to_first_page()
+        Assert.false(amo_details_page.pagination.is_prev_link_present)
 
         #Go one page forward, check that it has 20 reviews,
         #that the page number increases and that the prev link is visible
-        page_number = amo_details_page.current_page
-        amo_details_page.page_forward()
-        Assert.true(amo_details_page.is_prev_link_visible)
+        page_number = amo_details_page.pagination.current_page
+        amo_details_page.pagination.page_forward()
+        Assert.true(amo_details_page.pagination.is_prev_link_visible)
         Assert.equal(amo_details_page.review_count, 20)
-        Assert.equal(amo_details_page.current_page, page_number + 1)
+        Assert.equal(amo_details_page.pagination.current_page, page_number + 1)

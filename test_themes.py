@@ -62,7 +62,7 @@ class TestThemes:
         addons_orig = addons
         addons.sort()
         [Assert.equal(addons_orig[i], addons[i]) for i in xrange(len(addons))]
-        amo_themes_page.page_forward()
+        amo_themes_page.pagination.page_forward()
         addons = amo_themes_page.addon_names
         addons_set = set(addons)
         Assert.equal(len(addons), len(addons_set), "There are duplicates in the names")
@@ -80,7 +80,7 @@ class TestThemes:
         Assert.equal(len(addons), len(addons_set), "There are duplicates in the names")
         updated_dates = amo_themes_page.addon_updated_dates
         Assert.is_sorted_descending(updated_dates)
-        amo_themes_page.page_forward()
+        amo_themes_page.pagination.page_forward()
         updated_dates.extend(amo_themes_page.addon_updated_dates)
         Assert.is_sorted_descending(updated_dates)
 
@@ -94,7 +94,7 @@ class TestThemes:
         Assert.equal(len(addons), len(addons_set), "There are duplicates in the names")
         created_dates = amo_themes_page.addon_created_dates
         Assert.is_sorted_descending(created_dates)
-        amo_themes_page.page_forward()
+        amo_themes_page.pagination.page_forward()
         created_dates.extend(amo_themes_page.addon_created_dates)
         Assert.is_sorted_descending(created_dates)
 
@@ -109,7 +109,7 @@ class TestThemes:
         Assert.equal(len(addons), len(addons_set), "There are duplicates in the names")
         downloads = amo_themes_page.addon_download_number
         Assert.is_sorted_descending(downloads)
-        amo_themes_page.page_forward()
+        amo_themes_page.pagination.page_forward()
         downloads.extend(amo_themes_page.addon_download_number)
         Assert.is_sorted_descending(downloads)
 

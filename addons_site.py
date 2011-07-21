@@ -166,10 +166,7 @@ class AddonsDetailsPage(AddonsBasePage):
     _featured_image_locator = "css=#addon .featured .screenshot"
     _review_details_locator = "css=.review-detail"
     _all_reviews_link_locator = "css=#addon #reviews+.article a.more-info"
-    _current_page_locator = "css=.pagination li.selected a"
     _review_locator = "css=.primary div.review"
-    _last_page_link_locator = "css=.pagination a:not([rel]):last"
-    _first_page_link_locator = "css=.pagination a:not([rel]):first"
 
     #more about this addon
     _additional_images_locator = "css=#addon .article .screenshot"
@@ -177,10 +174,6 @@ class AddonsDetailsPage(AddonsBasePage):
     _other_addons_by_authors_locator = "css=div.other-author-addons"
     _other_addons_dropdown_locator = "id=addons-author-addons-select"
     _other_addons_link_list_locator = "css=div.other-author-addons ul li"
-
-    #prev next links
-    _next_link_locator = "link=Next"
-    _previous_link_locator = "link=Prev"
 
     def __init__(self, testsetup, addon_name):
         #formats name for url
@@ -195,10 +188,6 @@ class AddonsDetailsPage(AddonsBasePage):
     def click_all_reviews_link(self):
         self.selenium.click(self._all_reviews_link_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
-
-    @property
-    def current_page(self):
-        return int(self.selenium.get_text(self._current_page_locator))
 
     @property
     def review_count(self):
@@ -228,30 +217,6 @@ class AddonsDetailsPage(AddonsBasePage):
     @property
     def rating(self):
         return self.selenium.get_text(self._addon_rating_locator)
-
-    @property
-    def is_next_link_present(self):
-        return self.selenium.is_element_present(self._next_link_locator)
-
-    @property
-    def is_next_link_visible(self):
-        return self.selenium.is_visible(self._next_link_locator)
-
-    @property
-    def is_prev_link_present(self):
-        return self.selenium.is_element_present(self._previous_link_locator)
-
-    @property
-    def is_prev_link_visible(self):
-        return self.selenium.is_visible(self._previous_link_locator)
-
-    def page_forward(self):
-        self.selenium.click(self._next_link_locator)
-        self.selenium.wait_for_page_to_load(self.timeout)
-
-    def page_back(self):
-        self.selenium.click(self._previous_link_locator)
-        self.selenium.wait_for_page_to_load(self.timeout)
 
     def click_whats_this_license(self):
         self.selenium.click(self._whats_this_license_locator)
@@ -295,14 +260,6 @@ class AddonsDetailsPage(AddonsBasePage):
     def other_addons_link_list(self):
         return [self.selenium.get_text("%s:nth(%s) a" % (self._other_addons_link_list_locator, pos))
             for pos in range(self.other_addons_link_list_count)]
-
-    def go_to_last_page(self):
-        self.selenium.click(self._last_page_link_locator)
-        self.selenium.wait_for_page_to_load(self.timeout)
-
-    def go_to_first_page(self):
-        self.selenium.click(self._first_page_link_locator)
-        self.selenium.wait_for_page_to_load(self.timeout)
 
     def click_other_addon_by_this_author(self, value):
         self.selenium.click('%s:contains(%s) a' % (self._other_addons_link_list_locator, value))
