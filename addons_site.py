@@ -349,14 +349,13 @@ class AddonsDetailsPage(AddonsBasePage):
         def __init__(self, testsetup, lookup):
             Page.__init__(self, testsetup)
             self.lookup = lookup
-            self.wait_for_element_visible(self._reviews_locator)
 
         def absolute_locator(self, relative_locator):
-            self.wait_for_element_visible(self._reviews_locator)
             return self._root_locator + relative_locator
 
         @property
         def _root_locator(self):
+            self.wait_for_element_visible(self._reviews_locator)
             if type(self.lookup) == int:
                 # lookup by index
                 return "%s:nth(%s) " % (self._reviews_locator, self.lookup)
