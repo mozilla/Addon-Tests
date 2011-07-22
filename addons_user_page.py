@@ -36,6 +36,7 @@
 # ***** END LICENSE BLOCK *****
 
 from addons_base_page import AddonsBasePage
+from addons_site import AddonsHomePage 
 
 
 class AddonsLoginPage(AddonsBasePage):
@@ -50,3 +51,4 @@ class AddonsLoginPage(AddonsBasePage):
         self.selenium.type(self._password_locator, password)
         self.selenium.click(self._login_button_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
+        return AddonsHomePage(self.testsetup)
