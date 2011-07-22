@@ -39,9 +39,12 @@
 
 import re
 import pytest
+from datetime import datetime
 from unittestzero import Assert
 
-from addons_site import AddonsHomePage
+from addons_site import AddonsHomePage, AddonsDetailsPage
+from addons_user_page import AddonsLoginPage
+
 
 class TestReviews:
 
@@ -81,3 +84,28 @@ class TestReviews:
         Assert.true(amo_home_page.is_prev_link_visible)
         Assert.equal(amo_home_page.review_count, 20)
         Assert.equal(amo_home_page.current_page, page_number + 1)
+
+    def test_that_new_review_is_saved(self, testsetup):
+        """ Litmus 22921
+            https://litmus.mozilla.org/show_test.cgi?id=22921 """
+        # Step 1 - Login into AMO
+        amo_home_page = AddonsHomePage(testsetup)
+        credentials = amo_home_page.credentials_of_user('default')
+        amo_home_page.header.click_login()
+        addons_login_page = AddonsLoginPage(testsetup)
+        addons_login_page.login(credentials['email'], credentials['password'])
+        Assert.true(amo_home_page.header.is_user_logged_in)
+        # Step 2 - Load any addon detail page
+        details_page = AddonsDetailsPage(testsetup, 'Adblock Plus')
+        # Step 3 - Click on "Write review" button (omitted)
+        # Step 4 - Write a review
+        body = 'Great addon!'
+        details_page.enter_review_with_text(body)
+        details_page.set_review_rating(5)
+        review_page = details_page.click_to_submit_review()
+        # Step 5 - Assert review
+        review = review_page.get_review_by_index()
+        Assert.equal(review['rating'], 5)
+        Assert.equal(review['author'], credentials['name'])
+        Assert.equal(review['date'], datetime.now().strftime("%B %d, %Y"))
+        Assert.equal(review['text'], body)
