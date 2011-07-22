@@ -48,7 +48,6 @@ from datetime import datetime
 
 from page import Page
 from addons_base_page import AddonsBasePage
-
 from addons_user_page import AddonsUserPage
 import addons_search_home_page
 import image_viewer_region
@@ -339,6 +338,7 @@ class AddonsDetailsPage(AddonsBasePage):
 
     @property
     def review_count(self):
+        self.wait_for_element_visible(self._reviews_locator)
         return int(self.selenium.get_css_count(self._reviews_locator))
 
     class DetailsReviewSnippet(Page):
