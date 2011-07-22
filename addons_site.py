@@ -46,6 +46,7 @@
 import re
 from datetime import datetime
 
+from page import Page
 from addons_base_page import AddonsBasePage
 
 from addons_user_page import AddonsUserPage
@@ -212,8 +213,7 @@ class AddonsHomePage(AddonsBasePage):
 
 class AddonsDetailsPage(AddonsBasePage):
 
-    _addon_detail_base_url = "/firefox/addon/"  # Used for the staging
-    #_addon_detail_base_url = "/firefox/i/addon/"  # Used for the impala
+    _addon_detail_base_url = "/firefox/addon/"
     _name_locator = "css=h2.addon > span"
     _version_number_locator = "css=span.version"
     _authors_locator = "//h4[@class='author']/a"
@@ -234,14 +234,12 @@ class AddonsDetailsPage(AddonsBasePage):
     _other_addons_dropdown_locator = "id=addons-author-addons-select"
     _other_addons_link_list_locator = "css=div.other-author-addons ul li"
 
-    _review_region_locator = "id=reviews"
     _reviews_locator = "css=#reviews div"
 
     def __init__(self, testsetup, addon_name):
         #formats name for url
         self.addon_name = addon_name.replace(' ', '-').lower()
         AddonsBasePage.__init__(self, testsetup)
-        self.selenium.window_maximize()
         self.selenium.open(self._addon_detail_base_url + self.addon_name)
 
     @property
@@ -334,26 +332,24 @@ class AddonsDetailsPage(AddonsBasePage):
         return image_viewer
 
     def review(self, lookup):
-        self.wait_for_element_visible(self._reviews_locator)
         return self.DetailsReviewSnippet(self.testsetup, lookup)
 
     def reviews(self):
-        self.wait_for_element_visible(self._reviews_locator)
         return [self.DetailsReviewSnippet(self.testsetup, i) for i in range(self.review_count)]
 
     @property
     def review_count(self):
-        self.wait_for_element_visible(self._reviews_locator)
         return int(self.selenium.get_css_count(self._reviews_locator))
 
-    class DetailsReviewSnippet (AddonsBasePage):
+    class DetailsReviewSnippet(Page):
 
         _reviews_locator = "css=#reviews div"  # Base locator
         _username_locator = "p.byline  a"
 
         def __init__(self, testsetup, lookup):
-            AddonsBasePage.__init__(self, testsetup)
+            Page.__init__(self, testsetup)
             self.lookup = lookup
+            self.wait_for_element_visible(self._reviews_locator)
 
         def absolute_locator(self, relative_locator):
             self.wait_for_element_visible(self._reviews_locator)

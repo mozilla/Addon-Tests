@@ -44,8 +44,6 @@ from unittestzero import Assert
 from addons_site import UserFAQPage
 from addons_site import AddonsDetailsPage
 
-xfail = pytest.mark.xfail
-
 
 class TestDetailsPage:
 
@@ -183,4 +181,3 @@ class TestDetailsPage:
             amo_user_page = review.click_username()
             Assert.equal(username, amo_user_page.username)
             AddonsDetailsPage(testsetup, addon_name)
-
