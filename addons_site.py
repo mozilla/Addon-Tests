@@ -224,8 +224,8 @@ class AddonsDetailsPage(AddonsHomePage):
     _icon_locator = "css=img.icon"
     _featured_image_locator = "css=#addon .featured .screenshot"
     
-    _add_review_input_field_locator = "css=div#review-box #id_body"
-    _add_review_input_rating_locator = "css=div#review-box .ratingwidget input"
+    _add_review_input_field_locator = "css=#id_body"
+    _add_review_input_rating_locator = "css=.ratingwidget input"
     _add_review_submit_button_locator = "css=div#review-box input[type=submit]"
 
     #more about this addon
@@ -331,12 +331,10 @@ class AddonsDetailsPage(AddonsHomePage):
     
     def enter_review_with_text(self, text):
         self.selenium.type(self._add_review_input_field_locator, text)
-        return self
     
     def set_review_rating(self, rating):
-        loc = "%s[value=%s]" % (self._add_review_input_rating_locator, rating)
-        self.selenium.click(loc)
-        return self
+        locator = "%s[value=%s]" % (self._add_review_input_rating_locator, rating)
+        self.selenium.click(locator)
     
     def click_to_submit_review(self):
         self.selenium.click(self._add_review_submit_button_locator)
