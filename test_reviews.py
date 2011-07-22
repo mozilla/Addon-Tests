@@ -54,18 +54,18 @@ class TestReviews:
             https://litmus.mozilla.org/show_test.cgi?id=4843
         """
         amo_home_page = AddonsHomePage(testsetup)
-        
+
         #Open details page for Adblock Plus
         amo_home_page.open_details_page_for_id(1865)
         Assert.true(amo_home_page.has_reviews)
 
         amo_home_page.click_all_reviews_link()
         Assert.equal(amo_home_page.review_count, 20)
-        
+
         #Go to the last page and check that the next button is not present
         amo_home_page.go_to_last_page()
         Assert.false(amo_home_page.is_next_link_present)
-        
+
         #Go one page back, check that it has 20 reviews
         #that the page number decreases and that the next link is visible
         page_number = amo_home_page.current_page
@@ -77,7 +77,7 @@ class TestReviews:
         #Go to the first page and check that the prev button is not present
         amo_home_page.go_to_first_page()
         Assert.false(amo_home_page.is_prev_link_present)
-        
+
         #Go one page forward, check that it has 20 reviews,
         #that the page number increases and that the prev link is visible
         page_number = amo_home_page.current_page

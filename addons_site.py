@@ -223,7 +223,7 @@ class AddonsDetailsPage(AddonsHomePage):
     _description_locator = "css=div[class='article userinput'] > p"
     _icon_locator = "css=img.icon"
     _featured_image_locator = "css=#addon .featured .screenshot"
-    
+
     _add_review_input_field_locator = "css=#id_body"
     _add_review_input_rating_locator = "css=.ratingwidget input"
     _add_review_submit_button_locator = "css=div#review-box input[type=submit]"
@@ -328,41 +328,41 @@ class AddonsDetailsPage(AddonsHomePage):
         image_viewer = image_viewer_region.ImageViewer(self.testsetup)
         image_viewer.wait_for_viewer_to_finish_animating()
         return image_viewer
-    
+
     def enter_review_with_text(self, text):
         self.selenium.type(self._add_review_input_field_locator, text)
-    
+
     def set_review_rating(self, rating):
         locator = "%s[value=%s]" % (self._add_review_input_rating_locator, rating)
         self.selenium.click(locator)
-    
+
     def click_to_submit_review(self):
         self.selenium.click(self._add_review_submit_button_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
         return AddonsReviewsPage(self.testsetup)
 
-    
+
 class AddonsReviewsPage(AddonsHomePage):
-    
+
     _review_locator = "css=div.primary div.review"
-    
+
     def __init__(self, testsetup):
         AddonsBasePage.__init__(self, testsetup)
-    
+
     def get_review_by_index(self, index=0):
         """ Returns a dictionary of review data by its index. """
         review = {}
         review_locator = "%s:nth(%s)" % (self._review_locator, index)
-        
+
         text_locator = "%s p.review-body" % review_locator
         review['text'] = self.selenium.get_text(text_locator)
-        
+
         rating_locator = "%s span[itemprop=rating]" % review_locator
         review['rating'] = int(self.selenium.get_text(rating_locator))
-        
+
         author_locator = "%s a:not(.permalink)" % review_locator
         review['author'] = self.selenium.get_text(author_locator)
-        
+
         date_locator = "%s div.reviewed-on" % review_locator
         date = self.selenium.get_text(date_locator)
         # we need to parse the string first to get date
@@ -371,7 +371,7 @@ class AddonsReviewsPage(AddonsHomePage):
 
         return review
 
-        
+
 class AddonsThemesPage(AddonsHomePage):
 
     _sort_by_name_locator = 'name=_t-name'
