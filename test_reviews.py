@@ -100,13 +100,13 @@ class TestReviews:
         details_page = AddonsDetailsPage(testsetup, 'Adblock Plus')
         # Step 3 - Click on "Write review" button (omitted)
         # Step 4 - Write a review
-        body = 'Great addon!'
+        body = 'Automatic addon review by Selenium tests'
         details_page.enter_review_with_text(body)
-        details_page.set_review_rating(5)
+        details_page.set_review_rating(1)
         review_page = details_page.click_to_submit_review()
         # Step 5 - Assert review
         review = review_page.get_review_by_index()
-        Assert.equal(review['rating'], 5)
+        Assert.equal(review['rating'], 1)
         Assert.equal(review['author'], credentials['name'])
         Assert.equal(review['date'], datetime.now().strftime("%B %d, %Y"))
         Assert.equal(review['text'], body)

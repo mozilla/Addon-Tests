@@ -342,12 +342,9 @@ class AddonsDetailsPage(AddonsHomePage):
         return AddonsReviewsPage(self.testsetup)
 
 
-class AddonsReviewsPage(AddonsHomePage):
+class AddonsReviewsPage(AddonsBasePage):
 
     _review_locator = "css=div.primary div.review"
-
-    def __init__(self, testsetup):
-        AddonsBasePage.__init__(self, testsetup)
 
     def get_review_by_index(self, index=0):
         """ Returns a dictionary of review data by its index. """
