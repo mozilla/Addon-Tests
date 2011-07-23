@@ -234,7 +234,7 @@ class AddonsDetailsPage(AddonsHomePage):
         #formats name for url
         self.addon_name = addon_name.replace(' ', '-').lower()
         AddonsBasePage.__init__(self, testsetup)
-        self.selenium.open("%s/addon/" % self.site_version + self.addon_name)
+        self.selenium.open("%s/addon/%s" % (self.site_version, self.addon_name))
 
     @property
     def page_title(self):
@@ -463,7 +463,7 @@ class AddonsPersonasPage(AddonsHomePage):
         return AddonsPersonasDetailPage(self.testsetup)
 
     def open_persona_detail_page(self, persona_key):
-        self.selenium.open("%s/addon/%s" + (self.site_version, persona_key))
+        self.selenium.open("%s/addon/%s" % (self.site_version, persona_key))
         self.selenium.wait_for_page_to_load(self.timeout)
         return AddonsPersonasDetailPage(self.testsetup)
 
