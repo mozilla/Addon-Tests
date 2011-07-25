@@ -47,7 +47,6 @@ import re
 from datetime import datetime
 
 from addons_base_page import AddonsBasePage
-import addons_search_home_page
 import image_viewer_region
 
 
@@ -55,9 +54,6 @@ class AddonsHomePage(AddonsBasePage):
 
     _page_title = "Add-ons for Firefox"
 
-    #Search box
-    _search_button_locator = "css=input.submit"
-    _search_textbox_locator = "name=q"
     _download_count_locator = "css=div.stats > strong"
     _themes_link_locator = "id=_t-2"
     _personas_link_locator = "id=_t-9"
@@ -91,16 +87,6 @@ class AddonsHomePage(AddonsBasePage):
     def page_back(self):
         self.selenium.click(self._previous_link_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
-
-    def search_for(self, search_term):
-        self.selenium.type(self._search_textbox_locator, search_term)
-        self.selenium.click(self._search_button_locator)
-        self.selenium.wait_for_page_to_load(self.timeout)
-        return addons_search_home_page.AddonsSearchHomePage(self.testsetup)
-
-    @property
-    def search_field_placeholder(self):
-        return self.selenium.get_attribute(self._search_textbox_locator + '@placeholder')
 
     def has_category(self, category_name):
         ''' Returns whether category_name exists in the category menu links '''
