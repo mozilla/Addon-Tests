@@ -42,7 +42,7 @@
 import re
 import pytest
 from unittestzero import Assert
-
+from addons_search_home_page import AddonsSearchHomePage
 from addons_site import AddonsHomePage
 xfail = pytest.mark.xfail
 
@@ -61,7 +61,8 @@ class TestSearch:
             https://litmus.mozilla.org/show_test.cgi?id=4839
         """
         amo_home_page = AddonsHomePage(testsetup)
-        amo_search_page = amo_home_page.search_for("addon")
+        amo_home_page.header.search_for("addon")
+        amo_search_page = AddonsSearchHomePage(testsetup)
         first_expected = 1
         second_expected = 20
 
@@ -97,7 +98,8 @@ class TestSearch:
         """ Test for Litmus 4857
             https://litmus.mozilla.org/show_test.cgi?id=4857"""
         amo_home_page = AddonsHomePage(testsetup)
-        amo_search_page = amo_home_page.search_for("personas%20plus")
+        amo_home_page.header.search_for("personas%20plus")
+        amo_search_page = AddonsSearchHomePage(testsetup)
         Assert.true(amo_search_page.is_text_present("No results found."))
         results_summary = amo_search_page.results_summary
         Assert.true("0 - 0 of 0" in results_summary)
@@ -106,7 +108,8 @@ class TestSearch:
         """ Litmus 4856
             https://litmus.mozilla.org/show_test.cgi?id=4856 """
         amo_home_page = AddonsHomePage(testsetup)
-        amo_search_page = amo_home_page.search_for("a" * 255)
+        amo_home_page.header.search_for("a" * 255)
+        amo_search_page = AddonsSearchHomePage(testsetup)
         Assert.true(amo_search_page.is_text_present("No results found."))
         results_summary = amo_search_page.results_summary
         Assert.true("0 - 0 of 0" in results_summary)
@@ -116,7 +119,8 @@ class TestSearch:
             https://litmus.mozilla.org/show_test.cgi?id=9575 """
         amo_home_page = AddonsHomePage(testsetup)
         search_str = u'\u0421\u043b\u043e\u0432\u0430\u0440\u0438 \u042f\u043d\u0434\u0435\u043a\u0441'
-        amo_search_page = amo_home_page.search_for(search_str)
+        amo_home_page.header.search_for(search_str)
+        amo_search_page = AddonsSearchHomePage(testsetup)
         Assert.true(amo_search_page.is_text_present(search_str))
         results_summary = amo_search_page.results_summary
         Assert.false("0 - 0 of 0" in results_summary)
@@ -125,7 +129,8 @@ class TestSearch:
         """ Litmus 9561
             https://litmus.mozilla.org/show_test.cgi?id=9561 """
         amo_home_page = AddonsHomePage(testsetup)
-        amo_search_page = amo_home_page.search_for("fox")
+        amo_home_page.header.search_for("fox")
+        amo_search_page = AddonsSearchHomePage(testsetup)
         Assert.false(amo_search_page.is_text_present("No results found."))
         results_summary = amo_search_page.results_summary
         Assert.false("0 - 0 of 0" in results_summary)
@@ -137,7 +142,8 @@ class TestSearch:
             https://litmus.mozilla.org/show_test.cgi?id=11759 """
         pytest.skip("disabled due to bug 619052")
         amo_home_page = AddonsHomePage(testsetup)
-        amo_search_page = amo_home_page.search_for("")
+        amo_home_page.header.search_for("")
+        amo_search_page = AddonsSearchHomePage(testsetup)
         Assert.false(amo_search_page.is_text_present("Search is currently unavailable"))
         Assert.false(amo_search_page.is_text_present("No results found."))
         results_summary = amo_search_page.results_summary
@@ -148,7 +154,8 @@ class TestSearch:
             https://litmus.mozilla.org/show_test.cgi?id=17338 """
         amo_home_page = AddonsHomePage(testsetup)
         search_keyword = 'Search term'
-        amo_search_page = amo_home_page.search_for(search_keyword)
+        amo_home_page.header.search_for(search_keyword)
+        amo_search_page = AddonsSearchHomePage(testsetup)
         expected_title = 'Add-on Search Results for %s :: Add-ons for Firefox' % search_keyword
         Assert.equal(expected_title, amo_search_page.page_title)
 
@@ -158,7 +165,8 @@ class TestSearch:
         https://litmus.mozilla.org/show_test.cgi?id=15314
         """
         amo_home_page = AddonsHomePage(testsetup)
-        amo_search_page = amo_home_page.search_for("fire")
+        amo_home_page.header.search_for("fire")
+        amo_search_page = AddonsSearchHomePage(testsetup)
         Assert.equal(amo_search_page.result(0).name, 'Firebug')
 
     def test_that_searching_for_twitter_returns_yoono(self, testsetup):
@@ -167,7 +175,8 @@ class TestSearch:
         https://litmus.mozilla.org/show_test.cgi?id=17354
         """
         amo_home_page = AddonsHomePage(testsetup)
-        amo_search_page = amo_home_page.search_for("twitter")
+        amo_home_page.header.search_for("twitter")
+        amo_search_page = AddonsSearchHomePage(testsetup)
         Assert.equal(amo_search_page.result(0).name, 'Yoono: Twitter Facebook LinkedIn YouTube GTalk AIM')
 
     def test_that_searching_for_cool_returns_cooliris(self, testsetup):
@@ -176,7 +185,8 @@ class TestSearch:
         https://litmus.mozilla.org/show_test.cgi?id=17353
         """
         amo_home_page = AddonsHomePage(testsetup)
-        amo_search_page = amo_home_page.search_for("Cool")
+        amo_home_page.header.search_for("Cool")
+        amo_search_page = AddonsSearchHomePage(testsetup)
         Assert.equal(amo_search_page.result(0).name, 'Cooliris')
 
     #:TODO To be merged into a layout test
@@ -186,7 +196,7 @@ class TestSearch:
         https://litmus.mozilla.org/show_test.cgi?id=4826
         """
         amo_home_page = AddonsHomePage(testsetup)
-        Assert.equal(amo_home_page.search_field_placeholder, 'search for add-ons')
+        Assert.equal(amo_home_page.header.search_field_placeholder, 'search for add-ons')
 
     def test_that_searching_with_numerals_returns_results(self, testsetup):
         """
@@ -194,7 +204,8 @@ class TestSearch:
         https://litmus.mozilla.org/show_test.cgi?id=17347
         """
         amo_home_page = AddonsHomePage(testsetup)
-        amo_search_page = amo_home_page.search_for("1")
+        amo_home_page.header.search_for("1")
+        amo_search_page = AddonsSearchHomePage(testsetup)
         Assert.true(amo_search_page.result_count > 0)
 
     def test_that_verify_the_breadcrumb_on_search_results_page(self, testsetup):
@@ -203,33 +214,38 @@ class TestSearch:
         https://litmus.mozilla.org/show_test.cgi?id=17341
         """
         amo_home_page = AddonsHomePage(testsetup)
-        amo_search_page = amo_home_page.search_for("text")
+        amo_home_page.header.search_for("text")
+        amo_search_page = AddonsSearchHomePage(testsetup)
         Assert.equal(amo_search_page.breadcrumbs_value, 'Add-ons for Firefox Search')
 
     def test_sorting_by_downloads(self, testsetup):
         """ Litmus 17342
             https://litmus.mozilla.org/show_test.cgi?id=17342 """
-        amo_search_page = AddonsHomePage(testsetup).search_for('firebug').sort_by('downloads')
+        AddonsHomePage(testsetup).header.search_for('firebug')
+        amo_search_page = AddonsSearchHomePage(testsetup).sort_by('downloads')
         Assert.true('sort=weeklydownloads' in amo_search_page.get_url_current_page())
         Assert.is_sorted_descending([i.downloads for i in amo_search_page.results()])
 
     def test_sorting_by_created_date(self, testsetup):
         """ Litmus 17343
             https://litmus.mozilla.org/show_test.cgi?id=17343 """
-        amo_search_page = AddonsHomePage(testsetup).search_for('firebug').sort_by('created')
+        AddonsHomePage(testsetup).header.search_for('firebug')
+        amo_search_page = AddonsSearchHomePage(testsetup).sort_by('created')
         Assert.true('sort=newest' in amo_search_page.get_url_current_page())
         Assert.is_sorted_descending([i.created_date for i in amo_search_page.results()])
 
     def test_sorting_by_updated_date(self, testsetup):
         """ Litmus 17345
             https://litmus.mozilla.org/show_test.cgi?id=17345 """
-        amo_search_page = AddonsHomePage(testsetup).search_for('firebug').sort_by('updated')
+        AddonsHomePage(testsetup).header.search_for('firebug')
+        amo_search_page = AddonsSearchHomePage(testsetup).sort_by('updated')
         Assert.true('sort=updated' in amo_search_page.get_url_current_page())
         Assert.is_sorted_descending([i.updated_date for i in amo_search_page.results()])
 
     def test_sorting_by_users_number(self, testsetup):
         """Litmus 24867"""
-        amo_search_page = AddonsHomePage(testsetup).search_for('firebug').sort_by('users')
+        AddonsHomePage(testsetup).header.search_for('firebug')
+        amo_search_page = AddonsSearchHomePage(testsetup).sort_by('users')
         Assert.true('sort=users' in amo_search_page.get_url_current_page())
         Assert.is_sorted_descending([i.users for i in amo_search_page.results()])
 
@@ -239,7 +255,8 @@ class TestSearch:
         https://litmus.mozilla.org/show_test.cgi?id=7848
         """
         amo_home_page = AddonsHomePage(testsetup)
-        amo_search_page = amo_home_page.search_for("development")
+        amo_home_page.header.search_for("development")
+        amo_search_page = AddonsSearchHomePage(testsetup)
         Assert.true(amo_search_page.result_count > 0)
         Assert.equal(amo_search_page.refine_results.tag("development").name, "development")
         Assert.true(amo_search_page.refine_results.tag_count > 1)
@@ -247,7 +264,8 @@ class TestSearch:
     def test_that_search_returns_top_1000_results(self, testsetup):
 
         amo_home_page = AddonsHomePage(testsetup)
-        amo_search_page = amo_home_page.search_for("a")
+        amo_home_page.header.search_for("a")
+        amo_search_page = AddonsSearchHomePage(testsetup)
 
         results = amo_search_page.results_summary
         total_results = results.split(' ')[5]
