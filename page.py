@@ -64,6 +64,7 @@ class Page(object):
         self.selenium = testsetup.selenium
         self.timeout = testsetup.timeout
         self.credentials = testsetup.credentials
+        self.site_version = testsetup.site_version
 
     @property
     def is_the_current_page(self):
@@ -71,7 +72,8 @@ class Page(object):
         if not page_title == self._page_title:
             self.record_error()
             try:
-                raise Exception("Expected page title to be: '" + self._page_title + "' but it was: '" + page_title + "'")
+                raise Exception("Expected page title to be: '" 
+                    + self._page_title + "' but it was: '" + page_title + "'")
             except Exception:
                 raise Exception('Expected page title does not match actual page title.')
         else:
