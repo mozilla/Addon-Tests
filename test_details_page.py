@@ -174,9 +174,8 @@ class TestDetailsPage:
         """
         addon_name = 'firebug'
         amo_detail_page = AddonsDetailsPage(testsetup, addon_name)
-        reviews = amo_detail_page.reviews()
 
-        for review in reviews:
+        for review in amo_detail_page.reviews():
             username = review.username
             amo_user_page = review.click_username()
             Assert.equal(username, amo_user_page.username)
