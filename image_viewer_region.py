@@ -43,7 +43,7 @@ class ImageViewer(Page):
     _overlay_locator = "id=jquery-overlay"
     _viewer_locator = "id=jquery-lightbox"
     _image_locator = "id=lightbox-image"
-    _image_data_locator = "css=div[id=lightbox-nav]"
+    _image_data_locator = "id=lightbox-nav"
     _loading_locator = "id=lightbox-loading"
 
     #information
