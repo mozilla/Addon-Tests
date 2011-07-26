@@ -104,3 +104,16 @@ class TestDetailsPageAgainstXML:
         xml_description = addons_xml.get_addon_description(self.firebug)
 
         Assert.equal(browser_description, xml_description)
+
+    def test_that_icon_is_correct(self, testsetup):
+        """litmus 15322"""
+
+        #browser
+        firebug_page = AddonsDetailsPage(testsetup, self.firebug)
+        browser_icon = firebug_page.icon_url
+
+        #xml
+        addons_xml = AddOnsAPI(testsetup)
+        xml_icon = addons_xml.get_icon_url(self.firebug)
+
+        Assert.equal(browser_icon, xml_icon)
