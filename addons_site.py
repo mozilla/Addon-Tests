@@ -81,7 +81,7 @@ class AddonsHomePage(AddonsBasePage):
     def __init__(self, testsetup):
         ''' Creates a new instance of the class and gets the page ready for testing '''
         AddonsBasePage.__init__(self, testsetup)
-        self.selenium.open("/")
+        self.selenium.open("%s/" % self.site_version)
         self.selenium.window_maximize()
 
     def page_forward(self):
@@ -118,7 +118,7 @@ class AddonsHomePage(AddonsBasePage):
         return AddonsThemesPage(self.testsetup)
 
     def open_details_page_for_id(self, id):
-        self.selenium.open("/en-US/firefox/addon/%s" % id)
+        self.selenium.open("%s/addon/%s" % (self.site_version, id))
         self.selenium.wait_for_page_to_load(self.timeout)
 
     def click_all_reviews_link(self):
@@ -210,7 +210,6 @@ class AddonsHomePage(AddonsBasePage):
 
 class AddonsDetailsPage(AddonsHomePage):
 
-    _addon_detail_base_url = "/firefox/addon/"
 
     _breadcrumb_locator = "css=ol.breadcrumbs"
 
@@ -240,7 +239,7 @@ class AddonsDetailsPage(AddonsHomePage):
         #formats name for url
         self.addon_name = addon_name.replace(' ', '-').lower()
         AddonsBasePage.__init__(self, testsetup)
-        self.selenium.open(self._addon_detail_base_url + self.addon_name)
+        self.selenium.open("%s/addon/%s" % (self.site_version, self.addon_name))
 
     @property
     def breadcrumb(self):
@@ -473,7 +472,7 @@ class AddonsPersonasPage(AddonsHomePage):
         return AddonsPersonasDetailPage(self.testsetup)
 
     def open_persona_detail_page(self, persona_key):
-        self.selenium.open("/en-us/firefox/addon/" + str(persona_key))
+        self.selenium.open("%s/addon/%s" % (self.site_version, persona_key))
         self.selenium.wait_for_page_to_load(self.timeout)
         return AddonsPersonasDetailPage(self.testsetup)
 
@@ -632,7 +631,7 @@ class DiscoveryPane(AddonsBasePage):
 
     def __init__(self, testsetup, path):
         AddonsBasePage.__init__(self, testsetup)
-        self.selenium.open(testsetup.base_url + path)
+        self.selenium.open("%s/%s" % (self.site_version, path))
         #resizing this page for elements that disappear when the window is < 1000
         self.selenium.get_eval("window.resizeTo(10000,10000); window.moveTo(0,0)")
 

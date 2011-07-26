@@ -64,6 +64,7 @@ class Page(object):
         self.selenium = testsetup.selenium
         self.timeout = testsetup.timeout
         self.credentials = testsetup.credentials
+        self.site_version = testsetup.site_version
 
     @property
     def is_the_current_page(self):
