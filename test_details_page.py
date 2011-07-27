@@ -38,6 +38,7 @@
 # ***** END LICENSE BLOCK *****
 
 import re
+import pytest
 
 from unittestzero import Assert
 from addons_site import UserFAQPage
@@ -164,3 +165,18 @@ class TestDetailsPage:
 
         image_viewer.close()
         Assert.false(image_viewer.is_visible)
+
+    @pytest.mark.impala
+    def test_that_review_usernames_are_clickable(self, testsetup):
+        """
+        Litmus 4842
+        https://litmus.mozilla.org/show_test.cgi?id=4842
+        """
+        addon_name = 'firebug'
+        amo_detail_page = AddonsDetailsPage(testsetup, addon_name)
+
+        for review in amo_detail_page.reviews():
+            username = review.username
+            amo_user_page = review.click_username()
+            Assert.equal(username, amo_user_page.username)
+            AddonsDetailsPage(testsetup, addon_name)

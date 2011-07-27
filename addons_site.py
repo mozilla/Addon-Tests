@@ -46,7 +46,9 @@
 import re
 from datetime import datetime
 
+from page import Page
 from addons_base_page import AddonsBasePage
+from addons_user_page import AddonsUserPage
 import addons_search_home_page
 import image_viewer_region
 
@@ -208,7 +210,7 @@ class AddonsHomePage(AddonsBasePage):
         return integer_numbers
 
 
-class AddonsDetailsPage(AddonsHomePage):
+class AddonsDetailsPage(AddonsBasePage):
 
     _name_locator = "css=h2.addon > span"
     _version_number_locator = "css=span.version"
@@ -229,6 +231,8 @@ class AddonsDetailsPage(AddonsHomePage):
     _other_addons_by_authors_locator = "css=div.other-author-addons"
     _other_addons_dropdown_locator = "id=addons-author-addons-select"
     _other_addons_link_list_locator = "css=div.other-author-addons ul li"
+
+    _reviews_locator = "css=#reviews div"
 
     def __init__(self, testsetup, addon_name):
         #formats name for url
@@ -324,6 +328,48 @@ class AddonsDetailsPage(AddonsHomePage):
         image_viewer = image_viewer_region.ImageViewer(self.testsetup)
         image_viewer.wait_for_viewer_to_finish_animating()
         return image_viewer
+
+    def review(self, lookup):
+        return self.DetailsReviewSnippet(self.testsetup, lookup)
+
+    def reviews(self):
+        return [self.DetailsReviewSnippet(self.testsetup, i) for i in range(self.review_count)]
+
+    @property
+    def review_count(self):
+        self.wait_for_element_visible(self._reviews_locator)
+        return int(self.selenium.get_css_count(self._reviews_locator))
+
+    class DetailsReviewSnippet(Page):
+
+        _reviews_locator = "css=#reviews div"  # Base locator
+        _username_locator = "p.byline  a"
+
+        def __init__(self, testsetup, lookup):
+            Page.__init__(self, testsetup)
+            self.lookup = lookup
+
+        def absolute_locator(self, relative_locator):
+            return self._root_locator + relative_locator
+
+        @property
+        def _root_locator(self):
+            self.wait_for_element_visible(self._reviews_locator)
+            if type(self.lookup) == int:
+                # lookup by index
+                return "%s:nth(%s) " % (self._reviews_locator, self.lookup)
+            else:
+                # lookup by name
+                return "%s:contains(%s) " % (self._reviews_locator, self.lookup)
+
+        @property
+        def username(self):
+            return self.selenium.get_text(self.absolute_locator(self._username_locator))
+
+        def click_username(self):
+            self.selenium.click(self.absolute_locator(self._username_locator))
+            self.selenium.wait_for_page_to_load(self.timeout)
+            return AddonsUserPage(self.testsetup)
 
 
 class AddonsThemesPage(AddonsHomePage):
