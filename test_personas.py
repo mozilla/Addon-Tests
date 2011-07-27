@@ -38,6 +38,7 @@
 
 
 import random
+xfail = pytest.mark.xfail
 
 from unittestzero import Assert
 from addons_site import AddonsHomePage
