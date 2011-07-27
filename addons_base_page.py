@@ -48,6 +48,11 @@ class AddonsBasePage(Page):
         return AddonsBasePage.HeaderRegion(self.testsetup)
 
     class HeaderRegion(Page):
+
+        #other applications
+        _other_applications_locator = "css=#other-apps"
+        _app_thunderbird = "css=#app-thunderbird a"
+
         #Not LogedIn
         _login_locator = "css=.amo-header .context a:nth(1)"  # Until https://bugzilla.mozilla.org/show_bug.cgi?id=669646
         _register_locator = "css=.amo-header .context a:nth(0)"
@@ -55,6 +60,17 @@ class AddonsBasePage(Page):
         #LogedIn
         _account_controller_locator = 'css=#aux-nav .account .controller'
         _dropdown_locator = "css=#aux-nav .account ul"
+
+        def click_other_applications(self):
+            self.selenium.click('%s a' % self._other_applications_locator)
+            self.wait_for_element_visible('%s ul' % self._other_applications_locator)
+
+        def click_thunderbird(self):
+            self.selenium.click(self._app_thunderbird)
+            self.selenium.wait_for_page_to_load(self.timeout)
+
+        def is_thunderbird_visible(self):
+            return self.is_element_present(self._app_thunderbird)
 
         def click_my_account(self):
             self.selenium.click(self._account_controller_locator)
@@ -66,7 +82,7 @@ class AddonsBasePage(Page):
 
         def click_logout(self):
             self.click_my_account()
-            if self.selenium.get_text('%s > li:nth(3) a' % self._dropdown_locator) == "Log out":  #Until the https://bugzilla.mozilla.org/show_bug.cgi?id=669650
+            if self.selenium.get_text('%s > li:nth(3) a' % self._dropdown_locator) == "Log out":  # Until the https://bugzilla.mozilla.org/show_bug.cgi?id=669650
                 self.selenium.click('%s > li:nth(3) a' % self._dropdown_locator)
             else:
                 self.selenium.click('%s > li:nth(4) a' % self._dropdown_locator)
