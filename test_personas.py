@@ -38,6 +38,7 @@
 
 
 import random
+import pytest
 xfail = pytest.mark.xfail
 
 from unittestzero import Assert
