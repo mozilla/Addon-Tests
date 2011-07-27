@@ -180,4 +180,4 @@ class TestThemes:
         for category in default_categories:
             count += 1
             current_category = amo_themes_page.get_category_by_index(count)
-            Assert.true(category == current_category)
+            Assert.equal(category, current_category)
