@@ -86,6 +86,7 @@ class TestReviews:
         Assert.equal(amo_home_page.review_count, 20)
         Assert.equal(amo_home_page.current_page, page_number + 1)
 
+    @pytest.mark.impala
     def test_that_new_review_is_saved(self, testsetup):
         """ Litmus 22921
             https://litmus.mozilla.org/show_test.cgi?id=22921 """
@@ -101,9 +102,10 @@ class TestReviews:
         # Step 3 - Click on "Write review" button (omitted)
         # Step 4 - Write a review
         body = 'Automatic addon review by Selenium tests'
-        details_page.enter_review_with_text(body)
-        details_page.set_review_rating(1)
-        review_page = details_page.click_to_submit_review()
+        write_review_block = details_page.click_to_write_review()
+        write_review_block.enter_review_with_text(body)
+        write_review_block.set_review_rating(1)
+        review_page = write_review_block.click_to_save_review()
         # Step 5 - Assert review
         review = review_page.get_review_by_index()
         Assert.equal(review['rating'], 1)
