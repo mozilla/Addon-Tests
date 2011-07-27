@@ -48,6 +48,7 @@ from datetime import datetime
 
 from addons_base_page import AddonsBasePage
 import addons_search_home_page
+import image_viewer_region
 
 
 class AddonsHomePage(AddonsBasePage):
@@ -80,7 +81,7 @@ class AddonsHomePage(AddonsBasePage):
     def __init__(self, testsetup):
         ''' Creates a new instance of the class and gets the page ready for testing '''
         AddonsBasePage.__init__(self, testsetup)
-        self.selenium.open("/")
+        self.selenium.open("%s/" % self.site_version)
         self.selenium.window_maximize()
 
     def page_forward(self):
@@ -117,7 +118,7 @@ class AddonsHomePage(AddonsBasePage):
         return AddonsThemesPage(self.testsetup)
 
     def open_details_page_for_id(self, id):
-        self.selenium.open("/en-US/firefox/addon/%s" % id)
+        self.selenium.open("%s/addon/%s" % (self.site_version, id))
         self.selenium.wait_for_page_to_load(self.timeout)
 
     def click_all_reviews_link(self):
@@ -209,7 +210,7 @@ class AddonsHomePage(AddonsBasePage):
 
 class AddonsDetailsPage(AddonsHomePage):
 
-    _addon_detail_base_url = "/firefox/addon/"
+    _name_locator = "css=h2.addon > span"
     _version_number_locator = "css=span.version"
     _authors_locator = "//h4[@class='author']/a"
     _summary_locator = "css=div[id=addon-summary] > p"
@@ -217,6 +218,7 @@ class AddonsDetailsPage(AddonsHomePage):
     _install_button_locator = "css=p[class='install-button'] > a"
     _contribute_button_locator = "css=a[id='contribute-button']"
     _addon_rating_locator = "css=span[itemprop='rating']"
+    _whats_this_license_locator = "css=h5 > span > a"
     _description_locator = "css=div[class='article userinput'] > p"
     _register_link_locator = "link=Register"
     _login_link_locator = "link=Log in"
@@ -229,16 +231,29 @@ class AddonsDetailsPage(AddonsHomePage):
     _tags_locator = "id=addonid-1843"
     _other_addons_locator = "css=ul.addon-otheraddons"
     _other_collections_locator = "css=ul.addon-collections"
+    _icon_locator = "css=img.icon"
+    _featured_image_locator = "css=#addon .featured .screenshot"
+
+    #more about this addon
+    _additional_images_locator = "css=#addon .article .screenshot"
+    _website_locator = "css=div#addon-summary tr:contains('Website') a"
+    _other_addons_by_authors_locator = "css=div.other-author-addons"
+    _other_addons_dropdown_locator = "id=addons-author-addons-select"
+    _other_addons_link_list_locator = "css=div.other-author-addons ul li"
 
     def __init__(self, testsetup, addon_name):
         #formats name for url
         self.addon_name = addon_name.replace(' ', '-').lower()
         AddonsBasePage.__init__(self, testsetup)
-        self.selenium.open(self._addon_detail_base_url + self.addon_name)
+        self.selenium.open("%s/addon/%s" % (self.site_version, self.addon_name))
 
     @property
     def page_title(self):
         return self.selenium.get_title()
+
+    @property
+    def name(self):
+        return self.selenium.get_text(self._name_locator)
 
     @property
     def version_number(self):
@@ -256,6 +271,11 @@ class AddonsDetailsPage(AddonsHomePage):
     @property
     def rating(self):
         return self.selenium.get_text(self._addon_rating_locator)
+
+    def click_whats_this_license(self):
+        self.selenium.click(self._whats_this_license_locator)
+        self.selenium.wait_for_page_to_load(self.timeout)
+        return UserFAQPage(self.testsetup)
 
     @property
     def description(self):
@@ -334,6 +354,60 @@ class AddonsDetailsPage(AddonsHomePage):
         self.selenium.click(self._other_applications_locator)
         self.wait_for_element_visible(self._other_apps_dropdown_menu_locator)
 
+    def icon_url(self):
+        return self.selenium.get_attribute(self._icon_locator + "%s" % "@src")
+
+    @property
+    def website(self):
+        return self.selenium.get_text(self._website_locator)
+
+    def click_website_link(self):
+        self.selenium.open(self.website)
+
+    @property
+    def other_addons_by_authors_text(self):
+        return self.selenium.get_text("%s > h4" % self._other_addons_by_authors_locator)
+
+    @property
+    def is_other_addons_dropdown_present(self):
+        return self.selenium.is_element_present(self._other_addons_dropdown_locator)
+
+    @property
+    def other_addons_dropdown_values(self):
+        return self.selenium.get_select_options(self._other_addons_dropdown_locator)
+
+    def select_other_addons_dropdown_value(self, value):
+        self.selenium.select(self._other_addons_dropdown_locator, value)
+        self.selenium.wait_for_page_to_load(self.timeout)
+
+    @property
+    def other_addons_link_list_count(self):
+        return self.selenium.get_css_count(self._other_addons_link_list_locator)
+
+    def other_addons_link_list(self):
+        return [self.selenium.get_text("%s:nth(%s) a" % (self._other_addons_link_list_locator, pos))
+            for pos in range(self.other_addons_link_list_count)]
+
+    def click_other_addon_by_this_author(self, value):
+        self.selenium.click('%s:contains(%s) a' % (self._other_addons_link_list_locator, value))
+        self.selenium.wait_for_page_to_load(self.timeout)
+
+    def click_addon_image(self):
+        self.selenium.click(self._featured_image_locator)
+        image_viewer = image_viewer_region.ImageViewer(self.testsetup)
+        image_viewer.wait_for_viewer_to_finish_animating()
+        return image_viewer
+
+    @property
+    def additional_images_count(self):
+        return self.selenium.get_css_count(self._additional_images_locator)
+
+    def click_additional_image(self, index):
+        self.selenium.click("%s:nth(%s)" % (self._additional_images_locator, index - 1))
+        image_viewer = image_viewer_region.ImageViewer(self.testsetup)
+        image_viewer.wait_for_viewer_to_finish_animating()
+        return image_viewer
+
 
 class AddonsThemesPage(AddonsHomePage):
 
@@ -348,6 +422,14 @@ class AddonsThemesPage(AddonsHomePage):
     _addons_rating_locator = _addons_metadata_locator + " / span / span"
     _breadcrumb_locator = "css = ol.breadcrumbs"
     _category_locator = "css = #c-30 > a"
+    _addons_root_locator = "//div[@class='details']"
+    _addon_name_locator = _addons_root_locator + "/h4/a"
+    _addons_metadata_locator = _addons_root_locator + "/p[@class='meta']"
+    _addons_rating_locator = _addons_metadata_locator + "/span/span"
+    _breadcrumb_locator = "css=ol.breadcrumbs"
+    _category_locator = "css=#c-30 > a"
+    _top_counter_locator = "css=div.primary>header b"
+    _bottom_counter_locator = "css=div.num-results > strong:nth(2)"
 
     def __init__(self, testsetup):
         AddonsBasePage.__init__(self, testsetup)
@@ -414,6 +496,14 @@ class AddonsThemesPage(AddonsHomePage):
         ratings = self._extract_integers(ratings_locator, pattern, self.addon_count)
         return ratings
 
+    @property
+    def top_counter(self):
+        return self.selenium.get_text(self._top_counter_locator)
+
+    @property
+    def bottom_counter(self):
+        return self.selenium.get_text(self._bottom_counter_locator)
+
 
 class AddonsThemePage(AddonsBasePage):
 
@@ -462,7 +552,7 @@ class AddonsPersonasPage(AddonsHomePage):
         return AddonsPersonasDetailPage(self.testsetup)
 
     def open_persona_detail_page(self, persona_key):
-        self.selenium.open("/en-us/firefox/addon/" + str(persona_key))
+        self.selenium.open("%s/addon/%s" % (self.site_version, persona_key))
         self.selenium.wait_for_page_to_load(self.timeout)
         return AddonsPersonasDetailPage(self.testsetup)
 
@@ -607,8 +697,8 @@ class DiscoveryPane(AddonsBasePage):
     _what_are_addons_text_locator = 'css=#intro p'
     _mission_section_locator = 'id=mission'
     _mission_section_text_locator = 'css=#mission > p'
-    _learn_more_locator = 'link=Learn More'  # Using link till 631557 implemented
-    _mozilla_org_link_locator = "css=a[href=http://www.mozilla.org/]"
+    _learn_more_locator = 'id=learn-more'
+    _mozilla_org_link_locator = "css=#mission a"
     _download_count_text_locator = "id=download-count"
     _personas_section_locator = "id=featured-personas"
     _personas_see_all_link = "css=.all[href='/en-US/firefox/personas/']"
@@ -621,8 +711,9 @@ class DiscoveryPane(AddonsBasePage):
 
     def __init__(self, testsetup, path):
         AddonsBasePage.__init__(self, testsetup)
-        self.selenium.open(testsetup.base_url + path)
-        self.selenium.window_maximize()
+        self.selenium.open("%s/%s" % (self.site_version, path))
+        #resizing this page for elements that disappear when the window is < 1000
+        self.selenium.get_eval("window.resizeTo(10000,10000); window.moveTo(0,0)")
 
     @property
     def what_are_addons_text(self):
@@ -635,6 +726,9 @@ class DiscoveryPane(AddonsBasePage):
     def is_mission_section_visible(self):
         return self.selenium.is_visible(self._mission_section_locator)
 
+    def wait_for_mission_visible(self):
+            self.wait_for_element_visible(self._mission_section_locator)
+
     @property
     def mission_section(self):
         return self.selenium.get_text(self._mission_section_text_locator)
@@ -644,6 +738,7 @@ class DiscoveryPane(AddonsBasePage):
 
     @property
     def download_count(self):
+        self.wait_for_element_visible(self._download_count_text_locator)
         return self.selenium.get_text(self._download_count_text_locator)
 
     def is_personas_section_visible(self):
@@ -691,3 +786,17 @@ class DiscoveryPersonasDetailPage(AddonsBasePage):
     @property
     def persona_title(self):
         return self.selenium.get_text(self._persona_title)
+
+
+class UserFAQPage(AddonsBasePage):
+
+    _license_question_locator = "css=#license"
+    _license_answer_locator = "css=#license + dd"
+
+    @property
+    def license_question(self):
+        return self.selenium.get_text(self._license_question_locator)
+
+    @property
+    def license_answer(self):
+        return self.selenium.get_text(self._license_answer_locator)
