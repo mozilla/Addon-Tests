@@ -109,11 +109,6 @@ class AddonsHomePage(AddonsBasePage):
         locator = (self._category_list_locator + self._category_item_locator) % category_name
         return self.selenium.get_xpath_count(locator) > 0
 
-    def click_category(self, category_name):
-        locator = (self._category_list_locator + self._category_item_locator) % category_name
-        self.selenium.click(locator)
-        self.selenium.wait_for_page_to_load(self.timeout)
-
     def click_personas(self):
         self.selenium.click(self._personas_link_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
@@ -392,7 +387,6 @@ class AddonsThemesPage(AddonsHomePage):
     _category_locator = "css=#c-30 > a"
     _categories_locator = "css=.other-categories ul:nth-of-type(2) li"
     _category_link_locator = _categories_locator + ":nth-of-type(%s) a"
-    _default_categories = ["Animals", "Compact", "Large", "Miscellaneous", "Modern", "Nature", "OS Integration", "Retro", "Sports"]
     _top_counter_locator = "css=div.primary>header b"
     _bottom_counter_locator = "css=div.num-results > strong:nth(2)"
 
@@ -413,14 +407,8 @@ class AddonsThemesPage(AddonsHomePage):
         self.selenium.wait_for_page_to_load(self.timeout)
         return AddonsThemesCategoryPage(self.testsetup)
 
-    @property
-    def has_default_categories(self):
-        count = 0
-        for category in self._default_categories:
-            count += 1
-            if not category == self.selenium.get_text(self._category_link_locator % count):
-                 return False
-        return True
+    def get_category_by_index(self, index):
+        return self.selenium.get_text(self._category_link_locator % index)
 
     @property
     def page_title(self):
