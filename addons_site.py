@@ -223,6 +223,7 @@ class AddonsDetailsPage(AddonsHomePage):
     _description_locator = "css=div[class='article userinput'] > p"
     _icon_locator = "css=img.icon"
     _featured_image_locator = "css=#addon .featured .screenshot"
+    _reviews_section_locator = "id=reviews"
     _add_review_link_locator = "id=add-review"
 
     #more about this addon
@@ -237,6 +238,8 @@ class AddonsDetailsPage(AddonsHomePage):
         self.addon_name = addon_name.replace(' ', '-').lower()
         AddonsBasePage.__init__(self, testsetup)
         self.selenium.open(self._addon_detail_base_url + self.addon_name)
+        # Impala loads reviews with AJAX
+        self._wait_for_reviews_to_load()
 
     @property
     def page_title(self):
@@ -330,6 +333,9 @@ class AddonsDetailsPage(AddonsHomePage):
         self.selenium.click(self._add_review_link_locator)
         return AddonsWriteReviewBlock(self.testsetup)
 
+    def _wait_for_reviews_to_load(self):
+        self.wait_for_element_present(self._reviews_section_locator)
+
 
 class AddonsWriteReviewBlock(AddonsBasePage):
 
@@ -354,29 +360,55 @@ class AddonsReviewsPage(AddonsBasePage):
 
     _review_locator = "css=div.primary div.review"
 
-    def get_review_by_index(self, index=0):
-        """ Returns a dictionary of review data by its index. """
-        review = {}
-        review_locator = "%s:nth(%s)" % (self._review_locator, index)
+    def review(self, index=0):
+        """ Returns review object with index. """
+        return self.Review(self.testsetup, index)
 
-        text_locator = "%s p.review-body" % review_locator
-        review['text'] = self.selenium.get_text(text_locator)
+    def reviews(self):
+        """ Returns all reviews on the page. """
+        return [self.Review(self.testsetup, i) for i in
+                range(self.selenium.get_css_count(self._review_locator))]
 
-        rating_locator = "%s span[itemprop=rating]" % review_locator
-        review['rating'] = int(self.selenium.get_text(rating_locator))
+    class Review(AddonsBasePage):
 
-        author_locator = "%s a:not(.permalink)" % review_locator
-        review['author'] = self.selenium.get_text(author_locator)
+        _review_locator = "css=div.primary div.review"
+        _review_text_locator = "p.review-body"
+        _review_rating_locator = "span[itemprop=rating]"
+        _review_author_locator = "a:not(.permalink)"
+        _review_date_locator = "div.reviewed-on"
 
-        date_locator = "%s div.reviewed-on" % review_locator
-        date = self.selenium.get_text(date_locator)
-        # we need to parse the string first to get date
-        date = re.match('^(.+on\s)([A-Za-z]+\s[\d]+,\s[\d]+)(.+)$', date)
-        review['date'] = date.group(2)
+        def __init__(self, testsetup, index):
+            AddonsBasePage.__init__(self, testsetup)
+            self.index = index
 
-        return review
+        def absolute_locator(self, relative_locator):
+            return "%s:nth(%s) %s" % (self._review_locator,
+                                      self.index, relative_locator)
 
+        @property
+        def text(self):
+            text_locator = self.absolute_locator(self._review_text_locator)
+            return self.selenium.get_text(text_locator)
 
+        @property
+        def rating(self):
+            rating_locator = self.absolute_locator(self._review_rating_locator)
+            return int(self.selenium.get_text(rating_locator))
+
+        @property
+        def author(self):
+            author_locator = self.absolute_locator(self._review_author_locator)
+            return self.selenium.get_text(author_locator)
+
+        @property
+        def date(self):
+            date_locator = self.absolute_locator(self._review_date_locator)
+            date = self.selenium.get_text(date_locator)
+            # we need to parse the string first to get date
+            date = re.match('^(.+on\s)([A-Za-z]+\s[\d]+,\s[\d]+)(.+)$', date)
+            return date.group(2)
+
+        
 class AddonsThemesPage(AddonsHomePage):
 
     _sort_by_name_locator = 'name=_t-name'
