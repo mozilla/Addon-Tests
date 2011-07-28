@@ -40,16 +40,54 @@ from page import Page
 
 class AddonsBasePage(Page):
 
+    _next_link_locator = "link=Next"
+    _previous_link_locator = "link=Prev"
+    _current_page_locator = "css=.pagination li.selected a"
+    _last_page_link_locator = "css=.pagination a:not([rel]):last"
+    _first_page_link_locator = "css=.pagination a:not([rel]):first"
+
+    def page_forward(self):
+        self.selenium.click(self._next_link_locator)
+        self.selenium.wait_for_page_to_load(self.timeout)
+
+    def page_back(self):
+        self.selenium.click(self._previous_link_locator)
+        self.selenium.wait_for_page_to_load(self.timeout)
+
+    @property
+    def is_prev_link_present(self):
+        return self.selenium.is_element_present(self._previous_link_locator)
+
+    @property
+    def is_prev_link_visible(self):
+        return self.selenium.is_visible(self._previous_link_locator)
+
+    @property
+    def is_next_link_present(self):
+        return self.selenium.is_element_present(self._next_link_locator)
+
+    @property
+    def is_next_link_visible(self):
+        return self.selenium.is_visible(self._next_link_locator)
+
+    @property
+    def current_page(self):
+        return int(self.selenium.get_text(self._current_page_locator))
+
+    def go_to_last_page(self):
+        self.selenium.click(self._last_page_link_locator)
+        self.selenium.wait_for_page_to_load(self.timeout)
+
+    def go_to_first_page(self):
+        self.selenium.click(self._first_page_link_locator)
+        self.selenium.wait_for_page_to_load(self.timeout)
+
     def credentials_of_user(self, user):
         return self.parse_yaml_file(self.credentials)[user]
 
     @property
     def header(self):
         return AddonsBasePage.HeaderRegion(self.testsetup)
-
-    @property
-    def pagination(self):
-        return AddonsBasePage.Pagination(self.testsetup)
 
     class HeaderRegion(Page):
         #Not LogedIn
@@ -83,50 +121,3 @@ class AddonsBasePage(Page):
             except:
                 pass
             return False
-
-
-    class Pagination(Page):
-
-        _next_link_locator = "link=Next"
-        _previous_link_locator = "link=Prev"
-        _current_page_locator = "css=.pagination li.selected a"
-        _last_page_link_locator = "css=.pagination a:not([rel]):last"
-        _first_page_link_locator = "css=.pagination a:not([rel]):first"
-
-        def page_forward(self):
-            self.selenium.click(self._next_link_locator)
-            self.selenium.wait_for_page_to_load(self.timeout)
-
-        def page_back(self):
-            self.selenium.click(self._previous_link_locator)
-            self.selenium.wait_for_page_to_load(self.timeout)
-
-        @property
-        def is_prev_link_present(self):
-            return self.selenium.is_element_present(self._previous_link_locator)
-
-        @property
-        def is_prev_link_visible(self):
-            return self.selenium.is_visible(self._previous_link_locator)
-
-        @property
-        def is_next_link_present(self):
-            return self.selenium.is_element_present(self._next_link_locator)
-
-        @property
-        def is_next_link_visible(self):
-            return self.selenium.is_visible(self._next_link_locator)
-
-        @property
-        def current_page(self):
-            return int(self.selenium.get_text(self._current_page_locator))
-
-        def go_to_last_page(self):
-            self.selenium.click(self._last_page_link_locator)
-            self.selenium.wait_for_page_to_load(self.timeout)
-
-        def go_to_first_page(self):
-            self.selenium.click(self._first_page_link_locator)
-            self.selenium.wait_for_page_to_load(self.timeout)
-
-

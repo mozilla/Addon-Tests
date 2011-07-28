@@ -67,7 +67,7 @@ class TestSearch:
 
         # Go Forward 10 times
         for i in range(10):
-            amo_search_page.pagination.page_forward()
+            amo_search_page.page_forward()
             results_summary = amo_search_page.results_summary
 
             matches = re.search(self._count_regex, results_summary)
@@ -81,7 +81,7 @@ class TestSearch:
 
         # Go Back 10 Times
         for i in range(10):
-            amo_search_page.pagination.page_back()
+            amo_search_page.page_back()
             results_summary = amo_search_page.results_summary
 
             matches = re.search(self._count_regex, results_summary)
