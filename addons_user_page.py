@@ -60,3 +60,11 @@ class AddonsViewProfilePage(AddonsBasePage):
     @property
     def about_me(self):
         return self.selenium.get_text(self._about_locator)
+
+class AddonsUserPage(AddonsBasePage):
+
+        _username_locator = "css=div.vcard h2.fn"
+
+        @property
+        def username(self):
+            return self.selenium.get_text(self._username_locator)
