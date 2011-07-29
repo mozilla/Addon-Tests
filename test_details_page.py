@@ -38,6 +38,8 @@
 # ***** END LICENSE BLOCK *****
 
 import re
+import pytest
+xfail = pytest.mark.xfail
 
 from unittestzero import Assert
 from addons_site import UserFAQPage
@@ -117,6 +119,7 @@ class TestDetailsPage:
             Assert.true(amo_detail_page.name.startswith(addons[i].rstrip('.')))
             AddonsDetailsPage(testsetup, addon_with_more_than_four_addons_by_the_same_author)
 
+    @xfail(reason="Extremely flaky in grid")
     def test_details_more_images(self, testsetup):
         """
         Litmus 4846
@@ -164,3 +167,19 @@ class TestDetailsPage:
 
         image_viewer.close()
         Assert.false(image_viewer.is_visible)
+
+    @xfail(reason="Flaky test")
+    @pytest.mark.impala
+    def test_that_review_usernames_are_clickable(self, testsetup):
+        """
+        Litmus 4842
+        https://litmus.mozilla.org/show_test.cgi?id=4842
+        """
+        addon_name = 'firebug'
+        amo_detail_page = AddonsDetailsPage(testsetup, addon_name)
+
+        for review in amo_detail_page.reviews():
+            username = review.username
+            amo_user_page = review.click_username()
+            Assert.equal(username, amo_user_page.username)
+            AddonsDetailsPage(testsetup, addon_name)
