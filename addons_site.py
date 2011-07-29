@@ -168,6 +168,7 @@ class AddonsDetailsPage(AddonsBasePage):
     _review_details_locator = "css=.review-detail"
     _all_reviews_link_locator = "css=#addon #reviews+.article a.more-info"
     _review_locator = "css=.primary div.review"
+    _reviews_locator = "css=#reviews div"
 
     #more about this addon
     _additional_images_locator = "css=#addon .article .screenshot"
@@ -175,8 +176,6 @@ class AddonsDetailsPage(AddonsBasePage):
     _other_addons_by_authors_locator = "css=div.other-author-addons"
     _other_addons_dropdown_locator = "id=addons-author-addons-select"
     _other_addons_link_list_locator = "css=div.other-author-addons ul li"
-
-    _reviews_locator = "css=#reviews div"
 
     def __init__(self, testsetup, addon_name):
         #formats name for url
@@ -289,17 +288,17 @@ class AddonsDetailsPage(AddonsBasePage):
         return self.DetailsReviewSnippet(self.testsetup, lookup)
 
     def reviews(self):
-        return [self.DetailsReviewSnippet(self.testsetup, i) for i in range(self.review_count)]
+        return [self.DetailsReviewSnippet(self.testsetup, i) for i in range(self.reviews_count)]
 
     @property
-    def review_count(self):
+    def reviews_count(self):
         self.wait_for_element_visible(self._reviews_locator)
         return int(self.selenium.get_css_count(self._reviews_locator))
 
     class DetailsReviewSnippet(Page):
 
-        _reviews_locator = "css=#reviews div"  # Base locator
-        _username_locator = "p.byline  a"
+        _reviews_locator = "css=#reviews div" # Base locator
+        _username_locator = "p.byline a"
 
         def __init__(self, testsetup, lookup):
             Page.__init__(self, testsetup)
