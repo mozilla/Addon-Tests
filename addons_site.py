@@ -220,7 +220,7 @@ class AddonsDetailsPage(AddonsHomePage):
     _addon_rating_locator = "css=span[itemprop='rating']"
     _whats_this_license_locator = "css=h5 > span > a"
     _description_locator = "css=div[class='article userinput'] > p"
-    _register_link_locator = "link=Register"
+    _register_link_locator = "css=p.context > a"
     _login_link_locator = "link=Log in"
     _other_applications_locator = "css=a.controller"
     _other_apps_dropdown_menu_locator = "css=#other-apps > li > ul"
