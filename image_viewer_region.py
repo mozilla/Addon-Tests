@@ -43,7 +43,6 @@ class ImageViewer(Page):
     _overlay_locator = "id=jquery-overlay"
     _viewer_locator = "id=jquery-lightbox"
     _image_locator = "id=lightbox-image"
-    _image_data_locator = "id=lightbox-nav"
     _loading_locator = "id=lightbox-loading"
 
     #information
@@ -51,6 +50,7 @@ class ImageViewer(Page):
     _current_number_locator = "id=lightbox-image-details-currentNumber"
 
     #navigation
+    _image_navigator_locator = "id=lightbox-nav"
     _next_locator = "id=lightbox-nav-btnNext"
     _previous_locator = "id=lightbox-nav-btnPrev"
     _close_locator = "id=lightbox-secNav-btnClose"
@@ -64,8 +64,7 @@ class ImageViewer(Page):
         return False
 
     def wait_for_viewer_to_finish_animating(self):
-        self.wait_for_element_not_visible(self._image_data_locator)
-        self.wait_for_element_visible(self._image_data_locator)
+        self.wait_for_element_visible(self._image_navigator_locator)
 
     #information
     @property
