@@ -115,6 +115,7 @@ class AddonsHomePage(AddonsBasePage):
         return AddonsPersonasPage(self.testsetup)
 
     def click_themes(self):
+        self.wait_for_element_visible(self._themes_link_locator)
         self.selenium.click(self._themes_link_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
         return AddonsThemesPage(self.testsetup)
