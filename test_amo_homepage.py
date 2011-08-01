@@ -38,10 +38,11 @@
 
 from unittestzero import Assert
 from addons_site import AddonsHomePage
+import pytest
 
 
-class TestAmoLayout:
-
+class TestHomePage:
+    @pytest.mark.impala
     def test_that_verifies_the_tooltip_for_Other_Applications(self, testsetup):
         """
         Litmus 22925
