@@ -245,6 +245,7 @@ class AddonsDetailsPage(AddonsBasePage):
     _other_addons_link_list_locator = "css=div.other-author-addons ul li"
 
     _reviews_locator = "css=#reviews div"
+    _review_details_locator = "css=.review-detail"
 
     def __init__(self, testsetup, addon_name):
         #formats name for url
@@ -297,10 +298,6 @@ class AddonsDetailsPage(AddonsBasePage):
     @property
     def other_apps(self):
         return self.selenium.get_text(self._other_applications_locator)
-
-    @property
-    def name(self):
-        return self.selenium.get_text(self._name_locator)
 
     @property
     def release_notes(self):
