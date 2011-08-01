@@ -273,6 +273,7 @@ class TestSearch:
 
             Assert.equal(str(first_expected), first_count)
             Assert.equal(str(second_expected), second_count)
+            Assert.equal(amo_search_page.result_count, 20)
 
             amo_search_page.page_forward()
             first_expected += 20
