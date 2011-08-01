@@ -173,10 +173,10 @@ class TestThemes:
         amo_themes_page = amo_home_page.click_themes()
         current_page_url = amo_home_page.get_url_current_page()
         Assert.true(current_page_url.endswith("/themes/"))
-        Assert.equal(amo_themes_page.categories_count, 9)
         default_categories = ["Animals", "Compact", "Large", "Miscellaneous", "Modern", "Nature", "OS Integration", "Retro", "Sports"]
+        Assert.equal(amo_themes_page.categories_count, len(default_categories))
         count = 0
         for category in default_categories:
             count += 1
-            current_category = amo_themes_page.get_category_by_index(count)
+            current_category = amo_themes_page.get_category(count)
             Assert.equal(category, current_category)

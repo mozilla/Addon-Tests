@@ -408,8 +408,8 @@ class AddonsThemesPage(AddonsHomePage):
         self.selenium.wait_for_page_to_load(self.timeout)
         return AddonsThemesCategoryPage(self.testsetup)
 
-    def get_category_by_index(self, index):
-        return self.selenium.get_text(self._category_link_locator % index)
+    def get_category(self, lookup):
+        return self.selenium.get_text(self._category_link_locator % lookup)
 
     @property
     def page_title(self):
