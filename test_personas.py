@@ -38,6 +38,8 @@
 
 
 import random
+import pytest
+xfail = pytest.mark.xfail
 
 from unittestzero import Assert
 from addons_site import AddonsHomePage
@@ -71,6 +73,7 @@ class TestPersonas:
         amo_personas_page = amo_home_page.click_personas()
         Assert.true(amo_personas_page.is_the_current_page)
 
+    @xfail(reason="Disabled until bug 674374 is fixed.")
     def test_the_featured_personas_section(self, testsetup):
         """ Test for Litmus 15392
             https://litmus.mozilla.org/show_test.cgi?id=15392"""

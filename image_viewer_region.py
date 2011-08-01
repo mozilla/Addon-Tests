@@ -43,7 +43,7 @@ class ImageViewer(Page):
     _overlay_locator = "id=jquery-overlay"
     _viewer_locator = "id=jquery-lightbox"
     _image_locator = "id=lightbox-image"
-    _image_data_locator = "id=lightbox-container-image-data"
+    _image_data_locator = "id=lightbox-nav"
     _loading_locator = "id=lightbox-loading"
 
     #information
@@ -104,7 +104,6 @@ class ImageViewer(Page):
     def click_previous(self):
             self.selenium.click(self._previous_locator)
             self.wait_for_viewer_to_finish_animating()
-
 
     @property
     def is_previous_link_visible(self):
