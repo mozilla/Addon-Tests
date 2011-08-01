@@ -50,3 +50,11 @@ class AddonsLoginPage(AddonsBasePage):
         self.selenium.type(self._password_locator, password)
         self.selenium.click(self._login_button_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
+
+class AddonsUserPage(AddonsBasePage):
+
+        _username_locator = "css=div.vcard h2.fn"
+
+        @property
+        def username(self):
+            return self.selenium.get_text(self._username_locator)
