@@ -59,12 +59,9 @@ class AddonsBasePage(Page):
         _account_controller_locator = 'css=#aux-nav .account .controller'
         _dropdown_locator = "css=#aux-nav .account ul"
 
-<<<<<<< HEAD
         @property
         def other_applications_tooltip(self):
             return self.selenium.get_attribute("%s@title" % self._other_apps_locator)
-=======
->>>>>>> bebe/Users_verif_edit
 
         def click_my_account(self):
             self.selenium.click(self._account_controller_locator)
