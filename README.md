@@ -31,11 +31,11 @@ If you are running on Ubuntu/Debian you will need to do following first
 to install the required Python libraries.
 
 ### Selenium
-Once this is all set up you will need to download and start a Selenium server. You can download the latest Selenium server from [here][Selenium Downloads]. The filename will be something like 'selenium-server-standalone-2.2.0.jar'
+Once this is all set up you will need to download and start a Selenium server. You can download the latest Selenium server from [here][Selenium Downloads]. The filename will be something like 'selenium-server-standalone-2.3.0.jar'
 
 To start the Selenium server run the following command:
 
-    java -jar ~/Downloads/selenium-server-standalone-2.2.0.jar
+    java -jar ~/Downloads/selenium-server-standalone-2.3.0.jar
 
 Change the path/name to the downloaded Selenium server file.
 
