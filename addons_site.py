@@ -213,6 +213,10 @@ class AddonsHomePage(AddonsBasePage):
 
 class AddonsDetailsPage(AddonsBasePage):
 
+
+    _breadcrumb_locator = "css=ol.breadcrumbs"
+
+    #addon informations
     _name_locator = "css=h2.addon > span"
     _version_number_locator = "css=span.version"
     _authors_locator = "//h4[@class='author']/a"
@@ -229,6 +233,7 @@ class AddonsDetailsPage(AddonsBasePage):
     #more about this addon
     _additional_images_locator = "css=#addon .article .screenshot"
     _website_locator = "css=div#addon-summary tr:contains('Website') a"
+    #other_addons
     _other_addons_by_authors_locator = "css=div.other-author-addons"
     _other_addons_dropdown_locator = "id=addons-author-addons-select"
     _other_addons_link_list_locator = "css=div.other-author-addons ul li"
@@ -240,6 +245,10 @@ class AddonsDetailsPage(AddonsBasePage):
         self.addon_name = addon_name.replace(' ', '-').lower()
         AddonsBasePage.__init__(self, testsetup)
         self.selenium.open("%s/addon/%s" % (self.site_version, self.addon_name))
+
+    @property
+    def breadcrumb(self):
+        return self.selenium.get_text(self._breadcrumb_locator)
 
     @property
     def page_title(self):
