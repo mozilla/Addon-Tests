@@ -58,3 +58,13 @@ class AddonsUserPage(AddonsBasePage):
         @property
         def username(self):
             return self.selenium.get_text(self._username_locator)
+
+
+class AddonsEditProfilePage(AddonsBasePage):
+
+    _page_title = 'Account Settings :: Add-ons for Firefox'
+    _title_locator = 'css=div.primary h2'
+
+    @property
+    def page_title(self):
+        return self.selenium.get_text(self._title_locator)

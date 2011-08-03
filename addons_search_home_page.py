@@ -50,6 +50,7 @@ class AddonsSearchHomePage(AddonsBasePage):
     _results_displayed_locator = "css=div.num-results"
     _results_locator = "css=div.results-inner div.item"
 
+    _pagination_loctor = "css=div.listing-footer li"
     _next_link_locator = "link=Next"
     _previous_link_locator = "link=Prev"
 
@@ -69,6 +70,10 @@ class AddonsSearchHomePage(AddonsBasePage):
     def page_back(self):
         self.selenium.click(self._previous_link_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
+
+    @property
+    def is_forword_present(self):
+        return self.is_element_present(self._next_link_locator)
 
     @property
     def refine_results(self):
@@ -104,13 +109,18 @@ class AddonsSearchHomePage(AddonsBasePage):
         return self
 
     def result(self, lookup):
-        return self.Result(self.testsetup, lookup)
+        return self.SearchResult(self.testsetup, lookup)
 
     def results(self):
-        return [self.Result(self.testsetup, i) for i in range(self.result_count)]
+        return [self.SearchResult(self.testsetup, i) for i in range(self.result_count)]
 
-    class Result(Page):
+    def click_last_results_page(self):
+        count = self.selenium.get_css_count(self._pagination_loctor)
+        if self.selenium.get_text("%s:nth(%s) a" % (self._pagination_loctor, count - 1)) == "Next":
+            self.selenium.click("%s:nth(%s) a" % (self._pagination_loctor, count - 2))
+            self.selenium.wait_for_page_to_load(self.timeout)
 
+    class SearchResult(Page):
         _name_locator = " h3 a"
 
         def __init__(self, testsetup, lookup):
