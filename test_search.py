@@ -285,3 +285,14 @@ class TestSearch:
             Assert.equal(amo_search_page.result_count, 20)
         else:
             Assert.equal(amo_search_page.result_count, number)
+
+    def test_searching_for_collections_returns_results(self, testsetup):
+        """
+        Litmus 17352
+        https://litmus.mozilla.org/show_test.cgi?id=17352
+        """
+        amo_home_page = AddonsHomePage(testsetup)
+        amo_collection_page = amo_home_page.click_collections()
+        amo_search_results_page = amo_collection_page.search_for("web")
+
+        Assert.true(amo_search_results_page.result_count > 0)
