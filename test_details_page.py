@@ -192,4 +192,3 @@ class TestDetailsPage:
         amo_detail_page = AddonsDetailsPage(testsetup, 'firebug')
 
         Assert.equal(amo_detail_page.breadcrumb, 'Add-ons for Firefox Extensions Firebug')
-        Assert.true(amo_detail_page.breadcrumb_arrow)

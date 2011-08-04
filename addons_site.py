@@ -247,24 +247,6 @@ class AddonsDetailsPage(AddonsBasePage):
         self.selenium.open("%s/addon/%s" % (self.site_version, self.addon_name))
 
     @property
-    def breadcrumb_arrow(self):
-        _count = self.selenium.get_css_count('%s li' % self._breadcrumb_locator)
-        _browser_document = "selenium.browserbot.getCurrentWindow().document"
-        result = False
-        for i in range(_count - 1):
-            _popular_category_element = "%s.getElementsByClassName('breadcrumbs')[0].getElementsByTagName('li')[%s]" % \
-                            (_browser_document, i)
-            _arrow_background_image_func = _browser_document + ".defaultView.getComputedStyle(" + _popular_category_element + ", null)" \
-                             ".getPropertyValue('background-image')"
-            _arrow_backround_image = self.selenium.get_eval(_arrow_background_image_func)
-            if '/icons/buttons/breadcrumb.gif' in _arrow_backround_image:
-                result = True
-            else:
-                result = False
-
-        return result
-
-    @property
     def breadcrumb(self):
         return self.selenium.get_text(self._breadcrumb_locator)
 
