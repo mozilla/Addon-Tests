@@ -97,7 +97,6 @@ class TestAccounts:
         addons_login_page.login(credentials['email'], credentials['password'])
         Assert.true(amo_home_page.header.is_user_logged_in)
 
-        amo_home_page.header.click_view_profile()
-        amo_view_profile_page = addons_user_page.AddonsViewProfilePage(testsetup)
+        amo_view_profile_page = amo_home_page.header.click_view_profile()
 
         Assert.equal(amo_view_profile_page.about_me, 'About Me')
