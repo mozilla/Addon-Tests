@@ -224,14 +224,15 @@ class AddonsDetailsPage(AddonsBasePage):
     _whats_this_license_locator = "css=h5 > span > a"
     _description_locator = "css=div[class='article userinput'] > p"
     _register_link_locator = "css=p.context > a"
-    _login_link_locator = "link=Log in"
+    _login_link_locator = "css=p.context > a:nth(1)"
     _other_applications_locator = "css=a.controller"
     _other_apps_dropdown_menu_locator = "css=#other-apps > li > ul"
     _name_locator = "css=h2.addon > span"
     _more_about_addon_locator = "id=more-about"
     _release_notes_locator = "id=releasenotes"
+    _release_version_locator = "css=div[class='version article'] > h3 > a"
     _reviews_title_locator = "id=reviews"
-    _tags_locator = "id=addonid-1843"
+    _tags_locator = "id=tagbox"
     _other_addons_locator = "css=ul.addon-otheraddons"
     _other_collections_locator = "css=ul.addon-collections"
     _icon_locator = "css=img.icon"
@@ -304,6 +305,10 @@ class AddonsDetailsPage(AddonsBasePage):
         return self.selenium.get_text(self._release_notes_locator)
 
     @property
+    def release_version(self):
+        return self.selenium.get_text(self._release_version_locator)
+
+    @property
     def more_about_addon(self):
         return self.selenium.get_text(self._more_about_addon_locator)
 
@@ -343,7 +348,7 @@ class AddonsDetailsPage(AddonsBasePage):
     def is_review_title_visible(self):
         return self.selenium.is_visible(self._reviews_title_locator)
 
-    def are_other_addons_visible(self):
+    def are_often_used_with_addons_visible(self):
         return self.selenium.is_visible(self._other_addons_locator)
 
     def are_tags_visible(self):

@@ -97,6 +97,9 @@ class TestDetailsPage:
         Assert.equal(amo_details_page.release_notes, "Release Notes")
         Assert.not_none(re.match('\w+', amo_details_page.version_number))
 
+        #check that the release number matches the the version number at the top of the page
+        Assert.not_none(re.search(amo_details_page.version_number, amo_details_page.release_version))
+
     def test_that_reviews_are_displayed(self, testsetup):
         """ Test for Litmus 9890"""
         amo_details_page = AddonsDetailsPage(testsetup, "Firebug")
@@ -104,10 +107,10 @@ class TestDetailsPage:
         Assert.equal(amo_details_page.review_title, "Reviews")
         Assert.not_none(re.match('(\w+\s*){3,}', amo_details_page.review_details))
 
-    def test_that_other_addons_are_displayed(self, testsetup):
+    def test_that_in_often_used_with_addons_are_displayed(self, testsetup):
         """ Test for Litmus 9890"""
         amo_details_page = AddonsDetailsPage(testsetup, "Firebug")
-        Assert.true(amo_details_page.are_other_addons_visible())
+        Assert.true(amo_details_page.are_often_used_with_addons_visible())
 
     def test_that_tags_are_displayed(self, testsetup):
         """ Test for Litmus 9890"""
