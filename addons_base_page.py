@@ -94,6 +94,11 @@ class AddonsBasePage(Page):
 
         _other_apps_locator = "id=other-apps"
 
+
+        #Search box
+        _search_button_locator = "css=input.submit"
+        _search_textbox_locator = "name=q"
+
         #Not LogedIn
         _login_locator = "css=.amo-header .context a:nth(1)"  # Until https://bugzilla.mozilla.org/show_bug.cgi?id=669646
         _register_locator = "css=.amo-header .context a:nth(0)"
@@ -105,6 +110,17 @@ class AddonsBasePage(Page):
         @property
         def other_applications_tooltip(self):
             return self.selenium.get_attribute("%s@title" % self._other_apps_locator)
+
+        def search_for(self, search_term):
+            self.selenium.type(self._search_textbox_locator, search_term)
+            self.selenium.click(self._search_button_locator)
+            self.selenium.wait_for_page_to_load(self.timeout)
+            from addons_search_home_page import AddonsSearchHomePage
+            return AddonsSearchHomePage(self.testsetup)
+
+        @property
+        def search_field_placeholder(self):
+            return self.selenium.get_attribute(self._search_textbox_locator + '@placeholder')
 
         def click_my_account(self):
             self.selenium.click(self._account_controller_locator)
