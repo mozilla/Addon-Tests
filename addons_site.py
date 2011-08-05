@@ -48,6 +48,7 @@ from datetime import datetime
 
 from page import Page
 from addons_base_page import AddonsBasePage
+from addons_collection_page import AddonsCollesctionsPage
 from addons_user_page import AddonsUserPage
 import addons_search_home_page
 import image_viewer_region
@@ -60,6 +61,7 @@ class AddonsHomePage(AddonsBasePage):
     _download_count_locator = "css=div.stats > strong"
     _themes_link_locator = "id=_t-2"
     _personas_link_locator = "id=_t-9"
+    _collections_link_locator = "id=_t-99"
 
     #Categories List
     _category_list_locator = "//ul[@id='categoriesdropdown']"
@@ -106,6 +108,11 @@ class AddonsHomePage(AddonsBasePage):
         self.selenium.click(self._themes_link_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
         return AddonsThemesPage(self.testsetup)
+
+    def click_collections(self):
+        self.selenium.click(self._collections_link_locator)
+        self.selenium.wait_for_page_to_load(self.timeout)
+        return AddonsCollesctionsPage(self.testsetup)
 
     def open_details_page_for_id(self, id):
         self.selenium.open("%s/addon/%s" % (self.site_version, id))
@@ -200,6 +207,10 @@ class AddonsHomePage(AddonsBasePage):
 
 class AddonsDetailsPage(AddonsBasePage):
 
+
+    _breadcrumb_locator = "css=ol.breadcrumbs"
+
+    #addon informations
     _name_locator = "css=h2.addon > span"
     _version_number_locator = "css=span.version"
     _authors_locator = "//h4[@class='author']/a"
@@ -216,6 +227,7 @@ class AddonsDetailsPage(AddonsBasePage):
     #more about this addon
     _additional_images_locator = "css=#addon .article .screenshot"
     _website_locator = "css=div#addon-summary tr:contains('Website') a"
+    #other_addons
     _other_addons_by_authors_locator = "css=div.other-author-addons"
     _other_addons_dropdown_locator = "id=addons-author-addons-select"
     _other_addons_link_list_locator = "css=div.other-author-addons ul li"
@@ -227,6 +239,10 @@ class AddonsDetailsPage(AddonsBasePage):
         self.addon_name = addon_name.replace(' ', '-').lower()
         AddonsBasePage.__init__(self, testsetup)
         self.selenium.open("%s/addon/%s" % (self.site_version, self.addon_name))
+
+    @property
+    def breadcrumb(self):
+        return self.selenium.get_text(self._breadcrumb_locator)
 
     @property
     def page_title(self):

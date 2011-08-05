@@ -49,6 +49,9 @@ class AddonsBasePage(Page):
 
     class HeaderRegion(Page):
 
+        _other_apps_locator = "id=other-apps"
+
+
         #Search box
         _search_button_locator = "css=input.submit"
         _search_textbox_locator = "name=q"
@@ -60,6 +63,10 @@ class AddonsBasePage(Page):
         #LogedIn
         _account_controller_locator = 'css=#aux-nav .account .controller'
         _dropdown_locator = "css=#aux-nav .account ul"
+
+        @property
+        def other_applications_tooltip(self):
+            return self.selenium.get_attribute("%s@title" % self._other_apps_locator)
 
         def search_for(self, search_term):
             self.selenium.type(self._search_textbox_locator, search_term)
@@ -84,6 +91,11 @@ class AddonsBasePage(Page):
                 self.selenium.click('%s > li:nth(3) a' % self._dropdown_locator)
             else:
                 self.selenium.click('%s > li:nth(4) a' % self._dropdown_locator)
+            self.selenium.wait_for_page_to_load(self.timeout)
+
+        def click_edit_profile(self):
+            self.click_my_account
+            self.selenium.click('%s > li:nth(1) a' % self._dropdown_locator)
             self.selenium.wait_for_page_to_load(self.timeout)
 
         @property
