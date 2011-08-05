@@ -20,7 +20,6 @@
 # the Initial Developer. All Rights Reserved.
 #
 # Contributor(s): Bebe <florin.strugariu@softvision.ro>
-#                 Alex Rodionov <p0deje@gmail.com>
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -37,7 +36,6 @@
 # ***** END LICENSE BLOCK *****
 
 from addons_base_page import AddonsBasePage
-from addons_site import AddonsHomePage 
 
 
 class AddonsLoginPage(AddonsBasePage):
@@ -52,4 +50,21 @@ class AddonsLoginPage(AddonsBasePage):
         self.selenium.type(self._password_locator, password)
         self.selenium.click(self._login_button_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
-        return AddonsHomePage(self.testsetup)
+
+class AddonsUserPage(AddonsBasePage):
+
+        _username_locator = "css=div.vcard h2.fn"
+
+        @property
+        def username(self):
+            return self.selenium.get_text(self._username_locator)
+
+
+class AddonsEditProfilePage(AddonsBasePage):
+
+    _page_title = 'Account Settings :: Add-ons for Firefox'
+    _title_locator = 'css=div.primary h2'
+
+    @property
+    def page_title(self):
+        return self.selenium.get_text(self._title_locator)

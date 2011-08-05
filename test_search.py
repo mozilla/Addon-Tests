@@ -243,3 +243,56 @@ class TestSearch:
         Assert.true(amo_search_page.result_count > 0)
         Assert.equal(amo_search_page.refine_results.tag("development").name, "development")
         Assert.true(amo_search_page.refine_results.tag_count > 1)
+
+    def test_that_search_returns_top_1000_results(self, testsetup):
+
+        amo_home_page = AddonsHomePage(testsetup)
+        amo_search_page = amo_home_page.search_for("a")
+
+        results = amo_search_page.results_summary
+        total_results = results.split(' ')[5]
+
+        Assert.equal(total_results, '1000')
+
+    def test_that_search_results_return_20_results_per_page(self, testsetup):
+        """
+        Litmus 17346
+        https://litmus.mozilla.org/show_test.cgi?id=17346
+        """
+        amo_home_page = AddonsHomePage(testsetup)
+        amo_search_page = amo_home_page.search_for("deutsch")
+
+        first_expected = 1
+        second_expected = 20
+
+        while(amo_search_page.is_forword_present):
+            results_summary = amo_search_page.results_displayed
+            results = re.split("\W+", results_summary)
+            first_count = results[1]
+            second_count = results[2]
+
+            Assert.equal(str(first_expected), first_count)
+            Assert.equal(str(second_expected), second_count)
+            Assert.equal(amo_search_page.result_count, 20)
+
+            amo_search_page.page_forward()
+            first_expected += 20
+            second_expected += 20
+
+        number = int(re.split("\W+", results_summary)[4]) % 20
+
+        if number == 0:
+            Assert.equal(amo_search_page.result_count, 20)
+        else:
+            Assert.equal(amo_search_page.result_count, number)
+
+    def test_searching_for_collections_returns_results(self, testsetup):
+        """
+        Litmus 17352
+        https://litmus.mozilla.org/show_test.cgi?id=17352
+        """
+        amo_home_page = AddonsHomePage(testsetup)
+        amo_collection_page = amo_home_page.click_collections()
+        amo_search_results_page = amo_collection_page.search_for("web")
+
+        Assert.true(amo_search_results_page.result_count > 0)
