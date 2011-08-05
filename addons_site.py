@@ -67,31 +67,11 @@ class AddonsHomePage(AddonsBasePage):
     _category_list_locator = "//ul[@id='categoriesdropdown']"
     _category_item_locator = "//li/a[text()='%s']"
 
-    #prev next links
-    _next_link_locator = "link=Next"
-    _previous_link_locator = "link=Prev"
-
-    #addons detail page
-    _review_details_locator = "css=.review-detail"
-    _all_reviews_link_locator = "css=#addon #reviews+.article a.more-info"
-    _current_page_locator = "css=.pagination li.selected a"
-    _review_locator = "css=.primary div.review"
-    _last_page_link_locator = "css=.pagination a:not([rel]):last"
-    _first_page_link_locator = "css=.pagination a:not([rel]):first"
-
     def __init__(self, testsetup):
         ''' Creates a new instance of the class and gets the page ready for testing '''
         AddonsBasePage.__init__(self, testsetup)
         self.selenium.open("%s/" % self.site_version)
         self.selenium.window_maximize()
-
-    def page_forward(self):
-        self.selenium.click(self._next_link_locator)
-        self.selenium.wait_for_page_to_load(self.timeout)
-
-    def page_back(self):
-        self.selenium.click(self._previous_link_locator)
-        self.selenium.wait_for_page_to_load(self.timeout)
 
     def has_category(self, category_name):
         ''' Returns whether category_name exists in the category menu links '''
@@ -117,46 +97,7 @@ class AddonsHomePage(AddonsBasePage):
     def open_details_page_for_id(self, id):
         self.selenium.open("%s/addon/%s" % (self.site_version, id))
         self.selenium.wait_for_page_to_load(self.timeout)
-
-    def click_all_reviews_link(self):
-        self.selenium.click(self._all_reviews_link_locator)
-        self.selenium.wait_for_page_to_load(self.timeout)
-
-    @property
-    def review_count(self):
-        return self.selenium.get_css_count(self._review_locator)
-
-    @property
-    def has_reviews(self):
-        return self.selenium.get_css_count(self._review_details_locator) > 0
-
-    @property
-    def is_next_link_present(self):
-        return self.selenium.is_element_present(self._next_link_locator)
-
-    @property
-    def is_next_link_visible(self):
-        return self.selenium.is_visible(self._next_link_locator)
-
-    @property
-    def is_prev_link_present(self):
-        return self.selenium.is_element_present(self._previous_link_locator)
-
-    @property
-    def is_prev_link_visible(self):
-        return self.selenium.is_visible(self._previous_link_locator)
-
-    @property
-    def current_page(self):
-        return int(self.selenium.get_text(self._current_page_locator))
-
-    def go_to_first_page(self):
-        self.selenium.click(self._first_page_link_locator)
-        self.selenium.wait_for_page_to_load(self.timeout)
-
-    def go_to_last_page(self):
-        self.selenium.click(self._last_page_link_locator)
-        self.selenium.wait_for_page_to_load(self.timeout)
+        return AddonsDetailsPage(self.testsetup, id)
 
     @property
     def download_count(self):
@@ -223,6 +164,10 @@ class AddonsDetailsPage(AddonsBasePage):
     _description_locator = "css=div[class='article userinput'] > p"
     _icon_locator = "css=img.icon"
     _featured_image_locator = "css=#addon .featured .screenshot"
+    _review_details_locator = "css=.review-detail"
+    _all_reviews_link_locator = "css=#addon #reviews+.article a.more-info"
+    _review_locator = "css=.primary div.review"
+    _reviews_locator = "css=#reviews div"
 
     #more about this addon
     _additional_images_locator = "css=#addon .article .screenshot"
@@ -232,13 +177,23 @@ class AddonsDetailsPage(AddonsBasePage):
     _other_addons_dropdown_locator = "id=addons-author-addons-select"
     _other_addons_link_list_locator = "css=div.other-author-addons ul li"
 
-    _reviews_locator = "css=#reviews div"
-
     def __init__(self, testsetup, addon_name):
         #formats name for url
         self.addon_name = addon_name.replace(' ', '-').lower()
         AddonsBasePage.__init__(self, testsetup)
         self.selenium.open("%s/addon/%s" % (self.site_version, self.addon_name))
+
+    @property
+    def has_reviews(self):
+        return self.selenium.get_css_count(self._review_details_locator) > 0
+
+    def click_all_reviews_link(self):
+        self.selenium.click(self._all_reviews_link_locator)
+        self.selenium.wait_for_page_to_load(self.timeout)
+
+    @property
+    def review_count(self):
+        return self.selenium.get_css_count(self._review_locator)
 
     @property
     def breadcrumb(self):
@@ -337,17 +292,17 @@ class AddonsDetailsPage(AddonsBasePage):
         return self.DetailsReviewSnippet(self.testsetup, lookup)
 
     def reviews(self):
-        return [self.DetailsReviewSnippet(self.testsetup, i) for i in range(self.review_count)]
+        return [self.DetailsReviewSnippet(self.testsetup, i) for i in range(self.reviews_count)]
 
     @property
-    def review_count(self):
+    def reviews_count(self):
         self.wait_for_element_visible(self._reviews_locator)
         return int(self.selenium.get_css_count(self._reviews_locator))
 
     class DetailsReviewSnippet(Page):
 
-        _reviews_locator = "css=#reviews div"  # Base locator
-        _username_locator = "p.byline  a"
+        _reviews_locator = "css=#reviews div" # Base locator
+        _username_locator = "p.byline a"
 
         def __init__(self, testsetup, lookup):
             Page.__init__(self, testsetup)
