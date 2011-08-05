@@ -48,7 +48,7 @@ from datetime import datetime
 
 from page import Page
 from addons_base_page import AddonsBasePage
-from addons_collection_page import AddonsCollesctionsPage
+from addons_collection_page import AddonsCollectionsPage
 from addons_user_page import AddonsUserPage
 import addons_search_home_page
 import image_viewer_region
@@ -105,7 +105,7 @@ class AddonsHomePage(AddonsBasePage):
     def click_collections(self):
         self.selenium.click(self._collections_link_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
-        return AddonsCollesctionsPage(self.testsetup)
+        return AddonsCollectionsPage(self.testsetup)
 
     def open_details_page_for_id(self, id):
         self.selenium.open("%s/addon/%s" % (self.site_version, id))
