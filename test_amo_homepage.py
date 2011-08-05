@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # ***** BEGIN LICENSE BLOCK *****
 # Version: MPL 1.1/GPL 2.0/LGPL 2.1
 #
@@ -20,6 +21,7 @@
 #
 # Contributor(s): Bebe <florin.strugariu@softvision.ro>
 #
+#
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
 # the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
@@ -33,28 +35,18 @@
 # the terms of any one of the MPL, the GPL or the LGPL.
 #
 # ***** END LICENSE BLOCK *****
-#
-#
-# File contains users data.
-#
-# Each user is a section named with its role
-# and any number of values. At least email
-# and password should be present, while you
-# can add any more you wish.
-#
-# Example:
-#   admin:
-#     email: email@site.com
-#     password: password
-#     username: test
-#
-# The contents of this file are accessible via the function:
-#
-#   credentials_of_user(<account name>)
-# Example:
-#   credentials = amo_home_page.credentials_of_user('default')
-#   credentials['email']
 
-default:
-    email: <value>
-    password: <value>
+from unittestzero import Assert
+from addons_site import AddonsHomePage
+import pytest
+
+
+class TestHomePage:
+    @pytest.mark.impala
+    def test_that_verifies_the_tooltip_for_Other_Applications(self, testsetup):
+        """
+        Litmus 22925
+        https://litmus.mozilla.org/show_test.cgi?id=22925
+        """
+        amo_home_page = AddonsHomePage(testsetup)
+        Assert.equal(amo_home_page.header.other_applications_tooltip, 'Find add-ons for other applications')

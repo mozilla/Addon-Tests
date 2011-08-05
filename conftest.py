@@ -128,6 +128,7 @@ def pytest_addoption(parser):
                      help="base URL for the application under test")
     parser.addoption("--timeout",
                      action="store",
+                     type="int",
                      default=120000,
                      help="timeout for page loads, etc")
     parser.addoption("--capturenetwork",

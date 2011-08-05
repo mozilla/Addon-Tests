@@ -53,6 +53,9 @@ class AddonsBasePage(Page):
         _other_applications_locator = "css=#other-apps"
         _app_thunderbird = "css=#app-thunderbird a"
 
+
+        _other_apps_locator = "id=other-apps"
+
         #Not LogedIn
         _login_locator = "css=.amo-header .context a:nth(1)"  # Until https://bugzilla.mozilla.org/show_bug.cgi?id=669646
         _register_locator = "css=.amo-header .context a:nth(0)"
@@ -72,6 +75,10 @@ class AddonsBasePage(Page):
         def is_thunderbird_visible(self):
             return self.is_element_present(self._app_thunderbird)
 
+        @property
+        def other_applications_tooltip(self):
+            return self.selenium.get_attribute("%s@title" % self._other_apps_locator)
+
         def click_my_account(self):
             self.selenium.click(self._account_controller_locator)
             self.wait_for_element_visible(self._dropdown_locator)
@@ -86,6 +93,11 @@ class AddonsBasePage(Page):
                 self.selenium.click('%s > li:nth(3) a' % self._dropdown_locator)
             else:
                 self.selenium.click('%s > li:nth(4) a' % self._dropdown_locator)
+            self.selenium.wait_for_page_to_load(self.timeout)
+
+        def click_edit_profile(self):
+            self.click_my_account
+            self.selenium.click('%s > li:nth(1) a' % self._dropdown_locator)
             self.selenium.wait_for_page_to_load(self.timeout)
 
         @property
