@@ -331,6 +331,7 @@ class AddonsDetailsPage(AddonsBasePage):
         self.selenium.click(self._other_applications_locator)
         self.wait_for_element_visible(self._other_apps_dropdown_menu_locator)
 
+    @property
     def icon_url(self):
         return self.selenium.get_attribute(self._icon_locator + "%s" % "@src")
 
