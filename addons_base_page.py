@@ -20,6 +20,7 @@
 # the Initial Developer. All Rights Reserved.
 #
 # Contributor(s): Bebe <florin.strugariu@softvision.ro>
+#                 Teodosia Pop <teodosia.pop@softvision.ro>
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -40,6 +41,48 @@ from page import Page
 
 class AddonsBasePage(Page):
 
+    _next_link_locator = "link=Next"
+    _previous_link_locator = "link=Prev"
+    _current_page_locator = "css=.pagination li.selected a"
+    _last_page_link_locator = "css=.pagination a:not([rel]):last"
+    _first_page_link_locator = "css=.pagination a:not([rel]):first"
+
+    def page_forward(self):
+        self.selenium.click(self._next_link_locator)
+        self.selenium.wait_for_page_to_load(self.timeout)
+
+    def page_back(self):
+        self.selenium.click(self._previous_link_locator)
+        self.selenium.wait_for_page_to_load(self.timeout)
+
+    @property
+    def is_prev_link_present(self):
+        return self.selenium.is_element_present(self._previous_link_locator)
+
+    @property
+    def is_prev_link_visible(self):
+        return self.selenium.is_visible(self._previous_link_locator)
+
+    @property
+    def is_next_link_present(self):
+        return self.selenium.is_element_present(self._next_link_locator)
+
+    @property
+    def is_next_link_visible(self):
+        return self.selenium.is_visible(self._next_link_locator)
+
+    @property
+    def current_page(self):
+        return int(self.selenium.get_text(self._current_page_locator))
+
+    def go_to_last_page(self):
+        self.selenium.click(self._last_page_link_locator)
+        self.selenium.wait_for_page_to_load(self.timeout)
+
+    def go_to_first_page(self):
+        self.selenium.click(self._first_page_link_locator)
+        self.selenium.wait_for_page_to_load(self.timeout)
+
     def credentials_of_user(self, user):
         return self.parse_yaml_file(self.credentials)[user]
 
@@ -48,6 +91,9 @@ class AddonsBasePage(Page):
         return AddonsBasePage.HeaderRegion(self.testsetup)
 
     class HeaderRegion(Page):
+
+        _other_apps_locator = "id=other-apps"
+
         #Not LogedIn
         _login_locator = "css=.amo-header .context a:nth(1)"  # Until https://bugzilla.mozilla.org/show_bug.cgi?id=669646
         _register_locator = "css=.amo-header .context a:nth(0)"
@@ -55,6 +101,10 @@ class AddonsBasePage(Page):
         #LogedIn
         _account_controller_locator = 'css=#aux-nav .account .controller'
         _dropdown_locator = "css=#aux-nav .account ul"
+
+        @property
+        def other_applications_tooltip(self):
+            return self.selenium.get_attribute("%s@title" % self._other_apps_locator)
 
         def click_my_account(self):
             self.selenium.click(self._account_controller_locator)
@@ -66,10 +116,15 @@ class AddonsBasePage(Page):
 
         def click_logout(self):
             self.click_my_account()
-            if self.selenium.get_text('%s > li:nth(3) a' % self._dropdown_locator) == "Log out":  #Until the https://bugzilla.mozilla.org/show_bug.cgi?id=669650
+            if self.selenium.get_text('%s > li:nth(3) a' % self._dropdown_locator) == "Log out":  # Until the https://bugzilla.mozilla.org/show_bug.cgi?id=669650
                 self.selenium.click('%s > li:nth(3) a' % self._dropdown_locator)
             else:
                 self.selenium.click('%s > li:nth(4) a' % self._dropdown_locator)
+            self.selenium.wait_for_page_to_load(self.timeout)
+
+        def click_edit_profile(self):
+            self.click_my_account
+            self.selenium.click('%s > li:nth(1) a' % self._dropdown_locator)
             self.selenium.wait_for_page_to_load(self.timeout)
 
         @property
