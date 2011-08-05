@@ -59,6 +59,10 @@ class AddonsBasePage(Page):
         _account_controller_locator = 'css=#aux-nav .account .controller'
         _dropdown_locator = "css=#aux-nav .account ul"
 
+        # Impala locators
+        _impala_login_locator = "css=#aux-nav a:nth(1)"
+        _impala_account_controller_locator = 'css=#aux-nav .account .user'
+
         @property
         def other_applications_tooltip(self):
             return self.selenium.get_attribute("%s@title" % self._other_apps_locator)
@@ -68,7 +72,10 @@ class AddonsBasePage(Page):
             self.wait_for_element_visible(self._dropdown_locator)
 
         def click_login(self):
-            self.selenium.click(self._login_locator)
+            if self.site_version == '/i':
+                self.selenium.click(self._impala_login_locator)
+            else:
+                self.selenium.click(self._login_locator)
             self.selenium.wait_for_page_to_load(self.timeout)
 
         def click_logout(self):
@@ -86,8 +93,11 @@ class AddonsBasePage(Page):
 
         @property
         def is_user_logged_in(self):
+            if self.site_version == '/i':
+                locator = self._impala_account_controller_locator
+            else:
+                locator = self._account_controller_locator
             try:
-                return self.selenium.is_visible(self._account_controller_locator)
+                return self.selenium.is_visible(locator)
             except:
-                pass
-            return False
+                return False
