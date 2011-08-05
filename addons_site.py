@@ -246,12 +246,15 @@ class AddonsDetailsPage(AddonsBasePage):
     _other_addons_link_list_locator = "css=div.other-author-addons ul li"
 
     _reviews_locator = "css=#reviews div"
+    _add_review_link_locator = "id=add-review"
 
     def __init__(self, testsetup, addon_name):
         #formats name for url
         self.addon_name = addon_name.replace(' ', '-').lower()
         AddonsBasePage.__init__(self, testsetup)
         self.selenium.open("%s/addon/%s" % (self.site_version, self.addon_name))
+        if self.site_version == '/i':
+            self._wait_for_reviews_to_load()
 
     @property
     def breadcrumb(self):
@@ -387,6 +390,85 @@ class AddonsDetailsPage(AddonsBasePage):
             self.selenium.click(self.absolute_locator(self._username_locator))
             self.selenium.wait_for_page_to_load(self.timeout)
             return AddonsUserPage(self.testsetup)
+
+    def click_to_write_review(self):
+        self.selenium.click(self._add_review_link_locator)
+        return AddonsWriteReviewBlock(self.testsetup)
+
+    def _wait_for_reviews_to_load(self):
+        self.wait_for_element_present(self._reviews_locator)
+
+
+class AddonsWriteReviewBlock(AddonsBasePage):
+
+    _add_review_input_field_locator = "id=id_body"
+    _add_review_input_rating_locator = "css=.ratingwidget input"
+    _add_review_submit_button_locator = "css=#review-box input[type=submit]"
+
+    def enter_review_with_text(self, text):
+        self.selenium.type(self._add_review_input_field_locator, text)
+
+    def set_review_rating(self, rating):
+        locator = "%s[value=%s]" % (self._add_review_input_rating_locator, rating)
+        self.selenium.click(locator)
+
+    def click_to_save_review(self):
+        self.selenium.click(self._add_review_submit_button_locator)
+        self.selenium.wait_for_page_to_load(self.timeout)
+        return AddonsReviewsPage(self.testsetup)
+
+
+class AddonsReviewsPage(AddonsBasePage):
+
+    _review_locator = "css=div.primary div.review"
+
+    def review(self, index=0):
+        """ Returns review object with index. """
+        return self.Review(self.testsetup, index)
+
+    def reviews(self):
+        """ Returns all reviews on the page. """
+        return [self.Review(self.testsetup, i) for i in
+                range(self.selenium.get_css_count(self._review_locator))]
+
+    class Review(AddonsBasePage):
+
+        _review_locator = "css=div.primary div.review"
+        _review_text_locator = "p.review-body"
+        _review_rating_locator = "span[itemprop=rating]"
+        _review_author_locator = "a:not(.permalink)"
+        _review_date_locator = "div.reviewed-on"
+
+        def __init__(self, testsetup, index):
+            AddonsBasePage.__init__(self, testsetup)
+            self.index = index
+
+        def absolute_locator(self, relative_locator):
+            return "%s:nth(%s) %s" % (self._review_locator,
+                                      self.index, relative_locator)
+
+        @property
+        def text(self):
+            text_locator = self.absolute_locator(self._review_text_locator)
+            return self.selenium.get_text(text_locator)
+
+        @property
+        def rating(self):
+            rating_locator = self.absolute_locator(self._review_rating_locator)
+            return int(self.selenium.get_text(rating_locator))
+
+        @property
+        def author(self):
+            author_locator = self.absolute_locator(self._review_author_locator)
+            return self.selenium.get_text(author_locator)
+
+        @property
+        def date(self):
+            date_locator = self.absolute_locator(self._review_date_locator)
+            date = self.selenium.get_text(date_locator)
+            # we need to parse the string first to get date
+            date = re.match('^(.+on\s)([A-Za-z]+\s[\d]+,\s[\d]+)(.+)$', date)
+            return date.group(2)
 
 
 class AddonsThemesPage(AddonsHomePage):
