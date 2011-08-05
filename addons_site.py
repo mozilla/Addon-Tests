@@ -415,23 +415,23 @@ class AddonsWriteReviewBlock(AddonsBasePage):
     def click_to_save_review(self):
         self.selenium.click(self._add_review_submit_button_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
-        return AddonsReviewsPage(self.testsetup)
+        return AddonViewReviewsPage(self.testsetup)
 
 
-class AddonsReviewsPage(AddonsBasePage):
+class AddonViewReviewsPage(AddonsBasePage):
 
     _review_locator = "css=div.primary div.review"
 
     def review(self, index=0):
         """ Returns review object with index. """
-        return self.Review(self.testsetup, index)
+        return self.ReviewSnippet(self.testsetup, index)
 
     def reviews(self):
         """ Returns all reviews on the page. """
-        return [self.Review(self.testsetup, i) for i in
+        return [self.ReviewSnippet(self.testsetup, i) for i in
                 range(self.selenium.get_css_count(self._review_locator))]
 
-    class Review(AddonsBasePage):
+    class ReviewSnippet(AddonsBasePage):
 
         _review_locator = "css=div.primary div.review"
         _review_text_locator = "p.review-body"
