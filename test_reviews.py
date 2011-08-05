@@ -110,5 +110,8 @@ class TestReviews:
         review = review_page.review()
         Assert.equal(review.rating, 1)
         Assert.equal(review.author, credentials['name'])
-        Assert.equal(review.date, datetime.now().strftime("%B %d, %Y"))
+        date = datetime.now().strftime("%B %d, %Y")
+        # there are no leading zero-signs on day so we need to remove them too
+        date = date.replace(' 0', ' ')
+        Assert.equal(review.date, date)
         Assert.equal(review.text, body)
