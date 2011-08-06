@@ -39,7 +39,7 @@
 from addons_base_page import AddonsBasePage
 
 
-class AddonsCollesctionsPage(AddonsBasePage):
+class AddonsCollectionsPage(AddonsBasePage):
 
     _page_title = "Featured Collections :: Add-ons for Firefox"
 
