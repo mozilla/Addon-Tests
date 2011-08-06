@@ -97,15 +97,19 @@ class TestReviews:
         addons_login_page = AddonsLoginPage(testsetup)
         addons_login_page.login(credentials['email'], credentials['password'])
         Assert.true(amo_home_page.header.is_user_logged_in)
+
         # Step 2 - Load any addon detail page
         details_page = AddonsDetailsPage(testsetup, 'Adblock Plus')
+
         # Step 3 - Click on "Write review" button
         write_review_block = details_page.click_to_write_review()
+
         # Step 4 - Write a review
         body = 'Automatic addon review by Selenium tests'
         write_review_block.enter_review_with_text(body)
         write_review_block.set_review_rating(1)
         review_page = write_review_block.click_to_save_review()
+
         # Step 5 - Assert review
         review = review_page.review()
         Assert.equal(review.rating, 1)
