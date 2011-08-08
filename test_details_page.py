@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+
 # ***** BEGIN LICENSE BLOCK *****
 # Version: MPL 1.1/GPL 2.0/LGPL 2.1
 #
@@ -37,6 +38,7 @@
 #
 # ***** END LICENSE BLOCK *****
 
+
 import re
 import pytest
 xfail = pytest.mark.xfail
@@ -47,6 +49,78 @@ from addons_site import AddonsDetailsPage
 
 
 class TestDetailsPage:
+
+    def test_that_register_link_is_present_in_addon_details_page(self, testsetup):
+        """ Test for Litmus 9890"""
+        amo_details_page = AddonsDetailsPage(testsetup, "Firebug")
+        Assert.true(amo_details_page.is_register_visible())
+        Assert.equal(amo_details_page.register_link, "Register")
+
+    def test_that_login_link_is_present_in_addon_details_page(self, testsetup):
+        """ Test for Litmus 9890"""
+        amo_details_page = AddonsDetailsPage(testsetup, "Firebug")
+        Assert.true(amo_details_page.is_login_visible())
+        Assert.equal(amo_details_page.login_link, "Log in")
+
+    def test_that_dropdown_menu_is_present_after_click_on_other_apps(self, testsetup):
+        """ Test for Litmus 9890"""
+        amo_details_page = AddonsDetailsPage(testsetup, "Firebug")
+        Assert.true(amo_details_page.is_other_apps_link_visible())
+        Assert.equal(amo_details_page.other_apps, "Other Applications")
+        Assert.true(amo_details_page.is_other_apps_dropdown_menu_visible())
+
+    def test_that_addon_name_is_displayed(self, testsetup):
+        """ Test for Litmus 9890"""
+        amo_details_page = AddonsDetailsPage(testsetup, "Firebug")
+        Assert.true(amo_details_page.is_addon_name_visible())
+        # check that the name is not empty
+        Assert.not_equal(amo_details_page.name, "")
+
+    def test_that_summary_is_displayed(self, testsetup):
+        """ Test for Litmus 9890"""
+        amo_details_page = AddonsDetailsPage(testsetup, "Firebug")
+        Assert.true(amo_details_page.is_summary_visible())
+        # check that the summary is not empty
+        Assert.not_none(re.match('(\w+\s*){3,}', amo_details_page.summary))
+
+    def test_that_more_about_this_addon_is_displayed(self, testsetup):
+        """ Test for Litmus 9890"""
+        amo_details_page = AddonsDetailsPage(testsetup, "Firebug")
+        Assert.true(amo_details_page.is_more_about_addon_visible())
+        Assert.equal(amo_details_page.more_about_addon, "More about this add-on")
+        Assert.not_none(re.match('(\w+\s*){3,}', amo_details_page.description))
+
+    def test_that_release_notes_are_displayed(self, testsetup):
+        """ Test for Litmus 9890"""
+        amo_details_page = AddonsDetailsPage(testsetup, "Firebug")
+        Assert.true(amo_details_page.are_release_notes_visible())
+        Assert.equal(amo_details_page.release_notes, "Release Notes")
+        Assert.not_none(re.match('\w+', amo_details_page.version_number))
+
+        #check that the release number matches the the version number at the top of the page
+        Assert.not_none(re.search(amo_details_page.version_number, amo_details_page.release_version))
+
+    def test_that_reviews_are_displayed(self, testsetup):
+        """ Test for Litmus 9890"""
+        amo_details_page = AddonsDetailsPage(testsetup, "Firebug")
+        Assert.true(amo_details_page.is_review_title_visible())
+        Assert.equal(amo_details_page.review_title, "Reviews")
+        Assert.not_none(re.match('(\w+\s*){3,}', amo_details_page.review_details))
+
+    def test_that_in_often_used_with_addons_are_displayed(self, testsetup):
+        """ Test for Litmus 9890"""
+        amo_details_page = AddonsDetailsPage(testsetup, "Firebug")
+        Assert.true(amo_details_page.are_often_used_with_addons_visible())
+
+    def test_that_tags_are_displayed(self, testsetup):
+        """ Test for Litmus 9890"""
+        amo_details_page = AddonsDetailsPage(testsetup, "Firebug")
+        Assert.true(amo_details_page.are_tags_visible())
+
+    def test_other_collections_are_displayed(self, testsetup):
+        """ Test for Litmus 9890"""
+        amo_details_page = AddonsDetailsPage(testsetup, "Firebug")
+        Assert.true(amo_details_page.are_other_collections_visible())
 
     def test_that_external_link_leads_to_addon_website(self, testsetup):
         """ Litmus 11809
@@ -113,7 +187,7 @@ class TestDetailsPage:
 
         addons = amo_detail_page.other_addons_dropdown_values
         Assert.true(len(addons) > 4)
-        for i in range(len(addons) - 1, 0, -1):  # Not checking the first item in the drop-down https://bugzilla.mozilla.org/show_bug.cgi?id=660706
+        for i in range(len(addons) - 1, 0, -1): # Not checking the first item in the drop-down https://bugzilla.mozilla.org/show_bug.cgi?id=660706
             amo_detail_page.select_other_addons_dropdown_value(addons[i])
             print addons[i]
             Assert.true(amo_detail_page.name.startswith(addons[i].rstrip('.')))
