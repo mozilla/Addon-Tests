@@ -178,7 +178,7 @@ class AddonsDetailsPage(AddonsBasePage):
     _featured_image_locator = "css=#addon .featured .screenshot"
     _review_details_locator = "css=.review-detail"
     _all_reviews_link_locator = "css=#addon #reviews+.article a.more-info"
-    _review_locator = "css=.primary div.review"
+    _review_locator = "css=div.review:not(.reply)"
     _reviews_locator = "css=#reviews div"
 
     #more about this addon
