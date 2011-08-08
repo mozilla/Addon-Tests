@@ -54,7 +54,7 @@ class TestReviews:
         Assert.true(amo_details_page.has_reviews)
 
         amo_details_page.click_all_reviews_link()
-        Assert.equal(amo_details_page.review_count , 20)
+        Assert.equal(amo_details_page.review_count, 20)
 
         #Go to the last page and check that the next button is not present
         amo_details_page.go_to_last_page()
@@ -65,7 +65,7 @@ class TestReviews:
         page_number = amo_details_page.current_page
         amo_details_page.page_back()
         Assert.true(amo_details_page.is_next_link_visible)
-        Assert.equal(amo_details_page.review_count , 20)
+        Assert.equal(amo_details_page.review_count, 20)
         Assert.equal(amo_details_page.current_page, page_number - 1)
 
         #Go to the first page and check that the prev button is not present
@@ -77,5 +77,5 @@ class TestReviews:
         page_number = amo_details_page.current_page
         amo_details_page.page_forward()
         Assert.true(amo_details_page.is_prev_link_visible)
-        Assert.equal(amo_details_page.review_count , 20)
+        Assert.equal(amo_details_page.review_count, 20)
         Assert.equal(amo_details_page.current_page, page_number + 1)
