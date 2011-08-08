@@ -167,3 +167,16 @@ class TestThemes:
         amo_home_page = AddonsHomePage(testsetup)
         Assert.true(amo_home_page.has_category("Themes"))
 
+    def test_that_themes_categories_are_listed_on_left_hand_side(self, testsetup):
+        """ test for litmus 15342"""
+        amo_home_page = AddonsHomePage(testsetup)
+        amo_themes_page = amo_home_page.click_themes()
+        current_page_url = amo_home_page.get_url_current_page()
+        Assert.true(current_page_url.endswith("/themes/"))
+        default_categories = ["Animals", "Compact", "Large", "Miscellaneous", "Modern", "Nature", "OS Integration", "Retro", "Sports"]
+        Assert.equal(amo_themes_page.categories_count, len(default_categories))
+        count = 0
+        for category in default_categories:
+            count += 1
+            current_category = amo_themes_page.get_category(count)
+            Assert.equal(category, current_category)

@@ -519,6 +519,8 @@ class AddonsThemesPage(AddonsHomePage):
     _addons_rating_locator = _addons_metadata_locator + "/span/span"
     _breadcrumb_locator = "css=ol.breadcrumbs"
     _category_locator = "css=#c-30 > a"
+    _categories_locator = "css=.other-categories ul:nth-of-type(2) li"
+    _category_link_locator = _categories_locator + ":nth-of-type(%s) a"
     _top_counter_locator = "css=div.primary>header b"
     _bottom_counter_locator = "css=div.num-results > strong:nth(2)"
 
@@ -539,6 +541,9 @@ class AddonsThemesPage(AddonsHomePage):
         self.selenium.wait_for_page_to_load(self.timeout)
         return AddonsThemesCategoryPage(self.testsetup)
 
+    def get_category(self, lookup):
+        return self.selenium.get_text(self._category_link_locator % lookup)
+
     @property
     def page_title(self):
         return self.selenium.get_title()
@@ -550,6 +555,10 @@ class AddonsThemesPage(AddonsHomePage):
     @property
     def themes_category(self):
         return self.selenium.get_text(self._category_locator)
+
+    @property
+    def categories_count(self):
+        return self.selenium.get_css_count(self._categories_locator)
 
     @property
     def addon_names(self):
