@@ -178,8 +178,7 @@ class AddonsDetailsPage(AddonsBasePage):
     _featured_image_locator = "css=#addon .featured .screenshot"
     _review_details_locator = "css=.review-detail"
     _all_reviews_link_locator = "css=#addon #reviews+.article a.more-info"
-    _review_locator = "css=.primary div.review"
-    _review_reply_locator = "css=div.review.reply"
+    _review_locator = "css=div.review:not(.reply)"
     _reviews_locator = "css=#reviews div"
 
     #more about this addon
@@ -207,10 +206,6 @@ class AddonsDetailsPage(AddonsBasePage):
     @property
     def review_count(self):
         return self.selenium.get_css_count(self._review_locator)
-
-    @property
-    def review_reply_count(self):
-        return self.selenium.get_css_count(self._review_reply_locator)
 
     @property
     def breadcrumb(self):
