@@ -193,7 +193,6 @@ class TestDetailsPage:
             Assert.true(amo_detail_page.name.startswith(addons[i].rstrip('.')))
             AddonsDetailsPage(testsetup, addon_with_more_than_four_addons_by_the_same_author)
 
-    @xfail(reason="Extremely flaky in grid")
     def test_details_more_images(self, testsetup):
         """
         Litmus 4846
