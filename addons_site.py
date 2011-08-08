@@ -162,6 +162,18 @@ class AddonsDetailsPage(AddonsBasePage):
     _addon_rating_locator = "css=span[itemprop='rating']"
     _whats_this_license_locator = "css=h5 > span > a"
     _description_locator = "css=div[class='article userinput'] > p"
+    _register_link_locator = "css=p.context > a"
+    _login_link_locator = "css=p.context > a:nth(1)"
+    _other_applications_locator = "css=a.controller"
+    _other_apps_dropdown_menu_locator = "css=#other-apps > li > ul"
+    _name_locator = "css=h2.addon > span"
+    _more_about_addon_locator = "id=more-about"
+    _release_notes_locator = "id=releasenotes"
+    _release_version_locator = "css=div[class='version article'] > h3 > a"
+    _reviews_title_locator = "id=reviews"
+    _tags_locator = "id=tagbox"
+    _other_addons_locator = "css=ul.addon-otheraddons"
+    _other_collections_locator = "css=ul.addon-collections"
     _icon_locator = "css=img.icon"
     _featured_image_locator = "css=#addon .featured .screenshot"
     _review_details_locator = "css=.review-detail"
@@ -218,7 +230,7 @@ class AddonsDetailsPage(AddonsBasePage):
 
     @property
     def authors(self):
-        return [self.selenium.get_text(self._authors_locator + "[%s]" % (i + 1))
+        return [self.selenium.get_text(self._authors_locator + "[ % s]" % (i + 1))
             for i in range(self.selenium.get_xpath_count(self._authors_locator))]
 
     @property
@@ -237,6 +249,79 @@ class AddonsDetailsPage(AddonsBasePage):
     @property
     def description(self):
         return self.selenium.get_text(self._description_locator)
+
+    @property
+    def register_link(self):
+        return self.selenium.get_text(self._register_link_locator)
+
+    @property
+    def login_link(self):
+        return self.selenium.get_text(self._login_link_locator)
+
+    @property
+    def other_apps(self):
+        return self.selenium.get_text(self._other_applications_locator)
+
+    @property
+    def release_notes(self):
+        return self.selenium.get_text(self._release_notes_locator)
+
+    @property
+    def release_version(self):
+        return self.selenium.get_text(self._release_version_locator)
+
+    @property
+    def more_about_addon(self):
+        return self.selenium.get_text(self._more_about_addon_locator)
+
+    @property
+    def review_title(self):
+        return self.selenium.get_text(self._reviews_title_locator)
+
+    @property
+    def review_details(self):
+        return self.selenium.get_text(self._review_details_locator)
+
+    def is_register_visible(self):
+        return self.selenium.is_visible(self._register_link_locator)
+
+    def is_login_visible(self):
+        return self.selenium.is_visible(self._login_link_locator)
+
+    def is_other_apps_link_visible(self):
+        return self.selenium.is_visible(self._other_applications_locator)
+
+    def is_other_apps_dropdown_menu_visible(self):
+        self.click_other_apps()
+        return self.selenium.is_visible(self._other_apps_dropdown_menu_locator)
+
+    def is_addon_name_visible(self):
+        return self.selenium.is_visible(self._name_locator)
+
+    def is_summary_visible(self):
+        return self.selenium.is_visible(self._summary_locator)
+
+    def is_more_about_addon_visible(self):
+        return self.selenium.is_visible(self._more_about_addon_locator)
+
+    def are_release_notes_visible(self):
+        return self.selenium.is_visible(self._release_notes_locator)
+
+    def is_review_title_visible(self):
+        return self.selenium.is_visible(self._reviews_title_locator)
+
+    def are_often_used_with_addons_visible(self):
+        return self.selenium.is_visible(self._other_addons_locator)
+
+    def are_tags_visible(self):
+        return self.selenium.is_visible(self._tags_locator)
+
+    def are_other_collections_visible(self):
+        return self.selenium.is_visible(self._other_collections_locator)
+
+    def click_other_apps(self):
+        self.selenium.click(self._other_applications_locator)
+        self.wait_for_element_visible(self._other_apps_dropdown_menu_locator)
 
     @property
     def icon_url(self):
@@ -422,6 +507,12 @@ class AddonsThemesPage(AddonsHomePage):
     _sort_by_created_locator = 'name=_t-created'
     _sort_by_popular_locator = 'name=_t-popular'
     _sort_by_rating_locator = 'name=_t-rating'
+    _addons_root_locator = " // div[@class = 'details']"
+    _addon_name_locator = _addons_root_locator + " / h4 / a"
+    _addons_metadata_locator = _addons_root_locator + " / p[@class = 'meta']"
+    _addons_rating_locator = _addons_metadata_locator + " / span / span"
+    _breadcrumb_locator = "css = ol.breadcrumbs"
+    _category_locator = "css = #c-30 > a"
     _addons_root_locator = "//div[@class='details']"
     _addon_name_locator = _addons_root_locator + "/h4/a"
     _addons_metadata_locator = _addons_root_locator + "/p[@class='meta']"
