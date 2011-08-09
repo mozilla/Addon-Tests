@@ -118,3 +118,34 @@ class TestReviews:
         Assert.equal(review.date, date)
         Assert.equal(review.text, body)
 
+    @pytest.mark.impala
+    def test_that_rating_increase_by_one(self, testsetup):
+        """ Litmus 22921
+            https://litmus.mozilla.org/show_test.cgi?id=22921 """
+        # Step 1 - Login into AMO
+        amo_home_page = AddonsHomePage(testsetup)
+        credentials = amo_home_page.credentials_of_user('default')
+        amo_home_page.header.click_login()
+        addons_login_page = AddonsLoginPage(testsetup)
+        addons_login_page.login(credentials['email'], credentials['password'])
+        Assert.true(amo_home_page.header.is_user_logged_in)
+
+        # Step 2 - Load any addon detail page
+        details_page = AddonsDetailsPage(testsetup, 'Scrapbook')
+
+        # Step 3 - Make a note with 1-star rating
+        old_rating_counter = details_page.get_rating_counter(1)
+
+        # Step 4 - Click on the "Write review" button
+        write_review_block = details_page.click_to_write_review()
+
+        # Step 5 - Add review with 1-star rating
+        body = 'Automatic addon review by Selenium tests'
+        write_review_block.enter_review_with_text(body)
+        write_review_block.set_review_rating(1)
+        write_review_block.click_to_save_review()
+
+        # Step 6 - Ensure rating increased by one
+        details_page = AddonsDetailsPage(testsetup, 'Scrapbook')
+        new_rating_counter = details_page.get_rating_counter(1)
+        Assert.equal(new_rating_counter, old_rating_counter + 1)
