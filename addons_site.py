@@ -277,7 +277,7 @@ class AddonsDetailsPage(AddonsBasePage):
         elif rating == 5:
             locator = "%s:nth(0)" % self._impala_rating_counter_locator
         else:
-            raise RuntimeError, "No such rating %s!" % str(rating)
+            raise RuntimeError("No such rating %s!" % str(rating))
         return int(self.selenium.get_text(locator))
 
     @property
