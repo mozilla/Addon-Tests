@@ -636,8 +636,6 @@ class AddonsPersonasPage(AddonsHomePage):
     _featured_addons_locator = "css=#featured-addons.personas-home"
     _featured_personas_locator = "css=.personas-featured .persona.persona-small"
     _addons_column_locator = '//div[@class="addons-column"]'
-    _search_button_locator = "css=input.submit"
-    _search_textbox_locator = "name=q"
 
     def __init__(self, testsetup):
         AddonsBasePage.__init__(self, testsetup)
@@ -657,12 +655,6 @@ class AddonsPersonasPage(AddonsHomePage):
         self.selenium.open("%s/addon/%s" % (self.site_version, persona_key))
         self.selenium.wait_for_page_to_load(self.timeout)
         return AddonsPersonasDetailPage(self.testsetup)
-
-    def search_for(self, search_term):
-        self.selenium.type(self._search_textbox_locator, search_term)
-        self.selenium.click(self._search_button_locator)
-        self.selenium.wait_for_page_to_load(self.timeout)
-        return addons_search_home_page.AddonsSearchHomePage(self.testsetup)
 
     @property
     def is_featured_addons_present(self):

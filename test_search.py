@@ -321,6 +321,6 @@ class TestSearch:
         """
         amo_home_page = AddonsHomePage(testsetup)
         amo_personas_page = amo_home_page.click_personas()
-        amo_personas_page.search_for("fox")
+        amo_personas_page.header.search_for("fox")
 
         Assert.true(amo_personas_page.persona_count > 0)
