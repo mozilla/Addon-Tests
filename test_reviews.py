@@ -120,8 +120,8 @@ class TestReviews:
 
     @pytest.mark.impala
     def test_that_rating_increase_by_one(self, testsetup):
-        """ Litmus 22921
-            https://litmus.mozilla.org/show_test.cgi?id=22921 """
+        """ Litmus 22916
+            https://litmus.mozilla.org/show_test.cgi?id=22916 """
         # Step 1 - Login into AMO
         amo_home_page = AddonsHomePage(testsetup)
         credentials = amo_home_page.credentials_of_user('default')
