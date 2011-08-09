@@ -192,6 +192,9 @@ class AddonsDetailsPage(AddonsBasePage):
     _reviews_locator = "css=#reviews div"
     _add_review_link_locator = "id=add-review"
 
+    # Impala locators
+    _impala_rating_counter_locator = "css=.grouped_ratings .num_ratings"
+
     def __init__(self, testsetup, addon_name):
         #formats name for url
         self.addon_name = addon_name.replace(' ', '-').lower()
@@ -261,6 +264,21 @@ class AddonsDetailsPage(AddonsBasePage):
     @property
     def other_apps(self):
         return self.selenium.get_text(self._other_applications_locator)
+
+    def get_rating_counter(self, rating):
+        if rating == 1:
+            locator = "%s:nth(4)" % self._impala_rating_counter_locator
+        elif rating == 2:
+            locator = "%s:nth(3)" % self._impala_rating_counter_locator
+        elif rating == 3:
+            locator = "%s:nth(2)" % self._impala_rating_counter_locator
+        elif rating == 4:
+            locator = "%s:nth(1)" % self._impala_rating_counter_locator
+        elif rating == 5:
+            locator = "%s:nth(0)" % self._impala_rating_counter_locator
+        else:
+            raise RuntimeError, "No such rating %s!" % str(rating)
+        return int(self.selenium.get_text(locator))
 
     @property
     def release_notes(self):
