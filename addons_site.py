@@ -148,7 +148,6 @@ class AddonsHomePage(AddonsBasePage):
 
 class AddonsDetailsPage(AddonsBasePage):
 
-
     _breadcrumb_locator = "css=ol.breadcrumbs"
 
     #addon informations
@@ -176,8 +175,7 @@ class AddonsDetailsPage(AddonsBasePage):
     _other_collections_locator = "css=ul.addon-collections"
     _icon_locator = "css=img.icon"
     _featured_image_locator = "css=#addon .featured .screenshot"
-    _zamboni_support_link_locator = "css=ul.xoxo > li > a"
-    _impala_support_link_locator = "css=a.support"
+    _support_link_locator = "css=a.support"
     _review_details_locator = "css=.review-detail"
     _all_reviews_link_locator = "css=#addon #reviews+.article a.more-info"
     _review_locator = "css=div.review:not(.reply)"
@@ -335,10 +333,10 @@ class AddonsDetailsPage(AddonsBasePage):
 
     def click_website_link(self):
         self.selenium.open(self.website)
-        
+
     @property
     def support_url(self):
-        support_url = self.selenium.get_attribute(self._zamboni_support_link_locator + "%s" % "@href")
+        support_url = self.selenium.get_attribute(self._support_link_locator + "%s" % "@href")
         return self._parse_certificate_from_link(support_url)
 
     def _parse_certificate_from_link(self, url):
@@ -402,7 +400,8 @@ class AddonsDetailsPage(AddonsBasePage):
 
     class DetailsReviewSnippet(Page):
 
-        _reviews_locator = "css=#reviews div" # Base locator
+        #Base locator
+        _reviews_locator = "css=#reviews div"
         _username_locator = "p.byline a"
 
         def __init__(self, testsetup, lookup):
