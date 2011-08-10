@@ -118,10 +118,12 @@ class TestDetailsPageAgainstXML:
 
         Assert.equal(browser_icon, xml_icon)
 
+    @pytest.mark.impala
     def test_that_support_url_is_correct(self, testsetup):
         """litmus 15337"""
 
-        #There have been some differences with these urls starting with either http or https
+        #There have been some differences with the protocol of these urls.
+        #Sometimes they start with either http or https
         #Krupa says that this difference is ok
 
         #browser
@@ -147,11 +149,10 @@ class TestDetailsPageAgainstXML:
         xml_url_match_list = re.split(":\/\/", xml_support_url)
         xml_protocol = xml_url_match_list[0]
         xml_host = xml_url_match_list[1]
-        
+
         #match and test the protocol
         xml_protocol_match = re.match('http|https', xml_protocol)
         Assert.not_equal("None", str(xml_protocol_match))
 
         #compare the hosts
         Assert.equal(browser_host, xml_host)
-        
