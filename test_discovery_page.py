@@ -93,6 +93,7 @@ class TestDiscoveryPane:
         download_count = download_count.replace(",", "")
         Assert.equal(amo_download_count, download_count)
 
+    @xfail(reason="Disabled until bug 674374 is fixed.")
     def test_that_featured_personas_is_present_and_has_5_item(self, testsetup):
         """ TestCase for Litmus 15079, 15080 """
         discovery_pane = DiscoveryPane(testsetup, self.basepath)
@@ -100,6 +101,7 @@ class TestDiscoveryPane:
         Assert.equal(5, discovery_pane.personas_count)
         Assert.true(discovery_pane.is_personas_see_all_link_visible())
 
+    @xfail(reason="Disabled until bug 674374 is fixed.")
     def test_that_featured_personas_go_to_their_landing_page_when_clicked(self, testsetup):
         """ TestCase for Litmus 15081 """
         discovery_pane = DiscoveryPane(testsetup, self.basepath)

@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # ***** BEGIN LICENSE BLOCK *****
 # Version: MPL 1.1/GPL 2.0/LGPL 2.1
 #
@@ -19,7 +20,6 @@
 # the Initial Developer. All Rights Reserved.
 #
 # Contributor(s): Bebe <florin.strugariu@softvision.ro>
-#                 Alex Rodionov <p0deje@gmail.com>
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -34,40 +34,30 @@
 # the terms of any one of the MPL, the GPL or the LGPL.
 #
 # ***** END LICENSE BLOCK *****
-#
-#
-# File contains users data.
-#
-# Each user is a section named with its role
-# and any number of values. At least email,
-# password and name should be present.
-#
-# Example:
-#     admin:
-#         email: email@site.com
-#         password: password
-#         name: Test User
-#
-# Still, you are free to add any more data you wish. It will be kept
-# in the same dictionary.
-#
-# Example:
-#     admin:
-#         email: email@site.com
-#         password: password
-#         name: Test User
-#         username: testuser
-#         some_user_data: data
-#
-# The contents of this file are accessible via the function:
-#
-#   credentials_of_user(<role_name>)
-#
-# Example:
-#   credentials = amo_home_page.credentials_of_user('default')
-#   credentials['email']
 
-default:
-    email: <value>
-    password: <value>
-    name: <value>
+
+from addons_base_page import AddonsBasePage
+
+
+class AddonsCollectionsPage(AddonsBasePage):
+
+    _page_title = "Featured Collections :: Add-ons for Firefox"
+
+    #Search box
+    _search_button_locator = "css=input.submit"
+    _search_textbox_locator = "name=q"
+
+    def search_for(self, search_term):
+        self.selenium.type(self._search_textbox_locator, search_term)
+        self.selenium.click(self._search_button_locator)
+        self.selenium.wait_for_page_to_load(self.timeout)
+        return AddonsCollectionsSearchPage(self.testsetup)
+
+
+class AddonsCollectionsSearchPage(AddonsBasePage):
+
+    _results_locator = "css=div.featured-inner div.item"
+
+    @property
+    def result_count(self):
+        return int(self.selenium.get_css_count(self._results_locator))

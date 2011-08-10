@@ -50,7 +50,6 @@ xfail = pytest.mark.xfail
 
 class TestThemes:
 
-    @xfail(reason="Test disabled due to bug 659290")
     def test_that_themes_can_be_sorted_by_name(self, testsetup):
         """ Test for Litmus 11727, 4839 """
         amo_home_page = AddonsHomePage(testsetup)
@@ -97,7 +96,6 @@ class TestThemes:
         amo_themes_page.page_forward()
         created_dates.extend(amo_themes_page.addon_created_dates)
         Assert.is_sorted_descending(created_dates)
-
 
     def test_that_themes_can_be_sorted_by_popularity(self, testsetup):
         """ test for litmus 11638 """
@@ -150,6 +148,14 @@ class TestThemes:
         amo_category_page = amo_themes_page.click_on_first_category()
         Assert.equal(selected_category, amo_category_page.title)
 
+    def test_themes_subcategory_page_breadcrumb(self, testsetup):
+        amo_home_page = AddonsHomePage(testsetup)
+        amo_themes_page = amo_home_page.click_themes()
+        selected_category = amo_themes_page.themes_category
+        amo_category_page = amo_themes_page.click_on_first_category()
+        expected_breadcrumb = "Add-ons for Firefox Themes %s" % selected_category
+        Assert.equal(expected_breadcrumb, amo_category_page.breadcrumb)
+
     def test_that_counters_show_the_same_number_of_themes(self, testsetup):
         """test for litmus 15345"""
         amo_home_page = AddonsHomePage(testsetup)
@@ -161,3 +167,16 @@ class TestThemes:
         amo_home_page = AddonsHomePage(testsetup)
         Assert.true(amo_home_page.has_category("Themes"))
 
+    def test_that_themes_categories_are_listed_on_left_hand_side(self, testsetup):
+        """ test for litmus 15342"""
+        amo_home_page = AddonsHomePage(testsetup)
+        amo_themes_page = amo_home_page.click_themes()
+        current_page_url = amo_home_page.get_url_current_page()
+        Assert.true(current_page_url.endswith("/themes/"))
+        default_categories = ["Animals", "Compact", "Large", "Miscellaneous", "Modern", "Nature", "OS Integration", "Retro", "Sports"]
+        Assert.equal(amo_themes_page.categories_count, len(default_categories))
+        count = 0
+        for category in default_categories:
+            count += 1
+            current_category = amo_themes_page.get_category(count)
+            Assert.equal(category, current_category)

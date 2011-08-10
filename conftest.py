@@ -56,6 +56,8 @@ def pytest_runtest_setup(item):
     item.sauce_labs_username = item.config.option.sauce_labs_username
     item.sauce_labs_api = item.config.option.sauce_labs_api
 
+    TestSetup.site_version = 'impala' in item.keywords and '/i' or ''
+
     if not 'skip_selenium' in item.keywords:
         TestSetup.skip_selenium = False
         if item.sauce_labs_username:
@@ -126,6 +128,7 @@ def pytest_addoption(parser):
                      help="base URL for the application under test")
     parser.addoption("--timeout",
                      action="store",
+                     type="int",
                      default=120000,
                      help="timeout for page loads, etc")
     parser.addoption("--capturenetwork",

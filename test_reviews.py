@@ -21,6 +21,7 @@
 # the Initial Developer. All Rights Reserved.
 #
 # Contributor(s): Tobias Markus <tobbi.bugs@googlemail.com>
+#                 Alex Rodionov <p0deje@gmail.com>
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -39,9 +40,12 @@
 
 import re
 import pytest
+from datetime import datetime
 from unittestzero import Assert
 
-from addons_site import AddonsHomePage
+from addons_site import AddonsHomePage, AddonsDetailsPage
+from addons_user_page import AddonsLoginPage
+
 
 class TestReviews:
 
@@ -49,35 +53,68 @@ class TestReviews:
         """ Test for litmus 4843
             https://litmus.mozilla.org/show_test.cgi?id=4843
         """
-        amo_home_page = AddonsHomePage(testsetup)
-        
         #Open details page for Adblock Plus
-        amo_home_page.open_details_page_for_id(1865)
-        Assert.true(amo_home_page.has_reviews)
+        amo_details_page = AddonsDetailsPage(testsetup, 'Adblock Plus')
+        Assert.true(amo_details_page.has_reviews)
 
-        amo_home_page.click_all_reviews_link()
-        Assert.equal(amo_home_page.review_count, 20)
-        
+        amo_details_page.click_all_reviews_link()
+        Assert.equal(amo_details_page.review_count, 20)
+
         #Go to the last page and check that the next button is not present
-        amo_home_page.go_to_last_page()
-        Assert.false(amo_home_page.is_next_link_present)
-        
+        amo_details_page.go_to_last_page()
+        Assert.false(amo_details_page.is_next_link_present)
+
         #Go one page back, check that it has 20 reviews
         #that the page number decreases and that the next link is visible
-        page_number = amo_home_page.current_page
-        amo_home_page.page_back()
-        Assert.true(amo_home_page.is_next_link_visible)
-        Assert.equal(amo_home_page.review_count, 20)
-        Assert.equal(amo_home_page.current_page, page_number - 1)
+        page_number = amo_details_page.current_page
+        amo_details_page.page_back()
+        Assert.true(amo_details_page.is_next_link_visible)
+        Assert.equal(amo_details_page.review_count, 20)
+        Assert.equal(amo_details_page.current_page, page_number - 1)
 
         #Go to the first page and check that the prev button is not present
-        amo_home_page.go_to_first_page()
-        Assert.false(amo_home_page.is_prev_link_present)
-        
+        amo_details_page.go_to_first_page()
+        Assert.false(amo_details_page.is_prev_link_present)
+
         #Go one page forward, check that it has 20 reviews,
         #that the page number increases and that the prev link is visible
-        page_number = amo_home_page.current_page
-        amo_home_page.page_forward()
-        Assert.true(amo_home_page.is_prev_link_visible)
-        Assert.equal(amo_home_page.review_count, 20)
-        Assert.equal(amo_home_page.current_page, page_number + 1)
+        page_number = amo_details_page.current_page
+        amo_details_page.page_forward()
+        Assert.true(amo_details_page.is_prev_link_visible)
+        Assert.equal(amo_details_page.review_count, 20)
+        Assert.equal(amo_details_page.current_page, page_number + 1)
+
+    @pytest.mark.impala
+    def test_that_new_review_is_saved(self, testsetup):
+        """ Litmus 22921
+            https://litmus.mozilla.org/show_test.cgi?id=22921 """
+        # Step 1 - Login into AMO
+        amo_home_page = AddonsHomePage(testsetup)
+        credentials = amo_home_page.credentials_of_user('default')
+        amo_home_page.header.click_login()
+        addons_login_page = AddonsLoginPage(testsetup)
+        addons_login_page.login(credentials['email'], credentials['password'])
+        Assert.true(amo_home_page.header.is_user_logged_in)
+
+        # Step 2 - Load any addon detail page
+        details_page = AddonsDetailsPage(testsetup, 'Adblock Plus')
+
+        # Step 3 - Click on "Write review" button
+        write_review_block = details_page.click_to_write_review()
+
+        # Step 4 - Write a review
+        body = 'Automatic addon review by Selenium tests'
+        write_review_block.enter_review_with_text(body)
+        write_review_block.set_review_rating(1)
+        review_page = write_review_block.click_to_save_review()
+
+        # Step 5 - Assert review
+        review = review_page.review()
+        Assert.equal(review.rating, 1)
+        Assert.equal(review.author, credentials['name'])
+        date = datetime.now().strftime("%B %d, %Y")
+        # there are no leading zero-signs on day so we need to remove them too
+        date = date.replace(' 0', ' ')
+        Assert.equal(review.date, date)
+        Assert.equal(review.text, body)
+
