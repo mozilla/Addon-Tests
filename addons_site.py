@@ -188,7 +188,6 @@ class AddonsDetailsPage(AddonsBasePage):
     _other_addons_by_authors_locator = "css=div.other-author-addons"
     _other_addons_dropdown_locator = "id=addons-author-addons-select"
     _other_addons_link_list_locator = "css=div.other-author-addons ul li"
-
     _reviews_locator = "css=#reviews div"
     _add_review_link_locator = "id=add-review"
 
