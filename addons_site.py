@@ -31,7 +31,7 @@
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
 # the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
-# in which case the provisions of the GPL or the LGPL are applicable instead
+# in which case thHehee provisions of the GPL or the LGPL are applicable instead
 # of those above. If you wish to allow use of your version of this file only
 # under the terms of either the GPL or the LGPL, and not to allow others to
 # use your version of this file under the terms of the MPL, indicate your
@@ -176,15 +176,12 @@ class AddonsDetailsPage(AddonsBasePage):
     _other_collections_locator = "css=ul.addon-collections"
     _icon_locator = "css=img.icon"
     _featured_image_locator = "css=#addon .featured .screenshot"
-<<<<<<< HEAD
     _zamboni_support_link_locator = "css=ul.xoxo > li > a"
     _impala_support_link_locator = "css=a.support"
-=======
     _review_details_locator = "css=.review-detail"
     _all_reviews_link_locator = "css=#addon #reviews+.article a.more-info"
     _review_locator = "css=div.review:not(.reply)"
     _reviews_locator = "css=#reviews div"
->>>>>>> upstream/master
 
     #more about this addon
     _additional_images_locator = "css=#addon .article .screenshot"
