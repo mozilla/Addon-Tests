@@ -129,7 +129,6 @@ class TestDetailsPageAgainstXML:
         #browser
         firebug_page = AddonsDetailsPage(testsetup, self.firebug)
         browser_support_url = firebug_page.support_url
-        Assert.equal(browser_support_url, "https://getfirebug.com")
 
         #split the url at the :// and assign the pieces
         browser_url_match_list = re.split(":\/\/", browser_support_url)
@@ -143,7 +142,6 @@ class TestDetailsPageAgainstXML:
         #api
         addons_xml = AddOnsAPI(testsetup)
         xml_support_url = addons_xml.get_support_url("firebug")
-        Assert.equal(xml_support_url, "http://getfirebug.com")
 
         #split the url at the :// and assign the pieces
         xml_url_match_list = re.split(":\/\/", xml_support_url)
