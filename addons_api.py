@@ -90,7 +90,6 @@ class AddOnsAPI(object):
             return addon_xml.support.string
         except:
             self._print_search_error()
-        
 
     def _strip_links_from_text(self, text):
         for i in re.findall("&lt;.+?&gt;", text, re.MULTILINE):
