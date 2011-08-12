@@ -107,3 +107,54 @@ class ImageViewer(Page):
     @property
     def is_previous_link_visible(self):
         return self.selenium.is_visible(self._previous_locator)
+
+
+class ImpalaImageViewer(Page):
+
+    #controls
+    _next_locator = 'css=div.controls > a.control.next'
+    _previous_locator = 'css=div.controls > a.control.prev'
+    _caption_locator = 'css=div.caption'
+    _close_locator = 'css=div.content > a.close'
+
+    #content
+    _images_locator = 'css=div.content > img'
+
+    @property
+    def images_count(self):
+        return self.selenium.get_css_count(self._images_locator)
+
+    @property
+    def is_next_visible(self):
+        try:
+            self.selenium.is_visible('%s.disabled' % self._next_locator)
+            return False
+        except:
+            pass
+        return True
+
+    @property
+    def is_previous_visible(self):
+        try:
+            self.selenium.is_visible('%s.disabled' % self._previous_locator)
+            return False
+        except:
+            pass
+        return True
+
+    def is_nr_image_visible(self, img_nr):
+        return self.selenium.is_visible('%s:nth(%s)' % (self._images_locator, img_nr))
+
+    @property
+    def image_visible(self):
+        for i in range(self.images_count):
+            if 'opacity: 1' in self.selenium.get_attribute('%s:nth(%s)@style' % (self._images_locator, i)):
+                return i
+
+    def click_next(self):
+        current_image = self.image_visible
+        self.selenium.click(self._next_locator)
+        self.wait_for_element_visible('%s:nth(%s)' % (self._images_locator, current_image))
+
+    def click_previous(self):
+        return self.selenium.click(self._previous_locator)

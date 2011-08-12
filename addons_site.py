@@ -180,6 +180,8 @@ class AddonsDetailsPage(AddonsBasePage):
     _all_reviews_link_locator = "css=#addon #reviews+.article a.more-info"
     _review_locator = "css=div.review:not(.reply)"
     _reviews_locator = "css=#reviews div"
+    _image_locator = "css=#preview.slider li.panel.active a"
+    _image_viewer_locator = 'id=lightbox'
 
     #more about this addon
     _additional_images_locator = "css=#addon .article .screenshot"
@@ -377,6 +379,12 @@ class AddonsDetailsPage(AddonsBasePage):
         image_viewer = image_viewer_region.ImageViewer(self.testsetup)
         image_viewer.wait_for_viewer_to_finish_animating()
         return image_viewer
+
+    def click_addon_images(self):
+        self.selenium.click(self._image_locator)
+        self.wait_for_element_visible('css=div#lightbox div.content')
+        '''self._image_viewer_locator'''
+        return image_viewer_region.ImpalaImageViewer(self.testsetup)
 
     def review(self, lookup):
         return self.DetailsReviewSnippet(self.testsetup, lookup)

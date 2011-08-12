@@ -187,7 +187,7 @@ class TestDetailsPage:
 
         addons = amo_detail_page.other_addons_dropdown_values
         Assert.true(len(addons) > 4)
-        for i in range(len(addons) - 1, 0, -1): # Not checking the first item in the drop-down https://bugzilla.mozilla.org/show_bug.cgi?id=660706
+        for i in range(len(addons) - 1, 0, -1):  # Not checking the first item in the drop-down https://bugzilla.mozilla.org/show_bug.cgi?id=660706
             amo_detail_page.select_other_addons_dropdown_value(addons[i])
             print addons[i]
             Assert.true(amo_detail_page.name.startswith(addons[i].rstrip('.')))
@@ -265,3 +265,29 @@ class TestDetailsPage:
         amo_detail_page = AddonsDetailsPage(testsetup, 'firebug')
 
         Assert.equal(amo_detail_page.breadcrumb, 'Add-ons for Firefox Extensions Firebug')
+
+    @pytest.mark.impala
+    def test_image_viewer_in_impala(self, testsetup):
+        addon_name = 'firebug'
+        amo_detail_page = AddonsDetailsPage(testsetup, addon_name)
+
+        image_viewer = amo_detail_page.click_addon_images()
+
+        Assert.true(image_viewer.is_next_visible)
+        Assert.false(image_viewer.is_previous_visible)
+
+        for i in range(image_viewer.images_count):
+            Assert.equal(i, image_viewer.image_visible)
+            Assert.true(image_viewer.is_nr_image_visible(i))
+            image_viewer.click_next()
+
+        Assert.false(image_viewer.is_next_visible)
+        Assert.true(image_viewer.is_previous_visible)
+
+        for i in range(image_viewer.images_count - 1, -1, -1):
+            Assert.equal(i, image_viewer.image_visible)
+            Assert.true(image_viewer.is_nr_image_visible(i))
+            image_viewer.click_previous()
+
+        Assert.false(image_viewer.is_previous_visible)
+        Assert.true(image_viewer.is_next_visible)
