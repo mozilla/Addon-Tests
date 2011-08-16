@@ -155,7 +155,7 @@ class AddonsDetailsPage(AddonsBasePage):
     _name_locator = "css=h2.addon > span"
     _version_number_locator = "css=span.version"
     _authors_locator = "//h4[@class='author']/a"
-    _summary_locator = "css=div[id=addon-summary] > p"
+    _summary_locator = "id=addon-summary"
     _ratings_locator = "css=span[itemprop='rating']"
     _install_button_locator = "css=p[class='install-button'] > a"
     _contribute_button_locator = "css=a[id='contribute-button']"
