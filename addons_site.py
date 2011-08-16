@@ -59,7 +59,7 @@ class AddonsHomePage(AddonsBasePage):
     _page_title = "Add-ons for Firefox"
 
     _download_count_locator = "css=div.stats > strong"
-    _themes_link_locator = "id=_t-2"
+    _themes_link_locator = "css=li#themes > a"
     _personas_link_locator = "id=_t-9"
     _collections_link_locator = "id=_t-99"
 
