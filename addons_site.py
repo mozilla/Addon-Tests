@@ -607,7 +607,7 @@ class AddonsThemesPage(AddonsHomePage):
 
 class AddonsThemePage(AddonsBasePage):
 
-    _addon_title = "css=h1.addon :not(span)" #"> span"
+    _addon_title = "css=h1.addon" #"> span"
 
     @property
     def addon_title(self):
