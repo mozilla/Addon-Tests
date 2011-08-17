@@ -187,7 +187,7 @@ class TestDetailsPage:
 
         addons = amo_detail_page.other_addons_dropdown_values
         Assert.true(len(addons) > 4)
-        for i in range(len(addons) - 1, 0, -1): # Not checking the first item in the drop-down https://bugzilla.mozilla.org/show_bug.cgi?id=660706
+        for i in range(len(addons) - 1, 0, -1):  # Not checking the first item in the drop-down https://bugzilla.mozilla.org/show_bug.cgi?id=660706
             amo_detail_page.select_other_addons_dropdown_value(addons[i])
             print addons[i]
             Assert.true(amo_detail_page.name.startswith(addons[i].rstrip('.')))

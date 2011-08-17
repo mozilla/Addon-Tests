@@ -59,7 +59,7 @@ class AddonsHomePage(AddonsBasePage):
     _page_title = "Add-ons for Firefox"
 
     _download_count_locator = "css=div.stats > strong"
-    _themes_link_locator = "id=_t-2"
+    _themes_link_locator = "css=#themes > a"
     _personas_link_locator = "css=#personas > a"
     _collections_link_locator = "id=_t-99"
 
@@ -149,21 +149,21 @@ class AddonsHomePage(AddonsBasePage):
 class AddonsDetailsPage(AddonsBasePage):
 
 
-    _breadcrumb_locator = "css=ol.breadcrumbs"
+    _breadcrumb_locator = "id=breadcrumbs"
 
     #addon informations
     _name_locator = "css=h2.addon > span"
     _version_number_locator = "css=span.version"
     _authors_locator = "//h4[@class='author']/a"
-    _summary_locator = "css=div[id=addon-summary] > p"
+    _summary_locator = "id=addon-summary"
     _ratings_locator = "css=span[itemprop='rating']"
     _install_button_locator = "css=p[class='install-button'] > a"
     _contribute_button_locator = "css=a[id='contribute-button']"
     _addon_rating_locator = "css=span[itemprop='rating']"
     _whats_this_license_locator = "css=h5 > span > a"
     _description_locator = "css=div[class='article userinput'] > p"
-    _register_link_locator = "css=p.context > a"
-    _login_link_locator = "css=p.context > a:nth(1)"
+    _register_link_locator = "css=li.account > a"
+    _login_link_locator = "css=li.account > a:nth(1)"
     _other_applications_locator = "css=a.controller"
     _other_apps_dropdown_menu_locator = "css=#other-apps > li > ul"
     _name_locator = "css=h2.addon > span"
@@ -607,7 +607,7 @@ class AddonsThemesPage(AddonsHomePage):
 
 class AddonsThemePage(AddonsBasePage):
 
-    _addon_title = "css=h2.addon > span"
+    _addon_title = "css=h1.addon"
 
     @property
     def addon_title(self):
