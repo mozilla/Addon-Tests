@@ -149,7 +149,7 @@ class AddonsHomePage(AddonsBasePage):
 class AddonsDetailsPage(AddonsBasePage):
 
 
-    _breadcrumb_locator = "css=ol.breadcrumbs"
+    _breadcrumb_locator = "id=breadcrumbs"
 
     #addon informations
     _name_locator = "css=h2.addon > span"
@@ -162,8 +162,8 @@ class AddonsDetailsPage(AddonsBasePage):
     _addon_rating_locator = "css=span[itemprop='rating']"
     _whats_this_license_locator = "css=h5 > span > a"
     _description_locator = "css=div[class='article userinput'] > p"
-    _register_link_locator = "css=p.context > a"
-    _login_link_locator = "css=p.context > a:nth(1)"
+    _register_link_locator = "css=li.account > a"
+    _login_link_locator = "css=li.account > a:nth(1)"
     _other_applications_locator = "css=a.controller"
     _other_apps_dropdown_menu_locator = "css=#other-apps > li > ul"
     _name_locator = "css=h2.addon > span"
