@@ -59,7 +59,7 @@ class AddonsHomePage(AddonsBasePage):
     _page_title = "Add-ons for Firefox"
 
     _download_count_locator = "css=div.stats > strong"
-    _themes_link_locator = "id=_t-2"
+    _themes_link_locator = "css=#themes > a"
     _personas_link_locator = "id=_t-9"
     _collections_link_locator = "id=_t-99"
 
@@ -607,7 +607,7 @@ class AddonsThemesPage(AddonsHomePage):
 
 class AddonsThemePage(AddonsBasePage):
 
-    _addon_title = "css=h2.addon > span"
+    _addon_title = "css=h1.addon"
 
     @property
     def addon_title(self):
