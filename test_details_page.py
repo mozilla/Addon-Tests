@@ -90,11 +90,12 @@ class TestDetailsPage:
         Assert.equal(amo_details_page.more_about_addon, "More about this add-on")
         Assert.not_none(re.match('(\w+\s*){3,}', amo_details_page.description))
 
+    # TODO expand the Version Information section and check that the required details are present/visible/correct
     def test_that_version_information_is_displayed(self, testsetup):
         """ Test for Litmus 9890"""
         amo_details_page = AddonsDetailsPage(testsetup, "Firebug")
-        Assert.true(amo_details_page.is_version_information_visible())
-        Assert.equal(amo_details_page.version_information, "Version Information")
+        Assert.true(amo_details_page.is_version_information_heading_visible())
+        Assert.equal(amo_details_page.version_information_heading, "Version Information")
         Assert.not_none(re.search('\w+', amo_details_page.release_version))
 
         # check that the release number matches the the version number at the top of the page

@@ -168,8 +168,9 @@ class AddonsDetailsPage(AddonsBasePage):
     _other_apps_dropdown_menu_locator = "css=#other-apps > li > ul"
     _name_locator = "css=h2.addon > span"
     _more_about_addon_locator = "id=more-about"
-    _version_information_locator = "css=#detail-relnotes"
-    _release_version_locator = "css=div[class='version article'] >h3 > a"
+    _version_information_locator = "id=detail-relnotes"
+    _version_information_heading_locator = "css=#detail-relnotes > h2"
+    _release_version_locator = "css=div.version.article > h3 > a"
     _reviews_title_locator = "id=reviews"
     _tags_locator = "id=tagbox"
     _other_addons_locator = "css=ul.addon-otheraddons"
@@ -263,8 +264,8 @@ class AddonsDetailsPage(AddonsBasePage):
         return self.selenium.get_text(self._other_applications_locator)
 
     @property
-    def version_information(self):
-        return self.selenium.get_text('%s > h2' % self._version_information_locator)
+    def version_information_heading(self):
+        return self.selenium.get_text(self._version_information_heading_locator)
 
     @property
     def release_version(self):
@@ -306,6 +307,9 @@ class AddonsDetailsPage(AddonsBasePage):
 
     def is_version_information_visible(self):
         return self.selenium.is_visible(self._version_information_locator)
+
+    def is_version_information_heading_visible(self):
+        return self.selenium.is_visible(self._version_information_heading_locator)
 
     def is_review_title_visible(self):
         return self.selenium.is_visible(self._reviews_title_locator)
