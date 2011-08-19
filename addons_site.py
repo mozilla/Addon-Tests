@@ -62,7 +62,7 @@ class AddonsHomePage(AddonsBasePage):
     _download_count_locator = "css=div.stats > strong"
     _themes_link_locator = "css=#themes > a"
     _personas_link_locator = "css=#personas > a"
-    _collections_link_locator = "id=_t-99"
+    _collections_link_locator = "css=#collections > a"
 
     #Categories List
     _category_list_locator = "//ul[@id='categoriesdropdown']"
