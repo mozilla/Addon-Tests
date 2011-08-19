@@ -58,6 +58,7 @@ class TestHomePage:
         https://litmus.mozilla.org/show_test.cgi?id=25807
         """
         amo_home_page = AddonsHomePage(testsetup)
-        Assert.true(amo_home_page.is_most_popular_category_visible())
+        Assert.true(amo_home_page.is_most_popular_list_visible)
+        Assert.contains('Most Popular', amo_home_page.most_popular_list_heading)
         Assert.equal(amo_home_page.most_popular_count, 10)
 
