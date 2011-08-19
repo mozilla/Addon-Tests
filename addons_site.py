@@ -79,11 +79,6 @@ class AddonsHomePage(AddonsBasePage):
         self.selenium.open("%s/" % self.site_version)
         self.selenium.window_maximize()
 
-    def has_category(self, category_name):
-        ''' Returns whether category_name exists in the category menu links '''
-        locator = (self._category_list_locator + self._category_item_locator) % category_name
-        return self.selenium.get_xpath_count(locator) > 0
-
     def click_personas(self):
         self.selenium.click(self._personas_link_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
