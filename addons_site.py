@@ -71,7 +71,7 @@ class AddonsHomePage(AddonsBasePage):
     #Most Popular List
     _most_popular_list_locator = "css=#homepage > .secondary"
     _most_popular_item_locator = "css=ol.toplist li"
-    _most_popular_header_locator = _most_popular_list_locator + " h2"
+    _most_popular_list_heading_locator = _most_popular_list_locator + " h2"
 
     def __init__(self, testsetup):
         ''' Creates a new instance of the class and gets the page ready for testing '''
@@ -161,7 +161,7 @@ class AddonsHomePage(AddonsBasePage):
     
     @property
     def most_popular_list_heading(self):
-        return self.selenium.get_text(self._most_popular_header_locator)
+        return self.selenium.get_text(self._most_popular_list_heading_locator)
 
 class AddonsDetailsPage(AddonsBasePage):
 
