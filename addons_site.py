@@ -161,7 +161,7 @@ class AddonsDetailsPage(AddonsBasePage):
 
     #addon informations
     _name_locator = "css=h2.addon > span"
-    _version_number_locator = "css=span.version"
+    _version_number_locator = "css=span.version-number"
     _authors_locator = "//h4[@class='author']/a"
     _summary_locator = "id=addon-summary"
     _ratings_locator = "css=span[itemprop='rating']"
