@@ -62,3 +62,11 @@ class TestHomePage:
         Assert.contains('Most Popular', amo_home_page.most_popular_list_heading)
         Assert.equal(amo_home_page.most_popular_count, 10)
 
+    def test_that_checks_the_tooltip_for_amo_logo(self, testsetup):
+        """
+        Litmus 22924
+        https://litmus.mozilla.org/show_test.cgi?id=22924
+        """
+        amo_home_page = AddonsHomePage(testsetup)
+        Assert.true(amo_home_page.is_amo_logo_visible)
+        Assert.equal(amo_home_page.amo_logo_title, "Return to the Firefox Add-ons homepage")
