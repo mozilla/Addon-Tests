@@ -124,7 +124,7 @@ class TestThemes:
         amo_themes_page = amo_home_page.click_themes()
         addon_name = amo_themes_page.addon_names[0]
         amo_theme_page = amo_themes_page.click_on_first_addon()
-        Assert.equal(addon_name, amo_theme_page.addon_title)
+        Assert.contains(addon_name, amo_theme_page.addon_title)
 
     def test_that_themes_page_has_correct_title(self, testsetup):
         """test for litmus 15340"""
