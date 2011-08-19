@@ -162,11 +162,6 @@ class TestThemes:
         amo_themes_page = amo_home_page.click_themes()
         Assert.equal(amo_themes_page.top_counter, amo_themes_page.bottom_counter)
 
-    def test_that_themes_is_listed_as_a_category(self, testsetup):
-        """ test for litmus 15338"""
-        amo_home_page = AddonsHomePage(testsetup)
-        Assert.true(amo_home_page.has_category("Themes"))
-
     def test_that_themes_categories_are_listed_on_left_hand_side(self, testsetup):
         """ test for litmus 15342"""
         amo_home_page = AddonsHomePage(testsetup)

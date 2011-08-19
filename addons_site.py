@@ -27,6 +27,7 @@
 #                 Bebe <florin.strugariu@softvision.ro>
 #                 Marlena Compton <mcompton@mozilla.com>
 #                 Teodosia Pop <teodosia.pop@softvision.ro>
+#                 Alex Lakatos <alex@greensqr.com>
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -66,6 +67,11 @@ class AddonsHomePage(AddonsBasePage):
     #Categories List
     _category_list_locator = "//ul[@id='categoriesdropdown']"
     _category_item_locator = "//li/a[text()='%s']"
+
+    #Most Popular List
+    _most_popular_list_locator = "css=#homepage > .secondary"
+    _most_popular_item_locator = "css=ol.toplist li"
+    _most_popular_list_heading_locator = _most_popular_list_locator + " h2"
 
     def __init__(self, testsetup):
         ''' Creates a new instance of the class and gets the page ready for testing '''
@@ -145,6 +151,17 @@ class AddonsHomePage(AddonsBasePage):
         ]
         return integer_numbers
 
+    @property
+    def most_popular_count(self):
+        return self.selenium.get_css_count(self._most_popular_item_locator)
+    
+    @property
+    def is_most_popular_list_visible(self):
+        return self.selenium.is_visible(self._most_popular_list_locator)
+    
+    @property
+    def most_popular_list_heading(self):
+        return self.selenium.get_text(self._most_popular_list_heading_locator)
 
 class AddonsDetailsPage(AddonsBasePage):
 
