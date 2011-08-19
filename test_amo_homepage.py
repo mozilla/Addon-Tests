@@ -70,3 +70,13 @@ class TestHomePage:
         amo_home_page = AddonsHomePage(testsetup)
         Assert.true(amo_home_page.is_amo_logo_visible)
         Assert.equal(amo_home_page.amo_logo_title, "Return to the Firefox Add-ons homepage")
+
+    def test_that_checks_the_image_for_amo_logo(self, testsetup):
+        """
+        Litmus 25742
+        https://litmus.mozilla.org/show_test.cgi?id=25742
+        """
+        amo_home_page = AddonsHomePage(testsetup)
+        Assert.true(amo_home_page.is_amo_logo_image_visible)
+        Assert.contains("https://gs1.adn.edgecastcdn.net/", amo_home_page.amo_logo_image_source)
+        Assert.contains("/addons-cdn.allizom.org/media/img/app-icons/med/firefox.png", amo_home_page.amo_logo_image_source)

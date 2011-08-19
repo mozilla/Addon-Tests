@@ -50,6 +50,7 @@ class AddonsBasePage(Page):
     _first_page_link_locator = "css=.pagination a:not([rel]):first"
 
     _amo_logo_link_locator = "css=.site-title a"
+    _amo_logo_image_locator = "css=.site-title img"
 
     @property
     def amo_logo_title(self):
@@ -58,6 +59,14 @@ class AddonsBasePage(Page):
     @property
     def is_amo_logo_visible(self):
         return self.selenium.is_visible(self._amo_logo_link_locator)
+
+    @property
+    def amo_logo_image_source(self):
+        return self.selenium.get_attribute("%s@src" % self._amo_logo_image_locator)
+
+    @property
+    def is_amo_logo_image_visible(self):
+        return self.selenium.is_visible(self._amo_logo_image_locator)
 
     def page_forward(self):
         self.selenium.click(self._next_link_locator)
