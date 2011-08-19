@@ -20,7 +20,6 @@
 # the Initial Developer. All Rights Reserved.
 #
 # Contributor(s): Bebe <florin.strugariu@softvision.ro>
-#                 Alex Lakatos <alex@greensqr.com>
 #
 #
 # Alternatively, the contents of this file may be used under the terms of
@@ -39,44 +38,20 @@
 
 from unittestzero import Assert
 from addons_site import AddonsHomePage
-import pytest
 
 
-class TestHomePage:
-    @pytest.mark.impala
-    def test_that_verifies_the_tooltip_for_Other_Applications(self, testsetup):
-        """
-        Litmus 22925
-        https://litmus.mozilla.org/show_test.cgi?id=22925
-        """
-        amo_home_page = AddonsHomePage(testsetup)
-        Assert.equal(amo_home_page.header.other_applications_tooltip, 'Find add-ons for other applications')
-        
-    def test_that_checks_the_most_popular_section_exists(self, testsetup):
-        """
-        Litmus 25807
-        https://litmus.mozilla.org/show_test.cgi?id=25807
-        """
-        amo_home_page = AddonsHomePage(testsetup)
-        Assert.true(amo_home_page.is_most_popular_list_visible)
-        Assert.contains('Most Popular', amo_home_page.most_popular_list_heading)
-        Assert.equal(amo_home_page.most_popular_count, 10)
+class TestAmoLayout:
 
-    def test_that_checks_the_tooltip_for_amo_logo(self, testsetup):
+    def test_other_applications_thunderbird(self, testsetup):
+        """ Test for litmus 5037
+            https://litmus.mozilla.org/show_test.cgi?id=5037
         """
-        Litmus 22924
-        https://litmus.mozilla.org/show_test.cgi?id=22924
-        """
-        amo_home_page = AddonsHomePage(testsetup)
-        Assert.true(amo_home_page.is_amo_logo_visible)
-        Assert.equal(amo_home_page.amo_logo_title, "Return to the Firefox Add-ons homepage")
 
-    def test_that_checks_the_image_for_amo_logo(self, testsetup):
-        """
-        Litmus 25742
-        https://litmus.mozilla.org/show_test.cgi?id=25742
-        """
         amo_home_page = AddonsHomePage(testsetup)
-        Assert.true(amo_home_page.is_amo_logo_image_visible)
-        Assert.contains("https://gs1.adn.edgecastcdn.net/", amo_home_page.amo_logo_image_source)
-        Assert.contains("/addons-cdn.allizom.org/media/img/app-icons/med/firefox.png", amo_home_page.amo_logo_image_source)
+
+        amo_home_page.header.click_other_applications()
+        amo_home_page.header.click_thunderbird()
+        Assert.true("thunderbird" in amo_home_page.get_url_current_page())
+
+        amo_home_page.header.click_other_applications()
+        Assert.false(amo_home_page.header.is_thunderbird_visible())

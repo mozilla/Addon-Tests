@@ -27,6 +27,7 @@
 #                 Bebe <florin.strugariu@softvision.ro>
 #                 Marlena Compton <mcompton@mozilla.com>
 #                 Teodosia Pop <teodosia.pop@softvision.ro>
+#                 Alex Lakatos <alex@greensqr.com>
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -59,24 +60,20 @@ class AddonsHomePage(AddonsBasePage):
     _page_title = "Add-ons for Firefox"
 
     _download_count_locator = "css=div.stats > strong"
-    _themes_link_locator = "id=_t-2"
-    _personas_link_locator = "id=_t-9"
-    _collections_link_locator = "id=_t-99"
+    _themes_link_locator = "css=#themes > a"
+    _personas_link_locator = "css=#personas > a"
+    _collections_link_locator = "css=#collections > a"
 
-    #Categories List
-    _category_list_locator = "//ul[@id='categoriesdropdown']"
-    _category_item_locator = "//li/a[text()='%s']"
+    #Most Popular List
+    _most_popular_list_locator = "css=#homepage > .secondary"
+    _most_popular_item_locator = "css=ol.toplist li"
+    _most_popular_list_heading_locator = _most_popular_list_locator + " h2"
 
     def __init__(self, testsetup):
         ''' Creates a new instance of the class and gets the page ready for testing '''
         AddonsBasePage.__init__(self, testsetup)
         self.selenium.open("%s/" % self.site_version)
         self.selenium.window_maximize()
-
-    def has_category(self, category_name):
-        ''' Returns whether category_name exists in the category menu links '''
-        locator = (self._category_list_locator + self._category_item_locator) % category_name
-        return self.selenium.get_xpath_count(locator) > 0
 
     def click_personas(self):
         self.selenium.click(self._personas_link_locator)
@@ -145,25 +142,36 @@ class AddonsHomePage(AddonsBasePage):
         ]
         return integer_numbers
 
+    @property
+    def most_popular_count(self):
+        return self.selenium.get_css_count(self._most_popular_item_locator)
+    
+    @property
+    def is_most_popular_list_visible(self):
+        return self.selenium.is_visible(self._most_popular_list_locator)
+    
+    @property
+    def most_popular_list_heading(self):
+        return self.selenium.get_text(self._most_popular_list_heading_locator)
 
 class AddonsDetailsPage(AddonsBasePage):
 
 
-    _breadcrumb_locator = "css=ol.breadcrumbs"
+    _breadcrumb_locator = "id=breadcrumbs"
 
     #addon informations
     _name_locator = "css=h2.addon > span"
-    _version_number_locator = "css=span.version"
+    _version_number_locator = "css=span.version-number"
     _authors_locator = "//h4[@class='author']/a"
-    _summary_locator = "css=div[id=addon-summary] > p"
+    _summary_locator = "id=addon-summary"
     _ratings_locator = "css=span[itemprop='rating']"
     _install_button_locator = "css=p[class='install-button'] > a"
     _contribute_button_locator = "css=a[id='contribute-button']"
     _addon_rating_locator = "css=span[itemprop='rating']"
     _whats_this_license_locator = "css=h5 > span > a"
     _description_locator = "css=div[class='article userinput'] > p"
-    _register_link_locator = "css=p.context > a"
-    _login_link_locator = "css=p.context > a:nth(1)"
+    _register_link_locator = "css=li.account > a"
+    _login_link_locator = "css=li.account > a:nth(1)"
     _other_applications_locator = "css=a.controller"
     _other_apps_dropdown_menu_locator = "css=#other-apps > li > ul"
     _name_locator = "css=h2.addon > span"
@@ -607,7 +615,7 @@ class AddonsThemesPage(AddonsHomePage):
 
 class AddonsThemePage(AddonsBasePage):
 
-    _addon_title = "css=h2.addon > span"
+    _addon_title = "css=h1.addon"
 
     @property
     def addon_title(self):

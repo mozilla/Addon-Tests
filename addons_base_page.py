@@ -22,6 +22,7 @@
 # Contributor(s): Bebe <florin.strugariu@softvision.ro>
 #                 Alex Rodionov <p0deje@gmail.com>
 #                 Teodosia Pop <teodosia.pop@softvision.ro>
+#                 Alex Lakatos <alex@greensqr.com>
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -47,6 +48,25 @@ class AddonsBasePage(Page):
     _current_page_locator = "css=.pagination li.selected a"
     _last_page_link_locator = "css=.pagination a:not([rel]):last"
     _first_page_link_locator = "css=.pagination a:not([rel]):first"
+
+    _amo_logo_link_locator = "css=.site-title a"
+    _amo_logo_image_locator = "css=.site-title img"
+
+    @property
+    def amo_logo_title(self):
+        return self.selenium.get_attribute("%s@title" % self._amo_logo_link_locator)
+
+    @property
+    def is_amo_logo_visible(self):
+        return self.selenium.is_visible(self._amo_logo_link_locator)
+
+    @property
+    def amo_logo_image_source(self):
+        return self.selenium.get_attribute("%s@src" % self._amo_logo_image_locator)
+
+    @property
+    def is_amo_logo_image_visible(self):
+        return self.selenium.is_visible(self._amo_logo_image_locator)
 
     def page_forward(self):
         self.selenium.click(self._next_link_locator)
@@ -93,11 +113,16 @@ class AddonsBasePage(Page):
 
     class HeaderRegion(Page):
 
+        #other applications
+        _other_applications_locator = "css=#other-apps"
+        _app_thunderbird = "css=#app-thunderbird a"
+
+
         _other_apps_locator = "id=other-apps"
 
 
         #Search box
-        _search_button_locator = "css=input.submit"
+        _search_button_locator = "css=.search-button"
         _search_textbox_locator = "name=q"
 
         #Not LogedIn
@@ -111,6 +136,18 @@ class AddonsBasePage(Page):
         # Impala locators
         _impala_login_locator = "css=#aux-nav a:nth(1)"
         _impala_account_controller_locator = 'css=#aux-nav .account .user'
+
+
+        def click_other_applications(self):
+            self.selenium.click('%s a' % self._other_applications_locator)
+            self.wait_for_element_visible('%s ul' % self._other_applications_locator)
+
+        def click_thunderbird(self):
+            self.selenium.click(self._app_thunderbird)
+            self.selenium.wait_for_page_to_load(self.timeout)
+
+        def is_thunderbird_visible(self):
+            return self.is_element_present(self._app_thunderbird)
 
         @property
         def other_applications_tooltip(self):
