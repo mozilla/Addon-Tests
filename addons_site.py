@@ -145,11 +145,11 @@ class AddonsHomePage(AddonsBasePage):
     @property
     def most_popular_count(self):
         return self.selenium.get_css_count(self._most_popular_item_locator)
-    
+
     @property
     def is_most_popular_list_visible(self):
         return self.selenium.is_visible(self._most_popular_list_locator)
-    
+
     @property
     def most_popular_list_heading(self):
         return self.selenium.get_text(self._most_popular_list_heading_locator)
@@ -174,7 +174,7 @@ class AddonsDetailsPage(AddonsBasePage):
     _login_link_locator = "css=li.account > a:nth(1)"
     _other_applications_locator = "css=a.controller"
     _other_apps_dropdown_menu_locator = "css=#other-apps > li > ul"
-    _name_locator = "css=h2.addon > span"
+    _name_locator = "css=h1.addon > span"
     _more_about_addon_locator = "id=more-about"
     _release_notes_locator = "id=releasenotes"
     _release_version_locator = "css=div[class='version article'] > h3 > a"
