@@ -64,10 +64,6 @@ class AddonsHomePage(AddonsBasePage):
     _personas_link_locator = "css=#personas > a"
     _collections_link_locator = "css=#collections > a"
 
-    #Categories List
-    _category_list_locator = "//ul[@id='categoriesdropdown']"
-    _category_item_locator = "//li/a[text()='%s']"
-
     #Most Popular List
     _most_popular_list_locator = "css=#homepage > .secondary"
     _most_popular_item_locator = "css=ol.toplist li"
