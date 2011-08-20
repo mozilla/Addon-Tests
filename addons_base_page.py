@@ -52,6 +52,8 @@ class AddonsBasePage(Page):
     _amo_logo_link_locator = "css=.site-title a"
     _amo_logo_image_locator = "css=.site-title img"
 
+    _mozilla_logo_link_locator = "css=#global-header-tab a"
+
     @property
     def amo_logo_title(self):
         return self.selenium.get_attribute("%s@title" % self._amo_logo_link_locator)
@@ -67,6 +69,14 @@ class AddonsBasePage(Page):
     @property
     def is_amo_logo_image_visible(self):
         return self.selenium.is_visible(self._amo_logo_image_locator)
+    
+    @property
+    def is_mozilla_logo_visible(self):
+        return self.selenium.is_visible(self._mozilla_logo_link_locator)
+    
+    def click_mozilla_logo(self):
+        self.selenium.click(self._mozilla_logo_link_locator)
+        self.selenium.wait_for_page_to_load(self.timeout)
 
     def page_forward(self):
         self.selenium.click(self._next_link_locator)
