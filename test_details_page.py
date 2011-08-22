@@ -242,7 +242,6 @@ class TestDetailsPage:
         Assert.false(image_viewer.is_visible)
 
     @xfail(reason="Flaky test")
-    @pytest.mark.impala
     def test_that_review_usernames_are_clickable(self, testsetup):
         """
         Litmus 4842

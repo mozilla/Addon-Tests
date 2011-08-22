@@ -43,7 +43,7 @@ import pytest
 
 
 class TestHomePage:
-    @pytest.mark.impala
+
     def test_that_verifies_the_tooltip_for_Other_Applications(self, testsetup):
         """
         Litmus 22925
@@ -51,7 +51,7 @@ class TestHomePage:
         """
         amo_home_page = AddonsHomePage(testsetup)
         Assert.equal(amo_home_page.header.other_applications_tooltip, 'Find add-ons for other applications')
-        
+
     def test_that_checks_the_most_popular_section_exists(self, testsetup):
         """
         Litmus 25807
