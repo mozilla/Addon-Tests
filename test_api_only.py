@@ -34,4 +34,4 @@ class TestAPIOnlyTests:
     def test_firebug_version_number(self, testsetup):
         """Testcase for Litmus 15317"""
         addon_xml = AddOnsAPI(testsetup)
-        Assert.equal("1.7.3", addon_xml.get_addon_version_number("Firebug"))
+        Assert.equal("1.8.0", addon_xml.get_addon_version_number("Firebug"))
