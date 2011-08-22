@@ -178,16 +178,15 @@ class AddonsDetailsPage(AddonsBasePage):
     _more_about_addon_locator = "id=more-about"
     _release_notes_locator = "id=releasenotes"
     _release_version_locator = "css=div[class='version article'] > h3 > a"
-    _reviews_title_locator = "id=reviews"
+    _reviews_title_locator = "css=#reviews > h2"
     _tags_locator = "id=tagbox"
     _other_addons_locator = "css=ul.addon-otheraddons"
     _other_collections_locator = "css=ul.addon-collections"
     _icon_locator = "css=img.icon"
     _featured_image_locator = "css=#addon .featured .screenshot"
-    _review_details_locator = "css=.review-detail"
+    _review_details_locator = "css=.review .description"
     _all_reviews_link_locator = "css=#addon #reviews+.article a.more-info"
     _review_locator = "css=div.review:not(.reply)"
-    _reviews_locator = "css=#reviews div"
 
     #more about this addon
     _additional_images_locator = "css=#addon .article .screenshot"
@@ -197,7 +196,7 @@ class AddonsDetailsPage(AddonsBasePage):
     _other_addons_dropdown_locator = "id=addons-author-addons-select"
     _other_addons_link_list_locator = "css=div.other-author-addons ul li"
 
-    _reviews_locator = "css=#reviews div"
+    _reviews_locator = "id=reviews"
     _add_review_link_locator = "id=add-review"
 
     def __init__(self, testsetup, addon_name):
@@ -205,8 +204,7 @@ class AddonsDetailsPage(AddonsBasePage):
         self.addon_name = addon_name.replace(' ', '-').lower()
         AddonsBasePage.__init__(self, testsetup)
         self.selenium.open("%s/addon/%s" % (self.site_version, self.addon_name))
-        if self.site_version == '/i':
-            self._wait_for_reviews_to_load()
+        self._wait_for_reviews_to_load()
 
     @property
     def has_reviews(self):
