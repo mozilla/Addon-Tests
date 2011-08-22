@@ -22,7 +22,6 @@
 # Contributor(s): Bebe <florin.strugariu@softvision.ro>
 #                 Alex Lakatos <alex@greensqr.com>
 #
-#
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
 # the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
@@ -51,7 +50,7 @@ class TestHomePage:
         """
         amo_home_page = AddonsHomePage(testsetup)
         Assert.equal(amo_home_page.header.other_applications_tooltip, 'Find add-ons for other applications')
-        
+
     def test_that_checks_the_most_popular_section_exists(self, testsetup):
         """
         Litmus 25807
