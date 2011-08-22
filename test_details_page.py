@@ -106,7 +106,8 @@ class TestDetailsPage:
         amo_details_page = AddonsDetailsPage(testsetup, "Firebug")
         Assert.true(amo_details_page.is_review_title_visible())
         Assert.equal(amo_details_page.review_title, "Reviews")
-        Assert.not_none(re.match('(\w+\s*){3,}', amo_details_page.review_details))
+        Assert.true(amo_details_page.has_reviews)
+        Assert.not_none(re.search('(\w+\s*){1,}', amo_details_page.review_details))
 
     def test_that_in_often_used_with_addons_are_displayed(self, testsetup):
         """ Test for Litmus 9890"""
@@ -188,7 +189,7 @@ class TestDetailsPage:
 
         addons = amo_detail_page.other_addons_dropdown_values
         Assert.true(len(addons) > 4)
-        for i in range(len(addons) - 1, 0, -1): # Not checking the first item in the drop-down https://bugzilla.mozilla.org/show_bug.cgi?id=660706
+        for i in range(len(addons) - 1, 0, -1):  # Not checking the first item in the drop-down https://bugzilla.mozilla.org/show_bug.cgi?id=660706
             amo_detail_page.select_other_addons_dropdown_value(addons[i])
             print addons[i]
             Assert.true(amo_detail_page.name.startswith(addons[i].rstrip('.')))

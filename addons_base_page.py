@@ -22,6 +22,7 @@
 # Contributor(s): Bebe <florin.strugariu@softvision.ro>
 #                 Alex Rodionov <p0deje@gmail.com>
 #                 Teodosia Pop <teodosia.pop@softvision.ro>
+#                 Alex Lakatos <alex@greensqr.com>
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -47,6 +48,25 @@ class AddonsBasePage(Page):
     _current_page_locator = "css=.pagination li.selected a"
     _last_page_link_locator = "css=.pagination a:not([rel]):last"
     _first_page_link_locator = "css=.pagination a:not([rel]):first"
+
+    _amo_logo_link_locator = "css=.site-title a"
+    _amo_logo_image_locator = "css=.site-title img"
+
+    @property
+    def amo_logo_title(self):
+        return self.selenium.get_attribute("%s@title" % self._amo_logo_link_locator)
+
+    @property
+    def is_amo_logo_visible(self):
+        return self.selenium.is_visible(self._amo_logo_link_locator)
+
+    @property
+    def amo_logo_image_source(self):
+        return self.selenium.get_attribute("%s@src" % self._amo_logo_image_locator)
+
+    @property
+    def is_amo_logo_image_visible(self):
+        return self.selenium.is_visible(self._amo_logo_image_locator)
 
     def page_forward(self):
         self.selenium.click(self._next_link_locator)
@@ -102,7 +122,7 @@ class AddonsBasePage(Page):
 
 
         #Search box
-        _search_button_locator = "css=input.submit"
+        _search_button_locator = "css=.search-button"
         _search_textbox_locator = "name=q"
 
         #Not LogedIn

@@ -124,7 +124,7 @@ class TestThemes:
         amo_themes_page = amo_home_page.click_themes()
         addon_name = amo_themes_page.addon_names[0]
         amo_theme_page = amo_themes_page.click_on_first_addon()
-        Assert.equal(addon_name, amo_theme_page.addon_title)
+        Assert.contains(addon_name, amo_theme_page.addon_title)
 
     def test_that_themes_page_has_correct_title(self, testsetup):
         """test for litmus 15340"""
@@ -161,11 +161,6 @@ class TestThemes:
         amo_home_page = AddonsHomePage(testsetup)
         amo_themes_page = amo_home_page.click_themes()
         Assert.equal(amo_themes_page.top_counter, amo_themes_page.bottom_counter)
-
-    def test_that_themes_is_listed_as_a_category(self, testsetup):
-        """ test for litmus 15338"""
-        amo_home_page = AddonsHomePage(testsetup)
-        Assert.true(amo_home_page.has_category("Themes"))
 
     def test_that_themes_categories_are_listed_on_left_hand_side(self, testsetup):
         """ test for litmus 15342"""
