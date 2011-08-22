@@ -198,6 +198,7 @@ class AddonsDetailsPage(AddonsBasePage):
         self.selenium.open("%s/addon/%s" % (self.site_version, self.addon_name))
         self._wait_for_reviews_to_load()
 
+    @property
     def has_reviews(self):
         return self.selenium.get_css_count(self._review_details_locator) > 0
 
