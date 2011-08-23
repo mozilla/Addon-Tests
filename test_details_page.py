@@ -83,11 +83,11 @@ class TestDetailsPage:
         # check that the summary is not empty
         Assert.not_none(re.match('(\w+\s*){3,}', amo_details_page.summary))
 
-    def test_that_more_about_this_addon_is_displayed(self, testsetup):
+    def test_that_about_this_addon_is_displayed(self, testsetup):
         """ Test for Litmus 9890"""
         amo_details_page = AddonsDetailsPage(testsetup, "Firebug")
-        Assert.true(amo_details_page.is_more_about_addon_visible())
-        Assert.equal(amo_details_page.more_about_addon, "More about this add-on")
+        Assert.true(amo_details_page.is_about_addon_visible())
+        Assert.equal(amo_details_page.about_addon, "About this Add-on")
         Assert.not_none(re.match('(\w+\s*){3,}', amo_details_page.description))
 
     def test_that_release_notes_are_displayed(self, testsetup):

@@ -169,13 +169,13 @@ class AddonsDetailsPage(AddonsBasePage):
     _contribute_button_locator = "css=a[id='contribute-button']"
     _addon_rating_locator = "css=span[itemprop='rating']"
     _whats_this_license_locator = "css=h5 > span > a"
-    _description_locator = "css=div[class='article userinput'] > p"
+    _description_locator = "css=div.prose"
     _register_link_locator = "css=li.account > a"
     _login_link_locator = "css=li.account > a:nth(1)"
     _other_applications_locator = "css=a.controller"
     _other_apps_dropdown_menu_locator = "css=#other-apps > li > ul"
     _name_locator = "css=h1.addon > span"
-    _more_about_addon_locator = "id=more-about"
+    _about_addon_locator = "css=section.primary > h2"
     _release_notes_locator = "id=releasenotes"
     _release_version_locator = "css=div[class='version article'] > h3 > a"
     _reviews_title_locator = "css=#reviews > h2"
@@ -277,8 +277,8 @@ class AddonsDetailsPage(AddonsBasePage):
         return self.selenium.get_text(self._release_version_locator)
 
     @property
-    def more_about_addon(self):
-        return self.selenium.get_text(self._more_about_addon_locator)
+    def about_addon(self):
+        return self.selenium.get_text(self._about_addon_locator)
 
     @property
     def review_title(self):
@@ -307,8 +307,8 @@ class AddonsDetailsPage(AddonsBasePage):
     def is_summary_visible(self):
         return self.selenium.is_visible(self._summary_locator)
 
-    def is_more_about_addon_visible(self):
-        return self.selenium.is_visible(self._more_about_addon_locator)
+    def is_about_addon_visible(self):
+        return self.selenium.is_visible(self._about_addon_locator)
 
     def are_release_notes_visible(self):
         return self.selenium.is_visible(self._release_notes_locator)
