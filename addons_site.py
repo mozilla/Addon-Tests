@@ -154,8 +154,8 @@ class AddonsHomePage(AddonsBasePage):
     def most_popular_list_heading(self):
         return self.selenium.get_text(self._most_popular_list_heading_locator)
 
-class AddonsDetailsPage(AddonsBasePage):
 
+class AddonsDetailsPage(AddonsBasePage):
 
     _breadcrumb_locator = "id=breadcrumbs"
 
@@ -181,7 +181,7 @@ class AddonsDetailsPage(AddonsBasePage):
     _reviews_title_locator = "css=#reviews > h2"
     _tags_locator = "id=tagbox"
     _other_addons_locator = "css=ul.addon-otheraddons"
-    _other_collections_locator = "css=ul.addon-collections"
+    _part_of_collections_locator = "css=section.primary.island:nth(2) section:nth(2)"
     _icon_locator = "css=img.icon"
     _featured_image_locator = "css=#addon .featured .screenshot"
     _review_details_locator = "css=.review .description"
@@ -322,8 +322,15 @@ class AddonsDetailsPage(AddonsBasePage):
     def are_tags_visible(self):
         return self.selenium.is_visible(self._tags_locator)
 
-    def are_other_collections_visible(self):
-        return self.selenium.is_visible(self._other_collections_locator)
+    def is_part_of_colections_header_visible(self):
+        return self.selenium.is_visible('%s h2' % self._part_of_collections_locator)
+
+    def is_part_of_colections_list_visible(self):
+        return self.selenium.is_visible('%s ul' % self._part_of_collections_locator)
+
+    @property
+    def part_of_colections_header(self):
+        return self.selenium.get_text('%s h2' % self._part_of_collections_locator)
 
     def click_other_apps(self):
         self.selenium.click(self._other_applications_locator)
@@ -397,7 +404,7 @@ class AddonsDetailsPage(AddonsBasePage):
 
     class DetailsReviewSnippet(Page):
 
-        _reviews_locator = "css=#reviews div" # Base locator
+        _reviews_locator = "css=#reviews div"  # Base locator
         _username_locator = "p.byline a"
 
         def __init__(self, testsetup, lookup):
