@@ -22,7 +22,6 @@
 # Contributor(s): Bebe <florin.strugariu@softvision.ro>
 #                 Alex Lakatos <alex@greensqr.com>
 #
-#
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
 # the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
@@ -80,3 +79,13 @@ class TestHomePage:
         Assert.true(amo_home_page.is_amo_logo_image_visible)
         Assert.contains("https://gs1.adn.edgecastcdn.net/", amo_home_page.amo_logo_image_source)
         Assert.contains("/addons-cdn.allizom.org/media/img/app-icons/med/firefox.png", amo_home_page.amo_logo_image_source)
+
+    def test_that_clicking_mozilla_logo_loads_mozilla_dot_org(self, testsetup):
+        """
+        Litmus 22922
+        https://litmus.mozilla.org/show_test.cgi?id=22922
+        """
+        amo_home_page = AddonsHomePage(testsetup)
+        Assert.true(amo_home_page.is_mozilla_logo_visible)
+        amo_home_page.click_mozilla_logo()
+        Assert.equal(amo_home_page.get_url_current_page(), "http://www.mozilla.org/")
