@@ -154,8 +154,8 @@ class AddonsHomePage(AddonsBasePage):
     def most_popular_list_heading(self):
         return self.selenium.get_text(self._most_popular_list_heading_locator)
 
-class AddonsDetailsPage(AddonsBasePage):
 
+class AddonsDetailsPage(AddonsBasePage):
 
     _breadcrumb_locator = "id=breadcrumbs"
 
@@ -172,8 +172,8 @@ class AddonsDetailsPage(AddonsBasePage):
     _description_locator = "css=div[class='article userinput'] > p"
     _register_link_locator = "css=li.account > a"
     _login_link_locator = "css=li.account > a:nth(1)"
-    _other_applications_locator = "css=a.controller"
-    _other_apps_dropdown_menu_locator = "css=#other-apps > li > ul"
+    _other_applications_locator = "css=a#other-apps"
+    _other_apps_dropdown_menu_locator = "css=ul.other-apps"
     _name_locator = "css=h1.addon > span"
     _more_about_addon_locator = "id=more-about"
     _release_notes_locator = "id=releasenotes"
@@ -397,7 +397,7 @@ class AddonsDetailsPage(AddonsBasePage):
 
     class DetailsReviewSnippet(Page):
 
-        _reviews_locator = "css=#reviews div" # Base locator
+        _reviews_locator = "css=#reviews div"  # Base locator
         _username_locator = "p.byline a"
 
         def __init__(self, testsetup, lookup):
