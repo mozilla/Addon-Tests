@@ -51,7 +51,6 @@ from page import Page
 from addons_base_page import AddonsBasePage
 from addons_collection_page import AddonsCollectionsPage
 from addons_user_page import AddonsUserPage
-import addons_search_home_page
 import image_viewer_region
 
 
@@ -154,8 +153,8 @@ class AddonsHomePage(AddonsBasePage):
     def most_popular_list_heading(self):
         return self.selenium.get_text(self._most_popular_list_heading_locator)
 
-class AddonsDetailsPage(AddonsBasePage):
 
+class AddonsDetailsPage(AddonsBasePage):
 
     _breadcrumb_locator = "id=breadcrumbs"
 
@@ -192,7 +191,8 @@ class AddonsDetailsPage(AddonsBasePage):
     _additional_images_locator = "css=#addon .article .screenshot"
     _website_locator = "css=div#addon-summary tr:contains('Website') a"
     #other_addons
-    _other_addons_by_authors_locator = "css=div.other-author-addons"
+    _other_addons_by_author_locator = 'css=section.primary.island:nth(2) section:nth(4)'
+
     _other_addons_dropdown_locator = "id=addons-author-addons-select"
     _other_addons_link_list_locator = "css=div.other-author-addons ul li"
 
@@ -342,7 +342,7 @@ class AddonsDetailsPage(AddonsBasePage):
 
     @property
     def other_addons_by_authors_text(self):
-        return self.selenium.get_text("%s > h4" % self._other_addons_by_authors_locator)
+        return self.selenium.get_text("%s > h2" % self._other_addons_by_author_locator)
 
     @property
     def is_other_addons_dropdown_present(self):
@@ -397,7 +397,7 @@ class AddonsDetailsPage(AddonsBasePage):
 
     class DetailsReviewSnippet(Page):
 
-        _reviews_locator = "css=#reviews div" # Base locator
+        _reviews_locator = "css=#reviews div"  # Base locator
         _username_locator = "p.byline a"
 
         def __init__(self, testsetup, lookup):
