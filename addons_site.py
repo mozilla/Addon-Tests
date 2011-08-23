@@ -322,14 +322,14 @@ class AddonsDetailsPage(AddonsBasePage):
     def are_tags_visible(self):
         return self.selenium.is_visible(self._tags_locator)
 
-    def is_part_of_colections_header_visible(self):
+    def is_part_of_collections_header_visible(self):
         return self.selenium.is_visible('%s h2' % self._part_of_collections_locator)
 
-    def is_part_of_colections_list_visible(self):
+    def is_part_of_collections_list_visible(self):
         return self.selenium.is_visible('%s ul' % self._part_of_collections_locator)
 
     @property
-    def part_of_colections_header(self):
+    def part_of_collections_header(self):
         return self.selenium.get_text('%s h2' % self._part_of_collections_locator)
 
     def click_other_apps(self):

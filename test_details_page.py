@@ -118,12 +118,12 @@ class TestDetailsPage:
         amo_details_page = AddonsDetailsPage(testsetup, "Firebug")
         Assert.true(amo_details_page.are_tags_visible())
 
-    def test_part_of_colections_are_displayed(self, testsetup):
+    def test_part_of_collections_are_displayed(self, testsetup):
         """ Test for Litmus 9890"""
         amo_details_page = AddonsDetailsPage(testsetup, "Firebug")
-        Assert.true(amo_details_page.is_part_of_colections_header_visible())
-        Assert.true(amo_details_page.is_part_of_colections_list_visible())
-        Assert.equal(amo_details_page.part_of_colections_header, 'Part of these Collections')
+        Assert.true(amo_details_page.is_part_of_collections_header_visible())
+        Assert.true(amo_details_page.is_part_of_collections_list_visible())
+        Assert.equal(amo_details_page.part_of_collections_header, 'Part of these Collections')
 
     def test_that_external_link_leads_to_addon_website(self, testsetup):
         """ Litmus 11809
