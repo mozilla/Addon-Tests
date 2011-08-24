@@ -181,7 +181,7 @@ class AddonsDetailsPage(AddonsBasePage):
     _reviews_title_locator = "css=#reviews > h2"
     _tags_locator = "id=tagbox"
     _other_addons_locator = "css=ul.addon-otheraddons"
-    _part_of_collections_locator = "css=section.primary.island:nth(2) section:nth(2)"
+    _part_of_collections_locator = "css=#collections-grid"
     _icon_locator = "css=img.icon"
     _featured_image_locator = "css=#addon .featured .screenshot"
     _review_details_locator = "css=.review .description"
