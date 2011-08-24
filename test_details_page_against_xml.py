@@ -118,39 +118,15 @@ class TestDetailsPageAgainstXML:
 
         Assert.equal(browser_icon, xml_icon)
 
-    @pytest.mark.impala
     def test_that_support_url_is_correct(self, testsetup):
         """litmus 15337"""
-
-        #There have been some differences with the protocol of these urls.
-        #Sometimes they start with either http or https
-        #Krupa says that this difference is ok
 
         #browser
         firebug_page = AddonsDetailsPage(testsetup, self.firebug)
         browser_support_url = firebug_page.support_url
 
-        #split the url at the :// and assign the pieces
-        browser_url_match_list = re.split(":\/\/", browser_support_url)
-        browser_protocol = browser_url_match_list[0]
-        browser_host = browser_url_match_list[1]
-
-        #match and test the protocal
-        browser_protocol_match = re.match('http|https', browser_protocol)
-        Assert.not_equal("None", str(browser_protocol_match))
-
         #api
         addons_xml = AddOnsAPI(testsetup)
         xml_support_url = addons_xml.get_support_url("firebug")
 
-        #split the url at the :// and assign the pieces
-        xml_url_match_list = re.split(":\/\/", xml_support_url)
-        xml_protocol = xml_url_match_list[0]
-        xml_host = xml_url_match_list[1]
-
-        #match and test the protocol
-        xml_protocol_match = re.match('http|https', xml_protocol)
-        Assert.not_equal("None", str(xml_protocol_match))
-
-        #compare the hosts
-        Assert.equal(browser_host, xml_host)
+        Assert.equal(browser_support_url, xml_support_url)
