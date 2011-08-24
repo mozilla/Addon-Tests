@@ -160,7 +160,7 @@ class AddonsDetailsPage(AddonsBasePage):
     _breadcrumb_locator = "id=breadcrumbs"
 
     #addon informations
-    _name_locator = "css=h2.addon > span"
+    _name_locator = "css=h1.addon"
     _version_number_locator = "css=span.version-number"
     _authors_locator = "//h4[@class='author']/a"
     _summary_locator = "id=addon-summary"
@@ -174,7 +174,6 @@ class AddonsDetailsPage(AddonsBasePage):
     _login_link_locator = "css=li.account > a:nth(1)"
     _other_applications_locator = "css=a.controller"
     _other_apps_dropdown_menu_locator = "css=#other-apps > li > ul"
-    _name_locator = "css=h1.addon > span"
     _more_about_addon_locator = "id=more-about"
     _version_information_locator = "id=detail-relnotes"
     _version_information_heading_locator = "css=#detail-relnotes > h2"
