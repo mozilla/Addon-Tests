@@ -45,6 +45,8 @@
 
 import re
 from datetime import datetime
+import urllib2
+from urllib2 import urlparse
 
 from page import Page
 from addons_base_page import AddonsBasePage
@@ -336,11 +338,17 @@ class AddonsDetailsPage(AddonsBasePage):
     @property
     def support_url(self):
         support_url = self.selenium.get_attribute(self._support_link_locator + "%s" % "@href")
-        return self._parse_certificate_from_link(support_url)
+        match = re.findall("http", support_url)
+        #staging url
+        if len(match) > 1:
+            return self._extract_url_from_link(support_url)
+        #production url
+        else:
+            return support_url
 
-    def _parse_certificate_from_link(self, url):
-        url_pieces = re.split('\/\/.+\/\/', url)
-        return url_pieces[0] + "//" + url_pieces[1]
+    def _extract_url_from_link(self, url):
+        #parses out extra certificate stuff from urls in staging only
+        return urlparse.unquote(re.search('\w+://.*/(\w+%3A//.*)', url).group(1))
 
     @property
     def other_addons_by_authors_text(self):
