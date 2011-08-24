@@ -140,6 +140,7 @@ class AddonsBasePage(Page):
         #LogedIn
         _account_controller_locator = 'css=#aux-nav .account .controller'
         _dropdown_locator = "css=#aux-nav .account ul"
+        _logout_locator = 'css=li.nomenu.logout > a'
 
         # Impala locators
         _impala_login_locator = "css=#aux-nav a:nth(1)"
@@ -176,18 +177,11 @@ class AddonsBasePage(Page):
             self.wait_for_element_visible(self._dropdown_locator)
 
         def click_login(self):
-            if self.site_version == '/i':
-                self.selenium.click(self._impala_login_locator)
-            else:
-                self.selenium.click(self._login_locator)
+            self.selenium.click(self._impala_login_locator)
             self.selenium.wait_for_page_to_load(self.timeout)
 
         def click_logout(self):
-            self.click_my_account()
-            if self.selenium.get_text('%s > li:nth(3) a' % self._dropdown_locator) == "Log out":  # Until the https://bugzilla.mozilla.org/show_bug.cgi?id=669650
-                self.selenium.click('%s > li:nth(3) a' % self._dropdown_locator)
-            else:
-                self.selenium.click('%s > li:nth(4) a' % self._dropdown_locator)
+            self.selenium.click(self._logout_locator)
             self.selenium.wait_for_page_to_load(self.timeout)
 
         def click_edit_profile(self):
@@ -204,11 +198,7 @@ class AddonsBasePage(Page):
 
         @property
         def is_user_logged_in(self):
-            if self.site_version == '/i':
-                locator = self._impala_account_controller_locator
-            else:
-                locator = self._account_controller_locator
             try:
-                return self.selenium.is_visible(locator)
+                return self.selenium.is_visible(self._impala_account_controller_locator)
             except:
                 return False
