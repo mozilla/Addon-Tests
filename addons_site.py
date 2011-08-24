@@ -191,7 +191,7 @@ class AddonsDetailsPage(AddonsBasePage):
     _additional_images_locator = "css=#addon .article .screenshot"
     _website_locator = "css=div#addon-summary tr:contains('Website') a"
     #other_addons
-    _other_addons_by_author_locator = 'css=section.primary.island:nth(2) section:nth(4)'
+    _other_addons_by_author_locator = 'css=#author-addons'
 
     _other_addons_dropdown_locator = "id=addons-author-addons-select"
     _other_addons_link_list_locator = "css=div.other-author-addons ul li"
