@@ -165,35 +165,21 @@ class TestDetailsPage:
         Assert.equal(len(amo_detail_page.authors), 1)
         Assert.equal(amo_detail_page.other_addons_by_authors_text, "Other add-ons by %s" % amo_detail_page.authors[0])
 
-    def test_navigating_to_other_addons_by_the_same_author_when_there_are_less_than_five_other_addons(self, testsetup):
+    def test_navigating_to_other_addons(self, testsetup):
         """
         Litmus 11926
-        https://litmus.mozilla.org/show_test.cgi?id=1192"""
-        addon_with_less_than_five_addons_by_the_same_author = 'adblock-plus'
-        amo_detail_page = AddonsDetailsPage(testsetup, addon_with_less_than_five_addons_by_the_same_author)
+        https://litmus.mozilla.org/show_test.cgi?id=11926"""
+        addon_name = 'firebug'
+        amo_detail_page = AddonsDetailsPage(testsetup, addon_name)
 
-        addons = amo_detail_page.other_addons_link_list()
-        Assert.true(len(addons) < 5)
-        for i in range(amo_detail_page.other_addons_link_list_count):
-            amo_detail_page.click_other_addon_by_this_author(addons[i])
-            print addons[i]
-            Assert.true(amo_detail_page.name.startswith(addons[i].rstrip('.')))
-            AddonsDetailsPage(testsetup, addon_with_less_than_five_addons_by_the_same_author)
-
-    def test_navigating_to_other_addons_by_the_same_author_when_there_are_more_than_four_other_addons(self, testsetup):
-        """
-        Litmus 11926
-        https://litmus.mozilla.org/show_test.cgi?id=1192"""
-        addon_with_more_than_four_addons_by_the_same_author = 'firebug'
-        amo_detail_page = AddonsDetailsPage(testsetup, addon_with_more_than_four_addons_by_the_same_author)
-
-        addons = amo_detail_page.other_addons_dropdown_values
-        Assert.true(len(addons) > 4)
-        for i in range(len(addons) - 1, 0, -1):  # Not checking the first item in the drop-down https://bugzilla.mozilla.org/show_bug.cgi?id=660706
-            amo_detail_page.select_other_addons_dropdown_value(addons[i])
-            print addons[i]
-            Assert.true(amo_detail_page.name.startswith(addons[i].rstrip('.')))
-            AddonsDetailsPage(testsetup, addon_with_more_than_four_addons_by_the_same_author)
+        addon_count = amo_detail_page.other_addons_count
+        addons = amo_detail_page.other_addons()
+        Assert.equal(len(addons), addon_count)
+        for addon in addons:
+            name = addon.name
+            addon.click_addon_link()
+            Assert.contains(name, amo_detail_page.name)
+            amo_detail_page = AddonsDetailsPage(testsetup, addon_name)
 
     def test_details_more_images(self, testsetup):
         """

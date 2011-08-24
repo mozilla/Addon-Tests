@@ -154,13 +154,13 @@ class AddonsHomePage(AddonsBasePage):
     def most_popular_list_heading(self):
         return self.selenium.get_text(self._most_popular_list_heading_locator)
 
-class AddonsDetailsPage(AddonsBasePage):
 
+class AddonsDetailsPage(AddonsBasePage):
 
     _breadcrumb_locator = "id=breadcrumbs"
 
     #addon informations
-    _name_locator = "css=h2.addon > span"
+    _name_locator = "css=h1.addon"
     _version_number_locator = "css=span.version-number"
     _authors_locator = "//h4[@class='author']/a"
     _summary_locator = "id=addon-summary"
@@ -174,7 +174,7 @@ class AddonsDetailsPage(AddonsBasePage):
     _login_link_locator = "css=li.account > a:nth(1)"
     _other_applications_locator = "css=a.controller"
     _other_apps_dropdown_menu_locator = "css=#other-apps > li > ul"
-    _name_locator = "css=h1.addon > span"
+
     _more_about_addon_locator = "id=more-about"
     _version_information_locator = "id=detail-relnotes"
     _version_information_heading_locator = "css=#detail-relnotes > h2"
@@ -193,9 +193,7 @@ class AddonsDetailsPage(AddonsBasePage):
     _additional_images_locator = "css=#addon .article .screenshot"
     _website_locator = "css=div#addon-summary tr:contains('Website') a"
     #other_addons
-    _other_addons_by_authors_locator = "css=div.other-author-addons"
-    _other_addons_dropdown_locator = "id=addons-author-addons-select"
-    _other_addons_link_list_locator = "css=div.other-author-addons ul li"
+    _other_addons_by_author_locator = 'css=#author-addons'
 
     _reviews_locator = "id=reviews"
     _add_review_link_locator = "id=add-review"
@@ -205,7 +203,7 @@ class AddonsDetailsPage(AddonsBasePage):
         self.addon_name = addon_name.replace(' ', '-').lower()
         AddonsBasePage.__init__(self, testsetup)
         self.selenium.open("%s/addon/%s" % (self.site_version, self.addon_name))
-        self._wait_for_reviews_to_load()
+        self._wait_for_page_to_load()
 
     @property
     def has_reviews(self):
@@ -346,31 +344,14 @@ class AddonsDetailsPage(AddonsBasePage):
 
     @property
     def other_addons_by_authors_text(self):
-        return self.selenium.get_text("%s > h4" % self._other_addons_by_authors_locator)
+        return self.selenium.get_text("%s > h2" % self._other_addons_by_author_locator)
 
     @property
-    def is_other_addons_dropdown_present(self):
-        return self.selenium.is_element_present(self._other_addons_dropdown_locator)
+    def other_addons_count(self):
+        return int(self.selenium.get_css_count('%s li' % self._other_addons_by_author_locator))
 
-    @property
-    def other_addons_dropdown_values(self):
-        return self.selenium.get_select_options(self._other_addons_dropdown_locator)
-
-    def select_other_addons_dropdown_value(self, value):
-        self.selenium.select(self._other_addons_dropdown_locator, value)
-        self.selenium.wait_for_page_to_load(self.timeout)
-
-    @property
-    def other_addons_link_list_count(self):
-        return self.selenium.get_css_count(self._other_addons_link_list_locator)
-
-    def other_addons_link_list(self):
-        return [self.selenium.get_text("%s:nth(%s) a" % (self._other_addons_link_list_locator, pos))
-            for pos in range(self.other_addons_link_list_count)]
-
-    def click_other_addon_by_this_author(self, value):
-        self.selenium.click('%s:contains(%s) a' % (self._other_addons_link_list_locator, value))
-        self.selenium.wait_for_page_to_load(self.timeout)
+    def other_addons(self):
+        return [self.OtherAddons(self.testsetup, i) for i in range(self.other_addons_count)]
 
     def click_addon_image(self):
         self.selenium.click(self._featured_image_locator)
@@ -399,9 +380,47 @@ class AddonsDetailsPage(AddonsBasePage):
         self.wait_for_element_visible(self._reviews_locator)
         return int(self.selenium.get_css_count(self._reviews_locator))
 
+    class OtherAddons(Page):
+        _other_addons_locator = 'css=#author-addons li'
+        _name_locator = 'div.summary h3'
+        _addon_link_locator = 'div.addon a'
+
+        def __init__(self, testsetup, lookup):
+            Page.__init__(self, testsetup)
+            self.lookup = lookup
+
+        def absolute_locator(self, relative_locator):
+            return self._root_locator + relative_locator
+
+        @property
+        def _root_locator(self):
+            self.wait_for_element_visible(self._other_addons_locator)
+            if type(self.lookup) == int:
+                # lookup by index
+                return "%s:nth(%s) " % (self._other_addons_locator, self.lookup)
+            else:
+                # lookup by name
+                return "%s:contains(%s) " % (self._other_addons_locator, self.lookup)
+
+        @property
+        def name(self):
+            return self.selenium.get_text(self.absolute_locator(self._name_locator))
+
+        def click_addon_link(self):
+            self.selenium.click(self.absolute_locator(self._addon_link_locator))
+            self.selenium.wait_for_page_to_load(self.timeout)
+
+        @property
+        def name_link_value(self):
+            return self.selenium.get_attribute('%s@href' % self.absolute_locator(self._name_link_locator))
+
+        @property
+        def image_link_value(self):
+            return self.selenium.get_attribute('%s@href' % self.absolute_locator(self._icon_link_locator))
+
     class DetailsReviewSnippet(Page):
 
-        _reviews_locator = "css=#reviews div" # Base locator
+        _reviews_locator = "css=#reviews div"  # Base locator
         _username_locator = "p.byline a"
 
         def __init__(self, testsetup, lookup):
@@ -434,8 +453,9 @@ class AddonsDetailsPage(AddonsBasePage):
         self.selenium.click(self._add_review_link_locator)
         return AddonsWriteReviewBlock(self.testsetup)
 
-    def _wait_for_reviews_to_load(self):
+    def _wait_for_page_to_load(self):
         self.wait_for_element_present(self._reviews_locator)
+        self.wait_for_element_present(self._other_addons_by_author_locator)
 
 
 class AddonsWriteReviewBlock(AddonsBasePage):
