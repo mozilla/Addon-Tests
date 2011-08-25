@@ -112,7 +112,9 @@ class TestDetailsPage:
     def test_that_in_often_used_with_addons_are_displayed(self, testsetup):
         """ Test for Litmus 9890"""
         amo_details_page = AddonsDetailsPage(testsetup, "Firebug")
-        Assert.true(amo_details_page.are_often_used_with_addons_visible())
+        Assert.true(amo_details_page.is_often_used_with_header_visible())
+        Assert.equal(amo_details_page.often_used_with_header, u"Often used with\u2026")
+        Assert.true(amo_details_page.is_often_used_with_list_visible())
 
     def test_that_tags_are_displayed(self, testsetup):
         """ Test for Litmus 9890"""
