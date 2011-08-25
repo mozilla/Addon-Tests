@@ -335,7 +335,7 @@ class AddonsDetailsPage(AddonsBasePage):
 
     @property
     def website(self):
-        return self.selenium.get_attribute(self._website_locator + "%s" % "@href")
+        return self.selenium.get_attribute("%s@href" % self._website_locator)
 
     def click_website_link(self):
         self.selenium.open(self.website)
