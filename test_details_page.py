@@ -67,7 +67,8 @@ class TestDetailsPage:
         amo_details_page = AddonsDetailsPage(testsetup, "Firebug")
         Assert.true(amo_details_page.is_other_apps_link_visible())
         Assert.equal(amo_details_page.other_apps, "Other Applications")
-        Assert.true(amo_details_page.is_other_apps_dropdown_menu_visible())
+        #TODO: Fix when the hover event works
+        #Assert.true(amo_details_page.is_other_apps_dropdown_menu_visible())
 
     def test_that_addon_name_is_displayed(self, testsetup):
         """ Test for Litmus 9890"""
@@ -83,11 +84,11 @@ class TestDetailsPage:
         # check that the summary is not empty
         Assert.not_none(re.match('(\w+\s*){3,}', amo_details_page.summary))
 
-    def test_that_more_about_this_addon_is_displayed(self, testsetup):
+    def test_that_about_this_addon_is_displayed(self, testsetup):
         """ Test for Litmus 9890"""
         amo_details_page = AddonsDetailsPage(testsetup, "Firebug")
-        Assert.true(amo_details_page.is_more_about_addon_visible())
-        Assert.equal(amo_details_page.more_about_addon, "More about this add-on")
+        Assert.true(amo_details_page.is_about_addon_visible())
+        Assert.equal(amo_details_page.about_addon, "About this Add-on")
         Assert.not_none(re.match('(\w+\s*){3,}', amo_details_page.description))
 
     # TODO expand the Version Information section and check that the required details are present/visible/correct
@@ -112,17 +113,21 @@ class TestDetailsPage:
     def test_that_in_often_used_with_addons_are_displayed(self, testsetup):
         """ Test for Litmus 9890"""
         amo_details_page = AddonsDetailsPage(testsetup, "Firebug")
-        Assert.true(amo_details_page.are_often_used_with_addons_visible())
+        Assert.true(amo_details_page.is_often_used_with_header_visible())
+        Assert.equal(amo_details_page.often_used_with_header, u"Often used with\u2026")
+        Assert.true(amo_details_page.is_often_used_with_list_visible())
 
     def test_that_tags_are_displayed(self, testsetup):
         """ Test for Litmus 9890"""
         amo_details_page = AddonsDetailsPage(testsetup, "Firebug")
         Assert.true(amo_details_page.are_tags_visible())
 
-    def test_other_collections_are_displayed(self, testsetup):
+    def test_part_of_collections_are_displayed(self, testsetup):
         """ Test for Litmus 9890"""
         amo_details_page = AddonsDetailsPage(testsetup, "Firebug")
-        Assert.true(amo_details_page.are_other_collections_visible())
+        Assert.true(amo_details_page.is_part_of_collections_header_visible())
+        Assert.true(amo_details_page.is_part_of_collections_list_visible())
+        Assert.equal(amo_details_page.part_of_collections_header, 'Part of these Collections')
 
     def test_that_external_link_leads_to_addon_website(self, testsetup):
         """ Litmus 11809
