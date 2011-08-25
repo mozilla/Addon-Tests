@@ -171,8 +171,8 @@ class AddonsDetailsPage(AddonsBasePage):
     _description_locator = "css=div.prose"
     _register_link_locator = "css=li.account > a"
     _login_link_locator = "css=li.account > a:nth(1)"
-    _other_applications_locator = "css=a.controller"
-    _other_apps_dropdown_menu_locator = "css=#other-apps > li > ul"
+    _other_applications_locator = "id=other-apps"
+    _other_apps_dropdown_menu_locator = "css=ul.other-apps"
 
     _more_about_addon_locator = "id=more-about"
     _version_information_locator = "id=detail-relnotes"
