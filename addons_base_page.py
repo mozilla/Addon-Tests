@@ -127,24 +127,18 @@ class AddonsBasePage(Page):
         _other_applications_locator = "css=#other-apps"
         _app_thunderbird = "css=#app-thunderbird a"
 
-        _other_apps_locator = "id=other-apps"
-
         #Search box
         _search_button_locator = "css=.search-button"
         _search_textbox_locator = "name=q"
 
         #Not LogedIn
-        _login_locator = "css=.amo-header .context a:nth(1)"  # Until https://bugzilla.mozilla.org/show_bug.cgi?id=669646
+        _login_locator = "css=#aux-nav a:nth(1)"
         _register_locator = "css=.amo-header .context a:nth(0)"
 
         #LogedIn
-        _account_controller_locator = 'css=#aux-nav .account .controller'
-        _dropdown_locator = "css=#aux-nav .account ul"
+        _account_controller_locator = 'css=#aux-nav .account .user'
+        _account_dropdown_locator = "css=#aux-nav .account ul"
         _logout_locator = 'css=li.nomenu.logout > a'
-
-        # Impala locators
-        _impala_login_locator = "css=#aux-nav a:nth(1)"
-        _impala_account_controller_locator = 'css=#aux-nav .account .user'
 
         def click_other_applications(self):
             self.selenium.click('%s a' % self._other_applications_locator)
@@ -159,7 +153,7 @@ class AddonsBasePage(Page):
 
         @property
         def other_applications_tooltip(self):
-            return self.selenium.get_attribute("%s@title" % self._other_apps_locator)
+            return self.selenium.get_attribute("%s@title" % self._other_applications_locator)
 
         def search_for(self, search_term):
             self.selenium.type(self._search_textbox_locator, search_term)
@@ -174,10 +168,10 @@ class AddonsBasePage(Page):
 
         def click_my_account(self):
             self.selenium.click(self._account_controller_locator)
-            self.wait_for_element_visible(self._dropdown_locator)
+            self.wait_for_element_visible(self._account_dropdown_locator)
 
         def click_login(self):
-            self.selenium.click(self._impala_login_locator)
+            self.selenium.click(self._login_locator)
             self.selenium.wait_for_page_to_load(self.timeout)
 
         def click_logout(self):
@@ -186,12 +180,12 @@ class AddonsBasePage(Page):
 
         def click_edit_profile(self):
             self.click_my_account
-            self.selenium.click('%s > li:nth(1) a' % self._dropdown_locator)
+            self.selenium.click('%s > li:nth(1) a' % self._account_dropdown_locator)
             self.selenium.wait_for_page_to_load(self.timeout)
 
         def click_view_profile(self):
             self.click_my_account
-            self.selenium.click('%s > li:nth(0) a' % self._dropdown_locator)
+            self.selenium.click('%s > li:nth(0) a' % self._account_dropdown_locator)
             self.selenium.wait_for_page_to_load(self.timeout)
             from addons_user_page import AddonsViewProfilePage
             return AddonsViewProfilePage(self.testsetup)
@@ -199,6 +193,6 @@ class AddonsBasePage(Page):
         @property
         def is_user_logged_in(self):
             try:
-                return self.selenium.is_visible(self._impala_account_controller_locator)
+                return self.selenium.is_visible(self._account_controller_locator)
             except:
                 return False
