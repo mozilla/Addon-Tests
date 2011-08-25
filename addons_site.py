@@ -51,7 +51,6 @@ from page import Page
 from addons_base_page import AddonsBasePage
 from addons_collection_page import AddonsCollectionsPage
 from addons_user_page import AddonsUserPage
-import addons_search_home_page
 import image_viewer_region
 
 
@@ -169,7 +168,7 @@ class AddonsDetailsPage(AddonsBasePage):
     _contribute_button_locator = "css=a[id='contribute-button']"
     _addon_rating_locator = "css=span[itemprop='rating']"
     _whats_this_license_locator = "css=h5 > span > a"
-    _description_locator = "css=div[class='article userinput'] > p"
+    _description_locator = "css=div.prose"
     _register_link_locator = "css=li.account > a"
     _login_link_locator = "css=li.account > a:nth(1)"
     _other_applications_locator = "css=a.controller"
@@ -192,10 +191,9 @@ class AddonsDetailsPage(AddonsBasePage):
 
     #more about this addon
     _additional_images_locator = "css=#addon .article .screenshot"
-    _website_locator = "css=div#addon-summary tr:contains('Website') a"
+    _website_locator = "css=.links a.home"
     #other_addons
     _other_addons_by_author_locator = 'css=#author-addons'
-
     _reviews_locator = "id=reviews"
     _add_review_link_locator = "id=add-review"
 
@@ -277,8 +275,8 @@ class AddonsDetailsPage(AddonsBasePage):
         return self.selenium.get_text(self._release_version_locator)
 
     @property
-    def more_about_addon(self):
-        return self.selenium.get_text(self._more_about_addon_locator)
+    def about_addon(self):
+        return self.selenium.get_text(self._about_addon_locator)
 
     @property
     def review_title(self):
@@ -311,8 +309,8 @@ class AddonsDetailsPage(AddonsBasePage):
     def is_summary_visible(self):
         return self.selenium.is_visible(self._summary_locator)
 
-    def is_more_about_addon_visible(self):
-        return self.selenium.is_visible(self._more_about_addon_locator)
+    def is_about_addon_visible(self):
+        return self.selenium.is_visible(self._about_addon_locator)
 
     def is_version_information_visible(self):
         return self.selenium.is_visible(self._version_information_locator)
@@ -345,7 +343,7 @@ class AddonsDetailsPage(AddonsBasePage):
 
     @property
     def website(self):
-        return self.selenium.get_text(self._website_locator)
+        return self.selenium.get_attribute("%s@href" % self._website_locator)
 
     def click_website_link(self):
         self.selenium.open(self.website)
