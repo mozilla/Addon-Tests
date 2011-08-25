@@ -132,8 +132,8 @@ class AddonsBasePage(Page):
         _search_textbox_locator = "name=q"
 
         #Not LogedIn
-        _login_locator = "css=#aux-nav a:nth(1)"
-        _register_locator = "css=.amo-header .context a:nth(0)"
+        _login_locator = "css=#aux-nav li.account a:nth(1)"
+        _register_locator = "css=#aux-nav li.account a:nth(0)"
 
         #LogedIn
         _account_controller_locator = 'css=#aux-nav .account .user'
