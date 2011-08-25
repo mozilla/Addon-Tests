@@ -182,7 +182,7 @@ class AddonsDetailsPage(AddonsBasePage):
     _tags_locator = "id=tagbox"
     _other_addons_header_locator = "css=h2.compact-bottom"
     _other_addons_list_locator = "css=.primary .listing-grid"
-    _other_collections_locator = "css=ul.addon-collections"
+    _part_of_collections_locator = "css=#collections-grid"
     _icon_locator = "css=img.icon"
     _featured_image_locator = "css=#addon .featured .screenshot"
     _review_details_locator = "css=.review .description"
@@ -330,8 +330,15 @@ class AddonsDetailsPage(AddonsBasePage):
     def are_tags_visible(self):
         return self.selenium.is_visible(self._tags_locator)
 
-    def are_other_collections_visible(self):
-        return self.selenium.is_visible(self._other_collections_locator)
+    def is_part_of_collections_header_visible(self):
+        return self.selenium.is_visible('%s h2' % self._part_of_collections_locator)
+
+    def is_part_of_collections_list_visible(self):
+        return self.selenium.is_visible('%s ul' % self._part_of_collections_locator)
+
+    @property
+    def part_of_collections_header(self):
+        return self.selenium.get_text('%s h2' % self._part_of_collections_locator)
 
     def click_other_apps(self):
         self.selenium.click(self._other_applications_locator)
