@@ -191,7 +191,7 @@ class AddonsDetailsPage(AddonsBasePage):
 
     #more about this addon
     _additional_images_locator = "css=#addon .article .screenshot"
-    _website_locator = "css=div#addon-summary tr:contains('Website') a"
+    _website_locator = "css=.links a.home"
     #other_addons
     _other_addons_by_authors_locator = "css=div.other-author-addons"
     _other_addons_dropdown_locator = "id=addons-author-addons-select"
@@ -346,7 +346,7 @@ class AddonsDetailsPage(AddonsBasePage):
 
     @property
     def website(self):
-        return self.selenium.get_text(self._website_locator)
+        return self.selenium.get_attribute("%s@href" % self._website_locator)
 
     def click_website_link(self):
         self.selenium.open(self.website)
