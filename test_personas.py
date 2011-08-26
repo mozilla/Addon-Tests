@@ -48,12 +48,6 @@ from addons_site import AddonsPersonasPage
 
 class TestPersonas:
 
-    def test_that_personas_is_listed_as_a_category(self, testsetup):
-        """ Test for Litmus 9589
-            https://litmus.mozilla.org/show_test.cgi?id=9589"""
-        amo_home_page = AddonsHomePage(testsetup)
-        Assert.true(amo_home_page.has_category("Personas"))
-
     def test_start_exploring_link_in_the_promo_box(self, testsetup):
         """ Test for Litmus 12037
             https://litmus.mozilla.org/show_test.cgi?id=12037"""

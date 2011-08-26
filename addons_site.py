@@ -27,6 +27,7 @@
 #                 Bebe <florin.strugariu@softvision.ro>
 #                 Marlena Compton <mcompton@mozilla.com>
 #                 Teodosia Pop <teodosia.pop@softvision.ro>
+#                 Alex Lakatos <alex@greensqr.com>
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -52,7 +53,6 @@ from page import Page
 from addons_base_page import AddonsBasePage
 from addons_collection_page import AddonsCollectionsPage
 from addons_user_page import AddonsUserPage
-import addons_search_home_page
 import image_viewer_region
 
 
@@ -61,24 +61,20 @@ class AddonsHomePage(AddonsBasePage):
     _page_title = "Add-ons for Firefox"
 
     _download_count_locator = "css=div.stats > strong"
-    _themes_link_locator = "id=_t-2"
-    _personas_link_locator = "id=_t-9"
-    _collections_link_locator = "id=_t-99"
+    _themes_link_locator = "css=#themes > a"
+    _personas_link_locator = "css=#personas > a"
+    _collections_link_locator = "css=#collections > a"
 
-    #Categories List
-    _category_list_locator = "//ul[@id='categoriesdropdown']"
-    _category_item_locator = "//li/a[text()='%s']"
+    #Most Popular List
+    _most_popular_list_locator = "css=#homepage > .secondary"
+    _most_popular_item_locator = "css=ol.toplist li"
+    _most_popular_list_heading_locator = _most_popular_list_locator + " h2"
 
     def __init__(self, testsetup):
         ''' Creates a new instance of the class and gets the page ready for testing '''
         AddonsBasePage.__init__(self, testsetup)
         self.selenium.open("%s/" % self.site_version)
         self.selenium.window_maximize()
-
-    def has_category(self, category_name):
-        ''' Returns whether category_name exists in the category menu links '''
-        locator = (self._category_list_locator + self._category_item_locator) % category_name
-        return self.selenium.get_xpath_count(locator) > 0
 
     def click_personas(self):
         self.selenium.click(self._personas_link_locator)
@@ -147,50 +143,64 @@ class AddonsHomePage(AddonsBasePage):
         ]
         return integer_numbers
 
+    @property
+    def most_popular_count(self):
+        return self.selenium.get_css_count(self._most_popular_item_locator)
+
+    @property
+    def is_most_popular_list_visible(self):
+        return self.selenium.is_visible(self._most_popular_list_locator)
+
+    @property
+    def most_popular_list_heading(self):
+        return self.selenium.get_text(self._most_popular_list_heading_locator)
+
 
 class AddonsDetailsPage(AddonsBasePage):
 
-    _breadcrumb_locator = "css=ol.breadcrumbs"
+    _breadcrumb_locator = "id=breadcrumbs"
 
     #addon informations
-    _name_locator = "css=h2.addon > span"
-    _version_number_locator = "css=span.version"
+    _name_locator = "css=h1.addon"
+    _version_number_locator = "css=span.version-number"
     _authors_locator = "//h4[@class='author']/a"
-    _summary_locator = "css=div[id=addon-summary] > p"
+    _summary_locator = "id=addon-summary"
     _ratings_locator = "css=span[itemprop='rating']"
     _install_button_locator = "css=p[class='install-button'] > a"
     _contribute_button_locator = "css=a[id='contribute-button']"
     _addon_rating_locator = "css=span[itemprop='rating']"
     _whats_this_license_locator = "css=h5 > span > a"
-    _description_locator = "css=div[class='article userinput'] > p"
-    _register_link_locator = "css=p.context > a"
-    _login_link_locator = "css=p.context > a:nth(1)"
-    _other_applications_locator = "css=a.controller"
-    _other_apps_dropdown_menu_locator = "css=#other-apps > li > ul"
-    _name_locator = "css=h2.addon > span"
-    _more_about_addon_locator = "id=more-about"
-    _release_notes_locator = "id=releasenotes"
-    _release_version_locator = "css=div[class='version article'] > h3 > a"
+    _description_locator = "css=div.prose"
+    _register_link_locator = "css=li.account > a"
+    _login_link_locator = "css=li.account > a:nth(1)"
+    _other_applications_locator = "id=other-apps"
+    _other_apps_dropdown_menu_locator = "css=ul.other-apps"
+    _name_locator = "css=h1.addon > span"
+    _about_addon_locator = "css=section.primary > h2"
+    _version_information_locator = "id=detail-relnotes"
+    _version_information_heading_locator = "css=#detail-relnotes > h2"
+    _release_version_locator = "css=div.version.article > h3 > a"
     _reviews_title_locator = "id=reviews"
     _tags_locator = "id=tagbox"
-    _other_addons_locator = "css=ul.addon-otheraddons"
-    _other_collections_locator = "css=ul.addon-collections"
+    _other_addons_header_locator = "css=h2.compact-bottom"
+    _other_addons_list_locator = "css=.primary .listing-grid"
+    _part_of_collections_locator = "css=#collections-grid"
     _icon_locator = "css=img.icon"
     _featured_image_locator = "css=#addon .featured .screenshot"
-    _support_link_locator = "css=a.support"
-    _review_details_locator = "css=.review-detail"
+    _review_details_locator = "css=.review .description"
     _all_reviews_link_locator = "css=#addon #reviews+.article a.more-info"
     _review_locator = "css=div.review:not(.reply)"
-    _reviews_locator = "css=#reviews div"
 
     #more about this addon
     _additional_images_locator = "css=#addon .article .screenshot"
-    _website_locator = "css=div#addon-summary tr:contains('Website') a"
+    _website_locator = "css=.links a.home"
     #other_addons
-    _other_addons_by_authors_locator = "css=div.other-author-addons"
+    _other_addons_by_author_locator = 'css=#author-addons'
+
     _other_addons_dropdown_locator = "id=addons-author-addons-select"
     _other_addons_link_list_locator = "css=div.other-author-addons ul li"
-    _reviews_locator = "css=#reviews div"
+
+    _reviews_locator = "id=reviews"
     _add_review_link_locator = "id=add-review"
 
     def __init__(self, testsetup, addon_name):
@@ -198,8 +208,7 @@ class AddonsDetailsPage(AddonsBasePage):
         self.addon_name = addon_name.replace(' ', '-').lower()
         AddonsBasePage.__init__(self, testsetup)
         self.selenium.open("%s/addon/%s" % (self.site_version, self.addon_name))
-        if self.site_version == '/i':
-            self._wait_for_reviews_to_load()
+        self._wait_for_reviews_to_load()
 
     @property
     def has_reviews(self):
@@ -264,16 +273,16 @@ class AddonsDetailsPage(AddonsBasePage):
         return self.selenium.get_text(self._other_applications_locator)
 
     @property
-    def release_notes(self):
-        return self.selenium.get_text(self._release_notes_locator)
+    def version_information_heading(self):
+        return self.selenium.get_text(self._version_information_heading_locator)
 
     @property
     def release_version(self):
         return self.selenium.get_text(self._release_version_locator)
 
     @property
-    def more_about_addon(self):
-        return self.selenium.get_text(self._more_about_addon_locator)
+    def about_addon(self):
+        return self.selenium.get_text(self._about_addon_locator)
 
     @property
     def review_title(self):
@@ -282,6 +291,10 @@ class AddonsDetailsPage(AddonsBasePage):
     @property
     def review_details(self):
         return self.selenium.get_text(self._review_details_locator)
+
+    @property
+    def often_used_with_header(self):
+        return self.selenium.get_text(self._other_addons_header_locator)
 
     def is_register_visible(self):
         return self.selenium.is_visible(self._register_link_locator)
@@ -302,23 +315,36 @@ class AddonsDetailsPage(AddonsBasePage):
     def is_summary_visible(self):
         return self.selenium.is_visible(self._summary_locator)
 
-    def is_more_about_addon_visible(self):
-        return self.selenium.is_visible(self._more_about_addon_locator)
+    def is_about_addon_visible(self):
+        return self.selenium.is_visible(self._about_addon_locator)
 
-    def are_release_notes_visible(self):
-        return self.selenium.is_visible(self._release_notes_locator)
+    def is_version_information_visible(self):
+        return self.selenium.is_visible(self._version_information_locator)
+
+    def is_version_information_heading_visible(self):
+        return self.selenium.is_visible(self._version_information_heading_locator)
 
     def is_review_title_visible(self):
         return self.selenium.is_visible(self._reviews_title_locator)
 
-    def are_often_used_with_addons_visible(self):
-        return self.selenium.is_visible(self._other_addons_locator)
+    def is_often_used_with_header_visible(self):
+        return self.selenium.is_visible(self._other_addons_header_locator)
+
+    def is_often_used_with_list_visible(self):
+        return self.selenium.is_visible(self._other_addons_list_locator)
 
     def are_tags_visible(self):
         return self.selenium.is_visible(self._tags_locator)
 
-    def are_other_collections_visible(self):
-        return self.selenium.is_visible(self._other_collections_locator)
+    def is_part_of_collections_header_visible(self):
+        return self.selenium.is_visible('%s h2' % self._part_of_collections_locator)
+
+    def is_part_of_collections_list_visible(self):
+        return self.selenium.is_visible('%s ul' % self._part_of_collections_locator)
+
+    @property
+    def part_of_collections_header(self):
+        return self.selenium.get_text('%s h2' % self._part_of_collections_locator)
 
     def click_other_apps(self):
         self.selenium.click(self._other_applications_locator)
@@ -330,7 +356,7 @@ class AddonsDetailsPage(AddonsBasePage):
 
     @property
     def website(self):
-        return self.selenium.get_text(self._website_locator)
+        return self.selenium.get_attribute("%s@href" % self._website_locator)
 
     def click_website_link(self):
         self.selenium.open(self.website)
@@ -352,7 +378,7 @@ class AddonsDetailsPage(AddonsBasePage):
 
     @property
     def other_addons_by_authors_text(self):
-        return self.selenium.get_text("%s > h4" % self._other_addons_by_authors_locator)
+        return self.selenium.get_text("%s > h2" % self._other_addons_by_author_locator)
 
     @property
     def is_other_addons_dropdown_present(self):
@@ -407,8 +433,7 @@ class AddonsDetailsPage(AddonsBasePage):
 
     class DetailsReviewSnippet(Page):
 
-        #Base locator
-        _reviews_locator = "css=#reviews div"
+        _reviews_locator = "css=#reviews div"  # Base locator
         _username_locator = "p.byline a"
 
         def __init__(self, testsetup, lookup):
@@ -624,7 +649,7 @@ class AddonsThemesPage(AddonsHomePage):
 
 class AddonsThemePage(AddonsBasePage):
 
-    _addon_title = "css=h2.addon > span"
+    _addon_title = "css=h1.addon"
 
     @property
     def addon_title(self):
