@@ -62,7 +62,7 @@ class TestAccounts:
         amo_home_page.header.click_logout()
         Assert.false(amo_home_page.header.is_user_logged_in)
 
-    def test_user_can_acess_the_edit_profile_page(self, testsetup):
+    def test_user_can_access_the_edit_profile_page(self, testsetup):
         """
             Test for litmus 5039
             https://litmus.mozilla.org/show_test.cgi?id=5039

@@ -265,7 +265,6 @@ class TestSearch:
         amo_home_page = AddonsHomePage(testsetup)
         amo_search_page = amo_home_page.header.search_for("a")
 
-
         results = amo_search_page.results_summary
         total_results = results.split(' ')[5]
 
