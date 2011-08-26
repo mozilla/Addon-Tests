@@ -82,17 +82,6 @@ class TestDiscoveryPane:
         download_count_regex = "Add-ons downloaded: (.+)"
         Assert.true(re.search(download_count_regex, discovery_pane.download_count) != None)
 
-    def test_that_addons_count_are_equal_between_amo_and_discovery(self, testsetup):
-        """ TestCase for Litmus 15066 """
-        amo_home_page = AddonsHomePage(testsetup)
-        amo_download_count = amo_home_page.download_count.replace(",", "")
-
-        discovery_pane = DiscoveryPane(testsetup, self.basepath)
-        discovery_download_count_text = discovery_pane.download_count
-        download_count = re.search("Add-ons downloaded: (.+)", discovery_download_count_text).group(1)
-        download_count = download_count.replace(",", "")
-        Assert.equal(amo_download_count, download_count)
-
     @xfail(reason="Disabled until bug 674374 is fixed.")
     def test_that_featured_personas_is_present_and_has_5_item(self, testsetup):
         """ TestCase for Litmus 15079, 15080 """
