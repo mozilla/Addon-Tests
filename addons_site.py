@@ -187,6 +187,7 @@ class AddonsDetailsPage(AddonsBasePage):
     _part_of_collections_locator = "css=#collections-grid"
     _icon_locator = "css=img.icon"
     _featured_image_locator = "css=#addon .featured .screenshot"
+    _support_link_locator = "css=a.support"
     _review_details_locator = "css=.review .description"
     _all_reviews_link_locator = "css=#addon #reviews+.article a.more-info"
     _review_locator = "css=div.review:not(.reply)"
