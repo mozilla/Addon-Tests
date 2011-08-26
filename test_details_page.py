@@ -177,9 +177,7 @@ class TestDetailsPage:
         addon_name = 'firebug'
         amo_detail_page = AddonsDetailsPage(testsetup, addon_name)
 
-        addon_count = amo_detail_page.other_addons_count
         addons = amo_detail_page.other_addons()
-        Assert.equal(len(addons), addon_count)
         for addon in addons:
             name = addon.name
             addon.click_addon_link()

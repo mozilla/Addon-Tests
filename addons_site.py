@@ -202,7 +202,7 @@ class AddonsDetailsPage(AddonsBasePage):
         self.addon_name = addon_name.replace(' ', '-').lower()
         AddonsBasePage.__init__(self, testsetup)
         self.selenium.open("%s/addon/%s" % (self.site_version, self.addon_name))
-        self._wait_for_page_to_load()
+        self._wait_for_reviews_and_other_addons_by_author_to_load()
 
     @property
     def has_reviews(self):
@@ -427,10 +427,6 @@ class AddonsDetailsPage(AddonsBasePage):
         def name_link_value(self):
             return self.selenium.get_attribute('%s@href' % self.absolute_locator(self._name_link_locator))
 
-        @property
-        def image_link_value(self):
-            return self.selenium.get_attribute('%s@href' % self.absolute_locator(self._icon_link_locator))
-
     class DetailsReviewSnippet(Page):
 
         _reviews_locator = "css=#reviews div"  # Base locator
@@ -466,7 +462,7 @@ class AddonsDetailsPage(AddonsBasePage):
         self.selenium.click(self._add_review_link_locator)
         return AddonsWriteReviewBlock(self.testsetup)
 
-    def _wait_for_page_to_load(self):
+    def _wait_for_reviews_and_other_addons_by_author_to_load(self):
         self.wait_for_element_present(self._reviews_locator)
         self.wait_for_element_present(self._other_addons_by_author_locator)
 
