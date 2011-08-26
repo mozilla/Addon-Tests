@@ -62,7 +62,7 @@ class TestReviews:
 
         #Go to the last page and check that the next button is not present
         amo_details_page.go_to_last_page()
-        Assert.false(amo_details_page.is_next_link_present)
+        Assert.true(amo_details_page.is_next_link_disabled)
 
         #Go one page back, check that it has 20 reviews
         #that the page number decreases and that the next link is visible
@@ -74,7 +74,7 @@ class TestReviews:
 
         #Go to the first page and check that the prev button is not present
         amo_details_page.go_to_first_page()
-        Assert.false(amo_details_page.is_prev_link_present)
+        Assert.true(amo_details_page.is_prev_link_disabled)
 
         #Go one page forward, check that it has 20 reviews,
         #that the page number increases and that the prev link is visible
@@ -84,7 +84,6 @@ class TestReviews:
         Assert.equal(amo_details_page.review_count, 20)
         Assert.equal(amo_details_page.current_page, page_number + 1)
 
-    @pytest.mark.impala
     def test_that_new_review_is_saved(self, testsetup):
         """ Litmus 22921
             https://litmus.mozilla.org/show_test.cgi?id=22921 """
@@ -117,4 +116,3 @@ class TestReviews:
         date = date.replace(' 0', ' ')
         Assert.equal(review.date, date)
         Assert.equal(review.text, body)
-

@@ -43,11 +43,11 @@ from page import Page
 
 class AddonsBasePage(Page):
 
-    _next_link_locator = "link=Next"
-    _previous_link_locator = "link=Prev"
-    _current_page_locator = "css=.pagination li.selected a"
-    _last_page_link_locator = "css=.pagination a:not([rel]):last"
-    _first_page_link_locator = "css=.pagination a:not([rel]):first"
+    _next_link_locator = "css=.paginator .rel > a:nth(2)"
+    _previous_link_locator = "css=.paginator .rel > a:nth(1)"
+    _current_page_locator = "css=.paginator .num > a"
+    _last_page_link_locator = "css=.paginator .rel > a:nth(3)"
+    _first_page_link_locator = "css=.paginator .rel > a:nth(0)"
 
     _amo_logo_link_locator = "css=.site-title a"
     _amo_logo_image_locator = "css=.site-title img"
@@ -87,16 +87,18 @@ class AddonsBasePage(Page):
         self.selenium.wait_for_page_to_load(self.timeout)
 
     @property
-    def is_prev_link_present(self):
-        return self.selenium.is_element_present(self._previous_link_locator)
+    def is_prev_link_disabled(self):
+        button = self.selenium.get_attribute(self._previous_link_locator + "%s" % "@class")
+        return ("disabled" in button)
 
     @property
     def is_prev_link_visible(self):
         return self.selenium.is_visible(self._previous_link_locator)
 
     @property
-    def is_next_link_present(self):
-        return self.selenium.is_element_present(self._next_link_locator)
+    def is_next_link_disabled(self):
+        button = self.selenium.get_attribute(self._next_link_locator + "%s" % "@class")
+        return ("disabled" in button)
 
     @property
     def is_next_link_visible(self):

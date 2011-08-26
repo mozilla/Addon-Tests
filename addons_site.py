@@ -186,7 +186,7 @@ class AddonsDetailsPage(AddonsBasePage):
     _icon_locator = "css=img.icon"
     _featured_image_locator = "css=#addon .featured .screenshot"
     _review_details_locator = "css=.review .description"
-    _all_reviews_link_locator = "css=#addon #reviews+.article a.more-info"
+    _all_reviews_link_locator = "css=a.more-info"
     _review_locator = "css=div.review:not(.reply)"
 
     #more about this addon
@@ -534,8 +534,16 @@ class AddonsThemesPage(AddonsHomePage):
     _top_counter_locator = "css=div.primary>header b"
     _bottom_counter_locator = "css=div.num-results > strong:nth(2)"
 
+    # TODO: remove pagination locators when impala pages are available for themes
+    _next_link_locator = "link=Next"
+
     def __init__(self, testsetup):
         AddonsBasePage.__init__(self, testsetup)
+
+    # TODO: remove method when impala pages are available for themes
+    def page_forward(self):
+        self.selenium.click(self._next_link_locator)
+        self.selenium.wait_for_page_to_load(self.timeout)
 
     def click_sort_by(self, type_):
         self.selenium.click(getattr(self, "_sort_by_%s_locator" % type_))
