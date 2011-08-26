@@ -148,7 +148,6 @@ class AddonsBasePage(Page):
         #TODO:hover other apps
         def click_other_applications(self):
             self.selenium.click(self._other_applications_locator)
-            #self.wait_for_element_visible('%s ul' % self._other_applications_locator)
 
         def click_thunderbird(self):
             self.selenium.click(self._app_thunderbird)
