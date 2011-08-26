@@ -44,7 +44,7 @@ class AddonsCollectionsPage(AddonsBasePage):
     _page_title = "Featured Collections :: Add-ons for Firefox"
 
     #Search box
-    _search_button_locator = "css=input.submit"
+    _search_button_locator = "css=button.search-button"
     _search_textbox_locator = "name=q"
 
     def search_for(self, search_term):
