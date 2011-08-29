@@ -50,23 +50,23 @@ class TestDetailsPageAgainstXML:
 
     firebug = "Firebug"
 
-    def test_that_firebug_page_title_is_correct(self, testsetup):
-        firebug_page = AddonsDetailsPage(testsetup, self.firebug)
+    def test_that_firebug_page_title_is_correct(self, mozwebqa):
+        firebug_page = AddonsDetailsPage(mozwebqa, self.firebug)
         Assert.true(re.search(self.firebug, firebug_page.page_title) is not None)
 
-    def test_that_firebug_version_number_is_correct(self, testsetup):
-        firebug_page = AddonsDetailsPage(testsetup, self.firebug)
+    def test_that_firebug_version_number_is_correct(self, mozwebqa):
+        firebug_page = AddonsDetailsPage(mozwebqa, self.firebug)
         Assert.true(len(str(firebug_page.version_number)) > 0)
 
-    def test_that_firebug_authors_is_correct(self, testsetup):
+    def test_that_firebug_authors_is_correct(self, mozwebqa):
         """litmus 15319"""
 
         #get authors from browser
-        firebug_page = AddonsDetailsPage(testsetup, self.firebug)
+        firebug_page = AddonsDetailsPage(mozwebqa, self.firebug)
         browser_authors = firebug_page.authors
 
         #get authors from xml
-        addons_xml = AddOnsAPI(testsetup)
+        addons_xml = AddOnsAPI(mozwebqa)
         xml_authors = addons_xml.get_list_of_addon_author_names(self.firebug)
 
         #check that both lists have the same number of authors
@@ -76,57 +76,59 @@ class TestDetailsPageAgainstXML:
         for i in range(len(xml_authors)):
             Assert.equal(xml_authors[i], browser_authors[i])
 
-    def test_that_firebug_summary_is_correct(self, testsetup):
+    def test_that_firebug_summary_is_correct(self, mozwebqa):
         """litmus 15320"""
 
         #browser
-        firebug_page = AddonsDetailsPage(testsetup, self.firebug)
+        firebug_page = AddonsDetailsPage(mozwebqa, self.firebug)
         browser_summary = firebug_page.summary
 
         #api
-        addons_xml = AddOnsAPI(testsetup)
+        addons_xml = AddOnsAPI(mozwebqa)
         xml_summary = addons_xml.get_addon_summary(self.firebug)
 
         Assert.equal(xml_summary, browser_summary)
 
-    def test_that_firebug_rating_is_correct(self, testsetup):
-        firebug_page = AddonsDetailsPage(testsetup, self.firebug)
+    def test_that_firebug_rating_is_correct(self, mozwebqa):
+        firebug_page = AddonsDetailsPage(mozwebqa, self.firebug)
         Assert.equal("5", firebug_page.rating)
 
-    def test_that_description_text_is_correct(self, testsetup):
+    def test_that_description_text_is_correct(self, mozwebqa):
         """litmus 15321"""
         #browser
-        firebug_page = AddonsDetailsPage(testsetup, self.firebug)
+        firebug_page = AddonsDetailsPage(mozwebqa, self.firebug)
         browser_description = firebug_page.description
 
         #api
-        addons_xml = AddOnsAPI(testsetup)
+        addons_xml = AddOnsAPI(mozwebqa)
         xml_description = addons_xml.get_addon_description(self.firebug)
 
         Assert.equal(browser_description, xml_description)
 
-    def test_that_icon_is_correct(self, testsetup):
+    def test_that_icon_is_correct(self, mozwebqa):
         """litmus 15322"""
 
         #browser
-        firebug_page = AddonsDetailsPage(testsetup, self.firebug)
+        firebug_page = AddonsDetailsPage(mozwebqa, self.firebug)
         browser_icon = firebug_page.icon_url
 
+
         #api
-        addons_xml = AddOnsAPI(testsetup)
+        addons_xml = AddOnsAPI(mozwebqa)
+
         xml_icon = addons_xml.get_icon_url(self.firebug)
 
         Assert.equal(browser_icon, xml_icon)
 
-    def test_that_support_url_is_correct(self, testsetup):
+    def test_that_support_url_is_correct(self, mozwebqa):
         """litmus 15337"""
 
         #browser
-        firebug_page = AddonsDetailsPage(testsetup, self.firebug)
+        firebug_page = AddonsDetailsPage(mozwebqa, self.firebug)
         browser_support_url = firebug_page.support_url
 
         #api
-        addons_xml = AddOnsAPI(testsetup)
+        addons_xml = AddOnsAPI(mozwebqa)
         xml_support_url = addons_xml.get_support_url("firebug")
 
         Assert.equal(browser_support_url, xml_support_url)

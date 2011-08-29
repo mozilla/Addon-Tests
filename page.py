@@ -44,10 +44,6 @@ Created on Jun 21, 2010
 import re
 import time
 import base64
-import yaml
-
-
-http_regex = re.compile('https?://((\w+\.)+\w+\.\w+)')
 
 
 class Page(object):
@@ -63,14 +59,12 @@ class Page(object):
         self.base_url = testsetup.base_url
         self.selenium = testsetup.selenium
         self.timeout = testsetup.timeout
-        self.credentials = testsetup.credentials
         self.site_version = testsetup.site_version
 
     @property
     def is_the_current_page(self):
         page_title = self.selenium.get_title()
         if not page_title == self._page_title:
-            self.record_error()
             try:
                 raise Exception("Expected page title to be: '"
                     + self._page_title + "' but it was: '" + page_title + "'")
@@ -105,7 +99,6 @@ class Page(object):
             time.sleep(1)
             count += 1
             if count == self.timeout / 1000:
-                self.record_error()
                 raise Exception(element + ' has not loaded')
 
     def wait_for_element_not_present(self, element):
@@ -114,7 +107,6 @@ class Page(object):
             time.sleep(1)
             count += 1
             if count == self.timeout / 1000:
-                self.record_error()
                 raise Exception(element + ' is still loaded')
 
     def wait_for_element_visible(self, element):
@@ -124,7 +116,6 @@ class Page(object):
             time.sleep(1)
             count += 1
             if count == self.timeout / 1000:
-                self.record_error()
                 raise Exception(element + " is not visible")
 
     def wait_for_element_not_visible(self, element):
@@ -133,7 +124,6 @@ class Page(object):
             time.sleep(1)
             count += 1
             if count == self.timeout / 1000:
-                self.record_error()
                 raise Exception(element + " is still visible")
 
     def wait_for_page(self, url_regex):
@@ -142,27 +132,4 @@ class Page(object):
             time.sleep(1)
             count += 1
             if count == self.timeout / 1000:
-                self.record_error()
                 raise Exception("Sites Page has not loaded")
-
-    def record_error(self):
-        ''' Records an error. '''
-
-        http_matches = http_regex.match(self.base_url)
-        file_name = http_matches.group(1)
-
-        print '-------------------'
-        print 'Error at ' + self.selenium.get_location()
-        print 'Page title ' + self.selenium.get_title()
-        print '-------------------'
-        filename = file_name + '_' + str(time.time()).split('.')[0] + '.png'
-
-        print 'Screenshot of error in file ' + filename
-        f = open(filename, 'wb')
-        f.write(base64.decodestring(
-            self.selenium.capture_entire_page_screenshot_to_string('')))
-        f.close()
-
-    def parse_yaml_file(self, file_name):
-        stream = file(file_name, 'r')
-        return yaml.load(stream)
