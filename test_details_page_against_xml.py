@@ -124,7 +124,7 @@ class TestDetailsPageAgainstXML:
         """litmus 15337"""
 
         #browser
-        firebug_page = AddonsDetailsPage(testsetup, self.firebug)
+        firebug_page = AddonsDetailsPage(mozwebqa, self.firebug)
         browser_support_url = firebug_page.support_url
 
         #api
