@@ -389,27 +389,46 @@ class AddonsDetailsPage(AddonsBasePage):
         self.selenium.click('%s:contains(%s) a' % (self._other_addons_link_list_locator, value))
         self.selenium.wait_for_page_to_load(self.timeout)
 
-    def click_addon_image(self):
-        self.selenium.click(self._featured_image_locator)
-        image_viewer = image_viewer_region.ImageViewer(self.testsetup)
-        image_viewer.wait_for_viewer_to_finish_animating()
-        return image_viewer
-
     @property
-    def additional_images_count(self):
-        return self.selenium.get_css_count(self._additional_images_locator)
+    def previewer(self):
+        return self.ImagePreviewer(self.testsetup)
 
-    def click_additional_image(self, index):
-        self.selenium.click("%s:nth(%s)" % (self._additional_images_locator, index - 1))
-        image_viewer = image_viewer_region.ImageViewer(self.testsetup)
-        image_viewer.wait_for_viewer_to_finish_animating()
-        return image_viewer
 
-    def click_addon_images(self):
-        self.selenium.click(self._image_locator)
-        self.wait_for_element_visible('css=div#lightbox div.content')
-        '''self._image_viewer_locator'''
-        return image_viewer_region.ImpalaImageViewer(self.testsetup)
+    class ImagePreviewer(Page):
+
+        #navigation
+        _next_locator = 'css=section.previews.carousel > a.next'
+        _prev_locator = 'css=section.previews.carousel > a.prev'
+
+        _image_locator = 'css=#preview'
+        def next_set(self):
+            self.selenium.click(self._next_locator)
+
+        def prev_set(self):
+            self.selenium.click(self._prev_locator)
+
+        def click_image(self, image_no=0):
+            self.selenium.click('%s li:nth(%s) a' % (self._image_locator, image_no))
+            image_viewer = image_viewer_region.ImageViewer(self.testsetup)
+            image_viewer.wait_for_image_viewer_to_finish_animating()
+            return image_viewer
+
+        def image_title(self, image_no):
+            return self.selenium.get_attribute('%s li:nth(%s) a@title' % (self._image_locator, image_no))
+
+        def image_link(self, image_no):
+            return self.selenium.get_attribute('%s li:nth(%s) a img@src' % (self._image_locator, image_no))
+
+        @property
+        def image_count(self):
+            return int(self.selenium.get_css_count('%s li' % self._image_locator))
+
+        @property
+        def image_set_count(self):
+            if self.image_count % 3 == 0:
+                return self.image_count / 3
+            else:
+                return self.image_count / 3 + 1
 
     def review(self, lookup):
         return self.DetailsReviewSnippet(self.testsetup, lookup)
