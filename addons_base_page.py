@@ -124,7 +124,7 @@ class AddonsBasePage(Page):
     class HeaderRegion(Page):
 
         #other applications
-        _other_applications_locator = "css=#other-apps"
+        _other_applications_locator = "id=other-apps"
         _app_thunderbird = "css=#app-thunderbird a"
 
         #Search box
@@ -140,9 +140,9 @@ class AddonsBasePage(Page):
         _account_dropdown_locator = "css=#aux-nav .account ul"
         _logout_locator = 'css=li.nomenu.logout > a'
 
+        #TODO:hover other apps
         def click_other_applications(self):
-            self.selenium.click('%s a' % self._other_applications_locator)
-            self.wait_for_element_visible('%s ul' % self._other_applications_locator)
+            self.selenium.click(self._other_applications_locator)
 
         def click_thunderbird(self):
             self.selenium.click(self._app_thunderbird)
