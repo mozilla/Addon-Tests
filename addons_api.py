@@ -84,6 +84,13 @@ class AddOnsAPI(object):
         except:
             self._print_search_error()
 
+    def get_support_url(self, addon_name):
+        try:
+            addon_xml = self.get_xml_for_single_addon(addon_name)
+            return addon_xml.support.string
+        except:
+            self._print_search_error()
+
     def _strip_links_from_text(self, text):
         for i in re.findall("&lt;.+?&gt;", text, re.MULTILINE):
             text = text.replace(i, "")

@@ -112,8 +112,23 @@ class TestDetailsPageAgainstXML:
         firebug_page = AddonsDetailsPage(mozwebqa, self.firebug)
         browser_icon = firebug_page.icon_url
 
-        #xml
+
+        #api
         addons_xml = AddOnsAPI(mozwebqa)
+
         xml_icon = addons_xml.get_icon_url(self.firebug)
 
         Assert.equal(browser_icon, xml_icon)
+
+    def test_that_support_url_is_correct(self, testsetup):
+        """litmus 15337"""
+
+        #browser
+        firebug_page = AddonsDetailsPage(testsetup, self.firebug)
+        browser_support_url = firebug_page.support_url
+
+        #api
+        addons_xml = AddOnsAPI(testsetup)
+        xml_support_url = addons_xml.get_support_url("firebug")
+
+        Assert.equal(browser_support_url, xml_support_url)
