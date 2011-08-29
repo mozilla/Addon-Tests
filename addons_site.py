@@ -46,6 +46,8 @@
 
 import re
 from datetime import datetime
+import urllib2
+from urllib2 import urlparse
 
 from page import Page
 from addons_base_page import AddonsBasePage
@@ -185,6 +187,7 @@ class AddonsDetailsPage(AddonsBasePage):
     _part_of_collections_locator = "css=#collections-grid"
     _icon_locator = "css=img.icon"
     _featured_image_locator = "css=#addon .featured .screenshot"
+    _support_link_locator = "css=a.support"
     _review_details_locator = "css=.review .description"
     _all_reviews_link_locator = "css=#addon #reviews+.article a.more-info"
     _review_locator = "css=div.review:not(.reply)"
@@ -358,6 +361,21 @@ class AddonsDetailsPage(AddonsBasePage):
 
     def click_website_link(self):
         self.selenium.open(self.website)
+
+    @property
+    def support_url(self):
+        support_url = self.selenium.get_attribute(self._support_link_locator + "%s" % "@href")
+        match = re.findall("http", support_url)
+        #staging url
+        if len(match) > 1:
+            return self._extract_url_from_link(support_url)
+        #production url
+        else:
+            return support_url
+
+    def _extract_url_from_link(self, url):
+        #parses out extra certificate stuff from urls in staging only
+        return urlparse.unquote(re.search('\w+://.*/(\w+%3A//.*)', url).group(1))
 
     @property
     def other_addons_by_authors_text(self):
