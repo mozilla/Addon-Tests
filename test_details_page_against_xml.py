@@ -120,7 +120,7 @@ class TestDetailsPageAgainstXML:
 
         Assert.equal(browser_icon, xml_icon)
 
-    def test_that_support_url_is_correct(self, testsetup):
+    def test_that_support_url_is_correct(self, mozwebqa):
         """litmus 15337"""
 
         #browser
