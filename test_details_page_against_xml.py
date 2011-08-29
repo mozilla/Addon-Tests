@@ -128,7 +128,7 @@ class TestDetailsPageAgainstXML:
         browser_support_url = firebug_page.support_url
 
         #api
-        addons_xml = AddOnsAPI(testsetup)
+        addons_xml = AddOnsAPI(mozwebqa)
         xml_support_url = addons_xml.get_support_url("firebug")
 
         Assert.equal(browser_support_url, xml_support_url)
