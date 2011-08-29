@@ -56,12 +56,12 @@ class TestDiscoveryPane:
     #Need to get this info before run
     basepath = '/en-US/firefox/discovery/pane/4.0/Darwin'
 
-    def test_that_users_with_less_than_3_addons_get_what_are_addons(self, testsetup):
+    def test_that_users_with_less_than_3_addons_get_what_are_addons(self, mozwebqa):
         """ Test case for litmus 15063 -
         Since Selenium starts with a clean profile all the time this will always have
         less than 3 addons
         """
-        discovery_pane = DiscoveryPane(testsetup, self.basepath)
+        discovery_pane = DiscoveryPane(mozwebqa, self.basepath)
         what_are_addons_expected = "Add-ons are applications that let you personalize "
         what_are_addons_expected += "Firefox with extra functionality or style. Try a time-saving"
         what_are_addons_expected += " sidebar, a weather notifier, or a themed look to make "
@@ -69,9 +69,9 @@ class TestDiscoveryPane:
 
         Assert.equal(what_are_addons_expected, discovery_pane.what_are_addons_text)
 
-    def test_that_mission_statement_is_on_addons_home_page(self, testsetup):
+    def test_that_mission_statement_is_on_addons_home_page(self, mozwebqa):
         """ TestCase for Litmus 15065 """
-        discovery_pane = DiscoveryPane(testsetup, self.basepath)
+        discovery_pane = DiscoveryPane(mozwebqa, self.basepath)
         discovery_pane.wait_for_mission_visible
         Assert.true(discovery_pane.is_mission_section_visible())
         expected_text = "Thanks for using Firefox and supporting Mozilla's mission!"
@@ -82,45 +82,45 @@ class TestDiscoveryPane:
         download_count_regex = "Add-ons downloaded: (.+)"
         Assert.true(re.search(download_count_regex, discovery_pane.download_count) != None)
 
-    def test_that_addons_count_are_equal_between_amo_and_discovery(self, testsetup):
+    def test_that_addons_count_are_equal_between_amo_and_discovery(self, mozwebqa):
         """ TestCase for Litmus 15066 """
-        amo_home_page = AddonsHomePage(testsetup)
+        amo_home_page = AddonsHomePage(mozwebqa)
         amo_download_count = amo_home_page.download_count.replace(",", "")
 
-        discovery_pane = DiscoveryPane(testsetup, self.basepath)
+        discovery_pane = DiscoveryPane(mozwebqa, self.basepath)
         discovery_download_count_text = discovery_pane.download_count
         download_count = re.search("Add-ons downloaded: (.+)", discovery_download_count_text).group(1)
         download_count = download_count.replace(",", "")
         Assert.equal(amo_download_count, download_count)
 
     @xfail(reason="Disabled until bug 674374 is fixed.")
-    def test_that_featured_personas_is_present_and_has_5_item(self, testsetup):
+    def test_that_featured_personas_is_present_and_has_5_item(self, mozwebqa):
         """ TestCase for Litmus 15079, 15080 """
-        discovery_pane = DiscoveryPane(testsetup, self.basepath)
+        discovery_pane = DiscoveryPane(mozwebqa, self.basepath)
         Assert.true(discovery_pane.is_personas_section_visible())
         Assert.equal(5, discovery_pane.personas_count)
         Assert.true(discovery_pane.is_personas_see_all_link_visible())
 
     @xfail(reason="Disabled until bug 674374 is fixed.")
-    def test_that_featured_personas_go_to_their_landing_page_when_clicked(self, testsetup):
+    def test_that_featured_personas_go_to_their_landing_page_when_clicked(self, mozwebqa):
         """ TestCase for Litmus 15081 """
-        discovery_pane = DiscoveryPane(testsetup, self.basepath)
+        discovery_pane = DiscoveryPane(mozwebqa, self.basepath)
         first_persona = discovery_pane.first_persona
         first_persona_url = first_persona.lower().replace(" ", "-")
         persona = discovery_pane.click_on_first_persona()
         Assert.true(first_persona_url in discovery_pane.get_url_current_page())
         Assert.equal(first_persona, persona.persona_title)
 
-    def test_that_More_Ways_To_Customize_section_is_available(self, testsetup):
+    def test_that_More_Ways_To_Customize_section_is_available(self, mozwebqa):
         " TestCase for Litmus 15082 """
-        discovery_pane = DiscoveryPane(testsetup, self.basepath)
+        discovery_pane = DiscoveryPane(mozwebqa, self.basepath)
         Assert.true(discovery_pane.more_ways_section_visible())
         Assert.equal("Browse all add-ons", discovery_pane.more_ways_addons)
         Assert.equal("See all themes and Personas", discovery_pane.more_ways_personas)
 
     @xfail(reason="xfailing due to staging not always having up-to-date data; see bug 665117.")
-    def test_that_up_and_coming_is_present_and_had_5_items(self, testsetup):
+    def test_that_up_and_coming_is_present_and_had_5_items(self, mozwebqa):
         """ TestCase for Litmus 15074 """
-        discovery_pane = DiscoveryPane(testsetup, self.basepath)
+        discovery_pane = DiscoveryPane(mozwebqa, self.basepath)
         Assert.true(discovery_pane.up_and_coming_visible())
         Assert.equal(5, discovery_pane.up_and_coming_item_count)
