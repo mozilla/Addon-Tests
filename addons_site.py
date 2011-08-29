@@ -178,7 +178,7 @@ class AddonsDetailsPage(AddonsBasePage):
     _version_information_locator = "id=detail-relnotes"
     _version_information_heading_locator = "css=#detail-relnotes > h2"
     _release_version_locator = "css=div.version.article > h3 > a"
-    _reviews_title_locator = "id=reviews"
+    _reviews_title_locator = "css=#reviews > h2"
     _tags_locator = "id=tagbox"
     _other_addons_header_locator = "css=h2.compact-bottom"
     _other_addons_list_locator = "css=.primary .listing-grid"
