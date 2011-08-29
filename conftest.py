@@ -124,7 +124,7 @@ def pytest_addoption(parser):
     parser.addoption("--base-url",
                      action="store",
                      dest="base_url",
-                     default="http://addons.allizom.org",
+                     default="http://addons-dev.allizom.org",
                      help="base URL for the application under test")
     parser.addoption("--timeout",
                      action="store",
