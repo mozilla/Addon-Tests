@@ -34,4 +34,4 @@ class TestAPIOnlyTests:
     def test_firebug_version_number(self, mozwebqa):
         """Testcase for Litmus 15317"""
         addon_xml = AddOnsAPI(mozwebqa)
-        Assert.equal("1.8.0", addon_xml.get_addon_version_number("Firebug"))
+        Assert.equal("1.8.1", addon_xml.get_addon_version_number("Firebug"))
