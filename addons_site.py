@@ -60,7 +60,6 @@ class AddonsHomePage(AddonsBasePage):
 
     _page_title = "Add-ons for Firefox"
 
-    _download_count_locator = "css=div.stats > strong"
     _themes_link_locator = "css=#themes > a"
     _personas_link_locator = "css=#personas > a"
     _collections_link_locator = "css=#collections > a"
@@ -96,10 +95,6 @@ class AddonsHomePage(AddonsBasePage):
         self.selenium.open("%s/addon/%s" % (self.site_version, id))
         self.selenium.wait_for_page_to_load(self.timeout)
         return AddonsDetailsPage(self.testsetup, id)
-
-    @property
-    def download_count(self):
-        return self.selenium.get_text(self._download_count_locator)
 
     def _extract_iso_dates(self, xpath_locator, date_format, count):
         """
