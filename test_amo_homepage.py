@@ -77,8 +77,7 @@ class TestHomePage:
         """
         amo_home_page = AddonsHomePage(mozwebqa)
         Assert.true(amo_home_page.is_amo_logo_image_visible)
-        Assert.contains("https://gs1.adn.edgecastcdn.net/", amo_home_page.amo_logo_image_source)
-        Assert.contains("/addons-cdn.allizom.org/media/img/app-icons/med/firefox.png", amo_home_page.amo_logo_image_source)
+        Assert.contains("-cdn.allizom.org/media/img/app-icons/med/firefox.png", amo_home_page.amo_logo_image_source)
 
     def test_that_clicking_mozilla_logo_loads_mozilla_dot_org(self, mozwebqa):
         """
