@@ -104,7 +104,7 @@ class TestDiscoveryPane:
     def test_that_More_Ways_To_Customize_section_is_available(self, mozwebqa):
         " TestCase for Litmus 15082 """
         discovery_pane = DiscoveryPane(mozwebqa, self.basepath)
-        Assert.true(discovery_pane.more_ways_section_visible())
+        Assert.true(discovery_pane.more_ways_section_visible)
         Assert.equal("Browse all add-ons", discovery_pane.more_ways_addons)
         Assert.equal("See all themes and Personas", discovery_pane.more_ways_personas)
 
@@ -112,5 +112,5 @@ class TestDiscoveryPane:
     def test_that_up_and_coming_is_present_and_had_5_items(self, mozwebqa):
         """ TestCase for Litmus 15074 """
         discovery_pane = DiscoveryPane(mozwebqa, self.basepath)
-        Assert.true(discovery_pane.up_and_coming_visible())
+        Assert.true(discovery_pane.up_and_coming_visible)
         Assert.equal(5, discovery_pane.up_and_coming_item_count)

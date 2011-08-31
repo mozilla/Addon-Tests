@@ -917,6 +917,7 @@ class DiscoveryPane(AddonsBasePage):
         self.selenium.wait_for_page_to_load(self.timeout)
         return DiscoveryPersonasDetailPage(self.testsetup)
 
+    @property
     def more_ways_section_visible(self):
         return self.selenium.is_visible(self._more_ways_section_locator)
 
@@ -928,6 +929,7 @@ class DiscoveryPane(AddonsBasePage):
     def more_ways_personas(self):
         return self.selenium.get_text(self._more_ways_personas_locator)
 
+    @property
     def up_and_coming_visible(self):
         return self.selenium.is_visible(self._up_and_coming_section)
 
