@@ -171,6 +171,7 @@ class AddonsDetailsPage(AddonsBasePage):
     _other_applications_locator = "id=other-apps"
     _other_apps_dropdown_menu_locator = "css=ul.other-apps"
 
+    _about_addon_locator = "css=section.primary > h2"
     _more_about_addon_locator = "id=more-about"
     _version_information_locator = "id=detail-relnotes"
     _version_information_heading_locator = "css=#detail-relnotes > h2"
