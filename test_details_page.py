@@ -23,6 +23,7 @@
 # Contributor(s): Teodosia Pop <teodosia.pop@softvision.ro>
 #                 Bebe <florin.strugariu@softvision.ro>
 #                 Alex Rodionov <p0deje@gmail.com>
+#                 Alin Trif <alin.trif@softvision.ro>
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -53,41 +54,41 @@ class TestDetailsPage:
     def test_that_register_link_is_present_in_addon_details_page(self, mozwebqa):
         """ Test for Litmus 9890"""
         amo_details_page = AddonsDetailsPage(mozwebqa, "Firebug")
-        Assert.true(amo_details_page.is_register_visible())
+        Assert.true(amo_details_page.is_register_visible)
         Assert.equal(amo_details_page.register_link, "Register")
 
     def test_that_login_link_is_present_in_addon_details_page(self, mozwebqa):
         """ Test for Litmus 9890"""
         amo_details_page = AddonsDetailsPage(mozwebqa, "Firebug")
-        Assert.true(amo_details_page.is_login_visible())
+        Assert.true(amo_details_page.is_login_visible)
         Assert.equal(amo_details_page.login_link, "Log in")
 
     def test_that_dropdown_menu_is_present_after_click_on_other_apps(self, mozwebqa):
         """ Test for Litmus 9890"""
         amo_details_page = AddonsDetailsPage(mozwebqa, "Firebug")
-        Assert.true(amo_details_page.is_other_apps_link_visible())
+        Assert.true(amo_details_page.is_other_apps_link_visible)
         Assert.equal(amo_details_page.other_apps, "Other Applications")
         #TODO: Fix when the hover event works
-        #Assert.true(amo_details_page.is_other_apps_dropdown_menu_visible())
+        #Assert.true(amo_details_page.is_other_apps_dropdown_menu_visible
 
     def test_that_addon_name_is_displayed(self, mozwebqa):
         """ Test for Litmus 9890"""
         amo_details_page = AddonsDetailsPage(mozwebqa, "Firebug")
-        Assert.true(amo_details_page.is_addon_name_visible())
+        Assert.true(amo_details_page.is_addon_name_visible)
         # check that the name is not empty
         Assert.not_equal(amo_details_page.name, "")
 
     def test_that_summary_is_displayed(self, mozwebqa):
         """ Test for Litmus 9890"""
         amo_details_page = AddonsDetailsPage(mozwebqa, "Firebug")
-        Assert.true(amo_details_page.is_summary_visible())
+        Assert.true(amo_details_page.is_summary_visible)
         # check that the summary is not empty
         Assert.not_none(re.match('(\w+\s*){3,}', amo_details_page.summary))
 
     def test_that_about_this_addon_is_displayed(self, mozwebqa):
         """ Test for Litmus 9890"""
         amo_details_page = AddonsDetailsPage(mozwebqa, "Firebug")
-        Assert.true(amo_details_page.is_about_addon_visible())
+        Assert.true(amo_details_page.is_about_addon_visible)
         Assert.equal(amo_details_page.about_addon, "About this Add-on")
         Assert.not_none(re.match('(\w+\s*){3,}', amo_details_page.description))
 
@@ -95,7 +96,7 @@ class TestDetailsPage:
     def test_that_version_information_is_displayed(self, mozwebqa):
         """ Test for Litmus 9890"""
         amo_details_page = AddonsDetailsPage(mozwebqa, "Firebug")
-        Assert.true(amo_details_page.is_version_information_heading_visible())
+        Assert.true(amo_details_page.is_version_information_heading_visible)
         Assert.equal(amo_details_page.version_information_heading, "Version Information")
         Assert.not_none(re.search('\w+', amo_details_page.release_version))
 
@@ -105,7 +106,7 @@ class TestDetailsPage:
     def test_that_reviews_are_displayed(self, mozwebqa):
         """ Test for Litmus 9890"""
         amo_details_page = AddonsDetailsPage(mozwebqa, "Firebug")
-        Assert.true(amo_details_page.is_review_title_visible())
+        Assert.true(amo_details_page.is_review_title_visible)
         Assert.equal(amo_details_page.review_title, "Reviews")
         Assert.true(amo_details_page.has_reviews)
         Assert.not_none(re.search('(\w+\s*){1,}', amo_details_page.review_details))
@@ -113,20 +114,20 @@ class TestDetailsPage:
     def test_that_in_often_used_with_addons_are_displayed(self, mozwebqa):
         """ Test for Litmus 9890"""
         amo_details_page = AddonsDetailsPage(mozwebqa, "Firebug")
-        Assert.true(amo_details_page.is_often_used_with_header_visible())
+        Assert.true(amo_details_page.is_often_used_with_header_visible)
         Assert.equal(amo_details_page.often_used_with_header, u"Often used with\u2026")
-        Assert.true(amo_details_page.is_often_used_with_list_visible())
+        Assert.true(amo_details_page.is_often_used_with_list_visible)
 
     def test_that_tags_are_displayed(self, mozwebqa):
         """ Test for Litmus 9890"""
         amo_details_page = AddonsDetailsPage(mozwebqa, "Firebug")
-        Assert.true(amo_details_page.are_tags_visible())
+        Assert.true(amo_details_page.are_tags_visible)
 
     def test_part_of_collections_are_displayed(self, mozwebqa):
         """ Test for Litmus 9890"""
         amo_details_page = AddonsDetailsPage(mozwebqa, "Firebug")
-        Assert.true(amo_details_page.is_part_of_collections_header_visible())
-        Assert.true(amo_details_page.is_part_of_collections_list_visible())
+        Assert.true(amo_details_page.is_part_of_collections_header_visible)
+        Assert.true(amo_details_page.is_part_of_collections_list_visible)
         Assert.equal(amo_details_page.part_of_collections_header, 'Part of these Collections')
 
     def test_that_external_link_leads_to_addon_website(self, mozwebqa):
