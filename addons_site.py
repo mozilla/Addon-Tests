@@ -28,6 +28,7 @@
 #                 Marlena Compton <mcompton@mozilla.com>
 #                 Teodosia Pop <teodosia.pop@softvision.ro>
 #                 Alex Lakatos <alex@greensqr.com>
+#                 Alin Trif <alin.trif@softvision.ro>
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -292,49 +293,64 @@ class AddonsDetailsPage(AddonsBasePage):
     def often_used_with_header(self):
         return self.selenium.get_text(self._other_addons_header_locator)
 
+    @property
     def is_register_visible(self):
         return self.selenium.is_visible(self._register_link_locator)
 
+    @property
     def is_login_visible(self):
         return self.selenium.is_visible(self._login_link_locator)
 
+    @property
     def is_other_apps_link_visible(self):
         return self.selenium.is_visible(self._other_applications_locator)
 
+    @property
     def is_other_apps_dropdown_menu_visible(self):
         self.click_other_apps()
         return self.selenium.is_visible(self._other_apps_dropdown_menu_locator)
 
+    @property
     def is_addon_name_visible(self):
         return self.selenium.is_visible(self._name_locator)
 
+    @property
     def is_summary_visible(self):
         return self.selenium.is_visible(self._summary_locator)
 
+    @property
     def is_about_addon_visible(self):
         return self.selenium.is_visible(self._about_addon_locator)
 
+    @property
     def is_version_information_visible(self):
         return self.selenium.is_visible(self._version_information_locator)
 
+    @property
     def is_version_information_heading_visible(self):
         return self.selenium.is_visible(self._version_information_heading_locator)
 
+    @property
     def is_review_title_visible(self):
         return self.selenium.is_visible(self._reviews_title_locator)
 
+    @property
     def is_often_used_with_header_visible(self):
         return self.selenium.is_visible(self._other_addons_header_locator)
 
+    @property
     def is_often_used_with_list_visible(self):
         return self.selenium.is_visible(self._other_addons_list_locator)
 
+    @property
     def are_tags_visible(self):
         return self.selenium.is_visible(self._tags_locator)
 
+    @property
     def is_part_of_collections_header_visible(self):
         return self.selenium.is_visible('%s h2' % self._part_of_collections_locator)
 
+    @property
     def is_part_of_collections_list_visible(self):
         return self.selenium.is_visible('%s ul' % self._part_of_collections_locator)
 
@@ -861,6 +877,7 @@ class DiscoveryPane(AddonsBasePage):
         self.selenium.click(self._learn_more_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
 
+    @property
     def is_mission_section_visible(self):
         return self.selenium.is_visible(self._mission_section_locator)
 
@@ -879,6 +896,7 @@ class DiscoveryPane(AddonsBasePage):
         self.wait_for_element_visible(self._download_count_text_locator)
         return self.selenium.get_text(self._download_count_text_locator)
 
+    @property
     def is_personas_section_visible(self):
         return self.selenium.is_visible(self._personas_section_locator)
 
@@ -886,6 +904,7 @@ class DiscoveryPane(AddonsBasePage):
     def personas_count(self):
         return int(self.selenium.get_xpath_count(self._personas_locator))
 
+    @property
     def is_personas_see_all_link_visible(self):
         return self.selenium.is_visible(self._personas_see_all_link)
 
