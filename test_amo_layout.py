@@ -42,12 +42,12 @@ from addons_site import AddonsHomePage
 
 class TestAmoLayout:
 
-    def test_other_applications_thunderbird(self, testsetup):
+    def test_other_applications_thunderbird(self, mozwebqa):
         """ Test for litmus 5037
             https://litmus.mozilla.org/show_test.cgi?id=5037
         """
 
-        amo_home_page = AddonsHomePage(testsetup)
+        amo_home_page = AddonsHomePage(mozwebqa)
 
         amo_home_page.header.click_other_applications()
         amo_home_page.header.click_thunderbird()

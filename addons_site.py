@@ -46,6 +46,8 @@
 
 import re
 from datetime import datetime
+import urllib2
+from urllib2 import urlparse
 
 from page import Page
 from addons_base_page import AddonsBasePage
@@ -58,7 +60,6 @@ class AddonsHomePage(AddonsBasePage):
 
     _page_title = "Add-ons for Firefox"
 
-    _download_count_locator = "css=div.stats > strong"
     _themes_link_locator = "css=#themes > a"
     _personas_link_locator = "css=#personas > a"
     _collections_link_locator = "css=#collections > a"
@@ -94,10 +95,6 @@ class AddonsHomePage(AddonsBasePage):
         self.selenium.open("%s/addon/%s" % (self.site_version, id))
         self.selenium.wait_for_page_to_load(self.timeout)
         return AddonsDetailsPage(self.testsetup, id)
-
-    @property
-    def download_count(self):
-        return self.selenium.get_text(self._download_count_locator)
 
     def _extract_iso_dates(self, xpath_locator, date_format, count):
         """
@@ -178,13 +175,14 @@ class AddonsDetailsPage(AddonsBasePage):
     _version_information_locator = "id=detail-relnotes"
     _version_information_heading_locator = "css=#detail-relnotes > h2"
     _release_version_locator = "css=div.version.article > h3 > a"
-    _reviews_title_locator = "id=reviews"
+    _reviews_title_locator = "css=#reviews > h2"
     _tags_locator = "id=tagbox"
     _other_addons_header_locator = "css=h2.compact-bottom"
     _other_addons_list_locator = "css=.primary .listing-grid"
     _part_of_collections_locator = "css=#collections-grid"
     _icon_locator = "css=img.icon"
     _featured_image_locator = "css=#addon .featured .screenshot"
+    _support_link_locator = "css=a.support"
     _review_details_locator = "css=.review .description"
     _all_reviews_link_locator = "css=#addon #reviews+.article a.more-info"
     _review_locator = "css=div.review:not(.reply)"
@@ -360,6 +358,21 @@ class AddonsDetailsPage(AddonsBasePage):
 
     def click_website_link(self):
         self.selenium.open(self.website)
+
+    @property
+    def support_url(self):
+        support_url = self.selenium.get_attribute(self._support_link_locator + "%s" % "@href")
+        match = re.findall("http", support_url)
+        #staging url
+        if len(match) > 1:
+            return self._extract_url_from_link(support_url)
+        #production url
+        else:
+            return support_url
+
+    def _extract_url_from_link(self, url):
+        #parses out extra certificate stuff from urls in staging only
+        return urlparse.unquote(re.search('\w+://.*/(\w+%3A//.*)', url).group(1))
 
     @property
     def other_addons_by_authors_text(self):
