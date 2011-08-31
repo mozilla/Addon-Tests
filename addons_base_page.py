@@ -22,6 +22,7 @@
 # Contributor(s): Bebe <florin.strugariu@softvision.ro>
 #                 Alex Rodionov <p0deje@gmail.com>
 #                 Teodosia Pop <teodosia.pop@softvision.ro>
+#                 Alex Lakatos <alex@greensqr.com>
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -47,6 +48,35 @@ class AddonsBasePage(Page):
     _current_page_locator = "css=.pagination li.selected a"
     _last_page_link_locator = "css=.pagination a:not([rel]):last"
     _first_page_link_locator = "css=.pagination a:not([rel]):first"
+
+    _amo_logo_link_locator = "css=.site-title a"
+    _amo_logo_image_locator = "css=.site-title img"
+
+    _mozilla_logo_link_locator = "css=#global-header-tab a"
+
+    @property
+    def amo_logo_title(self):
+        return self.selenium.get_attribute("%s@title" % self._amo_logo_link_locator)
+
+    @property
+    def is_amo_logo_visible(self):
+        return self.selenium.is_visible(self._amo_logo_link_locator)
+
+    @property
+    def amo_logo_image_source(self):
+        return self.selenium.get_attribute("%s@src" % self._amo_logo_image_locator)
+
+    @property
+    def is_amo_logo_image_visible(self):
+        return self.selenium.is_visible(self._amo_logo_image_locator)
+
+    @property
+    def is_mozilla_logo_visible(self):
+        return self.selenium.is_visible(self._mozilla_logo_link_locator)
+
+    def click_mozilla_logo(self):
+        self.selenium.click(self._mozilla_logo_link_locator)
+        self.selenium.wait_for_page_to_load(self.timeout)
 
     def page_forward(self):
         self.selenium.click(self._next_link_locator)
@@ -93,28 +123,37 @@ class AddonsBasePage(Page):
 
     class HeaderRegion(Page):
 
-        _other_apps_locator = "id=other-apps"
-
+        #other applications
+        _other_applications_locator = "id=other-apps"
+        _app_thunderbird = "css=#app-thunderbird a"
 
         #Search box
-        _search_button_locator = "css=input.submit"
+        _search_button_locator = "css=.search-button"
         _search_textbox_locator = "name=q"
 
         #Not LogedIn
-        _login_locator = "css=.amo-header .context a:nth(1)"  # Until https://bugzilla.mozilla.org/show_bug.cgi?id=669646
-        _register_locator = "css=.amo-header .context a:nth(0)"
+        _login_locator = "css=#aux-nav li.account a:nth(1)"
+        _register_locator = "css=#aux-nav li.account a:nth(0)"
 
         #LogedIn
-        _account_controller_locator = 'css=#aux-nav .account .controller'
-        _dropdown_locator = "css=#aux-nav .account ul"
+        _account_controller_locator = 'css=#aux-nav .account .user'
+        _account_dropdown_locator = "css=#aux-nav .account ul"
+        _logout_locator = 'css=li.nomenu.logout > a'
 
-        # Impala locators
-        _impala_login_locator = "css=#aux-nav a:nth(1)"
-        _impala_account_controller_locator = 'css=#aux-nav .account .user'
+        #TODO:hover other apps
+        def click_other_applications(self):
+            self.selenium.click(self._other_applications_locator)
+
+        def click_thunderbird(self):
+            self.selenium.click(self._app_thunderbird)
+            self.selenium.wait_for_page_to_load(self.timeout)
+
+        def is_thunderbird_visible(self):
+            return self.is_element_present(self._app_thunderbird)
 
         @property
         def other_applications_tooltip(self):
-            return self.selenium.get_attribute("%s@title" % self._other_apps_locator)
+            return self.selenium.get_attribute("%s@title" % self._other_applications_locator)
 
         def search_for(self, search_term):
             self.selenium.type(self._search_textbox_locator, search_term)
@@ -129,42 +168,31 @@ class AddonsBasePage(Page):
 
         def click_my_account(self):
             self.selenium.click(self._account_controller_locator)
-            self.wait_for_element_visible(self._dropdown_locator)
+            self.wait_for_element_visible(self._account_dropdown_locator)
 
         def click_login(self):
-            if self.site_version == '/i':
-                self.selenium.click(self._impala_login_locator)
-            else:
-                self.selenium.click(self._login_locator)
+            self.selenium.click(self._login_locator)
             self.selenium.wait_for_page_to_load(self.timeout)
 
         def click_logout(self):
-            self.click_my_account()
-            if self.selenium.get_text('%s > li:nth(3) a' % self._dropdown_locator) == "Log out":  # Until the https://bugzilla.mozilla.org/show_bug.cgi?id=669650
-                self.selenium.click('%s > li:nth(3) a' % self._dropdown_locator)
-            else:
-                self.selenium.click('%s > li:nth(4) a' % self._dropdown_locator)
+            self.selenium.click(self._logout_locator)
             self.selenium.wait_for_page_to_load(self.timeout)
 
         def click_edit_profile(self):
             self.click_my_account
-            self.selenium.click('%s > li:nth(1) a' % self._dropdown_locator)
+            self.selenium.click('%s > li:nth(1) a' % self._account_dropdown_locator)
             self.selenium.wait_for_page_to_load(self.timeout)
 
         def click_view_profile(self):
             self.click_my_account
-            self.selenium.click('%s > li:nth(0) a' % self._dropdown_locator)
+            self.selenium.click('%s > li:nth(0) a' % self._account_dropdown_locator)
             self.selenium.wait_for_page_to_load(self.timeout)
             from addons_user_page import AddonsViewProfilePage
             return AddonsViewProfilePage(self.testsetup)
 
         @property
         def is_user_logged_in(self):
-            if self.site_version == '/i':
-                locator = self._impala_account_controller_locator
-            else:
-                locator = self._account_controller_locator
             try:
-                return self.selenium.is_visible(locator)
+                return self.selenium.is_visible(self._account_controller_locator)
             except:
                 return False

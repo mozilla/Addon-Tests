@@ -49,12 +49,12 @@ from addons_user_page import AddonsLoginPage
 
 class TestReviews:
 
-    def test_that_all_reviews_hyperlink_works(self, testsetup):
+    def test_that_all_reviews_hyperlink_works(self, mozwebqa):
         """ Test for litmus 4843
             https://litmus.mozilla.org/show_test.cgi?id=4843
         """
         #Open details page for Adblock Plus
-        amo_details_page = AddonsDetailsPage(testsetup, 'Adblock Plus')
+        amo_details_page = AddonsDetailsPage(mozwebqa, 'Adblock Plus')
         Assert.true(amo_details_page.has_reviews)
 
         amo_details_page.click_all_reviews_link()
@@ -85,19 +85,19 @@ class TestReviews:
         Assert.equal(amo_details_page.current_page, page_number + 1)
 
     @pytest.mark.impala
-    def test_that_new_review_is_saved(self, testsetup):
+    def test_that_new_review_is_saved(self, mozwebqa):
         """ Litmus 22921
             https://litmus.mozilla.org/show_test.cgi?id=22921 """
         # Step 1 - Login into AMO
-        amo_home_page = AddonsHomePage(testsetup)
-        credentials = amo_home_page.credentials_of_user('default')
+        amo_home_page = AddonsHomePage(mozwebqa)
+        credentials = mozwebqa.credentials['default']
         amo_home_page.header.click_login()
-        addons_login_page = AddonsLoginPage(testsetup)
+        addons_login_page = AddonsLoginPage(mozwebqa)
         addons_login_page.login(credentials['email'], credentials['password'])
         Assert.true(amo_home_page.header.is_user_logged_in)
 
         # Step 2 - Load any addon detail page
-        details_page = AddonsDetailsPage(testsetup, 'Adblock Plus')
+        details_page = AddonsDetailsPage(mozwebqa, 'Adblock Plus')
 
         # Step 3 - Click on "Write review" button
         write_review_block = details_page.click_to_write_review()

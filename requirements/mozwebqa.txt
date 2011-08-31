@@ -4,6 +4,6 @@
 selenium
 pytest
 pytest-xdist
-BeautifulSoup
+BeautifulSoup==3.2.0
+pytest-mozwebqa
 unittestzero
-pyyaml
