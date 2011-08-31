@@ -212,26 +212,26 @@ class TestDetailsPage:
         image_viewer.close()
         Assert.false(image_viewer.is_visible)
 
-        _images_count = amo_detail_page.previewer.image_count
-        _image_set_count = amo_detail_page.previewer.image_set_count
-        _images_title = []
-        _image_link = []
-        for img_set in range(_image_set_count):
+        images_count = amo_detail_page.previewer.image_count
+        image_set_count = amo_detail_page.previewer.image_set_count
+        images_title = []
+        image_link = []
+        for img_set in range(image_set_count):
             for img_no in range(3):
-                if img_set * 3 + img_no != _images_count:
-                    _images_title.append(amo_detail_page.previewer.image_title(img_set * 3 + img_no))
-                    _image_link.append(amo_detail_page.previewer.image_link(img_set * 3 + img_no))
+                if img_set * 3 + img_no != images_count:
+                    images_title.append(amo_detail_page.previewer.image_title(img_set * 3 + img_no))
+                    image_link.append(amo_detail_page.previewer.image_link(img_set * 3 + img_no))
 
             image_viewer = amo_detail_page.previewer.next_set()
 
         image_viewer = amo_detail_page.previewer.click_image()
         Assert.true(image_viewer.is_visible)
-        Assert.equal(_images_count, image_viewer.images_count)
+        Assert.equal(images_count, image_viewer.images_count)
         for i in range(image_viewer.images_count):
             Assert.true(image_viewer.is_visible)
 
-            Assert.equal(image_viewer.caption, _images_title[i])
-            Assert.equal(image_viewer.image_link.split('/')[8], _image_link[i].split('/')[8])
+            Assert.equal(image_viewer.caption, images_title[i])
+            Assert.equal(image_viewer.image_link.split('/')[8], image_link[i].split('/')[8])
 
             if not i == 0:
                 Assert.true(image_viewer.is_previous_present)
@@ -247,8 +247,8 @@ class TestDetailsPage:
         for i in range(image_viewer.images_count - 1, -1, -1):
             Assert.true(image_viewer.is_visible)
 
-            Assert.equal(image_viewer.caption, _images_title[i])
-            Assert.equal(image_viewer.image_link.split('/')[8], _image_link[i].split('/')[8])
+            Assert.equal(image_viewer.caption, images_title[i])
+            Assert.equal(image_viewer.image_link.split('/')[8], image_link[i].split('/')[8])
 
             if not i == image_viewer.images_count - 1:
                 Assert.true(image_viewer.is_next_present)
