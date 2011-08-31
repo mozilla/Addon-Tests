@@ -191,43 +191,59 @@ class TestDetailsPage:
         """
         amo_detail_page = AddonsDetailsPage(mozwebqa, 'firebug')
 
-        image_viewer = amo_detail_page.click_addon_image()
+        image_viewer = amo_detail_page.previewer.click_image()
         Assert.true(image_viewer.is_visible)
         image_viewer.close()
         Assert.false(image_viewer.is_visible)
 
-        additional_images_count = amo_detail_page.additional_images_count
-        for i in range(1, additional_images_count):
-            image_viewer = amo_detail_page.click_additional_image(i)
-            Assert.equal(i + 1, image_viewer.current_image)
-            Assert.true(image_viewer.is_visible)
-            image_viewer.close()
-            Assert.false(image_viewer.is_visible)
+        images_count = amo_detail_page.previewer.image_count
+        image_set_count = amo_detail_page.previewer.image_set_count
+        images_title = []
+        image_link = []
+        for img_set in range(image_set_count):
+            for img_no in range(3):
+                if img_set * 3 + img_no != images_count:
+                    images_title.append(amo_detail_page.previewer.image_title(img_set * 3 + img_no))
+                    image_link.append(amo_detail_page.previewer.image_link(img_set * 3 + img_no))
 
-        image_viewer = amo_detail_page.click_additional_image(1)
+            image_viewer = amo_detail_page.previewer.next_set()
+
+        image_viewer = amo_detail_page.previewer.click_image()
         Assert.true(image_viewer.is_visible)
-
-        for i in range(2, image_viewer.total_images_count + 1):
+        Assert.equal(images_count, image_viewer.images_count)
+        for i in range(image_viewer.images_count):
             Assert.true(image_viewer.is_visible)
-            Assert.equal(i, image_viewer.current_image)
-            Assert.true(image_viewer.is_close_visible)
-            Assert.equal("Image %s of %s" % (i, additional_images_count + 1), image_viewer.current_number)
-            if not i == image_viewer.total_images_count:
+
+            Assert.equal(image_viewer.caption, images_title[i])
+            Assert.equal(image_viewer.image_link.split('/')[8], image_link[i].split('/')[8])
+
+            if not i == 0:
+                Assert.true(image_viewer.is_previous_present)
+            else:
+                Assert.false(image_viewer.is_previous_present)
+
+            if not i == image_viewer.images_count - 1:
+                Assert.true(image_viewer.is_next_present)
                 image_viewer.click_next()
+            else:
+                Assert.false(image_viewer.is_next_present)
 
-        Assert.false(image_viewer.is_next_link_visible)
-        Assert.true(image_viewer.is_previous_link_visible)
-
-        for i in range(image_viewer.total_images_count, 0, -1):
+        for i in range(image_viewer.images_count - 1, -1, -1):
             Assert.true(image_viewer.is_visible)
-            Assert.equal(i, image_viewer.current_image)
-            Assert.true(image_viewer.is_close_visible)
-            Assert.equal("Image %s of %s" % (i, additional_images_count + 1), image_viewer.current_number)
-            if not i == 1:
-                image_viewer.click_previous()
 
-        Assert.true(image_viewer.is_next_link_visible)
-        Assert.false(image_viewer.is_previous_link_visible)
+            Assert.equal(image_viewer.caption, images_title[i])
+            Assert.equal(image_viewer.image_link.split('/')[8], image_link[i].split('/')[8])
+
+            if not i == image_viewer.images_count - 1:
+                Assert.true(image_viewer.is_next_present)
+            else:
+                Assert.false(image_viewer.is_next_present)
+
+            if not i == 0:
+                Assert.true(image_viewer.is_previous_present)
+                image_viewer.click_previous()
+            else:
+                Assert.false(image_viewer.is_previous_present)
 
         image_viewer.close()
         Assert.false(image_viewer.is_visible)
