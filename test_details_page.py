@@ -23,6 +23,7 @@
 # Contributor(s): Teodosia Pop <teodosia.pop@softvision.ro>
 #                 Bebe <florin.strugariu@softvision.ro>
 #                 Alex Rodionov <p0deje@gmail.com>
+#                 Alin Trif <alin.trif@softvision.ro>
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -271,3 +272,21 @@ class TestDetailsPage:
         amo_detail_page = AddonsDetailsPage(mozwebqa, 'firebug')
 
         Assert.equal(amo_detail_page.breadcrumb, 'Add-ons for Firefox Extensions Firebug')
+
+    def test_that_breadcrumb_links_in_addons_details_page_work(self, mozwebqa):
+        """
+        Litmus 11923
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=11923
+        """
+
+        amo_detail_page = AddonsDetailsPage(mozwebqa, 'firebug')
+        Assert.equal(amo_detail_page.breadcrumb, 'Add-ons for Firefox Extensions Firebug')
+
+        addons_home_url = amo_detail_page.home_breadcrumb_link
+        amo_detail_page.click_home_breadcrumb()
+        Assert.true(amo_detail_page.get_url_current_page().endswith(addons_home_url))
+
+        amo_detail_page.return_to_previous_page()
+        addons_extensions_url = amo_detail_page.extensions_breadcrumb_link
+        amo_detail_page.click_extensions_breadcrumb()
+        Assert.true(amo_detail_page.get_url_current_page().endswith(addons_extensions_url))

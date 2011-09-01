@@ -28,6 +28,7 @@
 #                 Marlena Compton <mcompton@mozilla.com>
 #                 Teodosia Pop <teodosia.pop@softvision.ro>
 #                 Alex Lakatos <alex@greensqr.com>
+#                 Alin Trif <alin.trif@softvision.ro>
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -186,6 +187,8 @@ class AddonsDetailsPage(AddonsBasePage):
     _review_details_locator = "css=.review .description"
     _all_reviews_link_locator = "css=#addon #reviews+.article a.more-info"
     _review_locator = "css=div.review:not(.reply)"
+    _home_breadcrumb_locator = "css=#breadcrumbs ol li:nth(0) a.home"
+    _extensions_breadcrumb_locator = "css=#breadcrumbs ol li:nth(1) a"
 
     #more about this addon
     _additional_images_locator = "css=#addon .article .screenshot"
@@ -210,8 +213,24 @@ class AddonsDetailsPage(AddonsBasePage):
     def has_reviews(self):
         return self.selenium.get_css_count(self._review_details_locator) > 0
 
+    @property
+    def home_breadcrumb_link(self):
+        return self.selenium.get_attribute("%s@href" % self._home_breadcrumb_locator)
+
+    @property
+    def extensions_breadcrumb_link(self):
+        return self.selenium.get_attribute("%s@href" % self._extensions_breadcrumb_locator)
+
     def click_all_reviews_link(self):
         self.selenium.click(self._all_reviews_link_locator)
+        self.selenium.wait_for_page_to_load(self.timeout)
+
+    def click_home_breadcrumb(self):
+        self.selenium.click(self._home_breadcrumb_locator)
+        self.selenium.wait_for_page_to_load(self.timeout)
+
+    def click_extensions_breadcrumb(self):
+        self.selenium.click(self._extensions_breadcrumb_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
 
     @property
