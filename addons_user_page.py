@@ -61,6 +61,7 @@ class AddonsViewProfilePage(AddonsBasePage):
     def about_me(self):
         return self.selenium.get_text(self._about_locator)
 
+
 class AddonsUserPage(AddonsBasePage):
 
         _username_locator = "css=div.vcard h2.fn"
@@ -73,8 +74,23 @@ class AddonsUserPage(AddonsBasePage):
 class AddonsEditProfilePage(AddonsBasePage):
 
     _page_title = 'Account Settings :: Add-ons for Firefox'
-    _title_locator = 'css=div.primary h2'
+    _account_locator = "css=#acct-account"
+    _profile_locator = "css=#profile-personal"
+    _details_locator = "css=#profile-detail"
+    _notification_locator = "css=#acct-notify"
 
     @property
-    def page_title(self):
-        return self.selenium.get_text(self._title_locator)
+    def is_account_visible(self):
+        return self.selenium.get_text("%s>legend" % self._account_locator)
+
+    @property
+    def is_profile_visible(self):
+        return self.selenium.get_text("%s>legend" % self._profile_locator)
+
+    @property
+    def is_details_visible(self):
+        return self.selenium.get_text("%s>legend" % self._details_locator)
+
+    @property
+    def is_notification_visible(self):
+        return self.selenium.get_text("%s>legend" % self._notification_locator)
