@@ -335,6 +335,10 @@ class AddonsDetailsPage(AddonsBasePage):
         return self.selenium.is_visible(self._version_information_heading_locator)
 
     @property
+    def is_version_information_section_expanded(self):
+        return self.selenium.get_attribute("%s@class" % self._version_information_locator)
+
+    @property
     def is_review_title_visible(self):
         return self.selenium.is_visible(self._reviews_title_locator)
 
@@ -462,6 +466,9 @@ class AddonsDetailsPage(AddonsBasePage):
     @property
     def is_version_info_link_visible(self):
         return self.selenium.is_visible(self._info_link_locator)
+
+    def click_version_info_link(self):
+        self.selenium.click(self._info_link_locator)
 
     class OtherAddons(Page):
         _other_addons_locator = 'css=#author-addons li'

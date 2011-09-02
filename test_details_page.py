@@ -278,4 +278,6 @@ class TestDetailsPage:
             https://litmus.mozilla.org/show_test.cgi?id=25725 """
         amo_details_page = AddonsDetailsPage(mozwebqa, 'firebug')
         Assert.true(amo_details_page.is_version_info_link_visible)
+        amo_details_page.click_version_info_link()
         Assert.equal(amo_details_page.version_info_link, amo_details_page.version_information)
+        Assert.contains("expanded", amo_details_page.is_version_information_section_expanded)
