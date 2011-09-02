@@ -80,7 +80,14 @@ class TestAccounts:
         amo_home_page.header.click_edit_profile()
         amo_user_edit_page = addons_user_page.AddonsEditProfilePage(mozwebqa)
 
-        Assert.equal(amo_user_edit_page.page_title, 'Account Settings')
+        Assert.contains("/users/edit", amo_user_edit_page.get_url_current_page())
+
+        Assert.true(amo_user_edit_page.is_the_current_page)
+
+        Assert.equal("My Account", amo_user_edit_page.is_account_visible)
+        Assert.equal("Profile", amo_user_edit_page.is_profile_visible)
+        Assert.equal("Details", amo_user_edit_page.is_details_visible)
+        Assert.equal("Notifications", amo_user_edit_page.is_notification_visible)
 
     def test_user_can_access_the_view_profile_page(self, mozwebqa):
         """
