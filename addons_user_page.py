@@ -74,23 +74,23 @@ class AddonsUserPage(AddonsBasePage):
 class AddonsEditProfilePage(AddonsBasePage):
 
     _page_title = 'Account Settings :: Add-ons for Firefox'
-    _account_locator = "css=#acct-account"
-    _profile_locator = "css=#profile-personal"
-    _details_locator = "css=#profile-detail"
-    _notification_locator = "css=#acct-notify"
+    _account_locator = "css=#acct-account > legend"
+    _profile_locator = "css=#profile-personal > legend"
+    _details_locator = "css=#profile-detail > legend"
+    _notification_locator = "css=#acct-notify > legend"
 
     @property
     def is_account_visible(self):
-        return self.selenium.get_text("%s>legend" % self._account_locator)
+        return self.selenium.get_text(self._account_locator)
 
     @property
     def is_profile_visible(self):
-        return self.selenium.get_text("%s>legend" % self._profile_locator)
+        return self.selenium.get_text(self._profile_locator)
 
     @property
     def is_details_visible(self):
-        return self.selenium.get_text("%s>legend" % self._details_locator)
+        return self.selenium.get_text(self._details_locator)
 
     @property
     def is_notification_visible(self):
-        return self.selenium.get_text("%s>legend" % self._notification_locator)
+        return self.selenium.get_text(self._notification_locator)
