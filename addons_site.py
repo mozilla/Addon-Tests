@@ -171,8 +171,9 @@ class AddonsDetailsPage(AddonsBasePage):
     _login_link_locator = "css=li.account > a:nth(1)"
     _other_applications_locator = "id=other-apps"
     _other_apps_dropdown_menu_locator = "css=ul.other-apps"
-    _name_locator = "css=h1.addon > span"
+
     _about_addon_locator = "css=section.primary > h2"
+    _more_about_addon_locator = "id=more-about"
     _version_information_locator = "id=detail-relnotes"
     _version_information_heading_locator = "css=#detail-relnotes > h2"
     _release_version_locator = "css=div.version.article > h3 > a"
@@ -185,20 +186,19 @@ class AddonsDetailsPage(AddonsBasePage):
     _featured_image_locator = "css=#addon .featured .screenshot"
     _support_link_locator = "css=a.support"
     _review_details_locator = "css=.review .description"
-    _all_reviews_link_locator = "css=#addon #reviews+.article a.more-info"
+    _all_reviews_link_locator = "css=a.more-info"
     _review_locator = "css=div.review:not(.reply)"
     _home_breadcrumb_locator = "css=#breadcrumbs ol li:nth(0) a.home"
     _extensions_breadcrumb_locator = "css=#breadcrumbs ol li:nth(1) a"
+
+    _image_locator = "css=#preview.slider li.panel.active a"
+    _image_viewer_locator = 'id=lightbox'
 
     #more about this addon
     _additional_images_locator = "css=#addon .article .screenshot"
     _website_locator = "css=.links a.home"
     #other_addons
     _other_addons_by_author_locator = 'css=#author-addons'
-
-    _other_addons_dropdown_locator = "id=addons-author-addons-select"
-    _other_addons_link_list_locator = "css=div.other-author-addons ul li"
-
     _reviews_locator = "id=reviews"
     _add_review_link_locator = "id=add-review"
 
@@ -207,7 +207,7 @@ class AddonsDetailsPage(AddonsBasePage):
         self.addon_name = addon_name.replace(' ', '-').lower()
         AddonsBasePage.__init__(self, testsetup)
         self.selenium.open("%s/addon/%s" % (self.site_version, self.addon_name))
-        self._wait_for_reviews_to_load()
+        self._wait_for_reviews_and_other_addons_by_author_to_load()
 
     @property
     def has_reviews(self):
@@ -311,49 +311,64 @@ class AddonsDetailsPage(AddonsBasePage):
     def often_used_with_header(self):
         return self.selenium.get_text(self._other_addons_header_locator)
 
+    @property
     def is_register_visible(self):
         return self.selenium.is_visible(self._register_link_locator)
 
+    @property
     def is_login_visible(self):
         return self.selenium.is_visible(self._login_link_locator)
 
+    @property
     def is_other_apps_link_visible(self):
         return self.selenium.is_visible(self._other_applications_locator)
 
+    @property
     def is_other_apps_dropdown_menu_visible(self):
         self.click_other_apps()
         return self.selenium.is_visible(self._other_apps_dropdown_menu_locator)
 
+    @property
     def is_addon_name_visible(self):
         return self.selenium.is_visible(self._name_locator)
 
+    @property
     def is_summary_visible(self):
         return self.selenium.is_visible(self._summary_locator)
 
+    @property
     def is_about_addon_visible(self):
         return self.selenium.is_visible(self._about_addon_locator)
 
+    @property
     def is_version_information_visible(self):
         return self.selenium.is_visible(self._version_information_locator)
 
+    @property
     def is_version_information_heading_visible(self):
         return self.selenium.is_visible(self._version_information_heading_locator)
 
+    @property
     def is_review_title_visible(self):
         return self.selenium.is_visible(self._reviews_title_locator)
 
+    @property
     def is_often_used_with_header_visible(self):
         return self.selenium.is_visible(self._other_addons_header_locator)
 
+    @property
     def is_often_used_with_list_visible(self):
         return self.selenium.is_visible(self._other_addons_list_locator)
 
+    @property
     def are_tags_visible(self):
         return self.selenium.is_visible(self._tags_locator)
 
+    @property
     def is_part_of_collections_header_visible(self):
         return self.selenium.is_visible('%s h2' % self._part_of_collections_locator)
 
+    @property
     def is_part_of_collections_list_visible(self):
         return self.selenium.is_visible('%s ul' % self._part_of_collections_locator)
 
@@ -396,44 +411,52 @@ class AddonsDetailsPage(AddonsBasePage):
         return self.selenium.get_text("%s > h2" % self._other_addons_by_author_locator)
 
     @property
-    def is_other_addons_dropdown_present(self):
-        return self.selenium.is_element_present(self._other_addons_dropdown_locator)
+    def other_addons_count(self):
+        return int(self.selenium.get_css_count('%s li' % self._other_addons_by_author_locator))
+
+    def other_addons(self):
+        return [self.OtherAddons(self.testsetup, i) for i in range(self.other_addons_count)]
 
     @property
-    def other_addons_dropdown_values(self):
-        return self.selenium.get_select_options(self._other_addons_dropdown_locator)
+    def previewer(self):
+        return self.ImagePreviewer(self.testsetup)
 
-    def select_other_addons_dropdown_value(self, value):
-        self.selenium.select(self._other_addons_dropdown_locator, value)
-        self.selenium.wait_for_page_to_load(self.timeout)
 
-    @property
-    def other_addons_link_list_count(self):
-        return self.selenium.get_css_count(self._other_addons_link_list_locator)
+    class ImagePreviewer(Page):
 
-    def other_addons_link_list(self):
-        return [self.selenium.get_text("%s:nth(%s) a" % (self._other_addons_link_list_locator, pos))
-            for pos in range(self.other_addons_link_list_count)]
+        #navigation
+        _next_locator = 'css=section.previews.carousel > a.next'
+        _prev_locator = 'css=section.previews.carousel > a.prev'
 
-    def click_other_addon_by_this_author(self, value):
-        self.selenium.click('%s:contains(%s) a' % (self._other_addons_link_list_locator, value))
-        self.selenium.wait_for_page_to_load(self.timeout)
+        _image_locator = 'css=#preview'
+        def next_set(self):
+            self.selenium.click(self._next_locator)
 
-    def click_addon_image(self):
-        self.selenium.click(self._featured_image_locator)
-        image_viewer = image_viewer_region.ImageViewer(self.testsetup)
-        image_viewer.wait_for_viewer_to_finish_animating()
-        return image_viewer
+        def prev_set(self):
+            self.selenium.click(self._prev_locator)
 
-    @property
-    def additional_images_count(self):
-        return self.selenium.get_css_count(self._additional_images_locator)
+        def click_image(self, image_no=0):
+            self.selenium.click('%s li:nth(%s) a' % (self._image_locator, image_no))
+            image_viewer = image_viewer_region.ImageViewer(self.testsetup)
+            image_viewer.wait_for_image_viewer_to_finish_animating()
+            return image_viewer
 
-    def click_additional_image(self, index):
-        self.selenium.click("%s:nth(%s)" % (self._additional_images_locator, index - 1))
-        image_viewer = image_viewer_region.ImageViewer(self.testsetup)
-        image_viewer.wait_for_viewer_to_finish_animating()
-        return image_viewer
+        def image_title(self, image_no):
+            return self.selenium.get_attribute('%s li:nth(%s) a@title' % (self._image_locator, image_no))
+
+        def image_link(self, image_no):
+            return self.selenium.get_attribute('%s li:nth(%s) a img@src' % (self._image_locator, image_no))
+
+        @property
+        def image_count(self):
+            return int(self.selenium.get_css_count('%s li' % self._image_locator))
+
+        @property
+        def image_set_count(self):
+            if self.image_count % 3 == 0:
+                return self.image_count / 3
+            else:
+                return self.image_count / 3 + 1
 
     def review(self, lookup):
         return self.DetailsReviewSnippet(self.testsetup, lookup)
@@ -445,6 +468,40 @@ class AddonsDetailsPage(AddonsBasePage):
     def reviews_count(self):
         self.wait_for_element_visible(self._reviews_locator)
         return int(self.selenium.get_css_count(self._reviews_locator))
+
+    class OtherAddons(Page):
+        _other_addons_locator = 'css=#author-addons li'
+        _name_locator = 'div.summary h3'
+        _addon_link_locator = 'div.addon a'
+
+        def __init__(self, testsetup, lookup):
+            Page.__init__(self, testsetup)
+            self.lookup = lookup
+
+        def absolute_locator(self, relative_locator):
+            return self._root_locator + relative_locator
+
+        @property
+        def _root_locator(self):
+            self.wait_for_element_visible(self._other_addons_locator)
+            if type(self.lookup) == int:
+                # lookup by index
+                return "%s:nth(%s) " % (self._other_addons_locator, self.lookup)
+            else:
+                # lookup by name
+                return "%s:contains(%s) " % (self._other_addons_locator, self.lookup)
+
+        @property
+        def name(self):
+            return self.selenium.get_text(self.absolute_locator(self._name_locator))
+
+        def click_addon_link(self):
+            self.selenium.click(self.absolute_locator(self._addon_link_locator))
+            self.selenium.wait_for_page_to_load(self.timeout)
+
+        @property
+        def name_link_value(self):
+            return self.selenium.get_attribute('%s@href' % self.absolute_locator(self._name_link_locator))
 
     class DetailsReviewSnippet(Page):
 
@@ -481,8 +538,9 @@ class AddonsDetailsPage(AddonsBasePage):
         self.selenium.click(self._add_review_link_locator)
         return AddonsWriteReviewBlock(self.testsetup)
 
-    def _wait_for_reviews_to_load(self):
+    def _wait_for_reviews_and_other_addons_by_author_to_load(self):
         self.wait_for_element_present(self._reviews_locator)
+        self.wait_for_element_present(self._other_addons_by_author_locator)
 
 
 class AddonsWriteReviewBlock(AddonsBasePage):
@@ -581,8 +639,16 @@ class AddonsThemesPage(AddonsHomePage):
     _top_counter_locator = "css=div.primary>header b"
     _bottom_counter_locator = "css=div.num-results > strong:nth(2)"
 
+    # TODO: remove pagination locators when impala pages are available for themes
+    _next_link_locator = "link=Next"
+
     def __init__(self, testsetup):
         AddonsBasePage.__init__(self, testsetup)
+
+    # TODO: remove method when impala pages are available for themes
+    def page_forward(self):
+        self.selenium.click(self._next_link_locator)
+        self.selenium.wait_for_page_to_load(self.timeout)
 
     def click_sort_by(self, type_):
         self.selenium.click(getattr(self, "_sort_by_%s_locator" % type_))
@@ -880,6 +946,7 @@ class DiscoveryPane(AddonsBasePage):
         self.selenium.click(self._learn_more_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
 
+    @property
     def is_mission_section_visible(self):
         return self.selenium.is_visible(self._mission_section_locator)
 
@@ -898,6 +965,7 @@ class DiscoveryPane(AddonsBasePage):
         self.wait_for_element_visible(self._download_count_text_locator)
         return self.selenium.get_text(self._download_count_text_locator)
 
+    @property
     def is_personas_section_visible(self):
         return self.selenium.is_visible(self._personas_section_locator)
 
@@ -905,6 +973,7 @@ class DiscoveryPane(AddonsBasePage):
     def personas_count(self):
         return int(self.selenium.get_xpath_count(self._personas_locator))
 
+    @property
     def is_personas_see_all_link_visible(self):
         return self.selenium.is_visible(self._personas_see_all_link)
 
@@ -917,6 +986,7 @@ class DiscoveryPane(AddonsBasePage):
         self.selenium.wait_for_page_to_load(self.timeout)
         return DiscoveryPersonasDetailPage(self.testsetup)
 
+    @property
     def more_ways_section_visible(self):
         return self.selenium.is_visible(self._more_ways_section_locator)
 
@@ -928,6 +998,7 @@ class DiscoveryPane(AddonsBasePage):
     def more_ways_personas(self):
         return self.selenium.get_text(self._more_ways_personas_locator)
 
+    @property
     def up_and_coming_visible(self):
         return self.selenium.is_visible(self._up_and_coming_section)
 
