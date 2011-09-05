@@ -70,7 +70,7 @@ class AddonsHomePage(AddonsBasePage):
     _most_popular_item_locator = "css=ol.toplist li"
     _most_popular_list_heading_locator = _most_popular_list_locator + " h2"
 
-    _featured_personas_see_all_link = "css=.seeall"
+    _featured_personas_see_all_link = "css=#homepage > .primary > div:nth(2) > h2 > a"
 
     def __init__(self, testsetup):
         ''' Creates a new instance of the class and gets the page ready for testing '''
@@ -78,9 +78,10 @@ class AddonsHomePage(AddonsBasePage):
         self.selenium.open("%s/" % self.site_version)
         self.selenium.window_maximize()
 
-    @property
-    def featured_personas_see_all_link(self):
-        return self.selenium.get_attribute(" @href " % self._featured_personas_see_all_link)
+    def click_featured_personas_see_all_link(self):
+        self.selenium.click(self._featured_personas_see_all_link)
+        self.selenium.wait_for_page_to_load(self.timeout)
+        return AddonsPersonasPage(self.testsetup)
 
     def click_personas(self):
         self.selenium.click(self._personas_link_locator)
@@ -408,7 +409,6 @@ class AddonsDetailsPage(AddonsBasePage):
     def previewer(self):
         return self.ImagePreviewer(self.testsetup)
 
-
     class ImagePreviewer(Page):
 
         #navigation
@@ -416,6 +416,7 @@ class AddonsDetailsPage(AddonsBasePage):
         _prev_locator = 'css=section.previews.carousel > a.prev'
 
         _image_locator = 'css=#preview'
+
         def next_set(self):
             self.selenium.click(self._next_locator)
 

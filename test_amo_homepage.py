@@ -96,6 +96,7 @@ class TestHomePage:
         https://litmus.mozilla.org/show_test.cgi?id=29699
         """
         amo_home_page = AddonsHomePage(mozwebqa)
-        link = amo_home_page.featured_personas_see_all_link
+        featured_persona_page = amo_home_page.click_featured_personas_see_all_link()
 
-
+        Assert.true(featured_persona_page.is_the_current_page)
+        Assert.true(featured_persona_page.get_url_current_page().endswith('/personas/'))
