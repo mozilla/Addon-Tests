@@ -220,6 +220,10 @@ class AddonsDetailsPage(AddonsBasePage):
         return self.selenium.get_css_count(self._review_locator)
 
     @property
+    def breadcrumb(self):
+        return self.selenium.get_text(self._breadcrumb_locator)
+
+    @property
     def page_title(self):
         return self.selenium.get_title()
 
