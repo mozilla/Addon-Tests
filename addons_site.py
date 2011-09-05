@@ -53,6 +53,7 @@ from page import Page
 from addons_base_page import AddonsBasePage
 from addons_collection_page import AddonsCollectionsPage
 from addons_user_page import AddonsUserPage
+from addons_search_home_page import AddonsSearchHomePage
 import image_viewer_region
 
 
@@ -63,6 +64,9 @@ class AddonsHomePage(AddonsBasePage):
     _themes_link_locator = "css=#themes > a"
     _personas_link_locator = "css=#personas > a"
     _collections_link_locator = "css=#collections > a"
+    _explore_featured_link_locator = "css=#side-nav .s-featured a"
+    _explore_most_popular_link_locator = "css=#side-nav .s-users a"
+    _explore_most_top_rated_link_locator = "css=#side-nav .s-rating a"
 
     #Most Popular List
     _most_popular_list_locator = "css=#homepage > .secondary"
@@ -74,6 +78,12 @@ class AddonsHomePage(AddonsBasePage):
         AddonsBasePage.__init__(self, testsetup)
         self.selenium.open("%s/" % self.site_version)
         self.selenium.window_maximize()
+
+    def click_to_explore(self, type):
+        type = re.sub('\s', '_', type).lower()
+        self.selenium.click(getattr(self, "_explore_most_%s_link_locator" % type))
+        self.selenium.wait_for_page_to_load(self.timeout)
+        return AddonsSearchHomePage(self.testsetup)
 
     def click_personas(self):
         self.selenium.click(self._personas_link_locator)
