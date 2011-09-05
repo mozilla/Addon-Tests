@@ -50,13 +50,10 @@ class TestAccounts:
         """
 
         amo_home_page = addons_site.AddonsHomePage(mozwebqa)
-        credentials = mozwebqa.credentials['default']
 
-        Assert.false(amo_home_page.header.is_user_logged_in)
-        amo_home_page.header.click_login()
-        addons_login_page = addons_user_page.AddonsLoginPage(mozwebqa)
+        addons_login_page = amo_home_page.header.click_login()
 
-        addons_login_page.login(credentials['email'], credentials['password'])
+        addons_login_page.login()
         Assert.true(amo_home_page.header.is_user_logged_in)
 
         amo_home_page.header.click_logout()
@@ -69,19 +66,14 @@ class TestAccounts:
         """
 
         amo_home_page = addons_site.AddonsHomePage(mozwebqa)
-        credentials = mozwebqa.credentials['default']
 
-        amo_home_page.header.click_login()
-        addons_login_page = addons_user_page.AddonsLoginPage(mozwebqa)
+        addons_login_page = amo_home_page.header.click_login()
 
-        addons_login_page.login(credentials['email'], credentials['password'])
+        addons_login_page.login()
         Assert.true(amo_home_page.header.is_user_logged_in)
 
-        amo_home_page.header.click_edit_profile()
-        amo_user_edit_page = addons_user_page.AddonsEditProfilePage(mozwebqa)
-
+        amo_user_edit_page = amo_home_page.header.click_edit_profile()
         Assert.contains("/users/edit", amo_user_edit_page.get_url_current_page())
-
         Assert.true(amo_user_edit_page.is_the_current_page)
 
         Assert.equal("My Account", amo_user_edit_page.is_account_visible)
@@ -96,12 +88,10 @@ class TestAccounts:
         """
 
         amo_home_page = addons_site.AddonsHomePage(mozwebqa)
-        credentials = mozwebqa.credentials['default']
 
-        amo_home_page.header.click_login()
-        addons_login_page = addons_user_page.AddonsLoginPage(mozwebqa)
+        addons_login_page = amo_home_page.header.click_login()
 
-        addons_login_page.login(credentials['email'], credentials['password'])
+        addons_login_page.login()
         Assert.true(amo_home_page.header.is_user_logged_in)
 
         amo_view_profile_page = amo_home_page.header.click_view_profile()
