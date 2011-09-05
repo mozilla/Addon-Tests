@@ -45,8 +45,9 @@ import pytest
 xfail = pytest.mark.xfail
 
 from unittestzero import Assert
-from addons_site import UserFAQPage
+from addons_site import UserFAQPage, AddonsHomePage
 from addons_site import AddonsDetailsPage
+from addons_site import ExtensionsHomePage
 
 
 class TestDetailsPage:
@@ -278,15 +279,28 @@ class TestDetailsPage:
         Litmus 11923
         https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=11923
         """
-
+        amo_home_page = AddonsHomePage(mozwebqa)
         amo_detail_page = AddonsDetailsPage(mozwebqa, 'firebug')
-        Assert.equal(amo_detail_page.breadcrumb, 'Add-ons for Firefox Extensions Firebug')
 
-        addons_home_url = amo_detail_page.home_breadcrumb_link
-        amo_detail_page.click_home_breadcrumb()
-        Assert.true(amo_detail_page.get_url_current_page().endswith(addons_home_url))
+        Assert.true(amo_detail_page.is_breadcrumb_menu_visible)
 
-        amo_detail_page.return_to_previous_page()
-        addons_extensions_url = amo_detail_page.extensions_breadcrumb_link
-        amo_detail_page.click_extensions_breadcrumb()
-        Assert.true(amo_detail_page.get_url_current_page().endswith(addons_extensions_url))
+        Assert.equal(amo_detail_page.breadcrumbs[0].name, 'Add-ons for Firefox')
+        link = amo_detail_page.breadcrumbs[0].link_value
+        amo_detail_page.breadcrumbs[0].click()
+
+        Assert.true(amo_home_page.is_the_current_page)
+        Assert.true(amo_home_page.get_url_current_page().endswith(link))
+
+        amo_home_page.return_to_previous_page()
+
+        Assert.equal(amo_detail_page.breadcrumbs[1].name, 'Extensions')
+        link = amo_detail_page.breadcrumbs[1].link_value
+        amo_detail_page.breadcrumbs[1].click()
+
+        amo_extenstions_page = ExtensionsHomePage(mozwebqa)
+        Assert.true(amo_extenstions_page.is_the_current_page)
+        Assert.true(amo_extenstions_page.get_url_current_page().endswith(link))
+
+        amo_home_page.return_to_previous_page()
+
+        Assert.equal(amo_detail_page.breadcrumbs[2].name, 'Firebug')

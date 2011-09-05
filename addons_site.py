@@ -188,8 +188,6 @@ class AddonsDetailsPage(AddonsBasePage):
     _review_details_locator = "css=.review .description"
     _all_reviews_link_locator = "css=a.more-info"
     _review_locator = "css=div.review:not(.reply)"
-    _home_breadcrumb_locator = "css=#breadcrumbs ol li:nth(0) a.home"
-    _extensions_breadcrumb_locator = "css=#breadcrumbs ol li:nth(1) a"
 
     _image_locator = "css=#preview.slider li.panel.active a"
     _image_viewer_locator = 'id=lightbox'
@@ -213,33 +211,13 @@ class AddonsDetailsPage(AddonsBasePage):
     def has_reviews(self):
         return self.selenium.get_css_count(self._review_details_locator) > 0
 
-    @property
-    def home_breadcrumb_link(self):
-        return self.selenium.get_attribute("%s@href" % self._home_breadcrumb_locator)
-
-    @property
-    def extensions_breadcrumb_link(self):
-        return self.selenium.get_attribute("%s@href" % self._extensions_breadcrumb_locator)
-
     def click_all_reviews_link(self):
         self.selenium.click(self._all_reviews_link_locator)
-        self.selenium.wait_for_page_to_load(self.timeout)
-
-    def click_home_breadcrumb(self):
-        self.selenium.click(self._home_breadcrumb_locator)
-        self.selenium.wait_for_page_to_load(self.timeout)
-
-    def click_extensions_breadcrumb(self):
-        self.selenium.click(self._extensions_breadcrumb_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
 
     @property
     def review_count(self):
         return self.selenium.get_css_count(self._review_locator)
-
-    @property
-    def breadcrumb(self):
-        return self.selenium.get_text(self._breadcrumb_locator)
 
     @property
     def page_title(self):
@@ -421,7 +399,6 @@ class AddonsDetailsPage(AddonsBasePage):
     def previewer(self):
         return self.ImagePreviewer(self.testsetup)
 
-
     class ImagePreviewer(Page):
 
         #navigation
@@ -429,6 +406,7 @@ class AddonsDetailsPage(AddonsBasePage):
         _prev_locator = 'css=section.previews.carousel > a.prev'
 
         _image_locator = 'css=#preview'
+
         def next_set(self):
             self.selenium.click(self._next_locator)
 
@@ -1028,3 +1006,8 @@ class UserFAQPage(AddonsBasePage):
     @property
     def license_answer(self):
         return self.selenium.get_text(self._license_answer_locator)
+
+
+class ExtensionsHomePage(AddonsBasePage):
+
+    _page_title = 'Featured Extensions :: Add-ons for Firefox'
