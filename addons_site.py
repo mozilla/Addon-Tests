@@ -70,11 +70,17 @@ class AddonsHomePage(AddonsBasePage):
     _most_popular_item_locator = "css=ol.toplist li"
     _most_popular_list_heading_locator = _most_popular_list_locator + " h2"
 
+    _featured_personas_see_all_link = "css=.seeall"
+
     def __init__(self, testsetup):
         ''' Creates a new instance of the class and gets the page ready for testing '''
         AddonsBasePage.__init__(self, testsetup)
         self.selenium.open("%s/" % self.site_version)
         self.selenium.window_maximize()
+
+    @property
+    def featured_personas_see_all_link(self):
+        return self.selenium.get_attribute(" @href " % self._featured_personas_see_all_link)
 
     def click_personas(self):
         self.selenium.click(self._personas_link_locator)

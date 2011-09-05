@@ -39,6 +39,7 @@
 from unittestzero import Assert
 from addons_site import AddonsHomePage
 import pytest
+from mozwebqa import mozwebqa
 
 
 class TestHomePage:
@@ -88,3 +89,13 @@ class TestHomePage:
         Assert.true(amo_home_page.is_mozilla_logo_visible)
         amo_home_page.click_mozilla_logo()
         Assert.equal(amo_home_page.get_url_current_page(), "http://www.mozilla.org/")
+
+    def test_that_clicking_see_all_personas_link_works(self, mozwebqa):
+        """
+        Litmus 29699
+        https://litmus.mozilla.org/show_test.cgi?id=29699
+        """
+        amo_home_page = AddonsHomePage(mozwebqa)
+        link = amo_home_page.featured_personas_see_all_link
+
+
