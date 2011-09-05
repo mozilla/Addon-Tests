@@ -54,6 +54,11 @@ class AddonsBasePage(Page):
 
     _mozilla_logo_link_locator = "css=#global-header-tab a"
 
+    def login (self, user="default"):
+
+        addons_login_page = self.header.click_login()
+        addons_login_page.login_user(user)
+
     @property
     def amo_logo_title(self):
         return self.selenium.get_attribute("%s@title" % self._amo_logo_link_locator)

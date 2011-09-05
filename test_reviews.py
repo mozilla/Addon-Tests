@@ -44,7 +44,6 @@ from datetime import datetime
 from unittestzero import Assert
 
 from addons_site import AddonsHomePage, AddonsDetailsPage
-from addons_user_page import AddonsLoginPage
 
 xfail = pytest.mark.xfail
 
@@ -92,8 +91,8 @@ class TestReviews:
             https://litmus.mozilla.org/show_test.cgi?id=22921 """
         # Step 1 - Login into AMO
         amo_home_page = AddonsHomePage(mozwebqa)
-        addons_login_page = amo_home_page.header.click_login()
-        addons_login_page.login()
+        amo_home_page.login()
+        Assert.true(amo_home_page.is_the_current_page)
         Assert.true(amo_home_page.header.is_user_logged_in)
 
         # Step 2 - Load any addon detail page

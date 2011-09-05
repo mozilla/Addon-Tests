@@ -46,8 +46,8 @@ class AddonsLoginPage(AddonsBasePage):
     _password_locator = 'id=id_password'
     _login_button_locator = 'id=login-submit'
 
-    def login(self):
-        credentials = self.testsetup.credentials['default']
+    def login_user(self, user):
+        credentials = self.testsetup.credentials[user]
         self.selenium.type(self._email_locator, credentials['email'])
         self.selenium.type(self._password_locator, credentials['password'])
         self.selenium.click(self._login_button_locator)
