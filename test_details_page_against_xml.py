@@ -36,12 +36,15 @@
 # ***** END LICENSE BLOCK *****
 
 
-from selenium import selenium
-from addons_site import AddonsHomePage
+#from selenium import selenium
+#from addons_site import AddonsHomePage
 from addons_site import AddonsDetailsPage
-from addons_search_home_page import AddonsSearchHomePage
+#from addons_search_home_page import AddonsSearchHomePage
 from addons_api import AddOnsAPI
+
 import pytest
+xfail = pytest.mark.xfail
+
 from unittestzero import Assert
 import re
 
@@ -93,6 +96,7 @@ class TestDetailsPageAgainstXML:
         firebug_page = AddonsDetailsPage(mozwebqa, self.firebug)
         Assert.equal("5", firebug_page.rating)
 
+    @xfail(reason="needs to be updated for impala")
     def test_that_description_text_is_correct(self, mozwebqa):
         """litmus 15321"""
         #browser
@@ -105,6 +109,7 @@ class TestDetailsPageAgainstXML:
 
         Assert.equal(browser_description, xml_description)
 
+    @xfail(reason="needs to be updated for impala")
     def test_that_icon_is_correct(self, mozwebqa):
         """litmus 15322"""
 

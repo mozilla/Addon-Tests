@@ -23,6 +23,7 @@
 # Contributor(s): David Burns
 #                 Dave Hunt <dhunt@mozilla.com>
 #                 Marlena Compton <mcompton@mozilla.com
+#                 Alin Trif <alin.trif@softvision.ro>
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -73,7 +74,7 @@ class TestDiscoveryPane:
         """ TestCase for Litmus 15065 """
         discovery_pane = DiscoveryPane(mozwebqa, self.basepath)
         discovery_pane.wait_for_mission_visible
-        Assert.true(discovery_pane.is_mission_section_visible())
+        Assert.true(discovery_pane.is_mission_section_visible)
         expected_text = "Thanks for using Firefox and supporting Mozilla's mission!"
 
         mission_text = discovery_pane.mission_section
@@ -86,9 +87,9 @@ class TestDiscoveryPane:
     def test_that_featured_personas_is_present_and_has_5_item(self, mozwebqa):
         """ TestCase for Litmus 15079, 15080 """
         discovery_pane = DiscoveryPane(mozwebqa, self.basepath)
-        Assert.true(discovery_pane.is_personas_section_visible())
+        Assert.true(discovery_pane.is_personas_section_visible)
         Assert.equal(5, discovery_pane.personas_count)
-        Assert.true(discovery_pane.is_personas_see_all_link_visible())
+        Assert.true(discovery_pane.is_personas_see_all_link_visible)
 
     @xfail(reason="Disabled until bug 674374 is fixed.")
     def test_that_featured_personas_go_to_their_landing_page_when_clicked(self, mozwebqa):
@@ -103,7 +104,7 @@ class TestDiscoveryPane:
     def test_that_More_Ways_To_Customize_section_is_available(self, mozwebqa):
         " TestCase for Litmus 15082 """
         discovery_pane = DiscoveryPane(mozwebqa, self.basepath)
-        Assert.true(discovery_pane.more_ways_section_visible())
+        Assert.true(discovery_pane.more_ways_section_visible)
         Assert.equal("Browse all add-ons", discovery_pane.more_ways_addons)
         Assert.equal("See all themes and Personas", discovery_pane.more_ways_personas)
 
@@ -111,5 +112,5 @@ class TestDiscoveryPane:
     def test_that_up_and_coming_is_present_and_had_5_items(self, mozwebqa):
         """ TestCase for Litmus 15074 """
         discovery_pane = DiscoveryPane(mozwebqa, self.basepath)
-        Assert.true(discovery_pane.up_and_coming_visible())
+        Assert.true(discovery_pane.up_and_coming_visible)
         Assert.equal(5, discovery_pane.up_and_coming_item_count)
