@@ -84,7 +84,6 @@ class TestReviews:
         Assert.equal(amo_details_page.review_count, 20)
         Assert.equal(amo_details_page.current_page, page_number + 1)
 
-    @pytest.mark.impala
     def test_that_new_review_is_saved(self, mozwebqa):
         """ Litmus 22921
             https://litmus.mozilla.org/show_test.cgi?id=22921 """
@@ -118,34 +117,38 @@ class TestReviews:
         Assert.equal(review.date, date)
         Assert.equal(review.text, body)
 
-    @pytest.mark.impala
-    def test_that_rating_increase_by_one(self, testsetup):
+    def test_that_rating_increase_by_one(self, mozwebqa):
         """ Litmus 22916
             https://litmus.mozilla.org/show_test.cgi?id=22916 """
         # Step 1 - Login into AMO
-        amo_home_page = AddonsHomePage(testsetup)
-        credentials = amo_home_page.credentials_of_user('default')
+        amo_home_page = AddonsHomePage(mozwebqa)
+        credentials = mozwebqa.credentials['default']
         amo_home_page.header.click_login()
-        addons_login_page = AddonsLoginPage(testsetup)
+        addons_login_page = AddonsLoginPage(mozwebqa)
         addons_login_page.login(credentials['email'], credentials['password'])
         Assert.true(amo_home_page.header.is_user_logged_in)
 
-        # Step 2 - Load any addon detail page
-        details_page = AddonsDetailsPage(testsetup, 'Scrapbook')
+        # Step 2 - Go to add-ons listing page sorted by rating
+        amo_search_page = amo_home_page.click_to_explore('Top Rated')
 
-        # Step 3 - Make a note with 1-star rating
+        # Step 4 - Pick an addon with no reviews
+        addons = amo_search_page.results()
+        addon = addons[-1]  # the last one addon should be without rating
+        details_page = AddonsDetailsPage(mozwebqa, addon.name)
+
+        # Step 5 - Make a note with 1-star rating
         old_rating_counter = details_page.get_rating_counter(1)
 
-        # Step 4 - Click on the "Write review" button
+        # Step 6 - Click on the "Write review" button
         write_review_block = details_page.click_to_write_review()
 
-        # Step 5 - Add review with 1-star rating
+        # Step 7 - Add review with 1-star rating
         body = 'Automatic addon review by Selenium tests'
         write_review_block.enter_review_with_text(body)
         write_review_block.set_review_rating(1)
         write_review_block.click_to_save_review()
 
-        # Step 6 - Ensure rating increased by one
-        details_page = AddonsDetailsPage(testsetup, 'Scrapbook')
+        # Step 8 - Ensure rating increased by one
+        details_page = AddonsDetailsPage(mozwebqa, addon.name)
         new_rating_counter = details_page.get_rating_counter(1)
         Assert.equal(new_rating_counter, old_rating_counter + 1)
