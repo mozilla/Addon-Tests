@@ -45,8 +45,17 @@ Change the path/name to the downloaded Selenium server file.
 
 To run tests locally its a simple case of calling the command below from this directory
 
-    py.test . --browser-name=<BROWSER_NAME>
+    py.test --api=rc --baseurl=https://addons-dev.allizom.org/ --browser="*firefox"
 
+To run the user accounts tests:
+
+1. Create a account on https://addons-dev.allizom.org/en-US/firefox/users/register
+2. Edit the credentials.yaml with your credentials
+3. Run the tests with:
+
+		py.test --api=rc --baseurl=https://addons-dev.allizom.org/ --browser="*firefox" --credentials=~/credentials.yaml
+
+For more command line options access https://github.com/davehunt/pytest-mozwebqa
 
 Writing Tests
 -------------
