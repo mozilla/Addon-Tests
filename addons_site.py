@@ -70,6 +70,10 @@ class AddonsHomePage(AddonsBasePage):
     _most_popular_item_locator = "css=ol.toplist li"
     _most_popular_list_heading_locator = _most_popular_list_locator + " h2"
 
+    _featured_personas_locator = "css=#featured-personas"
+    _featured_personas_title_locator = "css=#featured-personas h2"
+    _featured_personas_items_locator = "css=#featured-personas li"
+
     def __init__(self, testsetup):
         ''' Creates a new instance of the class and gets the page ready for testing '''
         AddonsBasePage.__init__(self, testsetup)
@@ -151,6 +155,17 @@ class AddonsHomePage(AddonsBasePage):
     def most_popular_list_heading(self):
         return self.selenium.get_text(self._most_popular_list_heading_locator)
 
+    @property
+    def is_featured_personas_visible(self):
+        return self.selenium.is_visible(self._featured_personas_locator)
+
+    @property
+    def featured_personas_count(self):
+        return self.selenium.get_css_count(self._featured_personas_items_locator)
+
+    @property
+    def fetaured_personas_title(self):
+        return self.selenium.get_text(self._featured_personas_title_locator)
 
 class AddonsDetailsPage(AddonsBasePage):
 
