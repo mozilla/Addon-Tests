@@ -21,6 +21,7 @@
 #
 # Contributor(s): Bebe <florin.strugariu@softvision.ro>
 #                 Alex Lakatos <alex@greensqr.com>
+#                 Teodosia Pop <teodosia.pop@softvision.ro>
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -88,3 +89,10 @@ class TestHomePage:
         Assert.true(amo_home_page.is_mozilla_logo_visible)
         amo_home_page.click_mozilla_logo()
         Assert.equal(amo_home_page.get_url_current_page(), "http://www.mozilla.org/")
+
+    def test_that_clicking_on_addon_name_loads_details_page(self, mozwebqa):
+        """ Litmus 25812
+            https://litmus.mozilla.org/show_test.cgi?id=25812"""
+        amo_home_page = AddonsHomePage(mozwebqa)
+        amo_details_page = amo_home_page.click_on_first_addon()
+        Assert.true(amo_details_page.is_the_current_page)

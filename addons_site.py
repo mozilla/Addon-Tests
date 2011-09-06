@@ -70,6 +70,8 @@ class AddonsHomePage(AddonsBasePage):
     _most_popular_item_locator = "css=ol.toplist li"
     _most_popular_list_heading_locator = _most_popular_list_locator + " h2"
 
+    _first_addon_locator = "css=div.summary > a > h3"
+
     def __init__(self, testsetup):
         ''' Creates a new instance of the class and gets the page ready for testing '''
         AddonsBasePage.__init__(self, testsetup)
@@ -151,10 +153,16 @@ class AddonsHomePage(AddonsBasePage):
     def most_popular_list_heading(self):
         return self.selenium.get_text(self._most_popular_list_heading_locator)
 
+    def click_on_first_addon(self):
+        self.selenium.click(self._first_addon_locator)
+        self.selenium.wait_for_page_to_load(self.timeout)
+        return AddonsDetailsPage(self.testsetup, '')
+
 
 class AddonsDetailsPage(AddonsBasePage):
 
     _breadcrumb_locator = "id=breadcrumbs"
+    _current_page_breadcrumb_locator = "css=#breadcrumbs > ol > li:nth(2)"
 
     #addon informations
     _name_locator = "css=h1.addon"
@@ -203,8 +211,13 @@ class AddonsDetailsPage(AddonsBasePage):
         #formats name for url
         self.addon_name = addon_name.replace(' ', '-').lower()
         AddonsBasePage.__init__(self, testsetup)
-        self.selenium.open("%s/addon/%s" % (self.site_version, self.addon_name))
+        if (addon_name != ''):
+            self.selenium.open("%s/addon/%s" % (self.site_version, self.addon_name))
         self._wait_for_reviews_and_other_addons_by_author_to_load()
+
+    @property
+    def _page_title(self):
+        return ("%s :: Add-ons for Firefox" % self.current_page_breadcrumb)
 
     @property
     def has_reviews(self):
@@ -221,6 +234,10 @@ class AddonsDetailsPage(AddonsBasePage):
     @property
     def breadcrumb(self):
         return self.selenium.get_text(self._breadcrumb_locator)
+
+    @property
+    def current_page_breadcrumb(self):
+        return self.selenium.get_text(self._current_page_breadcrumb_locator)
 
     @property
     def page_title(self):
@@ -410,6 +427,7 @@ class AddonsDetailsPage(AddonsBasePage):
         _prev_locator = 'css=section.previews.carousel > a.prev'
 
         _image_locator = 'css=#preview'
+
         def next_set(self):
             self.selenium.click(self._next_locator)
 
