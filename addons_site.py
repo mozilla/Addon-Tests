@@ -402,7 +402,6 @@ class AddonsDetailsPage(AddonsBasePage):
     def previewer(self):
         return self.ImagePreviewer(self.testsetup)
 
-
     class ImagePreviewer(Page):
 
         #navigation
@@ -410,6 +409,7 @@ class AddonsDetailsPage(AddonsBasePage):
         _prev_locator = 'css=section.previews.carousel > a.prev'
 
         _image_locator = 'css=#preview'
+
         def next_set(self):
             self.selenium.click(self._next_locator)
 
@@ -530,6 +530,8 @@ class AddonsWriteReviewBlock(AddonsBasePage):
     _add_review_input_rating_locator = "css=.ratingwidget input"
     _add_review_submit_button_locator = "css=#review-box input[type=submit]"
 
+    _add_review_box = 'css=#review-box'
+
     def enter_review_with_text(self, text):
         self.selenium.type(self._add_review_input_field_locator, text)
 
@@ -541,6 +543,10 @@ class AddonsWriteReviewBlock(AddonsBasePage):
         self.selenium.click(self._add_review_submit_button_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
         return AddonViewReviewsPage(self.testsetup)
+
+    @property
+    def is_review_box_visible(self):
+        return self.selenium.is_visible(self._add_review_box)
 
 
 class AddonViewReviewsPage(AddonsBasePage):
