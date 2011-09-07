@@ -54,6 +54,8 @@ class AddonsBasePage(Page):
 
     _mozilla_logo_link_locator = "css=#global-header-tab a"
 
+    _breadcrumbs_locator = "css=#breadcrumbs>ol>li"
+
     def login (self, user="default"):
 
         addons_login_page = self.header.click_login()
@@ -127,6 +129,18 @@ class AddonsBasePage(Page):
     @property
     def header(self):
         return AddonsBasePage.HeaderRegion(self.testsetup)
+
+    @property
+    def breadcrumbs(self):
+        return [self.BreadcrumbsRegion(self.testsetup, i) for i in range(self.breadcrumbs_count)]
+
+    @property
+    def breadcrumbs_count(self):
+        return self.selenium.get_css_count(self._breadcrumbs_locator)
+
+    @property
+    def is_breadcrumb_menu_visible(self):
+        return self.selenium.is_visible(self._breadcrumbs_locator)
 
     class HeaderRegion(Page):
 
@@ -207,3 +221,28 @@ class AddonsBasePage(Page):
                 return self.selenium.is_visible(self._account_controller_locator)
             except:
                 return False
+
+    class BreadcrumbsRegion(Page):
+
+        _breadcrumb_locator = "css=#breadcrumbs>ol"  # Base locator
+        _link_locator = " a"
+        _link_value_locator = " a@href"
+
+        def __init__(self, testsetup, lookup):
+            Page.__init__(self, testsetup)
+            self.lookup = lookup
+
+        def absolute_locator(self, relative_locator=""):
+            return "%s>li:nth(%s)%s" % (self._breadcrumb_locator, self.lookup, relative_locator)
+
+        def click(self):
+            self.selenium.click(self.absolute_locator(self._link_locator))
+            self.selenium.wait_for_page_to_load(self.timeout)
+
+        @property
+        def name(self):
+            return self.selenium.get_text(self.absolute_locator())
+
+        @property
+        def link_value(self):
+            return self.selenium.get_attribute(self.absolute_locator(self._link_value_locator))

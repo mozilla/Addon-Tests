@@ -20,6 +20,7 @@
 # the Initial Developer. All Rights Reserved.
 #
 # Contributor(s): Marlena Compton <mcompton@mozilla.com>
+#                 Teodosia Pop <teodosia.pop@softvision.ro>
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -117,7 +118,6 @@ class TestDetailsPageAgainstXML:
         firebug_page = AddonsDetailsPage(mozwebqa, self.firebug)
         browser_icon = firebug_page.icon_url
 
-
         #api
         addons_xml = AddOnsAPI(mozwebqa)
 
@@ -137,3 +137,16 @@ class TestDetailsPageAgainstXML:
         xml_support_url = addons_xml.get_support_url("firebug")
 
         Assert.equal(browser_support_url, xml_support_url)
+
+    def test_that_rating_in_api_equals_rating_in_details_page(self, mozwebqa):
+        """litmus 15325"""
+
+        #browser
+        firebug_page = AddonsDetailsPage(mozwebqa, self.firebug)
+        browser_rating = firebug_page.rating
+
+        #api
+        addons_xml = AddOnsAPI(mozwebqa)
+        xml_rating = addons_xml.get_rating("firebug")
+
+        Assert.equal(browser_rating, xml_rating)

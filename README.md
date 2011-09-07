@@ -43,10 +43,22 @@ Change the path/name to the downloaded Selenium server file.
 
 ### Running tests locally
 
-To run tests locally its a simple case of calling the command below from this directory
+To run tests locally it's a simple case of calling py.test from the Addon-Tests directory
+<br />You should specify the foloing argument for the selenium rc: --api=rc
+<br />The base url should be a valid instance of AMO: --baseurl=https://addons-dev.allizom.org/
 
-    py.test . --browser-name=<BROWSER_NAME>
+    py.test --api=rc --baseurl=http://example.com
 
+
+To run the user accounts tests:
+
+1. Create an account on the AMO instance
+2. Edit the credentials.yaml with your credentials
+3. Run the tests with:
+
+		py.test --api=rc --baseurl=http://example.com --credentials=~/credentials.yaml
+
+For more command line options access https://github.com/davehunt/pytest-mozwebqa
 
 Writing Tests
 -------------
