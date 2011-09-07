@@ -188,6 +188,7 @@ class AddonsDetailsPage(AddonsBasePage):
     _review_details_locator = "css=.review .description"
     _all_reviews_link_locator = "css=a.more-info"
     _review_locator = "css=div.review:not(.reply)"
+
     _image_locator = "css=#preview.slider li.panel.active a"
     _image_viewer_locator = 'id=lightbox'
 
@@ -402,7 +403,6 @@ class AddonsDetailsPage(AddonsBasePage):
     def previewer(self):
         return self.ImagePreviewer(self.testsetup)
 
-
     class ImagePreviewer(Page):
 
         #navigation
@@ -410,6 +410,7 @@ class AddonsDetailsPage(AddonsBasePage):
         _prev_locator = 'css=section.previews.carousel > a.prev'
 
         _image_locator = 'css=#preview'
+
         def next_set(self):
             self.selenium.click(self._next_locator)
 
@@ -1009,3 +1010,8 @@ class UserFAQPage(AddonsBasePage):
     @property
     def license_answer(self):
         return self.selenium.get_text(self._license_answer_locator)
+
+
+class ExtensionsHomePage(AddonsBasePage):
+
+    _page_title = 'Featured Extensions :: Add-ons for Firefox'
