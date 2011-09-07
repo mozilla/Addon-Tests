@@ -44,8 +44,8 @@ Change the path/name to the downloaded Selenium server file.
 ### Running tests locally
 
 To run tests locally it's a simple case of calling py.test from the Addon-Tests directory
-<br />You should specify the foloing argument for the selenium rc: --api=rc
-<br />The base url should be a valid instance of AMO: --baseurl=https://addons-dev.allizom.org/
+<br />You should specify the following  argument for the selenium rc: --api=rc
+<br />The base URL should be a valid instance of AMO: --baseurl=https://addons-dev.allizom.org/
 
     py.test --api=rc --baseurl=http://example.com
 
