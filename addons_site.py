@@ -371,7 +371,8 @@ class AddonsDetailsPage(AddonsBasePage):
         return self.selenium.get_attribute("%s@href" % self._website_locator)
 
     def click_website_link(self):
-        self.selenium.open(self.website)
+        self.selenium.click(self._website_locator)
+        self.selenium.wait_for_page_to_load(self.timeout)
 
     @property
     def support_url(self):
