@@ -156,13 +156,14 @@ class AddonsHomePage(AddonsBasePage):
     def click_on_first_addon(self):
         self.selenium.click(self._first_addon_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
-        return AddonsDetailsPage(self.testsetup, '')
+        return AddonsDetailsPage(self.testsetup)
 
 
 class AddonsDetailsPage(AddonsBasePage):
 
     _breadcrumb_locator = "id=breadcrumbs"
     _current_page_breadcrumb_locator = "css=#breadcrumbs > ol > li:nth(2)"
+    _page_title = ""
 
     #addon informations
     _name_locator = "css=h1.addon"
@@ -207,17 +208,14 @@ class AddonsDetailsPage(AddonsBasePage):
     _reviews_locator = "id=reviews"
     _add_review_link_locator = "id=add-review"
 
-    def __init__(self, testsetup, addon_name):
+    def __init__(self, testsetup, addon_name=None):
         #formats name for url
-        self.addon_name = addon_name.replace(' ', '-').lower()
         AddonsBasePage.__init__(self, testsetup)
-        if (addon_name != ''):
+        if (addon_name != None):
+            self.addon_name = addon_name.replace(' ', '-').lower()
             self.selenium.open("%s/addon/%s" % (self.site_version, self.addon_name))
         self._wait_for_reviews_and_other_addons_by_author_to_load()
-
-    @property
-    def _page_title(self):
-        return ("%s :: Add-ons for Firefox" % self.current_page_breadcrumb)
+        self._page_title = "%s :: Add-ons for Firefox" % self.current_page_breadcrumb
 
     @property
     def has_reviews(self):
