@@ -188,6 +188,7 @@ class AddonsDetailsPage(AddonsBasePage):
     _review_details_locator = "css=.review .description"
     _all_reviews_link_locator = "css=a.more-info"
     _review_locator = "css=div.review:not(.reply)"
+
     _image_locator = "css=#preview.slider li.panel.active a"
     _image_viewer_locator = 'id=lightbox'
 
@@ -370,7 +371,8 @@ class AddonsDetailsPage(AddonsBasePage):
         return self.selenium.get_attribute("%s@href" % self._website_locator)
 
     def click_website_link(self):
-        self.selenium.open(self.website)
+        self.selenium.click(self._website_locator)
+        self.selenium.wait_for_page_to_load(self.timeout)
 
     @property
     def support_url(self):
@@ -1015,3 +1017,8 @@ class UserFAQPage(AddonsBasePage):
     @property
     def license_answer(self):
         return self.selenium.get_text(self._license_answer_locator)
+
+
+class ExtensionsHomePage(AddonsBasePage):
+
+    _page_title = 'Featured Extensions :: Add-ons for Firefox'

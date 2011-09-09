@@ -48,6 +48,7 @@ from unittestzero import Assert
 from addons_site import UserFAQPage
 from addons_site import AddonsDetailsPage, AddonsHomePage
 from addons_user_page import AddonsLoginPage
+from addons_site import ExtensionsHomePage
 
 
 class TestDetailsPage:
@@ -274,6 +275,37 @@ class TestDetailsPage:
 
         Assert.equal(amo_detail_page.breadcrumb, 'Add-ons for Firefox Extensions Firebug')
 
+    def test_that_breadcrumb_links_in_addons_details_page_work(self, mozwebqa):
+        """
+        Litmus 11923
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=11923
+        """
+        amo_home_page = AddonsHomePage(mozwebqa)
+        amo_detail_page = AddonsDetailsPage(mozwebqa, 'firebug')
+
+        Assert.true(amo_detail_page.is_breadcrumb_menu_visible)
+
+        Assert.equal(amo_detail_page.breadcrumbs[0].name, 'Add-ons for Firefox')
+        link = amo_detail_page.breadcrumbs[0].link_value
+        amo_detail_page.breadcrumbs[0].click()
+
+        Assert.true(amo_home_page.is_the_current_page)
+        Assert.true(amo_home_page.get_url_current_page().endswith(link))
+
+        amo_home_page.return_to_previous_page()
+
+        Assert.equal(amo_detail_page.breadcrumbs[1].name, 'Extensions')
+        link = amo_detail_page.breadcrumbs[1].link_value
+        amo_detail_page.breadcrumbs[1].click()
+
+        amo_extenstions_page = ExtensionsHomePage(mozwebqa)
+        Assert.true(amo_extenstions_page.is_the_current_page)
+        Assert.true(amo_extenstions_page.get_url_current_page().endswith(link))
+
+        amo_home_page.return_to_previous_page()
+
+        Assert.equal(amo_detail_page.breadcrumbs[2].name, 'Firebug')
+
     def test_that_add_a_review_button_works(self, mozwebqa):
         """
         Litmus 25729
@@ -283,10 +315,7 @@ class TestDetailsPage:
         amo_home_page = AddonsHomePage(mozwebqa)
 
         #Step 2:user logs in to submit a review
-        credentials = mozwebqa.credentials['default']
-        amo_home_page.header.click_login()
-        addons_login_page = AddonsLoginPage(mozwebqa)
-        addons_login_page.login(credentials['email'], credentials['password'])
+        amo_home_page.login()
         Assert.true(amo_home_page.header.is_user_logged_in)
 
         #Step 3: user loads an addon details page and clicks write a review button
