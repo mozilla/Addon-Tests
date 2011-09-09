@@ -233,6 +233,7 @@ class TestSearch:
         Assert.true('sort=newest' in amo_search_page.get_url_current_page())
         Assert.is_sorted_descending([i.created_date for i in amo_search_page.results()])
 
+    @xfail(reason="Disabled due to bug 685704.")
     def test_sorting_by_updated_date(self, mozwebqa):
         """ Litmus 17345
             https://litmus.mozilla.org/show_test.cgi?id=17345 """

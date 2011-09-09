@@ -36,8 +36,7 @@
 # ***** END LICENSE BLOCK *****
 
 from unittestzero import Assert
-import addons_site
-import addons_user_page
+from addons_site import AddonsHomePage
 
 
 class TestAccounts:
@@ -49,14 +48,9 @@ class TestAccounts:
             https://litmus.mozilla.org/show_test.cgi?id=4859
         """
 
-        amo_home_page = addons_site.AddonsHomePage(mozwebqa)
-        credentials = mozwebqa.credentials['default']
-
-        Assert.false(amo_home_page.header.is_user_logged_in)
-        amo_home_page.header.click_login()
-        addons_login_page = addons_user_page.AddonsLoginPage(mozwebqa)
-
-        addons_login_page.login(credentials['email'], credentials['password'])
+        amo_home_page = AddonsHomePage(mozwebqa)
+        amo_home_page.login()
+        Assert.true(amo_home_page.is_the_current_page)
         Assert.true(amo_home_page.header.is_user_logged_in)
 
         amo_home_page.header.click_logout()
@@ -68,19 +62,19 @@ class TestAccounts:
             https://litmus.mozilla.org/show_test.cgi?id=5039
         """
 
-        amo_home_page = addons_site.AddonsHomePage(mozwebqa)
-        credentials = mozwebqa.credentials['default']
-
-        amo_home_page.header.click_login()
-        addons_login_page = addons_user_page.AddonsLoginPage(mozwebqa)
-
-        addons_login_page.login(credentials['email'], credentials['password'])
+        amo_home_page = AddonsHomePage(mozwebqa)
+        amo_home_page.login()
+        Assert.true(amo_home_page.is_the_current_page)
         Assert.true(amo_home_page.header.is_user_logged_in)
 
-        amo_home_page.header.click_edit_profile()
-        amo_user_edit_page = addons_user_page.AddonsEditProfilePage(mozwebqa)
+        amo_user_edit_page = amo_home_page.header.click_edit_profile()
+        Assert.contains("/users/edit", amo_user_edit_page.get_url_current_page())
+        Assert.true(amo_user_edit_page.is_the_current_page)
 
-        Assert.equal(amo_user_edit_page.page_title, 'Account Settings')
+        Assert.equal("My Account", amo_user_edit_page.is_account_visible)
+        Assert.equal("Profile", amo_user_edit_page.is_profile_visible)
+        Assert.equal("Details", amo_user_edit_page.is_details_visible)
+        Assert.equal("Notifications", amo_user_edit_page.is_notification_visible)
 
     def test_user_can_access_the_view_profile_page(self, mozwebqa):
         """
@@ -88,13 +82,9 @@ class TestAccounts:
         https://litmus.mozilla.org/show_test.cgi?id=15400
         """
 
-        amo_home_page = addons_site.AddonsHomePage(mozwebqa)
-        credentials = mozwebqa.credentials['default']
-
-        amo_home_page.header.click_login()
-        addons_login_page = addons_user_page.AddonsLoginPage(mozwebqa)
-
-        addons_login_page.login(credentials['email'], credentials['password'])
+        amo_home_page = AddonsHomePage(mozwebqa)
+        amo_home_page.login()
+        Assert.true(amo_home_page.is_the_current_page)
         Assert.true(amo_home_page.header.is_user_logged_in)
 
         amo_view_profile_page = amo_home_page.header.click_view_profile()
