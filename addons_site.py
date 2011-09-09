@@ -336,7 +336,12 @@ class AddonsDetailsPage(AddonsBasePage):
 
     @property
     def is_version_information_section_expanded(self):
-        return self.selenium.get_attribute("%s@class" % self._version_information_locator)
+        expand_info = self.selenium.get_attribute("%s@class" % self._version_information_locator)
+        return ("expanded" in expand_info)
+
+    @property
+    def does_page_scrolles_to_version_information_section(self):
+        return (self.selenium.get_eval("window.pageYOffset")) > 2000
 
     @property
     def is_review_title_visible(self):
