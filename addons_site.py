@@ -748,6 +748,8 @@ class AddonsPersonasPage(AddonsHomePage):
     _featured_personas_locator = "css=.personas-featured .persona.persona-small"
     _addons_column_locator = '//div[@class="addons-column"]'
 
+    _persona_header_locator = "css=.featured-inner>h2"
+
     def __init__(self, testsetup):
         AddonsBasePage.__init__(self, testsetup)
 
@@ -816,6 +818,10 @@ class AddonsPersonasPage(AddonsHomePage):
         locator = self._persona_in_column_locator(3)
         pattern = "Rated\s+(\d)\s+.*"
         return self._extract_integers(locator, pattern, self.top_rated_count)
+
+    @property
+    def persona_header(self):
+        return self.selenium.get_text(self._persona_header_locator)
 
 
 class AddonsPersonasDetailPage(AddonsBasePage):

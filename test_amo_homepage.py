@@ -99,4 +99,5 @@ class TestHomePage:
         featured_persona_page = amo_home_page.click_featured_personas_see_all_link()
 
         Assert.true(featured_persona_page.is_the_current_page)
+        Assert.equal(featured_persona_page.persona_header, 'Personas')
         Assert.true(featured_persona_page.get_url_current_page().endswith('/personas/'))
