@@ -56,6 +56,11 @@ class AddonsBasePage(Page):
 
     _breadcrumbs_locator = "css=#breadcrumbs>ol>li"
 
+    def login (self, user="default"):
+
+        addons_login_page = self.header.click_login()
+        addons_login_page.login_user(user)
+
     @property
     def amo_logo_title(self):
         return self.selenium.get_attribute("%s@title" % self._amo_logo_link_locator)
@@ -189,6 +194,8 @@ class AddonsBasePage(Page):
         def click_login(self):
             self.selenium.click(self._login_locator)
             self.selenium.wait_for_page_to_load(self.timeout)
+            from addons_user_page import AddonsLoginPage
+            return AddonsLoginPage(self.testsetup)
 
         def click_logout(self):
             self.selenium.click(self._logout_locator)
@@ -198,6 +205,8 @@ class AddonsBasePage(Page):
             self.click_my_account
             self.selenium.click('%s > li:nth(1) a' % self._account_dropdown_locator)
             self.selenium.wait_for_page_to_load(self.timeout)
+            from addons_user_page import AddonsEditProfilePage
+            return AddonsEditProfilePage(self.testsetup)
 
         def click_view_profile(self):
             self.click_my_account
