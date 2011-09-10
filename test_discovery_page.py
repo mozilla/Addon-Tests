@@ -83,7 +83,6 @@ class TestDiscoveryPane:
         download_count_regex = "Add-ons downloaded: (.+)"
         Assert.true(re.search(download_count_regex, discovery_pane.download_count) != None)
 
-    @xfail(reason="Disabled until bug 674374 is fixed.")
     def test_that_featured_personas_is_present_and_has_5_item(self, mozwebqa):
         """ TestCase for Litmus 15079, 15080 """
         discovery_pane = DiscoveryPane(mozwebqa, self.basepath)
@@ -108,7 +107,6 @@ class TestDiscoveryPane:
         Assert.equal("Browse all add-ons", discovery_pane.more_ways_addons)
         Assert.equal("See all themes and Personas", discovery_pane.more_ways_personas)
 
-    @xfail(reason="xfailing due to staging not always having up-to-date data; see bug 665117.")
     def test_that_up_and_coming_is_present_and_had_5_items(self, mozwebqa):
         """ TestCase for Litmus 15074 """
         discovery_pane = DiscoveryPane(mozwebqa, self.basepath)

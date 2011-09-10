@@ -20,6 +20,7 @@
 # the Initial Developer. All Rights Reserved.
 #
 # Contributor(s): Bebe <florin.strugariu@softvision.ro>
+#                 Stephen Donner
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -41,13 +42,14 @@ from addons_base_page import AddonsBasePage
 class AddonsLoginPage(AddonsBasePage):
 
     _page_title = 'User Login :: Add-ons for Firefox'
-    _email_locator = 'id=LoginEmail'
-    _password_locator = 'id=LoginPassword'
-    _login_button_locator = 'css=#login button.prominent'  # Using css till 668749 implemented
+    _email_locator = 'id=id_username'
+    _password_locator = 'id=id_password'
+    _login_button_locator = 'id=login-submit'
 
-    def login(self, email, password):
-        self.selenium.type(self._email_locator, email)
-        self.selenium.type(self._password_locator, password)
+    def login_user(self, user):
+        credentials = self.testsetup.credentials[user]
+        self.selenium.type(self._email_locator, credentials['email'])
+        self.selenium.type(self._password_locator, credentials['password'])
         self.selenium.click(self._login_button_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
 
