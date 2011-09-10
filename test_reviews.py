@@ -134,23 +134,22 @@ class TestReviews:
         amo_search_page = amo_home_page.click_to_explore('Top Rated')
 
         # Step 4 - Pick an addon with no reviews
-        addons = amo_search_page.results()
-        addon = addons[-1]  # the last one addon should be without rating
-        details_page = AddonsDetailsPage(mozwebqa, addon.name)
+        # the last one addon should be without rating
+        amo_search_page.go_to_last_page()
+        addon = amo_search_page.results()[-1]
+        addon_name = addon.name
+        details_page = AddonsDetailsPage(mozwebqa, addon_name)
 
-        # Step 5 - Make a note with 1-star rating
-        old_rating_counter = details_page.get_rating_counter(1)
-
-        # Step 6 - Click on the "Write review" button
+        # Step 5 - Click on the "Write review" button
         write_review_block = details_page.click_to_write_review()
 
-        # Step 7 - Add review with 1-star rating
+        # Step 6 - Add review with 1-star rating
         body = 'Automatic addon review by Selenium tests'
         write_review_block.enter_review_with_text(body)
         write_review_block.set_review_rating(1)
         write_review_block.click_to_save_review()
 
-        # Step 8 - Ensure rating increased by one
-        details_page = AddonsDetailsPage(mozwebqa, addon.name)
+        # Step 7 - Ensure rating increased by one
+        details_page = AddonsDetailsPage(mozwebqa, addon_name)
         new_rating_counter = details_page.get_rating_counter(1)
-        Assert.equal(new_rating_counter, old_rating_counter + 1)
+        Assert.equal(new_rating_counter, 1)
