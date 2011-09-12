@@ -100,4 +100,3 @@ class TestHomePage:
 
         Assert.true(featured_persona_page.is_the_current_page)
         Assert.equal(featured_persona_page.persona_header, 'Personas')
-        Assert.true(featured_persona_page.get_url_current_page().endswith('/personas/'))
