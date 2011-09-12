@@ -163,7 +163,6 @@ class AddonsDetailsPage(AddonsBasePage):
 
     _breadcrumb_locator = "id=breadcrumbs"
     _current_page_breadcrumb_locator = "css=#breadcrumbs > ol > li:nth(2)"
-    _page_title = ""
 
     #addon informations
     _name_locator = "css=h1.addon"
