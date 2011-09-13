@@ -70,7 +70,7 @@ class AddonsHomePage(AddonsBasePage):
     _most_popular_item_locator = "css=ol.toplist li"
     _most_popular_list_heading_locator = _most_popular_list_locator + " h2"
 
-    _featured_personas_see_all_link = "css=#homepage > .primary > div:nth(2) > h2 > a"
+    _featured_personas_see_all_link = "css=#featured-personas h2 a"
 
     def __init__(self, testsetup):
         ''' Creates a new instance of the class and gets the page ready for testing '''
