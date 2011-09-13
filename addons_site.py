@@ -476,6 +476,7 @@ class AddonsDetailsPage(AddonsBasePage):
 
         @property
         def name(self):
+            self.selenium.mouse_over(self.absolute_locator(self._name_locator))
             return self.selenium.get_text(self.absolute_locator(self._name_locator))
 
         def click_addon_link(self):
