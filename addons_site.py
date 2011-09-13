@@ -70,7 +70,7 @@ class AddonsHomePage(AddonsBasePage):
     _most_popular_item_locator = "css=ol.toplist li"
     _most_popular_list_heading_locator = _most_popular_list_locator + " h2"
 
-    _featured_personas_locator = "css=#featured-personas"
+    _featured_personas_locator = "id=featured-personas"
     _featured_personas_title_locator = "css=#featured-personas h2"
     _featured_personas_items_locator = "css=#featured-personas li"
 
