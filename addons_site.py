@@ -210,6 +210,7 @@ class AddonsDetailsPage(AddonsBasePage):
     _review_details_locator = "css=.review .description"
     _all_reviews_link_locator = "css=a.more-info"
     _review_locator = "css=div.review:not(.reply)"
+    _info_link_locator = "css=li > a.scrollto"
 
     _image_locator = "css=#preview.slider li.panel.active a"
     _image_viewer_locator = 'id=lightbox'
@@ -296,6 +297,10 @@ class AddonsDetailsPage(AddonsBasePage):
         return self.selenium.get_text(self._version_information_heading_locator)
 
     @property
+    def version_information(self):
+        return self.selenium.get_attribute("%s > a@href" % self._version_information_heading_locator)
+
+    @property
     def release_version(self):
         return self.selenium.get_text(self._release_version_locator)
 
@@ -351,6 +356,15 @@ class AddonsDetailsPage(AddonsBasePage):
     @property
     def is_version_information_heading_visible(self):
         return self.selenium.is_visible(self._version_information_heading_locator)
+
+    @property
+    def is_version_information_section_expanded(self):
+        expand_info = self.selenium.get_attribute("%s@class" % self._version_information_locator)
+        return ("expanded" in expand_info)
+
+    @property
+    def does_page_scroll_to_version_information_section(self):
+        return (self.selenium.get_eval("window.pageYOffset")) > 2000
 
     @property
     def is_review_title_visible(self):
@@ -473,6 +487,17 @@ class AddonsDetailsPage(AddonsBasePage):
     def reviews_count(self):
         self.wait_for_element_visible(self._reviews_locator)
         return int(self.selenium.get_css_count(self._reviews_locator))
+
+    @property
+    def version_info_link(self):
+        return self.selenium.get_attribute("%s@href" % self._info_link_locator)
+
+    @property
+    def is_version_info_link_visible(self):
+        return self.selenium.is_visible(self._info_link_locator)
+
+    def click_version_info_link(self):
+        self.selenium.click(self._info_link_locator)
 
     class OtherAddons(Page):
         _other_addons_locator = 'css=#author-addons li'

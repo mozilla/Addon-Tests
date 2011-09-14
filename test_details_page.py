@@ -275,6 +275,16 @@ class TestDetailsPage:
 
         Assert.equal(amo_detail_page.breadcrumb, 'Add-ons for Firefox Extensions Firebug')
 
+    def test_that_clicking_info_link_slides_down_page_to_version_info(self, mozwebqa):
+        """ Test for Litmus 25725
+            https://litmus.mozilla.org/show_test.cgi?id=25725 """
+        amo_details_page = AddonsDetailsPage(mozwebqa, 'firebug')
+        Assert.true(amo_details_page.is_version_info_link_visible)
+        amo_details_page.click_version_info_link()
+        Assert.equal(amo_details_page.version_info_link, amo_details_page.version_information)
+        Assert.true(amo_details_page.is_version_information_section_expanded)
+        Assert.true(amo_details_page.does_page_scroll_to_version_information_section)
+
     def test_that_breadcrumb_links_in_addons_details_page_work(self, mozwebqa):
         """
         Litmus 11923
