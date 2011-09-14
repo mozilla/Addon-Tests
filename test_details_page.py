@@ -282,7 +282,7 @@ class TestDetailsPage:
         amo_details_page.click_version_info_link()
         Assert.equal(amo_details_page.version_info_link, amo_details_page.version_information)
         Assert.true(amo_details_page.is_version_information_section_expanded)
-        Assert.true(amo_details_page.does_page_scrolles_to_version_information_section)
+        Assert.true(amo_details_page.does_page_scroll_to_version_information_section)
 
     def test_that_breadcrumb_links_in_addons_details_page_work(self, mozwebqa):
         """

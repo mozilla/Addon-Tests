@@ -341,7 +341,7 @@ class AddonsDetailsPage(AddonsBasePage):
         return ("expanded" in expand_info)
 
     @property
-    def does_page_scrolles_to_version_information_section(self):
+    def does_page_scroll_to_version_information_section(self):
         return (self.selenium.get_eval("window.pageYOffset")) > 2000
 
     @property
