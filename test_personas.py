@@ -126,10 +126,9 @@ class TestPersonas:
         Assert.equal("Add-ons for Firefox", amo_personas_detail_page.get_breadcrumb_item_text(1))
         Assert.equal("Personas", amo_personas_detail_page.get_breadcrumb_item_text(2))
 
-        if len(persona_title) > 40:
-            persona_title = "%s..." % persona_title[:40]
+        personal_breadcrumb_title = len(persona_title) > 40 and '%s...' % persona_title[:40] or persona_title
 
-        Assert.equal(amo_personas_detail_page.get_breadcrumb_item_text(3), persona_title)
+        Assert.equal(amo_personas_detail_page.get_breadcrumb_item_text(3), personal_breadcrumb_title)
 
         # Step 4: Click on the links present in the Breadcrumb menu.
         # Verify that the Personas link loads the Personas home page.
