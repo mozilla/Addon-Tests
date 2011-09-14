@@ -94,11 +94,6 @@ class AddonsHomePage(AddonsBasePage):
         self.selenium.wait_for_page_to_load(self.timeout)
         return AddonsCollectionsPage(self.testsetup)
 
-    def open_details_page_for_id(self, id):
-        self.selenium.open("%s/addon/%s" % (self.site_version, id))
-        self.selenium.wait_for_page_to_load(self.timeout)
-        return AddonsDetailsPage(self.testsetup, id)
-
     def _extract_iso_dates(self, xpath_locator, date_format, count):
         """
         Returns a list of iso formatted date strings extracted from
@@ -213,7 +208,7 @@ class AddonsDetailsPage(AddonsBasePage):
         if (addon_name != None):
             self.addon_name = addon_name.replace(' ', '-').lower()
             self.selenium.open("%s/addon/%s" % (self.site_version, self.addon_name))
-        self._wait_for_reviews_and_other_addons_by_author_to_load()
+            self._wait_for_reviews_and_other_addons_by_author_to_load()
         self._page_title = "%s :: Add-ons for Firefox" % self.current_page_breadcrumb
 
     @property
