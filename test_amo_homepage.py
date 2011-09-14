@@ -21,6 +21,7 @@
 #
 # Contributor(s): Bebe <florin.strugariu@softvision.ro>
 #                 Alex Lakatos <alex@greensqr.com>
+#                 Alin Trif <alin.trif@softvision.ro>
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -88,6 +89,18 @@ class TestHomePage:
         Assert.true(amo_home_page.is_mozilla_logo_visible)
         amo_home_page.click_mozilla_logo()
         Assert.equal(amo_home_page.get_url_current_page(), "http://www.mozilla.org/")
+
+    def test_that_featured_personas_exist_on_the_homepage(self, mozwebqa):
+        '''
+        Litmus29698
+        https://litmus.mozilla.org/show_test.cgi?id=29698
+        '''
+        amo_home_page = AddonsHomePage(mozwebqa)
+
+        Assert.true(amo_home_page.is_featured_personas_visible, "Featured Personas region is not visible")
+        Assert.equal(amo_home_page.fetaured_personas_title, u"Featured Personas See all \xbb", "Featured Personas region title doesn't match")
+
+        Assert.equal(amo_home_page.featured_personas_count, 6)
 
     def test_that_clicking_see_all_personas_link_works(self, mozwebqa):
         """
