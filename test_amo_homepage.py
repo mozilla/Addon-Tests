@@ -22,6 +22,7 @@
 # Contributor(s): Bebe <florin.strugariu@softvision.ro>
 #                 Alex Lakatos <alex@greensqr.com>
 #                 Teodosia Pop <teodosia.pop@softvision.ro>
+#                 Alin Trif <alin.trif@softvision.ro>
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -108,3 +109,14 @@ class TestHomePage:
         Assert.equal(amo_home_page.fetaured_personas_title, u"Featured Personas See all \xbb", "Featured Personas region title doesn't match")
 
         Assert.equal(amo_home_page.featured_personas_count, 6)
+
+    def test_that_clicking_see_all_personas_link_works(self, mozwebqa):
+        """
+        Litmus 29699
+        https://litmus.mozilla.org/show_test.cgi?id=29699
+        """
+        amo_home_page = AddonsHomePage(mozwebqa)
+        featured_persona_page = amo_home_page.click_featured_personas_see_all_link()
+
+        Assert.true(featured_persona_page.is_the_current_page)
+        Assert.equal(featured_persona_page.persona_header, 'Personas')

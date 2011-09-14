@@ -71,6 +71,7 @@ class AddonsHomePage(AddonsBasePage):
     _most_popular_item_locator = "css=ol.toplist li"
     _most_popular_list_heading_locator = _most_popular_list_locator + " h2"
 
+    _featured_personas_see_all_link = "css=#featured-personas h2 a"
     _featured_personas_locator = "id=featured-personas"
     _featured_personas_title_locator = "css=#featured-personas h2"
     _featured_personas_items_locator = "css=#featured-personas li"
@@ -80,6 +81,11 @@ class AddonsHomePage(AddonsBasePage):
         AddonsBasePage.__init__(self, testsetup)
         self.selenium.open("%s/" % self.site_version)
         self.selenium.window_maximize()
+
+    def click_featured_personas_see_all_link(self):
+        self.selenium.click(self._featured_personas_see_all_link)
+        self.selenium.wait_for_page_to_load(self.timeout)
+        return AddonsPersonasPage(self.testsetup)
 
     def click_personas(self):
         self.selenium.click(self._personas_link_locator)
@@ -774,6 +780,8 @@ class AddonsPersonasPage(AddonsHomePage):
     _featured_personas_locator = "css=.personas-featured .persona.persona-small"
     _addons_column_locator = '//div[@class="addons-column"]'
 
+    _persona_header_locator = "css=.featured-inner>h2"
+
     def __init__(self, testsetup):
         AddonsBasePage.__init__(self, testsetup)
 
@@ -842,6 +850,10 @@ class AddonsPersonasPage(AddonsHomePage):
         locator = self._persona_in_column_locator(3)
         pattern = "Rated\s+(\d)\s+.*"
         return self._extract_integers(locator, pattern, self.top_rated_count)
+
+    @property
+    def persona_header(self):
+        return self.selenium.get_text(self._persona_header_locator)
 
 
 class AddonsPersonasDetailPage(AddonsBasePage):
