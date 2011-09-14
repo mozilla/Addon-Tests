@@ -64,13 +64,16 @@ class AddonsHomePage(AddonsBasePage):
     _themes_link_locator = "css=#themes > a"
     _personas_link_locator = "css=#personas > a"
     _collections_link_locator = "css=#collections > a"
+    _first_addon_locator = "css=div.summary > a > h3"
 
     #Most Popular List
     _most_popular_list_locator = "css=#homepage > .secondary"
     _most_popular_item_locator = "css=ol.toplist li"
     _most_popular_list_heading_locator = _most_popular_list_locator + " h2"
 
-    _first_addon_locator = "css=div.summary > a > h3"
+    _featured_personas_locator = "id=featured-personas"
+    _featured_personas_title_locator = "css=#featured-personas h2"
+    _featured_personas_items_locator = "css=#featured-personas li"
 
     def __init__(self, testsetup):
         ''' Creates a new instance of the class and gets the page ready for testing '''
@@ -148,6 +151,18 @@ class AddonsHomePage(AddonsBasePage):
     def most_popular_list_heading(self):
         return self.selenium.get_text(self._most_popular_list_heading_locator)
 
+    @property
+    def is_featured_personas_visible(self):
+        return self.selenium.is_visible(self._featured_personas_locator)
+
+    @property
+    def featured_personas_count(self):
+        return self.selenium.get_css_count(self._featured_personas_items_locator)
+
+    @property
+    def fetaured_personas_title(self):
+        return self.selenium.get_text(self._featured_personas_title_locator)
+
     def click_on_first_addon(self):
         self.selenium.click(self._first_addon_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
@@ -191,6 +206,7 @@ class AddonsDetailsPage(AddonsBasePage):
     _review_details_locator = "css=.review .description"
     _all_reviews_link_locator = "css=a.more-info"
     _review_locator = "css=div.review:not(.reply)"
+
     _image_locator = "css=#preview.slider li.panel.active a"
     _image_viewer_locator = 'id=lightbox'
 
@@ -379,7 +395,8 @@ class AddonsDetailsPage(AddonsBasePage):
         return self.selenium.get_attribute("%s@href" % self._website_locator)
 
     def click_website_link(self):
-        self.selenium.open(self.website)
+        self.selenium.click(self._website_locator)
+        self.selenium.wait_for_page_to_load(self.timeout)
 
     @property
     def support_url(self):
@@ -410,7 +427,6 @@ class AddonsDetailsPage(AddonsBasePage):
     @property
     def previewer(self):
         return self.ImagePreviewer(self.testsetup)
-
 
     class ImagePreviewer(Page):
 
@@ -484,6 +500,7 @@ class AddonsDetailsPage(AddonsBasePage):
 
         @property
         def name(self):
+            self.selenium.mouse_over(self.absolute_locator(self._name_locator))
             return self.selenium.get_text(self.absolute_locator(self._name_locator))
 
         def click_addon_link(self):
@@ -540,6 +557,8 @@ class AddonsWriteReviewBlock(AddonsBasePage):
     _add_review_input_rating_locator = "css=.ratingwidget input"
     _add_review_submit_button_locator = "css=#review-box input[type=submit]"
 
+    _add_review_box = 'css=#review-box'
+
     def enter_review_with_text(self, text):
         self.selenium.type(self._add_review_input_field_locator, text)
 
@@ -551,6 +570,10 @@ class AddonsWriteReviewBlock(AddonsBasePage):
         self.selenium.click(self._add_review_submit_button_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
         return AddonViewReviewsPage(self.testsetup)
+
+    @property
+    def is_review_box_visible(self):
+        return self.selenium.is_visible(self._add_review_box)
 
 
 class AddonViewReviewsPage(AddonsBasePage):
@@ -1019,3 +1042,8 @@ class UserFAQPage(AddonsBasePage):
     @property
     def license_answer(self):
         return self.selenium.get_text(self._license_answer_locator)
+
+
+class ExtensionsHomePage(AddonsBasePage):
+
+    _page_title = 'Featured Extensions :: Add-ons for Firefox'

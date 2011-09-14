@@ -44,9 +44,9 @@ from datetime import datetime
 from unittestzero import Assert
 
 from addons_site import AddonsHomePage, AddonsDetailsPage
-from addons_user_page import AddonsLoginPage
 
 xfail = pytest.mark.xfail
+
 
 class TestReviews:
 
@@ -91,10 +91,8 @@ class TestReviews:
             https://litmus.mozilla.org/show_test.cgi?id=22921 """
         # Step 1 - Login into AMO
         amo_home_page = AddonsHomePage(mozwebqa)
-        credentials = mozwebqa.credentials['default']
-        amo_home_page.header.click_login()
-        addons_login_page = AddonsLoginPage(mozwebqa)
-        addons_login_page.login(credentials['email'], credentials['password'])
+        amo_home_page.login()
+        Assert.true(amo_home_page.is_the_current_page)
         Assert.true(amo_home_page.header.is_user_logged_in)
 
         # Step 2 - Load any addon detail page
@@ -112,7 +110,7 @@ class TestReviews:
         # Step 5 - Assert review
         review = review_page.review()
         Assert.equal(review.rating, 1)
-        Assert.equal(review.author, credentials['name'])
+        Assert.equal(review.author, mozwebqa.credentials['default']['name'])
         date = datetime.now().strftime("%B %d, %Y")
         # there are no leading zero-signs on day so we need to remove them too
         date = date.replace(' 0', ' ')
