@@ -45,8 +45,7 @@
 # ***** END LICENSE BLOCK *****
 
 from addons_base_page import AddonsBasePage
-from datetime import datetime
-import re
+
 
 class AddonsHomePage(AddonsBasePage):
 
@@ -97,48 +96,6 @@ class AddonsHomePage(AddonsBasePage):
         self.selenium.wait_for_page_to_load(self.timeout)
         from addons_collection_page import AddonsCollectionsPage
         return AddonsCollectionsPage(self.testsetup)
-
-    def _extract_iso_dates(self, xpath_locator, date_format, count):
-        """
-        Returns a list of iso formatted date strings extracted from
-        the text elements matched by the given xpath_locator and
-        original date_format.
-
-        So for example, given the following elements:
-          <p>Added May 09, 2010</p>
-          <p>Added June 11, 2011</p>
-
-        A call to:
-          _extract_iso_dates("//p", "Added %B %d, %Y", 2)
-
-        Returns:
-          ['2010-05-09T00:00:00','2011-06-11T00:00:00']
-
-        """
-        addon_dates = [
-            self.selenium.get_text("xpath=(%s)[%d]" % (xpath_locator, i))
-            for i in xrange(1, count + 1)
-        ]
-        iso_dates = [
-            datetime.strptime(s, date_format).isoformat()
-            for s in addon_dates
-        ]
-        return iso_dates
-
-    def _extract_integers(self, xpath_locator, regex_pattern, count):
-        """
-        Returns a list of integers extracted from the text elements
-        matched by the given xpath_locator and regex_pattern.
-        """
-        addon_numbers = [
-            self.selenium.get_text("xpath=(%s)[%d]" % (xpath_locator, i))
-            for i in xrange(1, count + 1)
-        ]
-        integer_numbers = [
-            int(re.search(regex_pattern, str(x).replace(",", "")).group(1))
-            for x in addon_numbers
-        ]
-        return integer_numbers
 
     @property
     def most_popular_count(self):
