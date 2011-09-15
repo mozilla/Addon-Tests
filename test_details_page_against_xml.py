@@ -39,7 +39,7 @@
 
 #from selenium import selenium
 #from addons_site import AddonsHomePage
-from addons_site import AddonsDetailsPage
+from addons_details_page import AddonsDetailsPage
 #from addons_search_home_page import AddonsSearchHomePage
 from addons_api import AddOnsAPI
 
