@@ -43,14 +43,23 @@ from page import Page
 
 class AddonsBasePage(Page):
 
-    _next_link_locator = "link=Next"
-    _previous_link_locator = "link=Prev"
-    _current_page_locator = "css=.pagination li.selected a"
-    _last_page_link_locator = "css=.pagination a:not([rel]):last"
-    _first_page_link_locator = "css=.pagination a:not([rel]):first"
+    _next_link_locator = "css=.paginator .rel > a:nth(2)"
+    _previous_link_locator = "css=.paginator .rel > a:nth(1)"
+    _current_page_locator = "css=.paginator .num > a"
+    _last_page_link_locator = "css=.paginator .rel > a:nth(3)"
+    _first_page_link_locator = "css=.paginator .rel > a:nth(0)"
 
     _amo_logo_link_locator = "css=.site-title a"
     _amo_logo_image_locator = "css=.site-title img"
+
+    _mozilla_logo_link_locator = "css=#global-header-tab a"
+
+    _breadcrumbs_locator = "css=#breadcrumbs>ol>li"
+
+    def login (self, user="default"):
+
+        addons_login_page = self.header.click_login()
+        addons_login_page.login_user(user)
 
     @property
     def amo_logo_title(self):
@@ -68,6 +77,14 @@ class AddonsBasePage(Page):
     def is_amo_logo_image_visible(self):
         return self.selenium.is_visible(self._amo_logo_image_locator)
 
+    @property
+    def is_mozilla_logo_visible(self):
+        return self.selenium.is_visible(self._mozilla_logo_link_locator)
+
+    def click_mozilla_logo(self):
+        self.selenium.click(self._mozilla_logo_link_locator)
+        self.selenium.wait_for_page_to_load(self.timeout)
+
     def page_forward(self):
         self.selenium.click(self._next_link_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
@@ -77,16 +94,18 @@ class AddonsBasePage(Page):
         self.selenium.wait_for_page_to_load(self.timeout)
 
     @property
-    def is_prev_link_present(self):
-        return self.selenium.is_element_present(self._previous_link_locator)
+    def is_prev_link_disabled(self):
+        button = self.selenium.get_attribute(self._previous_link_locator + "%s" % "@class")
+        return ("disabled" in button)
 
     @property
     def is_prev_link_visible(self):
         return self.selenium.is_visible(self._previous_link_locator)
 
     @property
-    def is_next_link_present(self):
-        return self.selenium.is_element_present(self._next_link_locator)
+    def is_next_link_disabled(self):
+        button = self.selenium.get_attribute(self._next_link_locator + "%s" % "@class")
+        return ("disabled" in button)
 
     @property
     def is_next_link_visible(self):
@@ -111,36 +130,40 @@ class AddonsBasePage(Page):
     def header(self):
         return AddonsBasePage.HeaderRegion(self.testsetup)
 
+    @property
+    def breadcrumbs(self):
+        return [self.BreadcrumbsRegion(self.testsetup, i) for i in range(self.breadcrumbs_count)]
+
+    @property
+    def breadcrumbs_count(self):
+        return self.selenium.get_css_count(self._breadcrumbs_locator)
+
+    @property
+    def is_breadcrumb_menu_visible(self):
+        return self.selenium.is_visible(self._breadcrumbs_locator)
+
     class HeaderRegion(Page):
 
         #other applications
-        _other_applications_locator = "css=#other-apps"
+        _other_applications_locator = "id=other-apps"
         _app_thunderbird = "css=#app-thunderbird a"
-
-
-        _other_apps_locator = "id=other-apps"
-
 
         #Search box
         _search_button_locator = "css=.search-button"
         _search_textbox_locator = "name=q"
 
         #Not LogedIn
-        _login_locator = "css=.amo-header .context a:nth(1)"  # Until https://bugzilla.mozilla.org/show_bug.cgi?id=669646
-        _register_locator = "css=.amo-header .context a:nth(0)"
+        _login_locator = "css=#aux-nav li.account a:nth(1)"
+        _register_locator = "css=#aux-nav li.account a:nth(0)"
 
         #LogedIn
-        _account_controller_locator = 'css=#aux-nav .account .controller'
-        _dropdown_locator = "css=#aux-nav .account ul"
+        _account_controller_locator = 'css=#aux-nav .account .user'
+        _account_dropdown_locator = "css=#aux-nav .account ul"
+        _logout_locator = 'css=li.nomenu.logout > a'
 
-        # Impala locators
-        _impala_login_locator = "css=#aux-nav a:nth(1)"
-        _impala_account_controller_locator = 'css=#aux-nav .account .user'
-
-
+        #TODO:hover other apps
         def click_other_applications(self):
-            self.selenium.click('%s a' % self._other_applications_locator)
-            self.wait_for_element_visible('%s ul' % self._other_applications_locator)
+            self.selenium.click(self._other_applications_locator)
 
         def click_thunderbird(self):
             self.selenium.click(self._app_thunderbird)
@@ -151,7 +174,7 @@ class AddonsBasePage(Page):
 
         @property
         def other_applications_tooltip(self):
-            return self.selenium.get_attribute("%s@title" % self._other_apps_locator)
+            return self.selenium.get_attribute("%s@title" % self._other_applications_locator)
 
         def search_for(self, search_term):
             self.selenium.type(self._search_textbox_locator, search_term)
@@ -166,42 +189,60 @@ class AddonsBasePage(Page):
 
         def click_my_account(self):
             self.selenium.click(self._account_controller_locator)
-            self.wait_for_element_visible(self._dropdown_locator)
+            self.wait_for_element_visible(self._account_dropdown_locator)
 
         def click_login(self):
-            if self.site_version == '/i':
-                self.selenium.click(self._impala_login_locator)
-            else:
-                self.selenium.click(self._login_locator)
+            self.selenium.click(self._login_locator)
             self.selenium.wait_for_page_to_load(self.timeout)
+            from addons_user_page import AddonsLoginPage
+            return AddonsLoginPage(self.testsetup)
 
         def click_logout(self):
-            self.click_my_account()
-            if self.selenium.get_text('%s > li:nth(3) a' % self._dropdown_locator) == "Log out":  # Until the https://bugzilla.mozilla.org/show_bug.cgi?id=669650
-                self.selenium.click('%s > li:nth(3) a' % self._dropdown_locator)
-            else:
-                self.selenium.click('%s > li:nth(4) a' % self._dropdown_locator)
+            self.selenium.click(self._logout_locator)
             self.selenium.wait_for_page_to_load(self.timeout)
 
         def click_edit_profile(self):
             self.click_my_account
-            self.selenium.click('%s > li:nth(1) a' % self._dropdown_locator)
+            self.selenium.click('%s > li:nth(1) a' % self._account_dropdown_locator)
             self.selenium.wait_for_page_to_load(self.timeout)
+            from addons_user_page import AddonsEditProfilePage
+            return AddonsEditProfilePage(self.testsetup)
 
         def click_view_profile(self):
             self.click_my_account
-            self.selenium.click('%s > li:nth(0) a' % self._dropdown_locator)
+            self.selenium.click('%s > li:nth(0) a' % self._account_dropdown_locator)
             self.selenium.wait_for_page_to_load(self.timeout)
             from addons_user_page import AddonsViewProfilePage
             return AddonsViewProfilePage(self.testsetup)
 
         @property
         def is_user_logged_in(self):
-            if self.site_version == '/i':
-                locator = self._impala_account_controller_locator
-            else:
-                locator = self._account_controller_locator
             try:
-                return self.selenium.is_visible(locator)
+                return self.selenium.is_visible(self._account_controller_locator)
             except:
                 return False
+
+    class BreadcrumbsRegion(Page):
+
+        _breadcrumb_locator = "css=#breadcrumbs>ol"  # Base locator
+        _link_locator = " a"
+        _link_value_locator = " a@href"
+
+        def __init__(self, testsetup, lookup):
+            Page.__init__(self, testsetup)
+            self.lookup = lookup
+
+        def absolute_locator(self, relative_locator=""):
+            return "%s>li:nth(%s)%s" % (self._breadcrumb_locator, self.lookup, relative_locator)
+
+        def click(self):
+            self.selenium.click(self.absolute_locator(self._link_locator))
+            self.selenium.wait_for_page_to_load(self.timeout)
+
+        @property
+        def name(self):
+            return self.selenium.get_text(self.absolute_locator())
+
+        @property
+        def link_value(self):
+            return self.selenium.get_attribute(self.absolute_locator(self._link_value_locator))

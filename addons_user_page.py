@@ -20,6 +20,7 @@
 # the Initial Developer. All Rights Reserved.
 #
 # Contributor(s): Bebe <florin.strugariu@softvision.ro>
+#                 Stephen Donner
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -41,13 +42,14 @@ from addons_base_page import AddonsBasePage
 class AddonsLoginPage(AddonsBasePage):
 
     _page_title = 'User Login :: Add-ons for Firefox'
-    _email_locator = 'id=LoginEmail'
-    _password_locator = 'id=LoginPassword'
-    _login_button_locator = 'css=#login button.prominent'  # Using css till 668749 implemented
+    _email_locator = 'id=id_username'
+    _password_locator = 'id=id_password'
+    _login_button_locator = 'id=login-submit'
 
-    def login(self, email, password):
-        self.selenium.type(self._email_locator, email)
-        self.selenium.type(self._password_locator, password)
+    def login_user(self, user):
+        credentials = self.testsetup.credentials[user]
+        self.selenium.type(self._email_locator, credentials['email'])
+        self.selenium.type(self._password_locator, credentials['password'])
         self.selenium.click(self._login_button_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
 
@@ -61,6 +63,7 @@ class AddonsViewProfilePage(AddonsBasePage):
     def about_me(self):
         return self.selenium.get_text(self._about_locator)
 
+
 class AddonsUserPage(AddonsBasePage):
 
         _username_locator = "css=div.vcard h2.fn"
@@ -73,8 +76,23 @@ class AddonsUserPage(AddonsBasePage):
 class AddonsEditProfilePage(AddonsBasePage):
 
     _page_title = 'Account Settings :: Add-ons for Firefox'
-    _title_locator = 'css=div.primary h2'
+    _account_locator = "css=#acct-account > legend"
+    _profile_locator = "css=#profile-personal > legend"
+    _details_locator = "css=#profile-detail > legend"
+    _notification_locator = "css=#acct-notify > legend"
 
     @property
-    def page_title(self):
-        return self.selenium.get_text(self._title_locator)
+    def is_account_visible(self):
+        return self.selenium.get_text(self._account_locator)
+
+    @property
+    def is_profile_visible(self):
+        return self.selenium.get_text(self._profile_locator)
+
+    @property
+    def is_details_visible(self):
+        return self.selenium.get_text(self._details_locator)
+
+    @property
+    def is_notification_visible(self):
+        return self.selenium.get_text(self._notification_locator)

@@ -44,17 +44,18 @@ from datetime import datetime
 from unittestzero import Assert
 
 from addons_site import AddonsHomePage, AddonsDetailsPage
-from addons_user_page import AddonsLoginPage
+
+xfail = pytest.mark.xfail
 
 
 class TestReviews:
 
-    def test_that_all_reviews_hyperlink_works(self, testsetup):
+    def test_that_all_reviews_hyperlink_works(self, mozwebqa):
         """ Test for litmus 4843
             https://litmus.mozilla.org/show_test.cgi?id=4843
         """
         #Open details page for Adblock Plus
-        amo_details_page = AddonsDetailsPage(testsetup, 'Adblock Plus')
+        amo_details_page = AddonsDetailsPage(mozwebqa, 'Adblock Plus')
         Assert.true(amo_details_page.has_reviews)
 
         amo_details_page.click_all_reviews_link()
@@ -62,7 +63,7 @@ class TestReviews:
 
         #Go to the last page and check that the next button is not present
         amo_details_page.go_to_last_page()
-        Assert.false(amo_details_page.is_next_link_present)
+        Assert.true(amo_details_page.is_next_link_disabled)
 
         #Go one page back, check that it has 20 reviews
         #that the page number decreases and that the next link is visible
@@ -74,7 +75,7 @@ class TestReviews:
 
         #Go to the first page and check that the prev button is not present
         amo_details_page.go_to_first_page()
-        Assert.false(amo_details_page.is_prev_link_present)
+        Assert.true(amo_details_page.is_prev_link_disabled)
 
         #Go one page forward, check that it has 20 reviews,
         #that the page number increases and that the prev link is visible
@@ -84,20 +85,18 @@ class TestReviews:
         Assert.equal(amo_details_page.review_count, 20)
         Assert.equal(amo_details_page.current_page, page_number + 1)
 
-    @pytest.mark.impala
-    def test_that_new_review_is_saved(self, testsetup):
+    @xfail(reason="https://www.pivotaltracker.com/story/show/17712967")
+    def test_that_new_review_is_saved(self, mozwebqa):
         """ Litmus 22921
             https://litmus.mozilla.org/show_test.cgi?id=22921 """
         # Step 1 - Login into AMO
-        amo_home_page = AddonsHomePage(testsetup)
-        credentials = amo_home_page.credentials_of_user('default')
-        amo_home_page.header.click_login()
-        addons_login_page = AddonsLoginPage(testsetup)
-        addons_login_page.login(credentials['email'], credentials['password'])
+        amo_home_page = AddonsHomePage(mozwebqa)
+        amo_home_page.login()
+        Assert.true(amo_home_page.is_the_current_page)
         Assert.true(amo_home_page.header.is_user_logged_in)
 
         # Step 2 - Load any addon detail page
-        details_page = AddonsDetailsPage(testsetup, 'Adblock Plus')
+        details_page = AddonsDetailsPage(mozwebqa, 'Adblock Plus')
 
         # Step 3 - Click on "Write review" button
         write_review_block = details_page.click_to_write_review()
@@ -111,10 +110,9 @@ class TestReviews:
         # Step 5 - Assert review
         review = review_page.review()
         Assert.equal(review.rating, 1)
-        Assert.equal(review.author, credentials['name'])
+        Assert.equal(review.author, mozwebqa.credentials['default']['name'])
         date = datetime.now().strftime("%B %d, %Y")
         # there are no leading zero-signs on day so we need to remove them too
         date = date.replace(' 0', ' ')
         Assert.equal(review.date, date)
         Assert.equal(review.text, body)
-
