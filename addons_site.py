@@ -54,6 +54,7 @@ from page import Page
 from addons_base_page import AddonsBasePage
 from addons_collection_page import AddonsCollectionsPage
 from addons_user_page import AddonsUserPage
+from themes_page import ThemesPage
 import image_viewer_region
 
 
@@ -96,54 +97,12 @@ class AddonsHomePage(AddonsBasePage):
         self.wait_for_element_visible(self._themes_link_locator)
         self.selenium.click(self._themes_link_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
-        return AddonsThemesPage(self.testsetup)
+        return ThemesPage(self.testsetup)
 
     def click_collections(self):
         self.selenium.click(self._collections_link_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
         return AddonsCollectionsPage(self.testsetup)
-
-    def _extract_iso_dates(self, xpath_locator, date_format, count):
-        """
-        Returns a list of iso formatted date strings extracted from
-        the text elements matched by the given xpath_locator and
-        original date_format.
-
-        So for example, given the following elements:
-          <p>Added May 09, 2010</p>
-          <p>Added June 11, 2011</p>
-
-        A call to:
-          _extract_iso_dates("//p", "Added %B %d, %Y", 2)
-
-        Returns:
-          ['2010-05-09T00:00:00','2011-06-11T00:00:00']
-
-        """
-        addon_dates = [
-            self.selenium.get_text("xpath=(%s)[%d]" % (xpath_locator, i))
-            for i in xrange(1, count + 1)
-        ]
-        iso_dates = [
-            datetime.strptime(s, date_format).isoformat()
-            for s in addon_dates
-        ]
-        return iso_dates
-
-    def _extract_integers(self, xpath_locator, regex_pattern, count):
-        """
-        Returns a list of integers extracted from the text elements
-        matched by the given xpath_locator and regex_pattern.
-        """
-        addon_numbers = [
-            self.selenium.get_text("xpath=(%s)[%d]" % (xpath_locator, i))
-            for i in xrange(1, count + 1)
-        ]
-        integer_numbers = [
-            int(re.search(regex_pattern, str(x).replace(",", "")).group(1))
-            for x in addon_numbers
-        ]
-        return integer_numbers
 
     @property
     def most_popular_count(self):
@@ -658,142 +617,6 @@ class AddonViewReviewsPage(AddonsBasePage):
             # we need to parse the string first to get date
             date = re.match('^(.+on\s)([A-Za-z]+\s[\d]+,\s[\d]+)(.+)$', date)
             return date.group(2)
-
-
-class AddonsThemesPage(AddonsHomePage):
-
-    _sort_by_name_locator = 'name=_t-name'
-    _sort_by_updated_locator = 'name=_t-updated'
-    _sort_by_created_locator = 'name=_t-created'
-    _sort_by_popular_locator = 'name=_t-popular'
-    _sort_by_rating_locator = 'name=_t-rating'
-    _addons_root_locator = " // div[@class = 'details']"
-    _addon_name_locator = _addons_root_locator + " / h4 / a"
-    _addons_metadata_locator = _addons_root_locator + " / p[@class = 'meta']"
-    _addons_rating_locator = _addons_metadata_locator + " / span / span"
-    _breadcrumb_locator = "css = ol.breadcrumbs"
-    _category_locator = "css = #c-30 > a"
-    _addons_root_locator = "//div[@class='details']"
-    _addon_name_locator = _addons_root_locator + "/h4/a"
-    _addons_metadata_locator = _addons_root_locator + "/p[@class='meta']"
-    _addons_rating_locator = _addons_metadata_locator + "/span/span"
-    _breadcrumb_locator = "css=ol.breadcrumbs"
-    _category_locator = "css=#c-30 > a"
-    _categories_locator = "css=.other-categories ul:nth-of-type(2) li"
-    _category_link_locator = _categories_locator + ":nth-of-type(%s) a"
-    _top_counter_locator = "css=div.primary>header b"
-    _bottom_counter_locator = "css=div.num-results > strong:nth(2)"
-
-    # TODO: remove pagination locators when impala pages are available for themes
-    _next_link_locator = "link=Next"
-
-    def __init__(self, testsetup):
-        AddonsBasePage.__init__(self, testsetup)
-
-    # TODO: remove method when impala pages are available for themes
-    def page_forward(self):
-        self.selenium.click(self._next_link_locator)
-        self.selenium.wait_for_page_to_load(self.timeout)
-
-    def click_sort_by(self, type_):
-        self.selenium.click(getattr(self, "_sort_by_%s_locator" % type_))
-        self.selenium.wait_for_page_to_load(self.timeout)
-
-    def click_on_first_addon(self):
-        self.selenium.click(self._addon_name_locator)
-        self.selenium.wait_for_page_to_load(self.timeout)
-        return AddonsThemePage(self.testsetup)
-
-    def click_on_first_category(self):
-        self.selenium.click(self._category_locator)
-        self.selenium.wait_for_page_to_load(self.timeout)
-        return AddonsThemesCategoryPage(self.testsetup)
-
-    def get_category(self, lookup):
-        return self.selenium.get_text(self._category_link_locator % lookup)
-
-    @property
-    def page_title(self):
-        return self.selenium.get_title()
-
-    @property
-    def themes_breadcrumb(self):
-        return self.selenium.get_text(self._breadcrumb_locator)
-
-    @property
-    def themes_category(self):
-        return self.selenium.get_text(self._category_locator)
-
-    @property
-    def categories_count(self):
-        return self.selenium.get_css_count(self._categories_locator)
-
-    @property
-    def addon_names(self):
-        addon_count = int(self.selenium.get_xpath_count(self._addon_name_locator))
-        _addon_names = [self.selenium.get_text("xpath=(" + self._addon_name_locator + ")[%s]" % str(i + 1))
-                        for i in xrange(addon_count)]
-        return _addon_names
-
-    @property
-    def addon_count(self):
-        count = self.selenium.get_xpath_count(self._addon_name_locator)
-        return int(count)
-
-    @property
-    def addon_updated_dates(self):
-        count = self.addon_count
-        return self._extract_iso_dates(self._addons_metadata_locator, "Updated %B %d, %Y", count)
-
-    @property
-    def addon_created_dates(self):
-        count = self.addon_count
-        return self._extract_iso_dates(self._addons_metadata_locator, "Added %B %d, %Y", count)
-
-    @property
-    def addon_download_number(self):
-        pattern = "(\d+(?:[,]\d+)*) weekly downloads"
-        downloads_locator = self._addons_metadata_locator
-        downloads = self._extract_integers(downloads_locator, pattern, self.addon_count)
-        return downloads
-
-    @property
-    def addon_rating(self):
-        pattern = "(\d)"
-        ratings_locator = self._addons_rating_locator
-        ratings = self._extract_integers(ratings_locator, pattern, self.addon_count)
-        return ratings
-
-    @property
-    def top_counter(self):
-        return self.selenium.get_text(self._top_counter_locator)
-
-    @property
-    def bottom_counter(self):
-        return self.selenium.get_text(self._bottom_counter_locator)
-
-
-class AddonsThemePage(AddonsBasePage):
-
-    _addon_title = "css=h1.addon"
-
-    @property
-    def addon_title(self):
-        return self.selenium.get_text(self._addon_title)
-
-
-class AddonsThemesCategoryPage(AddonsBasePage):
-
-    _title_locator = "css=h2"
-    _breadcrumb_locator = "css=ol.breadcrumbs"
-
-    @property
-    def title(self):
-        return self.selenium.get_text(self._title_locator)
-
-    @property
-    def breadcrumb(self):
-        return self.selenium.get_text(self._breadcrumb_locator)
 
 
 class AddonsPersonasPage(AddonsHomePage):

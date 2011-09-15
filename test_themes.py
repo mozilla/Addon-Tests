@@ -44,6 +44,7 @@
 from unittestzero import Assert
 
 from addons_site import AddonsHomePage
+from themes_page import ThemesPage
 import pytest
 xfail = pytest.mark.xfail
 
