@@ -127,3 +127,7 @@ class AddonsHomePage(AddonsBasePage):
         from addons_site import AddonsDetailsPage
         return AddonsDetailsPage(self.testsetup)
 
+    def get_title_of_link(self, name):
+        name = name.lower().replace(" ", "_")
+        locator = getattr(self, "_%s_link_locator" % name)
+        return self.selenium.get_attribute("%s@title" % locator)
