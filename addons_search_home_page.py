@@ -48,7 +48,7 @@ class AddonsSearchHomePage(AddonsBasePage):
 
     _results_summary_locator = "css=h3.results-count"
     _results_displayed_locator = "css=div.num-results"
-    _results_locator = "css=div.results-inner div.item"
+    _results_locator = "css=div.items div.item"
 
     _pagination_loctor = "css=div.listing-footer li"
     _next_link_locator = "link=Next"
@@ -134,11 +134,10 @@ class AddonsSearchHomePage(AddonsBasePage):
         def root_locator(self):
             if type(self.lookup) == int:
                 # lookup by index
-                return "css=div.results-inner div.item:nth(%s)" % self.lookup
+                return "css=div.items div.item:nth(%s)" % self.lookup
             else:
                 # lookup by name
-
-                return "css=div.results-inner div.item:contains(%s)" % self.lookup
+                return "css=div.items div.item:contains(%s)" % self.lookup
 
         @property
         def name(self):
@@ -150,8 +149,8 @@ class AddonsSearchHomePage(AddonsBasePage):
 
         @property
         def downloads(self):
-            locator = self.root_locator + ' div.item-info p.downloads strong'
-            return int(self.selenium.get_text(locator).replace(',', ''))
+            locator = self.root_locator + ' .info .adu'
+            return int(self.selenium.get_text(locator).replace('\D', ''))
 
         @property
         def users(self):
@@ -160,14 +159,14 @@ class AddonsSearchHomePage(AddonsBasePage):
 
         @property
         def rating(self):
-            locator = self.root_locator + ' div.item-info p.addon-rating span span'
+            locator = self.root_locator + ' .info .rating .stars span'
             return int(self.selenium.get_text(locator))
 
         @property
         def created_date(self):
             """ Returns created date of result in POSIX format """
-            locator = self.root_locator + ' div.item-info p.updated'
-            date = self.selenium.get_text(locator).strip().replace('Added ', '')
+            locator = self.root_locator + ' .info .updated'
+            date = self.selenium.get_text(locator).strip().replace('/^\w+\s/', '')
             # convert to POSIX format
             date = strptime(date, '%B %d, %Y')
             return mktime(date)
@@ -175,8 +174,4 @@ class AddonsSearchHomePage(AddonsBasePage):
         @property
         def updated_date(self):
             """ Returns updated date of result in POSIX format """
-            locator = self.root_locator + ' div.item-info p.updated'
-            date = self.selenium.get_text(locator).strip().replace('Updated ', '')
-            # convert to POSIX format
-            date = strptime(date, '%B %d, %Y')
-            return mktime(date)
+            return self.created_date

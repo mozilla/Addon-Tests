@@ -122,10 +122,7 @@ class TestReviews:
             https://litmus.mozilla.org/show_test.cgi?id=22916 """
         # Step 1 - Login into AMO
         amo_home_page = AddonsHomePage(mozwebqa)
-        credentials = mozwebqa.credentials['default']
-        amo_home_page.header.click_login()
-        addons_login_page = AddonsLoginPage(mozwebqa)
-        addons_login_page.login(credentials['email'], credentials['password'])
+        amo_home_page.login()
         Assert.true(amo_home_page.header.is_user_logged_in)
 
         # Step 2 - Go to add-ons listing page sorted by rating
@@ -137,6 +134,7 @@ class TestReviews:
         addon = amo_search_page.results()[-1]
         addon_name = addon.name
         details_page = AddonsDetailsPage(mozwebqa, addon_name)
+
 
         # Step 5 - Click on the "Write review" button
         write_review_block = details_page.click_to_write_review()
