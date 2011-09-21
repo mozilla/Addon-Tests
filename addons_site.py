@@ -65,6 +65,7 @@ class AddonsHomePage(AddonsBasePage):
     _personas_link_locator = "css=#personas > a"
     _collections_link_locator = "css=#collections > a"
     _first_addon_locator = "css=div.summary > a > h3"
+    _other_applications_link_locator = "id=other-apps"
 
     #Most Popular List
     _most_popular_list_locator = "css=#homepage > .secondary"
@@ -173,6 +174,11 @@ class AddonsHomePage(AddonsBasePage):
         self.selenium.click(self._first_addon_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
         return AddonsDetailsPage(self.testsetup)
+
+    def get_title_of_link(self, name):
+        name = name.lower().replace(" ", "_")
+        locator = getattr(self, "_%s_link_locator" % name)
+        return self.selenium.get_attribute("%s@title" % locator)
 
 
 class AddonsDetailsPage(AddonsBasePage):
