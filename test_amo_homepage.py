@@ -39,7 +39,7 @@
 # ***** END LICENSE BLOCK *****
 
 from unittestzero import Assert
-from addons_site import AddonsHomePage
+from addons_homepage import AddonsHomePage
 import pytest
 
 

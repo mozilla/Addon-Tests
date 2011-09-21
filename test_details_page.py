@@ -46,10 +46,10 @@ xfail = pytest.mark.xfail
 
 from unittestzero import Assert
 from addons_site import UserFAQPage
-from addons_site import AddonsDetailsPage, AddonsHomePage
+from addons_site import AddonsDetailsPage
 from addons_user_page import AddonsLoginPage
 from addons_site import ExtensionsHomePage
-
+from addons_homepage import AddonsHomePage
 
 class TestDetailsPage:
 
