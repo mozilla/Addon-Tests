@@ -125,7 +125,7 @@ class AddonsHomePage(AddonsBasePage):
     def click_on_first_addon(self):
         self.selenium.click(self._first_addon_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
-        from addons_site import AddonsDetailsPage
+        from addons_details_page import AddonsDetailsPage
         return AddonsDetailsPage(self.testsetup)
 
     def get_title_of_link(self, name):
