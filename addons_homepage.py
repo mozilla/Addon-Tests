@@ -98,6 +98,12 @@ class AddonsHomePage(AddonsBasePage):
         from addons_collection_page import AddonsCollectionsPage
         return AddonsCollectionsPage(self.testsetup)
 
+    def click_category(self):
+        self.selenium.click(self._category_link_locator)
+        self.selenium.wait_for_page_to_load(self.timeout)
+        from addons_category_page import AddonsCategoryPage
+        return AddonsCategoryPage(self.testsetup)
+
     @property
     def most_popular_count(self):
         return self.selenium.get_css_count(self._most_popular_item_locator)
