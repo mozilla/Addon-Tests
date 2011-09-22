@@ -38,9 +38,9 @@
 #
 # ***** END LICENSE BLOCK *****
 
-import re
 from page import Page
 from datetime import datetime
+import re
 
 
 class AddonsBasePage(Page):

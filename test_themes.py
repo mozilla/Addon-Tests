@@ -43,8 +43,8 @@
 
 from unittestzero import Assert
 
-from addons_site import AddonsHomePage
 from themes_page import ThemesPage
+from addons_homepage import AddonsHomePage
 import pytest
 xfail = pytest.mark.xfail
 

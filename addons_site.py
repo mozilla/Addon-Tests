@@ -58,82 +58,6 @@ from themes_page import ThemesPage
 import image_viewer_region
 
 
-class AddonsHomePage(AddonsBasePage):
-
-    _page_title = "Add-ons for Firefox"
-
-    _themes_link_locator = "css=#themes > a"
-    _personas_link_locator = "css=#personas > a"
-    _collections_link_locator = "css=#collections > a"
-    _first_addon_locator = "css=div.summary > a > h3"
-
-    #Most Popular List
-    _most_popular_list_locator = "css=#homepage > .secondary"
-    _most_popular_item_locator = "css=ol.toplist li"
-    _most_popular_list_heading_locator = _most_popular_list_locator + " h2"
-
-    _featured_personas_see_all_link = "css=#featured-personas h2 a"
-    _featured_personas_locator = "id=featured-personas"
-    _featured_personas_title_locator = "css=#featured-personas h2"
-    _featured_personas_items_locator = "css=#featured-personas li"
-
-    def __init__(self, testsetup):
-        ''' Creates a new instance of the class and gets the page ready for testing '''
-        AddonsBasePage.__init__(self, testsetup)
-        self.selenium.open("%s/" % self.site_version)
-        self.selenium.window_maximize()
-
-    def click_featured_personas_see_all_link(self):
-        self.selenium.click(self._featured_personas_see_all_link)
-        self.selenium.wait_for_page_to_load(self.timeout)
-        return AddonsPersonasPage(self.testsetup)
-
-    def click_personas(self):
-        self.selenium.click(self._personas_link_locator)
-        self.selenium.wait_for_page_to_load(self.timeout)
-        return AddonsPersonasPage(self.testsetup)
-
-    def click_themes(self):
-        self.wait_for_element_visible(self._themes_link_locator)
-        self.selenium.click(self._themes_link_locator)
-        self.selenium.wait_for_page_to_load(self.timeout)
-        return ThemesPage(self.testsetup)
-
-    def click_collections(self):
-        self.selenium.click(self._collections_link_locator)
-        self.selenium.wait_for_page_to_load(self.timeout)
-        return AddonsCollectionsPage(self.testsetup)
-
-    @property
-    def most_popular_count(self):
-        return self.selenium.get_css_count(self._most_popular_item_locator)
-
-    @property
-    def is_most_popular_list_visible(self):
-        return self.selenium.is_visible(self._most_popular_list_locator)
-
-    @property
-    def most_popular_list_heading(self):
-        return self.selenium.get_text(self._most_popular_list_heading_locator)
-
-    @property
-    def is_featured_personas_visible(self):
-        return self.selenium.is_visible(self._featured_personas_locator)
-
-    @property
-    def featured_personas_count(self):
-        return self.selenium.get_css_count(self._featured_personas_items_locator)
-
-    @property
-    def fetaured_personas_title(self):
-        return self.selenium.get_text(self._featured_personas_title_locator)
-
-    def click_on_first_addon(self):
-        self.selenium.click(self._first_addon_locator)
-        self.selenium.wait_for_page_to_load(self.timeout)
-        return AddonsDetailsPage(self.testsetup)
-
-
 class AddonsDetailsPage(AddonsBasePage):
 
     _breadcrumb_locator = "id=breadcrumbs"
@@ -619,7 +543,7 @@ class AddonViewReviewsPage(AddonsBasePage):
             return date.group(2)
 
 
-class AddonsPersonasPage(AddonsHomePage):
+class AddonsPersonasPage(AddonsBasePage):
 
     _page_title = "Personas :: Add-ons for Firefox"
     _personas_locator = "//div[@class='persona persona-small']"
