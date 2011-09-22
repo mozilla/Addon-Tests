@@ -43,7 +43,7 @@ import re
 import pytest
 from unittestzero import Assert
 from addons_search_home_page import AddonsSearchHomePage
-from addons_site import AddonsHomePage
+from addons_homepage import AddonsHomePage
 xfail = pytest.mark.xfail
 
 
@@ -217,6 +217,7 @@ class TestSearch:
 
         Assert.equal(amo_search_page.breadcrumbs_value, 'Add-ons for Firefox Search')
 
+    @xfail(reason="disabled due to bug 688394")
     def test_sorting_by_downloads(self, mozwebqa):
         """ Litmus 17342
             https://litmus.mozilla.org/show_test.cgi?id=17342 """
@@ -242,6 +243,7 @@ class TestSearch:
         Assert.true('sort=updated' in amo_search_page.get_url_current_page())
         Assert.is_sorted_descending([i.updated_date for i in amo_search_page.results()])
 
+    @xfail(reason="disabled due to bug 688393")
     def test_sorting_by_users_number(self, mozwebqa):
         """Litmus 24867"""
         AddonsHomePage(mozwebqa).header.search_for('firebug')
