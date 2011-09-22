@@ -38,7 +38,7 @@
 
 from addons_base_page import AddonsBasePage
 
-class AddonsPersonasPage(AddonsBasePage):
+class AddonsCategoryPage(AddonsBasePage):
 
     _category_title_locator = "css = div[class= 'island hero c'] > h1"
 
