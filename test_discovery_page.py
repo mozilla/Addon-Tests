@@ -41,13 +41,12 @@
 
 
 import re
-import urllib2
 import pytest
 xfail = pytest.mark.xfail
 
 from unittestzero import Assert
 
-from addons_site import DiscoveryPane
+from discovery_page import DiscoveryPane
 from addons_site import AddonsHomePage
 
 
