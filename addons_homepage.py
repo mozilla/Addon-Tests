@@ -76,13 +76,13 @@ class AddonsHomePage(AddonsBasePage):
     def click_featured_personas_see_all_link(self):
         self.selenium.click(self._featured_personas_see_all_link)
         self.selenium.wait_for_page_to_load(self.timeout)
-        from addons_site import AddonsPersonasPage
+        from addons_personas_page import AddonsPersonasPage
         return AddonsPersonasPage(self.testsetup)
 
     def click_personas(self):
         self.selenium.click(self._personas_link_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
-        from addons_site import AddonsPersonasPage
+        from addons_personas_page import AddonsPersonasPage
         return AddonsPersonasPage(self.testsetup)
 
     def click_themes(self):

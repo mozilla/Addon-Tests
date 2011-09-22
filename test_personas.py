@@ -43,7 +43,7 @@ xfail = pytest.mark.xfail
 
 from unittestzero import Assert
 from addons_homepage import AddonsHomePage
-from addons_site import AddonsPersonasPage
+from addons_personas_page import AddonsPersonasPage
 
 
 class TestPersonas:
