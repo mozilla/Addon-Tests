@@ -193,7 +193,7 @@ class AddonsBasePage(Page):
         _app_thunderbird = "css=#app-thunderbird a"
 
         #Search box
-        _search_button_locator = "css=.search-button"
+        _search_button_locator = "css=#search-button"
         _search_textbox_locator = "name=q"
 
         #Not LogedIn
