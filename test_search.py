@@ -43,7 +43,7 @@ import re
 import pytest
 from unittestzero import Assert
 from addons_search_home_page import AddonsSearchHomePage
-from addons_site import AddonsHomePage
+from addons_homepage import AddonsHomePage
 xfail = pytest.mark.xfail
 
 

@@ -185,6 +185,7 @@ class AddonsBasePage(Page):
             for x in addon_numbers
         ]
         return integer_numbers
+
     class HeaderRegion(Page):
 
         #other applications
