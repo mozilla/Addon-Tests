@@ -44,9 +44,6 @@ class AddonsCategoryPage(AddonsBasePage):
 
     _category_title_locator = "css=div.island > h1"
 
-    def __init__(self, testsetup):
-        AddonsBasePage.__init__(self, testsetup)
-
     @property
     def category_page_title(self):
         return self.selenium.get_title()
