@@ -46,5 +46,9 @@ class AddonsCategoryPage(AddonsBasePage):
         AddonsBasePage.__init__(self, testsetup)
 
     @property
-    def category_title(self):
+    def category_page_title(self):
+        return self.selenium.get_title()
+
+    @property
+    def category_header_title(self):
         return self.selenium.get_text(self._category_title_locator)
