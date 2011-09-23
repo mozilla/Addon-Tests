@@ -43,7 +43,7 @@ from addons_category_page import AddonsCategoryPage
 
 
 class TestCategory:
-    
+
     def test_checking_link_for_alerts_and_updates_category(self, mozwebqa):
         "Test for Litmus 25796"
         alerts_category_string = "Alerts & Updates"
