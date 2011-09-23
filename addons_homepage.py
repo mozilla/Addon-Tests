@@ -76,21 +76,21 @@ class AddonsHomePage(AddonsBasePage):
     def click_featured_personas_see_all_link(self):
         self.selenium.click(self._featured_personas_see_all_link)
         self.selenium.wait_for_page_to_load(self.timeout)
-        from addons_site import AddonsPersonasPage
+        from addons_personas_page import AddonsPersonasPage
         return AddonsPersonasPage(self.testsetup)
 
     def click_personas(self):
         self.selenium.click(self._personas_link_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
-        from addons_site import AddonsPersonasPage
+        from addons_personas_page import AddonsPersonasPage
         return AddonsPersonasPage(self.testsetup)
 
     def click_themes(self):
         self.wait_for_element_visible(self._themes_link_locator)
         self.selenium.click(self._themes_link_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
-        from themes_page import ThemesPage
-        return ThemesPage(self.testsetup)
+        from addons_themes_page import AddonsThemesPage
+        return AddonsThemesPage(self.testsetup)
 
     def click_collections(self):
         self.selenium.click(self._collections_link_locator)
@@ -125,7 +125,7 @@ class AddonsHomePage(AddonsBasePage):
     def click_on_first_addon(self):
         self.selenium.click(self._first_addon_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
-        from addons_site import AddonsDetailsPage
+        from addons_details_page import AddonsDetailsPage
         return AddonsDetailsPage(self.testsetup)
 
     def get_title_of_link(self, name):

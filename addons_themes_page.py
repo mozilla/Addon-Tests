@@ -49,7 +49,7 @@ from page import Page
 from addons_base_page import AddonsBasePage
 
 
-class ThemesPage(AddonsBasePage):
+class AddonsThemesPage(AddonsBasePage):
 
     _sort_by_name_locator = 'name=_t-name'
     _sort_by_updated_locator = 'name=_t-updated'
@@ -91,12 +91,12 @@ class ThemesPage(AddonsBasePage):
     def click_on_first_addon(self):
         self.selenium.click(self._addon_name_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
-        return ThemePage(self.testsetup)
+        return AddonsThemePage(self.testsetup)
 
     def click_on_first_category(self):
         self.selenium.click(self._category_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
-        return ThemesCategoryPage(self.testsetup)
+        return AddonsThemesCategoryPage(self.testsetup)
 
     def get_category(self, lookup):
         return self.selenium.get_text(self._category_link_locator % lookup)
@@ -162,7 +162,7 @@ class ThemesPage(AddonsBasePage):
         return self.selenium.get_text(self._bottom_counter_locator)
 
 
-class ThemePage(AddonsBasePage):
+class AddonsThemePage(AddonsBasePage):
 
     _addon_title = "css=h1.addon"
 
@@ -171,7 +171,7 @@ class ThemePage(AddonsBasePage):
         return self.selenium.get_text(self._addon_title)
 
 
-class ThemesCategoryPage(AddonsBasePage):
+class AddonsThemesCategoryPage(AddonsBasePage):
 
     _title_locator = "css=h2"
     _breadcrumb_locator = "css=ol.breadcrumbs"
