@@ -68,7 +68,7 @@ class AddonsHomePage(AddonsBasePage):
     _featured_personas_items_locator = "css=#featured-personas li"
     
     _category_list_locator = "css=ul#side-categories"
-    _alert_and_update_category_locator = "css=#side-categories > li#c-72 > a"
+    _alert_and_update_category_locator = _category_list_locator + " > li#c-72 > a"
 
     def __init__(self, testsetup):
         ''' Creates a new instance of the class and gets the page ready for testing '''
