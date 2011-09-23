@@ -40,11 +40,11 @@ from addons_base_page import AddonsBasePage
 
 class AddonsCategoryPage(AddonsBasePage):
 
-    _category_title_locator = "css = div[class= 'island hero c'] > h1"
+    _category_title_locator = "css=div.island > h1"
 
     def __init__(self, testsetup):
         AddonsBasePage.__init__(self, testsetup)
 
     @property
-    category_title:
-        return self.selenium.get_text(_category_title_locator)
+    def category_title(self):
+        return self.selenium.get_text(self._category_title_locator)
