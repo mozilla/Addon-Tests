@@ -52,4 +52,4 @@ class TestCategory:
         amo_home_page = AddonsHomePage(mozwebqa)
         alert_category_page = amo_home_page.click_alert_and_update_category()
         Assert.contains(alerts_category_string, alert_category_page.category_page_title)
-        Assert.contains(alerts_category_string, alert_category_page.category_header_title)
+        Assert.equal(alerts_category_string, alert_category_page.category_header_title)
