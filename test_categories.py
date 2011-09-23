@@ -37,11 +37,9 @@
 # ***** END LICENSE BLOCK *****
 
 
-import pytest
 
 from unittestzero import Assert
 from addons_homepage import AddonsHomePage
-from addons_category_page import AddonsCategoryPage
 
 
 class TestCategory:
