@@ -94,6 +94,7 @@ class TestDetailsPage:
         Assert.equal(amo_details_page.about_addon, "About this Add-on")
         Assert.not_none(re.match('(\w+\s*){3,}', amo_details_page.description))
 
+    @xfail(reason="bugzilla 688917")
     # TODO expand the Version Information section and check that the required details are present/visible/correct
     def test_that_version_information_is_displayed(self, mozwebqa):
         """ Test for Litmus 9890"""
@@ -144,6 +145,7 @@ class TestDetailsPage:
         details_page.click_website_link()
         Assert.true(website_link in details_page.get_url_current_page())
 
+    @xfail(reason="bugzilla 688910")
     def test_that_whats_this_link_for_source_license_links_to_an_answer_in_faq(self, mozwebqa):
         """ Test for Litmus 11530"""
         amo_details_page = AddonsDetailsPage(mozwebqa, "Firebug")
