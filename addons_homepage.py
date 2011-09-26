@@ -147,7 +147,7 @@ class AddonsHomePage(AddonsBasePage):
     def categories_count(self):
         return self.selenium.get_css_count("%s li" % self._category_list_locator)
 
-    def caterories(self):
+    def categories(self):
         return [self.Categories(self.testsetup, i) for i in range(self.categories_count)]
 
     def category(self, lookup):
