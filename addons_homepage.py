@@ -155,13 +155,13 @@ class AddonsHomePage(AddonsBasePage):
 
     class Categories(Page):
         _categories_locator = 'css=#side-categories li'
-        _name_locator = 'a'
+        _link_locator = 'a'
 
         def __init__(self, testsetup, lookup):
             Page.__init__(self, testsetup)
             self.lookup = lookup
 
-        def absolute_locator(self, relative_locator):
+        def absolute_locator(self, relative_locator=""):
             return self._root_locator + relative_locator
 
         @property
@@ -175,10 +175,10 @@ class AddonsHomePage(AddonsBasePage):
 
         @property
         def name(self):
-            return self.selenium.get_text(self.absolute_locator(self._name_locator))
+            return self.selenium.get_text(self.absolute_locator())
 
         def click_link(self):
-            self.selenium.click(self.absolute_locator(self._name_locator))
+            self.selenium.click(self.absolute_locator(self._link_locator))
             self.selenium.wait_for_page_to_load(self.timeout)
             from addons_category_page import AddonsCategoryPage
             return AddonsCategoryPage(self.testsetup)

@@ -52,11 +52,10 @@ class TestCategory:
         Assert.contains(alerts_category_string, alert_category_page.category_page_title)
         Assert.equal(alerts_category_string, alert_category_page.category_header_title)
 
-    def test_all_categories(self, mozwebqa):
-        "Test for Litmus 25796 all"
+    def test_that_all_category_links_work(self, mozwebqa):
+        "Test for Litmus 25796"
         amo_home_page = AddonsHomePage(mozwebqa)
-        categories = amo_home_page.caterories()
-
+        categories = amo_home_page.categories()
 
         for category in categories:
             category_name = category.name
