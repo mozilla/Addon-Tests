@@ -45,6 +45,7 @@
 # ***** END LICENSE BLOCK *****
 
 from addons_base_page import AddonsBasePage
+from page import Page
 
 
 class AddonsHomePage(AddonsBasePage):
@@ -141,3 +142,40 @@ class AddonsHomePage(AddonsBasePage):
         name = name.lower().replace(" ", "_")
         locator = getattr(self, "_%s_link_locator" % name)
         return self.selenium.get_attribute("%s@title" % locator)
+
+    @property
+    def categories_count(self):
+        return self.selenium.get_css_count("%s li" % self._category_list_locator)
+
+    def caterories(self):
+        return [self.Categories(self.testsetup, i) for i in range(self.categories_count)]
+
+    class Categories(Page):
+        _categories_locator = 'css=#side-categories li'
+        _name_locator = 'a'
+
+        def __init__(self, testsetup, lookup):
+            Page.__init__(self, testsetup)
+            self.lookup = lookup
+
+        def absolute_locator(self, relative_locator):
+            return self._root_locator + relative_locator
+
+        @property
+        def _root_locator(self):
+            if type(self.lookup) == int:
+                # lookup by index
+                return "%s:nth(%s) " % (self._categories_locator, self.lookup)
+            else:
+                # lookup by name
+                return "%s:contains(%s) " % (self._categories_locator, self.lookup)
+
+        @property
+        def name(self):
+            return self.selenium.get_text(self.absolute_locator(self._name_locator))
+
+        def click_category_link(self):
+            self.selenium.click(self.absolute_locator(self._name_locator))
+            self.selenium.wait_for_page_to_load(self.timeout)
+            from addons_category_page import AddonsCategoryPage
+            return AddonsCategoryPage(self.testsetup)

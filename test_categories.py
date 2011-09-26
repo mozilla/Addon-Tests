@@ -21,6 +21,7 @@
 # the Initial Developer. All Rights Reserved.
 #
 # Contributor(s): Marlena Compton <mcompton@mozilla.com>
+#                 Bebe
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -37,7 +38,6 @@
 # ***** END LICENSE BLOCK *****
 
 
-
 from unittestzero import Assert
 from addons_homepage import AddonsHomePage
 
@@ -51,3 +51,15 @@ class TestCategory:
         alert_category_page = amo_home_page.click_alert_and_update_category()
         Assert.contains(alerts_category_string, alert_category_page.category_page_title)
         Assert.equal(alerts_category_string, alert_category_page.category_header_title)
+
+    def test_all_categories(self, mozwebqa):
+        "Test for Litmus 25796 all"
+        amo_home_page = AddonsHomePage(mozwebqa)
+        categories = amo_home_page.caterories()
+
+        for category in categories:
+            category_name = category.name
+            category_page = category.click_category_link()
+            Assert.contains(category_name, category_page.category_page_title)
+            Assert.equal(category_name, category_page.category_header_title)
+            amo_home_page = AddonsHomePage(mozwebqa)
