@@ -150,6 +150,9 @@ class AddonsHomePage(AddonsBasePage):
     def caterories(self):
         return [self.Categories(self.testsetup, i) for i in range(self.categories_count)]
 
+    def category(self, lookup):
+        return self.Categories(self.testsetup, lookup)
+
     class Categories(Page):
         _categories_locator = 'css=#side-categories li'
         _name_locator = 'a'
@@ -174,7 +177,7 @@ class AddonsHomePage(AddonsBasePage):
         def name(self):
             return self.selenium.get_text(self.absolute_locator(self._name_locator))
 
-        def click_category_link(self):
+        def click_link(self):
             self.selenium.click(self.absolute_locator(self._name_locator))
             self.selenium.wait_for_page_to_load(self.timeout)
             from addons_category_page import AddonsCategoryPage

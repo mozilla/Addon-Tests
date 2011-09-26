@@ -57,9 +57,10 @@ class TestCategory:
         amo_home_page = AddonsHomePage(mozwebqa)
         categories = amo_home_page.caterories()
 
+
         for category in categories:
             category_name = category.name
-            category_page = category.click_category_link()
+            category_page = category.click_link()
             Assert.contains(category_name, category_page.category_page_title)
             Assert.equal(category_name, category_page.category_header_title)
             amo_home_page = AddonsHomePage(mozwebqa)
