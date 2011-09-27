@@ -99,10 +99,10 @@ class TestHomePage:
         Assert.true(amo_details_page.is_the_current_page)
 
     def test_that_featured_personas_exist_on_the_homepage(self, mozwebqa):
-        '''
+        """
         Litmus29698
         https://litmus.mozilla.org/show_test.cgi?id=29698
-        '''
+        """
         amo_home_page = AddonsHomePage(mozwebqa)
 
         Assert.true(amo_home_page.is_featured_personas_visible, "Featured Personas region is not visible")

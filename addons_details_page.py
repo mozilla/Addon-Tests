@@ -107,7 +107,8 @@ class AddonsDetailsPage(AddonsBasePage):
             self.addon_name = addon_name.replace(' ', '-').lower()
             self.selenium.open("%s/addon/%s" % (self.site_version, self.addon_name))
             self._wait_for_reviews_and_other_addons_by_author_to_load()
-        self._page_title = "%s :: Add-ons for Firefox" % self.current_page_breadcrumb
+        title = re.match("(\D+){1,}", self.name)
+        self._page_title = "%s:: Add-ons for Firefox" % title.group(0)
 
     @property
     def has_reviews(self):
