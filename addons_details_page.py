@@ -49,6 +49,7 @@ import re
 from urllib2 import urlparse
 from page import Page
 
+
 class AddonsDetailsPage(AddonsBasePage):
 
     _breadcrumb_locator = "id=breadcrumbs"

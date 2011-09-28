@@ -45,6 +45,7 @@
 # ***** END LICENSE BLOCK *****
 
 from addons_base_page import AddonsBasePage
+from page import Page
 
 
 class AddonsHomePage(AddonsBasePage):
@@ -66,6 +67,9 @@ class AddonsHomePage(AddonsBasePage):
     _featured_personas_locator = "id=featured-personas"
     _featured_personas_title_locator = "css=#featured-personas h2"
     _featured_personas_items_locator = "css=#featured-personas li"
+
+    _category_list_locator = "css=ul#side-categories"
+    _alert_and_update_category_locator = _category_list_locator + " > li#c-72 > a"
 
     def __init__(self, testsetup):
         ''' Creates a new instance of the class and gets the page ready for testing '''
@@ -89,7 +93,7 @@ class AddonsHomePage(AddonsBasePage):
         self.wait_for_element_visible(self._themes_link_locator)
         self.selenium.click(self._themes_link_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
-        from addons_site import AddonsThemesPage
+        from addons_themes_page import AddonsThemesPage
         return AddonsThemesPage(self.testsetup)
 
     def click_collections(self):
@@ -97,6 +101,12 @@ class AddonsHomePage(AddonsBasePage):
         self.selenium.wait_for_page_to_load(self.timeout)
         from addons_collection_page import AddonsCollectionsPage
         return AddonsCollectionsPage(self.testsetup)
+
+    def click_alert_and_update_category(self):
+        self.selenium.click(self._alert_and_update_category_locator)
+        self.selenium.wait_for_page_to_load(self.timeout)
+        from addons_category_page import AddonsCategoryPage
+        return AddonsCategoryPage(self.testsetup)
 
     @property
     def most_popular_count(self):
@@ -132,3 +142,43 @@ class AddonsHomePage(AddonsBasePage):
         name = name.lower().replace(" ", "_")
         locator = getattr(self, "_%s_link_locator" % name)
         return self.selenium.get_attribute("%s@title" % locator)
+
+    @property
+    def categories_count(self):
+        return self.selenium.get_css_count("%s li" % self._category_list_locator)
+
+    def categories(self):
+        return [self.Categories(self.testsetup, i) for i in range(self.categories_count)]
+
+    def category(self, lookup):
+        return self.Categories(self.testsetup, lookup)
+
+    class Categories(Page):
+        _categories_locator = 'css=#side-categories li'
+        _link_locator = 'a'
+
+        def __init__(self, testsetup, lookup):
+            Page.__init__(self, testsetup)
+            self.lookup = lookup
+
+        def absolute_locator(self, relative_locator=""):
+            return self._root_locator + relative_locator
+
+        @property
+        def _root_locator(self):
+            if type(self.lookup) == int:
+                # lookup by index
+                return "%s:nth(%s) " % (self._categories_locator, self.lookup)
+            else:
+                # lookup by name
+                return "%s:contains(%s) " % (self._categories_locator, self.lookup)
+
+        @property
+        def name(self):
+            return self.selenium.get_text(self.absolute_locator())
+
+        def click_link(self):
+            self.selenium.click(self.absolute_locator(self._link_locator))
+            self.selenium.wait_for_page_to_load(self.timeout)
+            from addons_category_page import AddonsCategoryPage
+            return AddonsCategoryPage(self.testsetup)
