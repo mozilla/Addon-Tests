@@ -69,7 +69,6 @@ class AddonsHomePage(AddonsBasePage):
     _featured_personas_items_locator = "css=#featured-personas li"
 
     _category_list_locator = "css=ul#side-categories"
-    _alert_and_update_category_locator = _category_list_locator + " > li#c-72 > a"
 
     def __init__(self, testsetup):
         ''' Creates a new instance of the class and gets the page ready for testing '''
@@ -101,12 +100,6 @@ class AddonsHomePage(AddonsBasePage):
         self.selenium.wait_for_page_to_load(self.timeout)
         from addons_collection_page import AddonsCollectionsPage
         return AddonsCollectionsPage(self.testsetup)
-
-    def click_alert_and_update_category(self):
-        self.selenium.click(self._alert_and_update_category_locator)
-        self.selenium.wait_for_page_to_load(self.timeout)
-        from addons_category_page import AddonsCategoryPage
-        return AddonsCategoryPage(self.testsetup)
 
     @property
     def most_popular_count(self):

@@ -44,14 +44,6 @@ from addons_homepage import AddonsHomePage
 
 class TestCategory:
 
-    def test_checking_link_for_alerts_and_updates_category(self, mozwebqa):
-        "Test for Litmus 25796"
-        alerts_category_string = "Alerts & Updates"
-        amo_home_page = AddonsHomePage(mozwebqa)
-        alert_category_page = amo_home_page.click_alert_and_update_category()
-        Assert.contains(alerts_category_string, alert_category_page.category_page_title)
-        Assert.equal(alerts_category_string, alert_category_page.category_header_title)
-
     def test_that_all_category_links_work(self, mozwebqa):
         "Test for Litmus 25796"
         amo_home_page = AddonsHomePage(mozwebqa)
