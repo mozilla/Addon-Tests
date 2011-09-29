@@ -41,7 +41,6 @@
 from unittestzero import Assert
 from addons_homepage import AddonsHomePage
 import pytest
-import mozwebqa
 
 
 class TestHomePage:
