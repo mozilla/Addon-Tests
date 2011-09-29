@@ -51,6 +51,7 @@ from addons_user_page import AddonsLoginPage
 from addons_site import ExtensionsHomePage
 from addons_homepage import AddonsHomePage
 
+
 class TestDetailsPage:
 
     def test_that_register_link_is_present_in_addon_details_page(self, mozwebqa):
@@ -145,7 +146,6 @@ class TestDetailsPage:
         details_page.click_website_link()
         Assert.true(website_link in details_page.get_url_current_page())
 
-    @xfail(reason="bugzilla 688910")
     def test_that_whats_this_link_for_source_license_links_to_an_answer_in_faq(self, mozwebqa):
         """ Test for Litmus 11530"""
         amo_details_page = AddonsDetailsPage(mozwebqa, "Firebug")
