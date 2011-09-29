@@ -51,6 +51,7 @@ from addons_user_page import AddonsLoginPage
 from addons_site import ExtensionsHomePage
 from addons_homepage import AddonsHomePage
 
+
 class TestDetailsPage:
 
     def test_that_register_link_is_present_in_addon_details_page(self, mozwebqa):
