@@ -76,7 +76,7 @@ class AddonsDetailsPage(AddonsBasePage):
     _version_information_locator = "id=detail-relnotes"
     _version_information_heading_locator = "css=#detail-relnotes > h2"
     _release_version_locator = "css=div.version"
-    _source_code_license_information_locator="css=.source > li > a"
+    _source_code_license_information_locator = "css=.source > li > a"
     _reviews_title_locator = "css=#reviews > h2"
     _tags_locator = "id=tagbox"
     _other_addons_header_locator = "css=h2.compact-bottom"
