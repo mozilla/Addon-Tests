@@ -56,7 +56,7 @@ class AddonsDetailsPage(AddonsBasePage):
     _current_page_breadcrumb_locator = "css=#breadcrumbs > ol > li:nth(2)"
 
     #addon informations
-    _name_locator = "css=h1.addon"
+    _name_locator = "xpath=//h1[@Class='addon']/text()[normalize-space()]"
     _version_number_locator = "css=span.version-number"
     _authors_locator = "//h4[@class='author']/a"
     _summary_locator = "id=addon-summary"
@@ -107,8 +107,10 @@ class AddonsDetailsPage(AddonsBasePage):
             self.addon_name = addon_name.replace(' ', '-').lower()
             self.selenium.open("%s/addon/%s" % (self.site_version, self.addon_name))
             self._wait_for_reviews_and_other_addons_by_author_to_load()
-        title = re.match("(\D+){1,}", self.name)
-        self._page_title = "%s:: Add-ons for Firefox" % title.group(0)
+
+    @property
+    def _page_title(self):
+        return "%s :: Add-ons for Firefox" % self.name
 
     @property
     def has_reviews(self):
@@ -224,7 +226,7 @@ class AddonsDetailsPage(AddonsBasePage):
 
     @property
     def is_addon_name_visible(self):
-        return self.selenium.is_visible(self._name_locator)
+        return self.selenium.is_element_present(self._name_locator)
 
     @property
     def is_summary_visible(self):
