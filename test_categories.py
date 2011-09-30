@@ -58,7 +58,7 @@ class TestCategory:
             amo_home_page = AddonsHomePage(mozwebqa)
 
     def test_that_category_names_are_correct(self, mozwebqa):
-        "Test for Litmus 25795"
+        """Test for Litmus 25795"""
 
         expected_categories = [
             "Alerts & Updates",
