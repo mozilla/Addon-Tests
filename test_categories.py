@@ -80,17 +80,9 @@ class TestCategory:
         amo_home_page = AddonsHomePage(mozwebqa)
         categories = amo_home_page.categories()
 
-        # Remove any category found on page from the expected list
+        # Catch extra/missing categories with a simple count check
+        Assert.equal(len(categories), len(expected_categories));
+
+        # Check the categories that are there against the expected list
         for category in categories:
-            if category.name in expected_categories:
-                expected_categories.remove(category.name)
-
-        # When we get here, any name left in the list wasn't
-        # found as expected.
-        count_remaining = len(expected_categories)
-        if count_remaining:
-            msg = "Categories not matched: " + str(expected_categories)
-        else:
-            msg = "All categories found as expected"
-
-        Assert.equal(count_remaining, 0, msg)
+            Assert.contains(category.name, expected_categories)
