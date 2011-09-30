@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+
 # ***** BEGIN LICENSE BLOCK *****
 # Version: MPL 1.1/GPL 2.0/LGPL 2.1
 #
@@ -19,8 +20,8 @@
 # Portions created by the Initial Developer are Copyright (C) 2011
 # the Initial Developer. All Rights Reserved.
 #
-# Contributor(s): Bebe <florin.strugariu@softvision.ro>
-#
+# Contributor(s): Marlena Compton <mcompton@mozilla.com>
+#                 Bebe
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -36,22 +37,21 @@
 #
 # ***** END LICENSE BLOCK *****
 
+
 from unittestzero import Assert
 from addons_homepage import AddonsHomePage
 
 
-class TestAmoLayout:
+class TestCategory:
 
-    def test_other_applications_thunderbird(self, mozwebqa):
-        """ Test for litmus 5037
-            https://litmus.mozilla.org/show_test.cgi?id=5037
-        """
-
+    def test_that_all_category_links_work(self, mozwebqa):
+        "Test for Litmus 25796"
         amo_home_page = AddonsHomePage(mozwebqa)
+        categories = amo_home_page.categories()
 
-        amo_home_page.header.click_other_applications()
-        amo_home_page.header.click_thunderbird()
-        Assert.true("thunderbird" in amo_home_page.get_url_current_page())
-
-        amo_home_page.header.click_other_applications()
-        Assert.false(amo_home_page.header.is_thunderbird_visible())
+        for category in categories:
+            category_name = category.name
+            category_page = category.click_link()
+            Assert.contains(category_name, category_page.category_page_title)
+            Assert.equal(category_name, category_page.category_header_title)
+            amo_home_page = AddonsHomePage(mozwebqa)

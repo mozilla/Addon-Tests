@@ -21,6 +21,8 @@
 #
 # Contributor(s): Bebe <florin.strugariu@softvision.ro>
 #                 Alex Lakatos <alex@greensqr.com>
+#                 Teodosia Pop <teodosia.pop@softvision.ro>
+#                 Alin Trif <alin.trif@softvision.ro>
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -37,7 +39,7 @@
 # ***** END LICENSE BLOCK *****
 
 from unittestzero import Assert
-from addons_site import AddonsHomePage
+from addons_homepage import AddonsHomePage
 import pytest
 
 
@@ -88,3 +90,40 @@ class TestHomePage:
         Assert.true(amo_home_page.is_mozilla_logo_visible)
         amo_home_page.click_mozilla_logo()
         Assert.equal(amo_home_page.get_url_current_page(), "http://www.mozilla.org/")
+
+    def test_that_clicking_on_addon_name_loads_details_page(self, mozwebqa):
+        """ Litmus 25812
+            https://litmus.mozilla.org/show_test.cgi?id=25812"""
+        amo_home_page = AddonsHomePage(mozwebqa)
+        amo_details_page = amo_home_page.click_on_first_addon()
+        Assert.true(amo_details_page.is_the_current_page)
+
+    def test_that_featured_personas_exist_on_the_homepage(self, mozwebqa):
+        '''
+        Litmus29698
+        https://litmus.mozilla.org/show_test.cgi?id=29698
+        '''
+        amo_home_page = AddonsHomePage(mozwebqa)
+
+        Assert.true(amo_home_page.is_featured_personas_visible, "Featured Personas region is not visible")
+        Assert.equal(amo_home_page.fetaured_personas_title, u"Featured Personas See all \xbb", "Featured Personas region title doesn't match")
+
+        Assert.equal(amo_home_page.featured_personas_count, 6)
+
+    def test_that_clicking_see_all_personas_link_works(self, mozwebqa):
+        """
+        Litmus 29699
+        https://litmus.mozilla.org/show_test.cgi?id=29699
+        """
+        amo_home_page = AddonsHomePage(mozwebqa)
+        featured_persona_page = amo_home_page.click_featured_personas_see_all_link()
+
+        Assert.true(featured_persona_page.is_the_current_page)
+        Assert.equal(featured_persona_page.persona_header, 'Personas')
+
+    def test_that_other_applications_link_has_tooltip(self, mozwebqa):
+        """ Litmus 22925
+            https://litmus.mozilla.org/show_test.cgi?id=29698 """
+        amo_home_page = AddonsHomePage(mozwebqa)
+        tooltip = amo_home_page.get_title_of_link('Other applications')
+        Assert.equal(tooltip, 'Find add-ons for other applications')

@@ -101,7 +101,8 @@ class AddonsSearchHomePage(AddonsBasePage):
 
     def click_addon(self, addon_name):
         self.selenium.click("link=" + addon_name)
-        return addons_site.AddonsDetailsPage(self.testsetup, addon_name)
+        from addons_details_page import AddonsDetailsPage
+        return AddonsDetailsPage(self.testsetup, addon_name)
 
     def sort_by(self, type):
         self.selenium.click(getattr(self, '_sort_by_%s_locator' % type))

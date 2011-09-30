@@ -45,10 +45,11 @@ import pytest
 xfail = pytest.mark.xfail
 
 from unittestzero import Assert
-from addons_site import UserFAQPage, AddonsHomePage
-from addons_site import AddonsDetailsPage
+from addons_site import UserFAQPage
+from addons_details_page import AddonsDetailsPage
+from addons_user_page import AddonsLoginPage
 from addons_site import ExtensionsHomePage
-
+from addons_homepage import AddonsHomePage
 
 class TestDetailsPage:
 
@@ -93,6 +94,7 @@ class TestDetailsPage:
         Assert.equal(amo_details_page.about_addon, "About this Add-on")
         Assert.not_none(re.match('(\w+\s*){3,}', amo_details_page.description))
 
+    @xfail(reason="bugzilla 688917")
     # TODO expand the Version Information section and check that the required details are present/visible/correct
     def test_that_version_information_is_displayed(self, mozwebqa):
         """ Test for Litmus 9890"""
@@ -143,6 +145,7 @@ class TestDetailsPage:
         details_page.click_website_link()
         Assert.true(website_link in details_page.get_url_current_page())
 
+    @xfail(reason="bugzilla 688910")
     def test_that_whats_this_link_for_source_license_links_to_an_answer_in_faq(self, mozwebqa):
         """ Test for Litmus 11530"""
         amo_details_page = AddonsDetailsPage(mozwebqa, "Firebug")
@@ -274,6 +277,16 @@ class TestDetailsPage:
 
         Assert.equal(amo_detail_page.breadcrumb, 'Add-ons for Firefox Extensions Firebug')
 
+    def test_that_clicking_info_link_slides_down_page_to_version_info(self, mozwebqa):
+        """ Test for Litmus 25725
+            https://litmus.mozilla.org/show_test.cgi?id=25725 """
+        amo_details_page = AddonsDetailsPage(mozwebqa, 'firebug')
+        Assert.true(amo_details_page.is_version_info_link_visible)
+        amo_details_page.click_version_info_link()
+        Assert.equal(amo_details_page.version_info_link, amo_details_page.version_information)
+        Assert.true(amo_details_page.is_version_information_section_expanded)
+        Assert.true(amo_details_page.does_page_scroll_to_version_information_section)
+
     def test_that_breadcrumb_links_in_addons_details_page_work(self, mozwebqa):
         """
         Litmus 11923
@@ -304,3 +317,20 @@ class TestDetailsPage:
         amo_home_page.return_to_previous_page()
 
         Assert.equal(amo_detail_page.breadcrumbs[2].name, 'Firebug')
+
+    def test_that_add_a_review_button_works(self, mozwebqa):
+        """
+        Litmus 25729
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25729
+        """
+        #Step 1: Addons Home Page loads and Addons Details loads
+        amo_home_page = AddonsHomePage(mozwebqa)
+
+        #Step 2:user logs in to submit a review
+        amo_home_page.login()
+        Assert.true(amo_home_page.header.is_user_logged_in)
+
+        #Step 3: user loads an addon details page and clicks write a review button
+        amo_details_page = AddonsDetailsPage(mozwebqa, 'Firebug')
+        addon_review_box = amo_details_page.click_to_write_review()
+        Assert.true(addon_review_box.is_review_box_visible)
