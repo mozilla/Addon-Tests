@@ -64,7 +64,6 @@ class AddonsDetailsPage(AddonsBasePage):
     _install_button_locator = "css=p[class='install-button'] > a"
     _contribute_button_locator = "css=a[id='contribute-button']"
     _addon_rating_locator = "css=span[itemprop='rating']"
-    #_whats_this_license_locator = "css=h5 > span > a"
     _whats_this_license_locator = "css=.source > li:nth(1) > a"
     _description_locator = "css=div.prose"
     _register_link_locator = "css=li.account > a"
