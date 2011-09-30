@@ -55,3 +55,41 @@ class TestCategory:
             Assert.contains(category_name, category_page.category_page_title)
             Assert.equal(category_name, category_page.category_header_title)
             amo_home_page = AddonsHomePage(mozwebqa)
+
+    def test_that_category_names_are_correct(self, mozwebqa):
+        "Test for Litmus 25795"
+
+        expected_categories = [
+            "Alerts & Updates",
+            "Appearance",
+            "Bookmarks",
+            "Download Management",
+            "Feeds, News & Blogging",
+            "Games & Entertainment",
+            "Language Support",
+            "Photos, Music & Videos",
+            "Privacy & Security",
+            "Shopping",
+            "Social & Communication",
+            "Tabs",
+            "Web Development",
+            "Other"]
+
+        # Get actual categories
+        amo_home_page = AddonsHomePage(mozwebqa)
+        categories = amo_home_page.categories()
+
+        # Remove any category found on page from the expected list
+        for category in categories:
+            if category.name in expected_categories:
+                expected_categories.remove(category.name)
+
+        # When we get here, any name left in the list wasn't
+        # found as expected.
+        count_remaining = len(expected_categories)
+        if count_remaining:
+            msg = "Categories not matched: " + str(expected_categories)
+        else:
+            msg = "All categories found as expected"
+
+        Assert.equal(count_remaining, 0, msg)
