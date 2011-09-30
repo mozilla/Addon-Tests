@@ -70,7 +70,7 @@ class AddonsHomePage(AddonsBasePage):
 
     _category_list_locator = "css=ul#side-categories"
 
-    _extensions_menu_link = "css=#extensions>a"
+    _extensions_menu_link = "css=#extensions > a"
 
     def __init__(self, testsetup):
         ''' Creates a new instance of the class and gets the page ready for testing '''
