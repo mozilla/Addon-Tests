@@ -63,6 +63,10 @@ class AddonsHomePage(AddonsBasePage):
     _most_popular_item_locator = "css=ol.toplist li"
     _most_popular_list_heading_locator = _most_popular_list_locator + " h2"
 
+    _explore_featured_link_locator = "css=#side-nav .s-featured a"
+    _explore_most_popular_link_locator = "css=#side-nav .s-users a"
+    _explore_most_top_rated_link_locator = "css=#side-nav .s-rating a"
+
     _featured_personas_see_all_link = "css=#featured-personas h2 a"
     _featured_personas_locator = "id=featured-personas"
     _featured_personas_title_locator = "css=#featured-personas h2"
@@ -100,6 +104,13 @@ class AddonsHomePage(AddonsBasePage):
         self.selenium.wait_for_page_to_load(self.timeout)
         from addons_collection_page import AddonsCollectionsPage
         return AddonsCollectionsPage(self.testsetup)
+
+    def click_to_explore(self, what):
+        what = what.replace(' ', '_').lower()
+        self.selenium.click(getattr(self, "_explore_most_%s_link_locator" % what))
+        self.selenium.wait_for_page_to_load(self.timeout)
+        from addons_search_home_page import AddonsSearchHomePage
+        return AddonsSearchHomePage(self.testsetup)
 
     @property
     def most_popular_count(self):

@@ -88,6 +88,7 @@ class AddonsDetailsPage(AddonsBasePage):
     _all_reviews_link_locator = "css=a.more-info"
     _review_locator = "css=div.review:not(.reply)"
     _info_link_locator = "css=li > a.scrollto"
+    _rating_counter_locator = "css=.grouped_ratings .num_ratings"
 
     _image_locator = "css=#preview.slider li.panel.active a"
     _image_viewer_locator = 'id=lightbox'
@@ -319,6 +320,21 @@ class AddonsDetailsPage(AddonsBasePage):
 
     def other_addons(self):
         return [self.OtherAddons(self.testsetup, i) for i in range(self.other_addons_count)]
+
+    def get_rating_counter(self, rating):
+        if rating == 1:
+            locator = "%s:nth(4)" % self._rating_counter_locator
+        elif rating == 2:
+            locator = "%s:nth(3)" % self._rating_counter_locator
+        elif rating == 3:
+            locator = "%s:nth(2)" % self._rating_counter_locator
+        elif rating == 4:
+            locator = "%s:nth(1)" % self._rating_counter_locator
+        elif rating == 5:
+            locator = "%s:nth(0)" % self._rating_counter_locator
+        else:
+            raise RuntimeError("No such rating %s!" % str(rating))
+        return int(self.selenium.get_text(locator))
 
     @property
     def previewer(self):
