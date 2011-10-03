@@ -127,3 +127,12 @@ class TestHomePage:
         amo_home_page = AddonsHomePage(mozwebqa)
         tooltip = amo_home_page.get_title_of_link('Other applications')
         Assert.equal(tooltip, 'Find add-ons for other applications')
+
+    def test_that_extensions_link_loads_extensions_page(self, mozwebqa):
+        """
+        Litmus 25746
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25746
+        """
+        amo_home_page = AddonsHomePage(mozwebqa)
+        extensions_page = amo_home_page.click_extensions()
+        Assert.true(extensions_page.is_the_current_page)

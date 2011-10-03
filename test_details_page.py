@@ -51,6 +51,7 @@ from addons_user_page import AddonsLoginPage
 from addons_site import ExtensionsHomePage
 from addons_homepage import AddonsHomePage
 
+
 class TestDetailsPage:
 
     def test_that_register_link_is_present_in_addon_details_page(self, mozwebqa):
@@ -94,7 +95,6 @@ class TestDetailsPage:
         Assert.equal(amo_details_page.about_addon, "About this Add-on")
         Assert.not_none(re.match('(\w+\s*){3,}', amo_details_page.description))
 
-    @xfail(reason="bugzilla 688917")
     # TODO expand the Version Information section and check that the required details are present/visible/correct
     def test_that_version_information_is_displayed(self, mozwebqa):
         """ Test for Litmus 9890"""
@@ -102,7 +102,7 @@ class TestDetailsPage:
         Assert.true(amo_details_page.is_version_information_heading_visible)
         Assert.equal(amo_details_page.version_information_heading, "Version Information")
         Assert.not_none(re.search('\w+', amo_details_page.release_version))
-
+        Assert.not_none(re.search('\w+', amo_details_page.source_code_license_information))
         # check that the release number matches the the version number at the top of the page
         Assert.not_none(re.search(amo_details_page.version_number, amo_details_page.release_version))
 

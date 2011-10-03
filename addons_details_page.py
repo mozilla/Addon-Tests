@@ -75,7 +75,8 @@ class AddonsDetailsPage(AddonsBasePage):
     _more_about_addon_locator = "id=more-about"
     _version_information_locator = "id=detail-relnotes"
     _version_information_heading_locator = "css=#detail-relnotes > h2"
-    _release_version_locator = "css=div.version.article > h3 > a"
+    _release_version_locator = "css=div.version"
+    _source_code_license_information_locator = "css=.source > li > a"
     _reviews_title_locator = "css=#reviews > h2"
     _tags_locator = "id=tagbox"
     _other_addons_header_locator = "css=h2.compact-bottom"
@@ -140,6 +141,10 @@ class AddonsDetailsPage(AddonsBasePage):
     @property
     def version_number(self):
         return self.selenium.get_text(self._version_number_locator)
+
+    @property
+    def source_code_license_information(self):
+        return self.selenium.get_text(self._source_code_license_information_locator)
 
     @property
     def authors(self):
