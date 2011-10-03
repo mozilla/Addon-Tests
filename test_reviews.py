@@ -186,6 +186,9 @@ class TestReviews:
         new_rating_counter = details_page.get_rating_counter(2)
         Assert.equal(new_rating_counter, 1)
 
+    @xfail(reason="there are 2 bugs in AddonsDetailsPage \
+                    https://www.pivotaltracker.com/story/show/19150339 \
+                    https://www.pivotaltracker.com/story/show/19150295")
     def test_that_three_star_rating_increments(self, mozwebqa):
         """ Litmus 22918
             https://litmus.mozilla.org/show_test.cgi?id=22918 """
@@ -217,6 +220,9 @@ class TestReviews:
         new_rating_counter = details_page.get_rating_counter(3)
         Assert.equal(new_rating_counter, 1)
 
+    @xfail(reason="there are 2 bugs in AddonsDetailsPage \
+                    https://www.pivotaltracker.com/story/show/19150339 \
+                    https://www.pivotaltracker.com/story/show/19150295")
     def test_that_four_star_rating_increments(self, mozwebqa):
         """ Litmus 22919
             https://litmus.mozilla.org/show_test.cgi?id=22918 """
@@ -248,6 +254,9 @@ class TestReviews:
         new_rating_counter = details_page.get_rating_counter(4)
         Assert.equal(new_rating_counter, 1)
 
+    @xfail(reason="there are 2 bugs in AddonsDetailsPage \
+                    https://www.pivotaltracker.com/story/show/19150339 \
+                    https://www.pivotaltracker.com/story/show/19150295")
     def test_that_five_star_rating_increments(self, mozwebqa):
         """ Litmus 22920
             https://litmus.mozilla.org/show_test.cgi?id=22920 """
