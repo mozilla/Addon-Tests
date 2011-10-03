@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 # ***** BEGIN LICENSE BLOCK *****
 # Version: MPL 1.1/GPL 2.0/LGPL 2.1
 #
@@ -127,11 +126,11 @@ class TestReviews:
         Assert.true(amo_home_page.header.is_user_logged_in)
 
         # Step 2 - Go to add-ons listing page sorted by rating
-        amo_search_page = amo_home_page.click_to_explore('Top Rated')
+        extensions_home_page = amo_home_page.click_to_explore('Top Rated')
 
         # Step 3 - Pick an addon with no reviews
-        amo_search_page.go_to_last_page()
-        addon = amo_search_page.results()[-1]  # the last one is without rating
+        extensions_home_page.go_to_last_page()
+        addon = extensions_home_page.extensions()[-1]  # the last one is without rating
         addon_name = addon.name
         details_page = AddonsDetailsPage(mozwebqa, addon_name)
 
