@@ -70,6 +70,8 @@ class HomePage(BasePage):
 
     _category_list_locator = "css=ul#side-categories"
 
+    _extensions_menu_link = "css=#extensions > a"
+
     def __init__(self, testsetup):
         ''' Creates a new instance of the class and gets the page ready for testing '''
         BasePage.__init__(self, testsetup)
@@ -100,6 +102,12 @@ class HomePage(BasePage):
         self.selenium.wait_for_page_to_load(self.timeout)
         from collection_page import CollectionsPage
         return CollectionsPage(self.testsetup)
+
+    def click_extensions(self):
+        self.selenium.click(self._extensions_menu_link)
+        self.selenium.wait_for_page_to_load(self.timeout)
+        from addons_site import ExtensionsHomePage
+        return ExtensionsHomePage(self.testsetup)
 
     @property
     def most_popular_count(self):
