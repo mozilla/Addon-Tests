@@ -46,99 +46,99 @@ xfail = pytest.mark.xfail
 
 from unittestzero import Assert
 from addons_site import UserFAQPage
-from addons_details_page import AddonsDetailsPage
-from addons_user_page import AddonsLoginPage
+from details_page import DetailsPage
+from user_page import LoginPage
 from addons_site import ExtensionsHomePage
-from addons_homepage import AddonsHomePage
+from homepage import HomePage
 
 
 class TestDetailsPage:
 
     def test_that_register_link_is_present_in_addon_details_page(self, mozwebqa):
         """ Test for Litmus 9890"""
-        amo_details_page = AddonsDetailsPage(mozwebqa, "Firebug")
-        Assert.true(amo_details_page.is_register_visible)
-        Assert.equal(amo_details_page.register_link, "Register")
+        details_page = DetailsPage(mozwebqa, "Firebug")
+        Assert.true(details_page.is_register_visible)
+        Assert.equal(details_page.register_link, "Register")
 
     def test_that_login_link_is_present_in_addon_details_page(self, mozwebqa):
         """ Test for Litmus 9890"""
-        amo_details_page = AddonsDetailsPage(mozwebqa, "Firebug")
-        Assert.true(amo_details_page.is_login_visible)
-        Assert.equal(amo_details_page.login_link, "Log in")
+        details_page = DetailsPage(mozwebqa, "Firebug")
+        Assert.true(details_page.is_login_visible)
+        Assert.equal(details_page.login_link, "Log in")
 
     def test_that_dropdown_menu_is_present_after_click_on_other_apps(self, mozwebqa):
         """ Test for Litmus 9890"""
-        amo_details_page = AddonsDetailsPage(mozwebqa, "Firebug")
-        Assert.true(amo_details_page.is_other_apps_link_visible)
-        Assert.equal(amo_details_page.other_apps, "Other Applications")
+        details_page = DetailsPage(mozwebqa, "Firebug")
+        Assert.true(details_page.is_other_apps_link_visible)
+        Assert.equal(details_page.other_apps, "Other Applications")
         #TODO: Fix when the hover event works
-        #Assert.true(amo_details_page.is_other_apps_dropdown_menu_visible
+        #Assert.true(details_page.is_other_apps_dropdown_menu_visible
 
     def test_that_addon_name_is_displayed(self, mozwebqa):
         """ Test for Litmus 9890"""
-        amo_details_page = AddonsDetailsPage(mozwebqa, "Firebug")
-        Assert.true(amo_details_page.is_addon_name_visible)
+        details_page = DetailsPage(mozwebqa, "Firebug")
+        Assert.true(details_page.is_addon_name_visible)
         # check that the name is not empty
-        Assert.not_equal(amo_details_page.name, "")
+        Assert.not_equal(details_page.name, "")
 
     def test_that_summary_is_displayed(self, mozwebqa):
         """ Test for Litmus 9890"""
-        amo_details_page = AddonsDetailsPage(mozwebqa, "Firebug")
-        Assert.true(amo_details_page.is_summary_visible)
+        details_page = DetailsPage(mozwebqa, "Firebug")
+        Assert.true(details_page.is_summary_visible)
         # check that the summary is not empty
-        Assert.not_none(re.match('(\w+\s*){3,}', amo_details_page.summary))
+        Assert.not_none(re.match('(\w+\s*){3,}', details_page.summary))
 
     def test_that_about_this_addon_is_displayed(self, mozwebqa):
         """ Test for Litmus 9890"""
-        amo_details_page = AddonsDetailsPage(mozwebqa, "Firebug")
-        Assert.true(amo_details_page.is_about_addon_visible)
-        Assert.equal(amo_details_page.about_addon, "About this Add-on")
-        Assert.not_none(re.match('(\w+\s*){3,}', amo_details_page.description))
+        details_page = DetailsPage(mozwebqa, "Firebug")
+        Assert.true(details_page.is_about_addon_visible)
+        Assert.equal(details_page.about_addon, "About this Add-on")
+        Assert.not_none(re.match('(\w+\s*){3,}', details_page.description))
 
     # TODO expand the Version Information section and check that the required details are present/visible/correct
     def test_that_version_information_is_displayed(self, mozwebqa):
         """ Test for Litmus 9890"""
-        amo_details_page = AddonsDetailsPage(mozwebqa, "Firebug")
-        Assert.true(amo_details_page.is_version_information_heading_visible)
-        Assert.equal(amo_details_page.version_information_heading, "Version Information")
-        Assert.not_none(re.search('\w+', amo_details_page.release_version))
-        Assert.not_none(re.search('\w+', amo_details_page.source_code_license_information))
+        details_page = DetailsPage(mozwebqa, "Firebug")
+        Assert.true(details_page.is_version_information_heading_visible)
+        Assert.equal(details_page.version_information_heading, "Version Information")
+        Assert.not_none(re.search('\w+', details_page.release_version))
+        Assert.not_none(re.search('\w+', details_page.source_code_license_information))
         # check that the release number matches the the version number at the top of the page
-        Assert.not_none(re.search(amo_details_page.version_number, amo_details_page.release_version))
+        Assert.not_none(re.search(details_page.version_number, details_page.release_version))
 
     def test_that_reviews_are_displayed(self, mozwebqa):
         """ Test for Litmus 9890"""
-        amo_details_page = AddonsDetailsPage(mozwebqa, "Firebug")
-        Assert.true(amo_details_page.is_review_title_visible)
-        Assert.equal(amo_details_page.review_title, "Reviews")
-        Assert.true(amo_details_page.has_reviews)
-        Assert.not_none(re.search('(\w+\s*){1,}', amo_details_page.review_details))
+        details_page = DetailsPage(mozwebqa, "Firebug")
+        Assert.true(details_page.is_review_title_visible)
+        Assert.equal(details_page.review_title, "Reviews")
+        Assert.true(details_page.has_reviews)
+        Assert.not_none(re.search('(\w+\s*){1,}', details_page.review_details))
 
     def test_that_in_often_used_with_addons_are_displayed(self, mozwebqa):
         """ Test for Litmus 9890"""
-        amo_details_page = AddonsDetailsPage(mozwebqa, "Firebug")
-        Assert.true(amo_details_page.is_often_used_with_header_visible)
-        Assert.equal(amo_details_page.often_used_with_header, u"Often used with\u2026")
-        Assert.true(amo_details_page.is_often_used_with_list_visible)
+        details_page = DetailsPage(mozwebqa, "Firebug")
+        Assert.true(details_page.is_often_used_with_header_visible)
+        Assert.equal(details_page.often_used_with_header, u"Often used with\u2026")
+        Assert.true(details_page.is_often_used_with_list_visible)
 
     def test_that_tags_are_displayed(self, mozwebqa):
         """ Test for Litmus 9890"""
-        amo_details_page = AddonsDetailsPage(mozwebqa, "Firebug")
-        Assert.true(amo_details_page.are_tags_visible)
+        details_page = DetailsPage(mozwebqa, "Firebug")
+        Assert.true(details_page.are_tags_visible)
 
     def test_part_of_collections_are_displayed(self, mozwebqa):
         """ Test for Litmus 9890"""
-        amo_details_page = AddonsDetailsPage(mozwebqa, "Firebug")
-        Assert.true(amo_details_page.is_part_of_collections_header_visible)
-        Assert.true(amo_details_page.is_part_of_collections_list_visible)
-        Assert.equal(amo_details_page.part_of_collections_header, 'Part of these Collections')
+        details_page = DetailsPage(mozwebqa, "Firebug")
+        Assert.true(details_page.is_part_of_collections_header_visible)
+        Assert.true(details_page.is_part_of_collections_list_visible)
+        Assert.equal(details_page.part_of_collections_header, 'Part of these Collections')
 
     def test_that_external_link_leads_to_addon_website(self, mozwebqa):
         """ Litmus 11809
             https://litmus.mozilla.org/show_test.cgi?id=11809 """
         # Step 1 - Open AMO homepage
         # Step 2 - Open Adblock Plus details page
-        details_page = AddonsDetailsPage(mozwebqa, 'Adblock Plus')
+        details_page = DetailsPage(mozwebqa, 'Adblock Plus')
         website_link = details_page.website
         Assert.true(website_link != '')
         # Step 3 - Follow external website link
@@ -148,8 +148,8 @@ class TestDetailsPage:
     @xfail(reason="bugzilla 688910")
     def test_that_whats_this_link_for_source_license_links_to_an_answer_in_faq(self, mozwebqa):
         """ Test for Litmus 11530"""
-        amo_details_page = AddonsDetailsPage(mozwebqa, "Firebug")
-        user_faq_page = amo_details_page.click_whats_this_license()
+        details_page = DetailsPage(mozwebqa, "Firebug")
+        user_faq_page = details_page.click_whats_this_license()
         Assert.not_none(re.match('(\w+\s*){3,}', user_faq_page.license_question))
         Assert.not_none(re.match('(\w+\s*){3,}', user_faq_page.license_answer))
 
@@ -159,10 +159,10 @@ class TestDetailsPage:
         https://litmus.mozilla.org/show_test.cgi?id=11926
         """
         addon_with_multiple_authors = 'firebug'
-        amo_detail_page = AddonsDetailsPage(mozwebqa, addon_with_multiple_authors)
+        detail_page = DetailsPage(mozwebqa, addon_with_multiple_authors)
 
-        Assert.true(len(amo_detail_page.authors) > 1)
-        Assert.equal(amo_detail_page.other_addons_by_authors_text, 'Other add-ons by these authors')
+        Assert.true(len(detail_page.authors) > 1)
+        Assert.equal(detail_page.other_addons_by_authors_text, 'Other add-ons by these authors')
 
     def test_other_addons_label_when_there_is_only_one_author(self, mozwebqa):
         """
@@ -170,50 +170,50 @@ class TestDetailsPage:
         https://litmus.mozilla.org/show_test.cgi?id=11926
         """
         addon_with_one_authors = 'adblock-plus'
-        amo_detail_page = AddonsDetailsPage(mozwebqa, addon_with_one_authors)
+        detail_page = DetailsPage(mozwebqa, addon_with_one_authors)
 
-        Assert.equal(len(amo_detail_page.authors), 1)
-        Assert.equal(amo_detail_page.other_addons_by_authors_text, "Other add-ons by %s" % amo_detail_page.authors[0])
+        Assert.equal(len(detail_page.authors), 1)
+        Assert.equal(detail_page.other_addons_by_authors_text, "Other add-ons by %s" % detail_page.authors[0])
 
     def test_navigating_to_other_addons(self, mozwebqa):
         """
         Litmus 11926
         https://litmus.mozilla.org/show_test.cgi?id=11926"""
         addon_name = 'firebug'
-        amo_detail_page = AddonsDetailsPage(mozwebqa, addon_name)
+        detail_page = DetailsPage(mozwebqa, addon_name)
 
-        addons = amo_detail_page.other_addons()
+        addons = detail_page.other_addons()
         for addon in addons:
             name = addon.name
             addon.click_addon_link()
-            Assert.contains(name, amo_detail_page.name)
-            amo_detail_page = AddonsDetailsPage(mozwebqa, addon_name)
+            Assert.contains(name, detail_page.name)
+            detail_page = DetailsPage(mozwebqa, addon_name)
 
     def test_details_more_images(self, mozwebqa):
         """
         Litmus 4846
         https://litmus.mozilla.org/show_test.cgi?id=4846
         """
-        amo_detail_page = AddonsDetailsPage(mozwebqa, 'firebug')
+        detail_page = DetailsPage(mozwebqa, 'firebug')
 
-        image_viewer = amo_detail_page.previewer.click_image()
+        image_viewer = detail_page.previewer.click_image()
         Assert.true(image_viewer.is_visible)
         image_viewer.close()
         Assert.false(image_viewer.is_visible)
 
-        images_count = amo_detail_page.previewer.image_count
-        image_set_count = amo_detail_page.previewer.image_set_count
+        images_count = detail_page.previewer.image_count
+        image_set_count = detail_page.previewer.image_set_count
         images_title = []
         image_link = []
         for img_set in range(image_set_count):
             for img_no in range(3):
                 if img_set * 3 + img_no != images_count:
-                    images_title.append(amo_detail_page.previewer.image_title(img_set * 3 + img_no))
-                    image_link.append(amo_detail_page.previewer.image_link(img_set * 3 + img_no))
+                    images_title.append(detail_page.previewer.image_title(img_set * 3 + img_no))
+                    image_link.append(detail_page.previewer.image_link(img_set * 3 + img_no))
 
-            image_viewer = amo_detail_page.previewer.next_set()
+            image_viewer = detail_page.previewer.next_set()
 
-        image_viewer = amo_detail_page.previewer.click_image()
+        image_viewer = detail_page.previewer.click_image()
         Assert.true(image_viewer.is_visible)
         Assert.equal(images_count, image_viewer.images_count)
         for i in range(image_viewer.images_count):
@@ -260,63 +260,63 @@ class TestDetailsPage:
         https://litmus.mozilla.org/show_test.cgi?id=4842
         """
         addon_name = 'firebug'
-        amo_detail_page = AddonsDetailsPage(mozwebqa, addon_name)
+        detail_page = DetailsPage(mozwebqa, addon_name)
 
-        for review in amo_detail_page.reviews():
+        for review in detail_page.reviews():
             username = review.username
             amo_user_page = review.click_username()
             Assert.equal(username, amo_user_page.username)
-            AddonsDetailsPage(mozwebqa, addon_name)
+            DetailsPage(mozwebqa, addon_name)
 
     def test_that_details_page_has_breadcrumb(self, mozwebqa):
         """
         Litmus 11922
         https://litmus.mozilla.org/show_test.cgi?id=11922
         """
-        amo_detail_page = AddonsDetailsPage(mozwebqa, 'firebug')
+        detail_page = DetailsPage(mozwebqa, 'firebug')
 
-        Assert.equal(amo_detail_page.breadcrumb, 'Add-ons for Firefox Extensions Firebug')
+        Assert.equal(detail_page.breadcrumb, 'Add-ons for Firefox Extensions Firebug')
 
     def test_that_clicking_info_link_slides_down_page_to_version_info(self, mozwebqa):
         """ Test for Litmus 25725
             https://litmus.mozilla.org/show_test.cgi?id=25725 """
-        amo_details_page = AddonsDetailsPage(mozwebqa, 'firebug')
-        Assert.true(amo_details_page.is_version_info_link_visible)
-        amo_details_page.click_version_info_link()
-        Assert.equal(amo_details_page.version_info_link, amo_details_page.version_information)
-        Assert.true(amo_details_page.is_version_information_section_expanded)
-        Assert.true(amo_details_page.does_page_scroll_to_version_information_section)
+        details_page = DetailsPage(mozwebqa, 'firebug')
+        Assert.true(details_page.is_version_info_link_visible)
+        details_page.click_version_info_link()
+        Assert.equal(details_page.version_info_link, details_page.version_information)
+        Assert.true(details_page.is_version_information_section_expanded)
+        Assert.true(details_page.does_page_scroll_to_version_information_section)
 
-    def test_that_breadcrumb_links_in_addons_details_page_work(self, mozwebqa):
+    def test_that_breadcrumb_links_in_details_page_work(self, mozwebqa):
         """
         Litmus 11923
         https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=11923
         """
-        amo_home_page = AddonsHomePage(mozwebqa)
-        amo_detail_page = AddonsDetailsPage(mozwebqa, 'firebug')
+        home_page = HomePage(mozwebqa)
+        detail_page = DetailsPage(mozwebqa, 'firebug')
 
-        Assert.true(amo_detail_page.is_breadcrumb_menu_visible)
+        Assert.true(detail_page.is_breadcrumb_menu_visible)
 
-        Assert.equal(amo_detail_page.breadcrumbs[0].name, 'Add-ons for Firefox')
-        link = amo_detail_page.breadcrumbs[0].link_value
-        amo_detail_page.breadcrumbs[0].click()
+        Assert.equal(detail_page.breadcrumbs[0].name, 'Add-ons for Firefox')
+        link = detail_page.breadcrumbs[0].link_value
+        detail_page.breadcrumbs[0].click()
 
-        Assert.true(amo_home_page.is_the_current_page)
-        Assert.true(amo_home_page.get_url_current_page().endswith(link))
+        Assert.true(home_page.is_the_current_page)
+        Assert.true(home_page.get_url_current_page().endswith(link))
 
-        amo_home_page.return_to_previous_page()
+        home_page.return_to_previous_page()
 
-        Assert.equal(amo_detail_page.breadcrumbs[1].name, 'Extensions')
-        link = amo_detail_page.breadcrumbs[1].link_value
-        amo_detail_page.breadcrumbs[1].click()
+        Assert.equal(detail_page.breadcrumbs[1].name, 'Extensions')
+        link = detail_page.breadcrumbs[1].link_value
+        detail_page.breadcrumbs[1].click()
 
         amo_extenstions_page = ExtensionsHomePage(mozwebqa)
         Assert.true(amo_extenstions_page.is_the_current_page)
         Assert.true(amo_extenstions_page.get_url_current_page().endswith(link))
 
-        amo_home_page.return_to_previous_page()
+        home_page.return_to_previous_page()
 
-        Assert.equal(amo_detail_page.breadcrumbs[2].name, 'Firebug')
+        Assert.equal(detail_page.breadcrumbs[2].name, 'Firebug')
 
     def test_that_add_a_review_button_works(self, mozwebqa):
         """
@@ -324,13 +324,13 @@ class TestDetailsPage:
         https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25729
         """
         #Step 1: Addons Home Page loads and Addons Details loads
-        amo_home_page = AddonsHomePage(mozwebqa)
+        home_page = HomePage(mozwebqa)
 
         #Step 2:user logs in to submit a review
-        amo_home_page.login()
-        Assert.true(amo_home_page.header.is_user_logged_in)
+        home_page.login()
+        Assert.true(home_page.header.is_user_logged_in)
 
         #Step 3: user loads an addon details page and clicks write a review button
-        amo_details_page = AddonsDetailsPage(mozwebqa, 'Firebug')
-        addon_review_box = amo_details_page.click_to_write_review()
-        Assert.true(addon_review_box.is_review_box_visible)
+        details_page = DetailsPage(mozwebqa, 'Firebug')
+        review_box = details_page.click_to_write_review()
+        Assert.true(review_box.is_review_box_visible)

@@ -43,8 +43,8 @@ import pytest
 from datetime import datetime
 from unittestzero import Assert
 
-from addons_homepage import AddonsHomePage
-from addons_details_page import AddonsDetailsPage
+from homepage import HomePage
+from details_page import DetailsPage
 
 xfail = pytest.mark.xfail
 
@@ -56,48 +56,48 @@ class TestReviews:
             https://litmus.mozilla.org/show_test.cgi?id=4843
         """
         #Open details page for Adblock Plus
-        amo_details_page = AddonsDetailsPage(mozwebqa, 'Adblock Plus')
-        Assert.true(amo_details_page.has_reviews)
+        details_page = DetailsPage(mozwebqa, 'Adblock Plus')
+        Assert.true(details_page.has_reviews)
 
-        amo_details_page.click_all_reviews_link()
-        Assert.equal(amo_details_page.review_count, 20)
+        details_page.click_all_reviews_link()
+        Assert.equal(details_page.review_count, 20)
 
         #Go to the last page and check that the next button is not present
-        amo_details_page.go_to_last_page()
-        Assert.true(amo_details_page.is_next_link_disabled)
+        details_page.go_to_last_page()
+        Assert.true(details_page.is_next_link_disabled)
 
         #Go one page back, check that it has 20 reviews
         #that the page number decreases and that the next link is visible
-        page_number = amo_details_page.current_page
-        amo_details_page.page_back()
-        Assert.true(amo_details_page.is_next_link_visible)
-        Assert.equal(amo_details_page.review_count, 20)
-        Assert.equal(amo_details_page.current_page, page_number - 1)
+        page_number = details_page.current_page
+        details_page.page_back()
+        Assert.true(details_page.is_next_link_visible)
+        Assert.equal(details_page.review_count, 20)
+        Assert.equal(details_page.current_page, page_number - 1)
 
         #Go to the first page and check that the prev button is not present
-        amo_details_page.go_to_first_page()
-        Assert.true(amo_details_page.is_prev_link_disabled)
+        details_page.go_to_first_page()
+        Assert.true(details_page.is_prev_link_disabled)
 
         #Go one page forward, check that it has 20 reviews,
         #that the page number increases and that the prev link is visible
-        page_number = amo_details_page.current_page
-        amo_details_page.page_forward()
-        Assert.true(amo_details_page.is_prev_link_visible)
-        Assert.equal(amo_details_page.review_count, 20)
-        Assert.equal(amo_details_page.current_page, page_number + 1)
+        page_number = details_page.current_page
+        details_page.page_forward()
+        Assert.true(details_page.is_prev_link_visible)
+        Assert.equal(details_page.review_count, 20)
+        Assert.equal(details_page.current_page, page_number + 1)
 
     @xfail(reason="https://www.pivotaltracker.com/story/show/17712967")
     def test_that_new_review_is_saved(self, mozwebqa):
         """ Litmus 22921
             https://litmus.mozilla.org/show_test.cgi?id=22921 """
         # Step 1 - Login into AMO
-        amo_home_page = AddonsHomePage(mozwebqa)
-        amo_home_page.login()
-        Assert.true(amo_home_page.is_the_current_page)
-        Assert.true(amo_home_page.header.is_user_logged_in)
+        home_page = HomePage(mozwebqa)
+        home_page.login()
+        Assert.true(home_page.is_the_current_page)
+        Assert.true(home_page.header.is_user_logged_in)
 
         # Step 2 - Load any addon detail page
-        details_page = AddonsDetailsPage(mozwebqa, 'Adblock Plus')
+        details_page = DetailsPage(mozwebqa, 'Adblock Plus')
 
         # Step 3 - Click on "Write review" button
         write_review_block = details_page.click_to_write_review()

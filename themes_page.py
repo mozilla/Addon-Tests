@@ -46,10 +46,10 @@
 
 
 from page import Page
-from addons_base_page import AddonsBasePage
+from base_page import BasePage
 
 
-class AddonsThemesPage(AddonsBasePage):
+class ThemesPage(BasePage):
 
     _sort_by_name_locator = 'name=_t-name'
     _sort_by_updated_locator = 'name=_t-updated'
@@ -77,7 +77,7 @@ class AddonsThemesPage(AddonsBasePage):
     _next_link_locator = "link=Next"
 
     def __init__(self, testsetup):
-        AddonsBasePage.__init__(self, testsetup)
+        BasePage.__init__(self, testsetup)
 
     # TODO: remove method when impala pages are available for themes
     def page_forward(self):
@@ -91,12 +91,12 @@ class AddonsThemesPage(AddonsBasePage):
     def click_on_first_addon(self):
         self.selenium.click(self._addon_name_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
-        return AddonsThemePage(self.testsetup)
+        return ThemePage(self.testsetup)
 
     def click_on_first_category(self):
         self.selenium.click(self._category_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
-        return AddonsThemesCategoryPage(self.testsetup)
+        return ThemesCategoryPage(self.testsetup)
 
     def get_category(self, lookup):
         return self.selenium.get_text(self._category_link_locator % lookup)
@@ -162,7 +162,7 @@ class AddonsThemesPage(AddonsBasePage):
         return self.selenium.get_text(self._bottom_counter_locator)
 
 
-class AddonsThemePage(AddonsBasePage):
+class ThemePage(BasePage):
 
     _addon_title = "css=h1.addon"
 
@@ -171,7 +171,7 @@ class AddonsThemePage(AddonsBasePage):
         return self.selenium.get_text(self._addon_title)
 
 
-class AddonsThemesCategoryPage(AddonsBasePage):
+class ThemesCategoryPage(BasePage):
 
     _title_locator = "css=h2"
     _breadcrumb_locator = "css=ol.breadcrumbs"

@@ -36,10 +36,10 @@
 #
 # ***** END LICENSE BLOCK *****
 
-from addons_base_page import AddonsBasePage
+from base_page import BasePage
 
 
-class AddonsLoginPage(AddonsBasePage):
+class LoginPage(BasePage):
 
     _page_title = 'User Login :: Add-ons for Firefox'
     _email_locator = 'id=id_username'
@@ -54,7 +54,7 @@ class AddonsLoginPage(AddonsBasePage):
         self.selenium.wait_for_page_to_load(self.timeout)
 
 
-class AddonsViewProfilePage(AddonsBasePage):
+class ViewProfilePage(BasePage):
 
     _page_title = 'User Info for Test :: Add-ons for Firefox'
     _about_locator = 'css=div.featured-inner.object-lead > h3'
@@ -64,7 +64,7 @@ class AddonsViewProfilePage(AddonsBasePage):
         return self.selenium.get_text(self._about_locator)
 
 
-class AddonsUserPage(AddonsBasePage):
+class UserPage(BasePage):
 
         _username_locator = "css=div.vcard h2.fn"
 
@@ -73,7 +73,7 @@ class AddonsUserPage(AddonsBasePage):
             return self.selenium.get_text(self._username_locator)
 
 
-class AddonsEditProfilePage(AddonsBasePage):
+class EditProfilePage(BasePage):
 
     _page_title = 'Account Settings :: Add-ons for Firefox'
     _account_locator = "css=#acct-account > legend"

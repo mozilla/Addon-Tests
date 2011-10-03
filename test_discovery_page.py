@@ -47,7 +47,7 @@ xfail = pytest.mark.xfail
 from unittestzero import Assert
 
 from discovery_page import DiscoveryPane
-#from addons_homepage import AddonsHomePage
+#from homepage import HomePage
 
 
 class TestDiscoveryPane:
