@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+
 # ***** BEGIN LICENSE BLOCK *****
 # Version: MPL 1.1/GPL 2.0/LGPL 2.1
 #
@@ -35,10 +36,9 @@
 #
 # ***** END LICENSE BLOCK *****
 
-
 from addons_base_page import AddonsBasePage
-from time import strptime, mktime
 from page import Page
+
 
 class ExtensionsHomePage(AddonsBasePage):
 
@@ -49,10 +49,11 @@ class ExtensionsHomePage(AddonsBasePage):
     def extension_count(self):
         return int(self.selenium.get_css_count(self._extensions_locator))
 
+    @property
     def extensions(self):
-        return [self.ExtensionsList(self.testsetup, i) for i in range(self.extension_count)]
+        return [self.Extension(self.testsetup, i) for i in range(self.extension_count)]
 
-    class ExtensionsList(Page):
+    class Extension(Page):
         _name_locator = " h3 a"
 
         def __init__(self, testsetup, lookup):

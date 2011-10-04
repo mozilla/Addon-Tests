@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+
 # ***** BEGIN LICENSE BLOCK *****
 # Version: MPL 1.1/GPL 2.0/LGPL 2.1
 #
@@ -36,8 +37,6 @@
 #
 # ***** END LICENSE BLOCK *****
 
-
-import re
 import pytest
 from datetime import datetime
 from unittestzero import Assert
@@ -117,7 +116,6 @@ class TestReviews:
         Assert.equal(review.date, date)
         Assert.equal(review.text, body)
 
-
     @xfail(reason="there are 2 bugs in AddonsDetailsPage \
                     https://www.pivotaltracker.com/story/show/19150339 \
                     https://www.pivotaltracker.com/story/show/19150295")
@@ -134,7 +132,7 @@ class TestReviews:
 
         # Step 3 - Pick an addon with no reviews
         extensions_home_page.go_to_last_page()
-        addon = extensions_home_page.extensions()[-1]  # the last one is without rating
+        addon = extensions_home_page.extensions[-1]  # the last one is without rating
         addon_name = addon.name
         details_page = AddonsDetailsPage(mozwebqa, addon_name)
 
@@ -168,7 +166,7 @@ class TestReviews:
 
         # Step 3 - Pick an addon with no reviews
         extensions_home_page.go_to_last_page()
-        addon = extensions_home_page.extensions()[-1]  # the last one is without rating
+        addon = extensions_home_page.extensions[-1]  # the last one is without rating
         addon_name = addon.name
         details_page = AddonsDetailsPage(mozwebqa, addon_name)
 
@@ -202,7 +200,7 @@ class TestReviews:
 
         # Step 3 - Pick an addon with no reviews
         extensions_home_page.go_to_last_page()
-        addon = extensions_home_page.extensions()[-1]  # the last one is without rating
+        addon = extensions_home_page.extensions[-1]  # the last one is without rating
         addon_name = addon.name
         details_page = AddonsDetailsPage(mozwebqa, addon_name)
 
@@ -236,7 +234,7 @@ class TestReviews:
 
         # Step 3 - Pick an addon with no reviews
         extensions_home_page.go_to_last_page()
-        addon = extensions_home_page.extensions()[-1]  # the last one is without rating
+        addon = extensions_home_page.extensions[-1]  # the last one is without rating
         addon_name = addon.name
         details_page = AddonsDetailsPage(mozwebqa, addon_name)
 
@@ -270,7 +268,7 @@ class TestReviews:
 
         # Step 3 - Pick an addon with no reviews
         extensions_home_page.go_to_last_page()
-        addon = extensions_home_page.extensions()[-1]  # the last one is without rating
+        addon = extensions_home_page.extensions[-1]  # the last one is without rating
         addon_name = addon.name
         details_page = AddonsDetailsPage(mozwebqa, addon_name)
 
