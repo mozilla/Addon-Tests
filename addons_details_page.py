@@ -108,10 +108,7 @@ class AddonsDetailsPage(AddonsBasePage):
         if (addon_name != None):
             self.addon_name = addon_name.replace(' ', '-').lower()
             self.selenium.open("%s/addon/%s" % (self.site_version, self.addon_name))
-            try:
-                self._wait_for_reviews_and_other_addons_by_author_to_load()
-            except:
-                pass
+            self.wait_for_reviews_to_load()
         self._page_title = "%s :: Add-ons for Firefox" % self.current_page_breadcrumb
 
     @property
@@ -152,6 +149,7 @@ class AddonsDetailsPage(AddonsBasePage):
 
     @property
     def authors(self):
+        self.wait_for_other_addons_by_author_to_load()
         return [self.selenium.get_text(self._authors_locator + "[ % s]" % (i + 1))
             for i in range(self.selenium.get_xpath_count(self._authors_locator))]
 
@@ -320,6 +318,7 @@ class AddonsDetailsPage(AddonsBasePage):
 
     @property
     def other_addons_by_authors_text(self):
+        self.wait_for_other_addons_by_author_to_load()
         return self.selenium.get_text("%s > h2" % self._other_addons_by_author_locator)
 
     @property
@@ -480,6 +479,8 @@ class AddonsDetailsPage(AddonsBasePage):
         from addons_site import AddonsWriteReviewBlock
         return AddonsWriteReviewBlock(self.testsetup)
 
-    def _wait_for_reviews_and_other_addons_by_author_to_load(self):
+    def wait_for_reviews_to_load(self):
         self.wait_for_element_present(self._reviews_locator)
+
+    def wait_for_other_addons_by_author_to_load(self):
         self.wait_for_element_present(self._other_addons_by_author_locator)
