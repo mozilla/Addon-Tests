@@ -90,6 +90,7 @@ class AddonsDetailsPage(AddonsBasePage):
     _review_locator = "css=div.review:not(.reply)"
     _info_link_locator = "css=li > a.scrollto"
     _rating_counter_locator = "css=.grouped_ratings .num_ratings"
+    _devs_comments_section_locator = "css=#developer-comments"
 
     _image_locator = "css=#preview.slider li.panel.active a"
     _image_viewer_locator = 'id=lightbox'
@@ -211,6 +212,14 @@ class AddonsDetailsPage(AddonsBasePage):
         return self.selenium.get_text(self._other_addons_header_locator)
 
     @property
+    def devs_comments_title(self):
+        return self.selenium.get_text("%s > h2" % self._devs_comments_section_locator)
+
+    @property
+    def devs_comments_message(self):
+        return self.selenium.get_text("%s div.content" % self._devs_comments_section_locator)
+
+    @property
     def is_register_visible(self):
         return self.selenium.is_visible(self._register_link_locator)
 
@@ -279,6 +288,14 @@ class AddonsDetailsPage(AddonsBasePage):
     @property
     def is_part_of_collections_list_visible(self):
         return self.selenium.is_visible('%s ul' % self._part_of_collections_locator)
+
+    @property
+    def is_devs_comments_section_visible(self):
+        return self.selenium.is_visible(self._devs_comments_section_locator)
+
+    def is_devs_comments_section_expanded(self):
+        is_expanded = self.selenium.get_attribute("%s@class" % self._devs_comments_section_locator)
+        return ("expanded" in is_expanded)
 
     @property
     def part_of_collections_header(self):
@@ -404,6 +421,9 @@ class AddonsDetailsPage(AddonsBasePage):
 
     def click_version_info_link(self):
         self.selenium.click(self._info_link_locator)
+
+    def click_devs_comments_title(self):
+        self.selenium.click("%s > h2 > a" % self._devs_comments_section_locator)
 
     class OtherAddons(Page):
         _other_addons_locator = 'css=#author-addons li'
