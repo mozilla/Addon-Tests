@@ -108,7 +108,10 @@ class AddonsDetailsPage(AddonsBasePage):
         if (addon_name != None):
             self.addon_name = addon_name.replace(' ', '-').lower()
             self.selenium.open("%s/addon/%s" % (self.site_version, self.addon_name))
-            self._wait_for_reviews_and_other_addons_by_author_to_load()
+            try:
+                self._wait_for_reviews_and_other_addons_by_author_to_load()
+            except:
+                pass
         self._page_title = "%s :: Add-ons for Firefox" % self.current_page_breadcrumb
 
     @property
