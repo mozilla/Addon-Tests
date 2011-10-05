@@ -48,7 +48,7 @@ from unittestzero import Assert
 from addons_site import UserFAQPage
 from addons_details_page import AddonsDetailsPage
 from addons_user_page import AddonsLoginPage
-from addons_site import ExtensionsHomePage
+from extensions_homepage import ExtensionsHomePage
 from addons_homepage import AddonsHomePage
 
 

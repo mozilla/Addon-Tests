@@ -37,8 +37,6 @@
 #
 # ***** END LICENSE BLOCK *****
 
-
-import re
 import pytest
 from datetime import datetime
 from unittestzero import Assert
@@ -118,6 +116,9 @@ class TestReviews:
         Assert.equal(review.date, date)
         Assert.equal(review.text, body)
 
+    @xfail(reason="there are 2 bugs in AddonsDetailsPage \
+                    https://www.pivotaltracker.com/story/show/19150339 \
+                    https://www.pivotaltracker.com/story/show/19150295")
     def test_that_one_star_rating_increments(self, mozwebqa):
         """ Litmus 22916
             https://litmus.mozilla.org/show_test.cgi?id=22916 """
@@ -127,11 +128,11 @@ class TestReviews:
         Assert.true(amo_home_page.header.is_user_logged_in)
 
         # Step 2 - Go to add-ons listing page sorted by rating
-        amo_search_page = amo_home_page.click_to_explore('Top Rated')
+        extensions_home_page = amo_home_page.click_to_explore('Top Rated')
 
         # Step 3 - Pick an addon with no reviews
-        amo_search_page.go_to_last_page()
-        addon = amo_search_page.results()[-1]  # the last one is without rating
+        extensions_home_page.go_to_last_page()
+        addon = extensions_home_page.extensions[-1]  # the last one is without rating
         addon_name = addon.name
         details_page = AddonsDetailsPage(mozwebqa, addon_name)
 
@@ -149,6 +150,9 @@ class TestReviews:
         new_rating_counter = details_page.get_rating_counter(1)
         Assert.equal(new_rating_counter, 1)
 
+    @xfail(reason="there are 2 bugs in AddonsDetailsPage \
+                    https://www.pivotaltracker.com/story/show/19150339 \
+                    https://www.pivotaltracker.com/story/show/19150295")
     def test_that_two_star_rating_increments(self, mozwebqa):
         """ Litmus 22917
             https://litmus.mozilla.org/show_test.cgi?id=22917 """
@@ -158,11 +162,11 @@ class TestReviews:
         Assert.true(amo_home_page.header.is_user_logged_in)
 
         # Step 2 - Go to add-ons listing page sorted by rating
-        amo_search_page = amo_home_page.click_to_explore('Top Rated')
+        extensions_home_page = amo_home_page.click_to_explore('Top Rated')
 
         # Step 3 - Pick an addon with no reviews
-        amo_search_page.go_to_last_page()
-        addon = amo_search_page.results()[-1]  # the last one is without rating
+        extensions_home_page.go_to_last_page()
+        addon = extensions_home_page.extensions[-1]  # the last one is without rating
         addon_name = addon.name
         details_page = AddonsDetailsPage(mozwebqa, addon_name)
 
@@ -180,6 +184,9 @@ class TestReviews:
         new_rating_counter = details_page.get_rating_counter(2)
         Assert.equal(new_rating_counter, 1)
 
+    @xfail(reason="there are 2 bugs in AddonsDetailsPage \
+                    https://www.pivotaltracker.com/story/show/19150339 \
+                    https://www.pivotaltracker.com/story/show/19150295")
     def test_that_three_star_rating_increments(self, mozwebqa):
         """ Litmus 22918
             https://litmus.mozilla.org/show_test.cgi?id=22918 """
@@ -189,11 +196,11 @@ class TestReviews:
         Assert.true(amo_home_page.header.is_user_logged_in)
 
         # Step 2 - Go to add-ons listing page sorted by rating
-        amo_search_page = amo_home_page.click_to_explore('Top Rated')
+        extensions_home_page = amo_home_page.click_to_explore('Top Rated')
 
         # Step 3 - Pick an addon with no reviews
-        amo_search_page.go_to_last_page()
-        addon = amo_search_page.results()[-1]  # the last one is without rating
+        extensions_home_page.go_to_last_page()
+        addon = extensions_home_page.extensions[-1]  # the last one is without rating
         addon_name = addon.name
         details_page = AddonsDetailsPage(mozwebqa, addon_name)
 
@@ -211,6 +218,9 @@ class TestReviews:
         new_rating_counter = details_page.get_rating_counter(3)
         Assert.equal(new_rating_counter, 1)
 
+    @xfail(reason="there are 2 bugs in AddonsDetailsPage \
+                    https://www.pivotaltracker.com/story/show/19150339 \
+                    https://www.pivotaltracker.com/story/show/19150295")
     def test_that_four_star_rating_increments(self, mozwebqa):
         """ Litmus 22919
             https://litmus.mozilla.org/show_test.cgi?id=22918 """
@@ -220,11 +230,11 @@ class TestReviews:
         Assert.true(amo_home_page.header.is_user_logged_in)
 
         # Step 2 - Go to add-ons listing page sorted by rating
-        amo_search_page = amo_home_page.click_to_explore('Top Rated')
+        extensions_home_page = amo_home_page.click_to_explore('Top Rated')
 
         # Step 3 - Pick an addon with no reviews
-        amo_search_page.go_to_last_page()
-        addon = amo_search_page.results()[-1]  # the last one is without rating
+        extensions_home_page.go_to_last_page()
+        addon = extensions_home_page.extensions[-1]  # the last one is without rating
         addon_name = addon.name
         details_page = AddonsDetailsPage(mozwebqa, addon_name)
 
@@ -242,6 +252,9 @@ class TestReviews:
         new_rating_counter = details_page.get_rating_counter(4)
         Assert.equal(new_rating_counter, 1)
 
+    @xfail(reason="there are 2 bugs in AddonsDetailsPage \
+                    https://www.pivotaltracker.com/story/show/19150339 \
+                    https://www.pivotaltracker.com/story/show/19150295")
     def test_that_five_star_rating_increments(self, mozwebqa):
         """ Litmus 22920
             https://litmus.mozilla.org/show_test.cgi?id=22920 """
@@ -251,11 +264,11 @@ class TestReviews:
         Assert.true(amo_home_page.header.is_user_logged_in)
 
         # Step 2 - Go to add-ons listing page sorted by rating
-        amo_search_page = amo_home_page.click_to_explore('Top Rated')
+        extensions_home_page = amo_home_page.click_to_explore('Top Rated')
 
         # Step 3 - Pick an addon with no reviews
-        amo_search_page.go_to_last_page()
-        addon = amo_search_page.results()[-1]  # the last one is without rating
+        extensions_home_page.go_to_last_page()
+        addon = extensions_home_page.extensions[-1]  # the last one is without rating
         addon_name = addon.name
         details_page = AddonsDetailsPage(mozwebqa, addon_name)
 
