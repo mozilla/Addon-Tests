@@ -109,7 +109,7 @@ class AddonsDetailsPage(AddonsBasePage):
             self.addon_name = re.sub(r'[^\w-]', '', addon_name).lower()
             self.addon_name = self.addon_name[:27]
             self.selenium.open("%s/addon/%s" % (self.site_version, self.addon_name))
-            self.wait_for_reviews_to_load()
+            self.wait_for_element_present(self._reviews_locator)
         self._page_title = "%s :: Add-ons for Firefox" % self.current_page_breadcrumb
 
     @property
@@ -150,7 +150,6 @@ class AddonsDetailsPage(AddonsBasePage):
 
     @property
     def authors(self):
-        self.wait_for_other_addons_by_author_to_load()
         return [self.selenium.get_text(self._authors_locator + "[ % s]" % (i + 1))
             for i in range(self.selenium.get_xpath_count(self._authors_locator))]
 
@@ -319,14 +318,16 @@ class AddonsDetailsPage(AddonsBasePage):
 
     @property
     def other_addons_by_authors_text(self):
-        self.wait_for_other_addons_by_author_to_load()
+        self.wait_for_element_present(self._other_addons_by_author_locator)
         return self.selenium.get_text("%s > h2" % self._other_addons_by_author_locator)
 
     @property
     def other_addons_count(self):
+        self.wait_for_element_present(self._other_addons_by_author_locator)
         return int(self.selenium.get_css_count('%s li' % self._other_addons_by_author_locator))
 
     def other_addons(self):
+        self.wait_for_element_present(self._other_addons_by_author_locator)
         return [self.OtherAddons(self.testsetup, i) for i in range(self.other_addons_count)]
 
     def get_rating_counter(self, rating):
@@ -479,9 +480,3 @@ class AddonsDetailsPage(AddonsBasePage):
         self.selenium.click(self._add_review_link_locator)
         from addons_site import AddonsWriteReviewBlock
         return AddonsWriteReviewBlock(self.testsetup)
-
-    def wait_for_reviews_to_load(self):
-        self.wait_for_element_present(self._reviews_locator)
-
-    def wait_for_other_addons_by_author_to_load(self):
-        self.wait_for_element_present(self._other_addons_by_author_locator)
