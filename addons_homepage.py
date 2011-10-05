@@ -110,15 +110,15 @@ class AddonsHomePage(AddonsBasePage):
     def click_extensions(self):
         self.selenium.click(self._extensions_menu_link)
         self.selenium.wait_for_page_to_load(self.timeout)
-        from addons_site import ExtensionsHomePage
+        from extensions_homepage import ExtensionsHomePage
         return ExtensionsHomePage(self.testsetup)
 
     def click_to_explore(self, what):
         what = what.replace(' ', '_').lower()
         self.selenium.click(getattr(self, "_explore_most_%s_link_locator" % what))
         self.selenium.wait_for_page_to_load(self.timeout)
-        from addons_search_home_page import AddonsSearchHomePage
-        return AddonsSearchHomePage(self.testsetup)
+        from extensions_homepage import ExtensionsHomePage
+        return ExtensionsHomePage(self.testsetup)
 
     @property
     def most_popular_count(self):
