@@ -137,3 +137,13 @@ class TestHomePage:
         amo_home_page = AddonsHomePage(mozwebqa)
         extensions_page = amo_home_page.click_extensions()
         Assert.true(extensions_page.is_the_current_page)
+
+    def test_that_most_popular_section_is_ordered_by_users(self, mozwebqa):
+        """
+        Litmus 25808
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25808
+        """
+        amo_home_page = AddonsHomePage(mozwebqa)
+        Assert.true(amo_home_page.is_most_popular_list_visible)
+        most_popular_items = amo_home_page.mostpopular_items()
+        Assert.is_sorted_descending([i.users_number for i in most_popular_items])

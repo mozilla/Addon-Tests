@@ -165,6 +165,12 @@ class AddonsHomePage(AddonsBasePage):
     def category(self, lookup):
         return self.Categories(self.testsetup, lookup)
 
+    def mostpopular_item(self, lookup):
+        return self.MostPopularSection(self.testsetup, lookup)
+
+    def mostpopular_items(self):
+        return [self.MostPopularSection(self.testsetup, i) for i in range(self.most_popular_count)]
+
     class Categories(Page):
         _categories_locator = 'css=#side-categories li'
         _link_locator = 'a'
@@ -194,3 +200,37 @@ class AddonsHomePage(AddonsBasePage):
             self.selenium.wait_for_page_to_load(self.timeout)
             from addons_category_page import AddonsCategoryPage
             return AddonsCategoryPage(self.testsetup)
+
+    class MostPopularSection(Page):
+        _name_locator = " > span"
+        _users_locator = " > small"
+
+        def __init__(self, testsetup, lookup):
+            Page.__init__(self, testsetup)
+            self.lookup = lookup
+
+        def absolute_locator(self, relative_locator):
+            return self.root_locator + relative_locator
+
+        @property
+        def root_locator(self):
+            if type(self.lookup) == int:
+                # lookup by index
+                return "css=.toplist > li:nth(%s) > a" % self.lookup
+            else:
+                # lookup by name
+                return "css=.toplist > li:contains(%s) > a" % self.lookup
+
+        @property
+        def name(self):
+            return self.selenium.get_text(self.absolute_locator(self._name_locator))
+
+        @property
+        def users_text(self):
+            return self.selenium.get_text(self.absolute_locator(self._users_locator))
+
+        @property
+        def users_number(self):
+            number_str = self.users_text.split(' ')[0]
+            number_str = number_str.replace(",", "")
+            return int(number_str)
