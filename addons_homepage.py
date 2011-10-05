@@ -165,10 +165,10 @@ class AddonsHomePage(AddonsBasePage):
     def category(self, lookup):
         return self.Categories(self.testsetup, lookup)
 
-    def mostpopular_item(self, lookup):
+    def most_popular_item(self, lookup):
         return self.MostPopularSection(self.testsetup, lookup)
 
-    def mostpopular_items(self):
+    def most_popular_items(self):
         return [self.MostPopularSection(self.testsetup, i) for i in range(self.most_popular_count)]
 
     class Categories(Page):

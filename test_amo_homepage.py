@@ -145,5 +145,5 @@ class TestHomePage:
         """
         amo_home_page = AddonsHomePage(mozwebqa)
         Assert.true(amo_home_page.is_most_popular_list_visible)
-        most_popular_items = amo_home_page.mostpopular_items()
+        most_popular_items = amo_home_page.most_popular_items()
         Assert.is_sorted_descending([i.users_number for i in most_popular_items])
