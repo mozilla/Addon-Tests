@@ -44,13 +44,13 @@
 #
 # ***** END LICENSE BLOCK *****
 
-from addons_base_page import AddonsBasePage
+from base_page import BasePage
 import re
 from urllib2 import urlparse
 from page import Page
 
 
-class AddonsDetailsPage(AddonsBasePage):
+class DetailsPage(BasePage):
 
     _breadcrumb_locator = "id=breadcrumbs"
     _current_page_breadcrumb_locator = "css=#breadcrumbs > ol > li:nth(2)"
@@ -64,7 +64,7 @@ class AddonsDetailsPage(AddonsBasePage):
     _ratings_locator = "css=span[itemprop='rating']"
     _install_button_locator = "css=p[class='install-button'] > a"
     _contribute_button_locator = "css=a[id='contribute-button']"
-    _addon_rating_locator = "css=span[itemprop='rating']"
+    _rating_locator = "css=span[itemprop='rating']"
     _whats_this_license_locator = "css=.source > li:nth(1) > a"
     _description_locator = "css=div.prose"
     _register_link_locator = "css=li.account > a"
@@ -110,7 +110,7 @@ class AddonsDetailsPage(AddonsBasePage):
 
     def __init__(self, testsetup, addon_name=None):
         #formats name for url
-        AddonsBasePage.__init__(self, testsetup)
+        BasePage.__init__(self, testsetup)
         if (addon_name != None):
             self.addon_name = addon_name.replace(" ", "-")
             self.addon_name = re.sub(r'[^A-Za-z0-9\-]', '', self.addon_name).lower()
@@ -173,7 +173,7 @@ class AddonsDetailsPage(AddonsBasePage):
 
     @property
     def rating(self):
-        return self.selenium.get_text(self._addon_rating_locator)
+        return self.selenium.get_text(self._rating_locator)
 
     def click_whats_this_license(self):
         self.selenium.click(self._whats_this_license_locator)
@@ -511,10 +511,10 @@ class AddonsDetailsPage(AddonsBasePage):
         def click_username(self):
             self.selenium.click(self.absolute_locator(self._username_locator))
             self.selenium.wait_for_page_to_load(self.timeout)
-            from addons_user_page import AddonsUserPage
-            return AddonsUserPage(self.testsetup)
+            from user_page import UserPage
+            return UserPage(self.testsetup)
 
     def click_to_write_review(self):
         self.selenium.click(self._add_review_link_locator)
-        from addons_site import AddonsWriteReviewBlock
-        return AddonsWriteReviewBlock(self.testsetup)
+        from addons_site import WriteReviewBlock
+        return WriteReviewBlock(self.testsetup)

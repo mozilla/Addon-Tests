@@ -40,22 +40,22 @@
 
 
 from unittestzero import Assert
-from addons_homepage import AddonsHomePage
+from homepage import HomePage
 
 
 class TestCategory:
 
     def test_that_all_category_links_work(self, mozwebqa):
         "Test for Litmus 25796"
-        amo_home_page = AddonsHomePage(mozwebqa)
-        categories = amo_home_page.categories()
+        home_page = HomePage(mozwebqa)
+        categories = home_page.categories()
 
         for category in categories:
             category_name = category.name
             category_page = category.click_link()
             Assert.contains(category_name, category_page.category_page_title)
             Assert.equal(category_name, category_page.category_header_title)
-            amo_home_page = AddonsHomePage(mozwebqa)
+            home_page = HomePage(mozwebqa)
 
     def test_that_category_names_are_correct(self, mozwebqa):
         """Test for Litmus 25795"""
@@ -77,11 +77,11 @@ class TestCategory:
             "Other"]
 
         # Get actual categories
-        amo_home_page = AddonsHomePage(mozwebqa)
-        categories = amo_home_page.categories()
+        home_page = HomePage(mozwebqa)
+        categories = home_page.categories()
 
         # Catch extra/missing categories with a simple count check
-        Assert.equal(len(categories), len(expected_categories));
+        Assert.equal(len(categories), len(expected_categories))
 
         # Check the categories that are there against the expected list
         for category in categories:

@@ -44,11 +44,11 @@
 #
 # ***** END LICENSE BLOCK *****
 
-from addons_base_page import AddonsBasePage
+from base_page import BasePage
 from page import Page
 
 
-class AddonsHomePage(AddonsBasePage):
+class HomePage(BasePage):
 
     _page_title = "Add-ons for Firefox"
 
@@ -78,34 +78,34 @@ class AddonsHomePage(AddonsBasePage):
 
     def __init__(self, testsetup):
         ''' Creates a new instance of the class and gets the page ready for testing '''
-        AddonsBasePage.__init__(self, testsetup)
+        BasePage.__init__(self, testsetup)
         self.selenium.open("%s/" % self.site_version)
         self.selenium.window_maximize()
 
     def click_featured_personas_see_all_link(self):
         self.selenium.click(self._featured_personas_see_all_link)
         self.selenium.wait_for_page_to_load(self.timeout)
-        from addons_personas_page import AddonsPersonasPage
-        return AddonsPersonasPage(self.testsetup)
+        from personas_page import PersonasPage
+        return PersonasPage(self.testsetup)
 
     def click_personas(self):
         self.selenium.click(self._personas_link_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
-        from addons_personas_page import AddonsPersonasPage
-        return AddonsPersonasPage(self.testsetup)
+        from personas_page import PersonasPage
+        return PersonasPage(self.testsetup)
 
     def click_themes(self):
         self.wait_for_element_visible(self._themes_link_locator)
         self.selenium.click(self._themes_link_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
-        from addons_themes_page import AddonsThemesPage
-        return AddonsThemesPage(self.testsetup)
+        from themes_page import ThemesPage
+        return ThemesPage(self.testsetup)
 
     def click_collections(self):
         self.selenium.click(self._collections_link_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
-        from addons_collection_page import AddonsCollectionsPage
-        return AddonsCollectionsPage(self.testsetup)
+        from collection_page import CollectionsPage
+        return CollectionsPage(self.testsetup)
 
     def click_extensions(self):
         self.selenium.click(self._extensions_menu_link)
@@ -147,8 +147,8 @@ class AddonsHomePage(AddonsBasePage):
     def click_on_first_addon(self):
         self.selenium.click(self._first_addon_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
-        from addons_details_page import AddonsDetailsPage
-        return AddonsDetailsPage(self.testsetup)
+        from details_page import DetailsPage
+        return DetailsPage(self.testsetup)
 
     def get_title_of_link(self, name):
         name = name.lower().replace(" ", "_")
@@ -192,5 +192,5 @@ class AddonsHomePage(AddonsBasePage):
         def click_link(self):
             self.selenium.click(self.absolute_locator(self._link_locator))
             self.selenium.wait_for_page_to_load(self.timeout)
-            from addons_category_page import AddonsCategoryPage
-            return AddonsCategoryPage(self.testsetup)
+            from category_page import CategoryPage
+            return CategoryPage(self.testsetup)
