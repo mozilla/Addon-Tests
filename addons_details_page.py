@@ -65,7 +65,7 @@ class AddonsDetailsPage(AddonsBasePage):
     _install_button_locator = "css=p[class='install-button'] > a"
     _contribute_button_locator = "css=a[id='contribute-button']"
     _addon_rating_locator = "css=span[itemprop='rating']"
-    _whats_this_license_locator = "css=h5 > span > a"
+    _whats_this_license_locator = "css=.source > li:nth(1) > a"
     _description_locator = "css=div.prose"
     _register_link_locator = "css=li.account > a"
     _login_link_locator = "css=li.account > a:nth(1)"
@@ -76,7 +76,8 @@ class AddonsDetailsPage(AddonsBasePage):
     _more_about_addon_locator = "id=more-about"
     _version_information_locator = "id=detail-relnotes"
     _version_information_heading_locator = "css=#detail-relnotes > h2"
-    _release_version_locator = "css=div.version.article > h3 > a"
+    _release_version_locator = "css=div.version"
+    _source_code_license_information_locator = "css=.source > li > a"
     _reviews_title_locator = "css=#reviews > h2"
     _tags_locator = "id=tagbox"
     _other_addons_header_locator = "css=h2.compact-bottom"
@@ -89,6 +90,7 @@ class AddonsDetailsPage(AddonsBasePage):
     _all_reviews_link_locator = "css=a.more-info"
     _review_locator = "css=div.review:not(.reply)"
     _info_link_locator = "css=li > a.scrollto"
+    _rating_counter_locator = "css=.grouped_ratings .num_ratings"
 
     _image_locator = "css=#preview.slider li.panel.active a"
     _image_viewer_locator = 'id=lightbox'
@@ -101,13 +103,19 @@ class AddonsDetailsPage(AddonsBasePage):
     _reviews_locator = "id=reviews"
     _add_review_link_locator = "id=add-review"
 
+    _add_to_collection_locator = "css=.collection-add.widget.collection"
+    _add_to_collection_widget_locator = "css=.collection-add-login"
+    _add_to_collection_widget_button_locator = "css=.register-button .button"
+    _add_to_collection_widget_login_link_locator = 'css=.collection-add-login a:nth(1)'
+
     def __init__(self, testsetup, addon_name=None):
         #formats name for url
         AddonsBasePage.__init__(self, testsetup)
         if (addon_name != None):
-            self.addon_name = addon_name.replace(' ', '-').lower()
+            self.addon_name = re.sub(r'[^\w-]', '', addon_name).lower()
+            self.addon_name = self.addon_name[:27]
             self.selenium.open("%s/addon/%s" % (self.site_version, self.addon_name))
-            self._wait_for_reviews_and_other_addons_by_author_to_load()
+            self.wait_for_element_present(self._reviews_locator)
 
     @property
     def _page_title(self):
@@ -148,6 +156,10 @@ class AddonsDetailsPage(AddonsBasePage):
     @property
     def version_number(self):
         return self.selenium.get_text(self._version_number_locator)
+
+    @property
+    def source_code_license_information(self):
+        return self.selenium.get_text(self._source_code_license_information_locator)
 
     @property
     def authors(self):
@@ -319,18 +331,60 @@ class AddonsDetailsPage(AddonsBasePage):
 
     @property
     def other_addons_by_authors_text(self):
+        self.wait_for_element_present(self._other_addons_by_author_locator)
         return self.selenium.get_text("%s > h2" % self._other_addons_by_author_locator)
 
     @property
     def other_addons_count(self):
+        self.wait_for_element_present(self._other_addons_by_author_locator)
         return int(self.selenium.get_css_count('%s li' % self._other_addons_by_author_locator))
 
     def other_addons(self):
+        self.wait_for_element_present(self._other_addons_by_author_locator)
         return [self.OtherAddons(self.testsetup, i) for i in range(self.other_addons_count)]
+
+    def get_rating_counter(self, rating):
+        if rating == 1:
+            locator = "%s:nth(4)" % self._rating_counter_locator
+        elif rating == 2:
+            locator = "%s:nth(3)" % self._rating_counter_locator
+        elif rating == 3:
+            locator = "%s:nth(2)" % self._rating_counter_locator
+        elif rating == 4:
+            locator = "%s:nth(1)" % self._rating_counter_locator
+        elif rating == 5:
+            locator = "%s:nth(0)" % self._rating_counter_locator
+        else:
+            raise RuntimeError("No such rating %s!" % str(rating))
+        return int(self.selenium.get_text(locator))
 
     @property
     def previewer(self):
         return self.ImagePreviewer(self.testsetup)
+
+    def click_add_to_collection_widget(self):
+        self.selenium.click(self._add_to_collection_locator)
+        self.wait_for_element_visible(self._add_to_collection_widget_locator)
+
+    @property
+    def is_collection_widget_visible(self):
+        return self.selenium.is_visible(self._add_to_collection_widget_locator)
+
+    @property
+    def is_collection_widget_button_visible(self):
+        return self.selenium.is_visible(self._add_to_collection_widget_button_locator)
+
+    @property
+    def collection_widget_button(self):
+        return self.selenium.get_text(self._add_to_collection_widget_button_locator)
+
+    @property
+    def is_collection_widget_login_link_visible(self):
+        return self.selenium.is_visible(self._add_to_collection_widget_login_link_locator)
+
+    @property
+    def collection_widget_login_link(self):
+        return self.selenium.get_text(self._add_to_collection_widget_login_link_locator)
 
     class ImagePreviewer(Page):
 
@@ -463,7 +517,3 @@ class AddonsDetailsPage(AddonsBasePage):
         self.selenium.click(self._add_review_link_locator)
         from addons_site import AddonsWriteReviewBlock
         return AddonsWriteReviewBlock(self.testsetup)
-
-    def _wait_for_reviews_and_other_addons_by_author_to_load(self):
-        self.wait_for_element_present(self._reviews_locator)
-        self.wait_for_element_present(self._other_addons_by_author_locator)

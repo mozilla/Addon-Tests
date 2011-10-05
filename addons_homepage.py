@@ -63,13 +63,18 @@ class AddonsHomePage(AddonsBasePage):
     _most_popular_item_locator = "css=ol.toplist li"
     _most_popular_list_heading_locator = _most_popular_list_locator + " h2"
 
+    _explore_featured_link_locator = "css=#side-nav .s-featured a"
+    _explore_most_popular_link_locator = "css=#side-nav .s-users a"
+    _explore_most_top_rated_link_locator = "css=#side-nav .s-rating a"
+
     _featured_personas_see_all_link = "css=#featured-personas h2 a"
     _featured_personas_locator = "id=featured-personas"
     _featured_personas_title_locator = "css=#featured-personas h2"
     _featured_personas_items_locator = "css=#featured-personas li"
 
     _category_list_locator = "css=ul#side-categories"
-    _alert_and_update_category_locator = _category_list_locator + " > li#c-72 > a"
+
+    _extensions_menu_link = "css=#extensions > a"
 
     def __init__(self, testsetup):
         ''' Creates a new instance of the class and gets the page ready for testing '''
@@ -102,11 +107,18 @@ class AddonsHomePage(AddonsBasePage):
         from addons_collection_page import AddonsCollectionsPage
         return AddonsCollectionsPage(self.testsetup)
 
-    def click_alert_and_update_category(self):
-        self.selenium.click(self._alert_and_update_category_locator)
+    def click_extensions(self):
+        self.selenium.click(self._extensions_menu_link)
         self.selenium.wait_for_page_to_load(self.timeout)
-        from addons_category_page import AddonsCategoryPage
-        return AddonsCategoryPage(self.testsetup)
+        from extensions_homepage import ExtensionsHomePage
+        return ExtensionsHomePage(self.testsetup)
+
+    def click_to_explore(self, what):
+        what = what.replace(' ', '_').lower()
+        self.selenium.click(getattr(self, "_explore_most_%s_link_locator" % what))
+        self.selenium.wait_for_page_to_load(self.timeout)
+        from extensions_homepage import ExtensionsHomePage
+        return ExtensionsHomePage(self.testsetup)
 
     @property
     def most_popular_count(self):

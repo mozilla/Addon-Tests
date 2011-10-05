@@ -144,6 +144,4 @@ class UserFAQPage(AddonsBasePage):
     def license_answer(self):
         return self.selenium.get_text(self._license_answer_locator)
 
-class ExtensionsHomePage(AddonsBasePage):
 
-    _page_title = 'Featured Extensions :: Add-ons for Firefox'

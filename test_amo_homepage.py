@@ -23,6 +23,7 @@
 #                 Alex Lakatos <alex@greensqr.com>
 #                 Teodosia Pop <teodosia.pop@softvision.ro>
 #                 Alin Trif <alin.trif@softvision.ro>
+#                 Alex Rodionov <p0deje@gmail.com>
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -127,3 +128,12 @@ class TestHomePage:
         amo_home_page = AddonsHomePage(mozwebqa)
         tooltip = amo_home_page.get_title_of_link('Other applications')
         Assert.equal(tooltip, 'Find add-ons for other applications')
+
+    def test_that_extensions_link_loads_extensions_page(self, mozwebqa):
+        """
+        Litmus 25746
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25746
+        """
+        amo_home_page = AddonsHomePage(mozwebqa)
+        extensions_page = amo_home_page.click_extensions()
+        Assert.true(extensions_page.is_the_current_page)

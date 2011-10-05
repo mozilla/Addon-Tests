@@ -22,6 +22,7 @@
 #
 # Contributor(s): Marlena Compton <mcompton@mozilla.com>
 #                 Bebe
+#                 Geo Mealer <gmealer@mozilla.com>
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -44,14 +45,6 @@ from addons_homepage import AddonsHomePage
 
 class TestCategory:
 
-    def test_checking_link_for_alerts_and_updates_category(self, mozwebqa):
-        "Test for Litmus 25796"
-        alerts_category_string = "Alerts & Updates"
-        amo_home_page = AddonsHomePage(mozwebqa)
-        alert_category_page = amo_home_page.click_alert_and_update_category()
-        Assert.contains(alerts_category_string, alert_category_page.category_page_title)
-        Assert.equal(alerts_category_string, alert_category_page.category_header_title)
-
     def test_that_all_category_links_work(self, mozwebqa):
         "Test for Litmus 25796"
         amo_home_page = AddonsHomePage(mozwebqa)
@@ -63,3 +56,33 @@ class TestCategory:
             Assert.contains(category_name, category_page.category_page_title)
             Assert.equal(category_name, category_page.category_header_title)
             amo_home_page = AddonsHomePage(mozwebqa)
+
+    def test_that_category_names_are_correct(self, mozwebqa):
+        """Test for Litmus 25795"""
+
+        expected_categories = [
+            "Alerts & Updates",
+            "Appearance",
+            "Bookmarks",
+            "Download Management",
+            "Feeds, News & Blogging",
+            "Games & Entertainment",
+            "Language Support",
+            "Photos, Music & Videos",
+            "Privacy & Security",
+            "Shopping",
+            "Social & Communication",
+            "Tabs",
+            "Web Development",
+            "Other"]
+
+        # Get actual categories
+        amo_home_page = AddonsHomePage(mozwebqa)
+        categories = amo_home_page.categories()
+
+        # Catch extra/missing categories with a simple count check
+        Assert.equal(len(categories), len(expected_categories));
+
+        # Check the categories that are there against the expected list
+        for category in categories:
+            Assert.contains(category.name, expected_categories)

@@ -48,8 +48,9 @@ from unittestzero import Assert
 from addons_site import UserFAQPage
 from addons_details_page import AddonsDetailsPage
 from addons_user_page import AddonsLoginPage
-from addons_site import ExtensionsHomePage
+from extensions_homepage import ExtensionsHomePage
 from addons_homepage import AddonsHomePage
+
 
 class TestDetailsPage:
 
@@ -94,7 +95,6 @@ class TestDetailsPage:
         Assert.equal(amo_details_page.about_addon, "About this Add-on")
         Assert.not_none(re.match('(\w+\s*){3,}', amo_details_page.description))
 
-    @xfail(reason="bugzilla 688917")
     # TODO expand the Version Information section and check that the required details are present/visible/correct
     def test_that_version_information_is_displayed(self, mozwebqa):
         """ Test for Litmus 9890"""
@@ -102,7 +102,7 @@ class TestDetailsPage:
         Assert.true(amo_details_page.is_version_information_heading_visible)
         Assert.equal(amo_details_page.version_information_heading, "Version Information")
         Assert.not_none(re.search('\w+', amo_details_page.release_version))
-
+        Assert.not_none(re.search('\w+', amo_details_page.source_code_license_information))
         # check that the release number matches the the version number at the top of the page
         Assert.not_none(re.search(amo_details_page.version_number, amo_details_page.release_version))
 
@@ -145,7 +145,6 @@ class TestDetailsPage:
         details_page.click_website_link()
         Assert.true(website_link in details_page.get_url_current_page())
 
-    @xfail(reason="bugzilla 688910")
     def test_that_whats_this_link_for_source_license_links_to_an_answer_in_faq(self, mozwebqa):
         """ Test for Litmus 11530"""
         amo_details_page = AddonsDetailsPage(mozwebqa, "Firebug")
@@ -334,3 +333,16 @@ class TestDetailsPage:
         amo_details_page = AddonsDetailsPage(mozwebqa, 'Firebug')
         addon_review_box = amo_details_page.click_to_write_review()
         Assert.true(addon_review_box.is_review_box_visible)
+
+    def test_that_add_to_collection_flyout_for_anonymous_users(self, mozwebqa):
+        """
+        Litmus 25711
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25711
+        """
+        amo_details_page = AddonsDetailsPage(mozwebqa, 'Firebug')
+        amo_details_page.click_add_to_collection_widget()
+        Assert.true(amo_details_page.is_collection_widget_visible)
+        Assert.true(amo_details_page.is_collection_widget_button_visible)
+        Assert.equal(amo_details_page.collection_widget_button, 'Create an Add-ons Account')
+        Assert.true(amo_details_page.is_collection_widget_login_link_visible)
+        Assert.equal(amo_details_page.collection_widget_login_link, 'log in to your current account')
