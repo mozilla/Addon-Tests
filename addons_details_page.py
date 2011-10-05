@@ -112,7 +112,8 @@ class AddonsDetailsPage(AddonsBasePage):
         #formats name for url
         AddonsBasePage.__init__(self, testsetup)
         if (addon_name != None):
-            self.addon_name = re.sub(r'[^\w-]', '', addon_name).lower()
+            self.addon_name = addon_name.replace(" ", "-")
+            self.addon_name = re.sub(r'[^A-Za-z0-9\-]', '', self.addon_name).lower()
             self.addon_name = self.addon_name[:27]
             self.selenium.open("%s/addon/%s" % (self.site_version, self.addon_name))
             self.wait_for_element_present(self._reviews_locator)
