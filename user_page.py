@@ -48,6 +48,7 @@ class LoginPage(BasePage):
 
     def login_user(self, user):
         credentials = self.testsetup.credentials[user]
+        self.wait_for_element_present(self._email_locator)
         self.selenium.type(self._email_locator, credentials['email'])
         self.selenium.type(self._password_locator, credentials['password'])
         self.selenium.click(self._login_button_locator)
