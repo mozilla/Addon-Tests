@@ -346,3 +346,19 @@ class TestDetailsPage:
         Assert.equal(amo_details_page.collection_widget_button, 'Create an Add-ons Account')
         Assert.true(amo_details_page.is_collection_widget_login_link_visible)
         Assert.equal(amo_details_page.collection_widget_login_link, 'log in to your current account')
+
+    def test_click_on_other_colections(self, mozwebqa):
+        """
+        Litmus 25722
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25722
+        """
+
+        details_pg = AddonsDetailsPage(mozwebqa, 'Firebug')
+        collections = details_pg.part_of_collections()
+
+        for collection in collections:
+            name = collection.name
+            collection_pg = collection.click_collection()
+            Assert.equal(name, collection_pg.collection_name, "expected collection name doesn't match the page header")
+
+            details_pg = AddonsDetailsPage(mozwebqa, 'Firebug')

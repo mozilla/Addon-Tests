@@ -290,6 +290,47 @@ class AddonsDetailsPage(AddonsBasePage):
     def part_of_collections_header(self):
         return self.selenium.get_text('%s h2' % self._part_of_collections_locator)
 
+    @property
+    def part_of_collections_count(self):
+        return self.selenium.get_css_count("%s li" % self._part_of_collections_locator)
+
+    def part_of_collections(self):
+        self.wait_for_element_present(self._part_of_collections_locator)
+        return [self.Part_of_Collections_Snippet(self.testsetup, i) for i in range(self.part_of_collections_count)]
+
+    class Part_of_Collections_Snippet(Page):
+
+        _coollections_locator = "css=#collections-grid li"  # Base locator
+        _name_locator = " div.summary > h3"
+        _link_locator = " > a"
+
+        def __init__(self, testsetup, lookup):
+            Page.__init__(self, testsetup)
+            self.lookup = lookup
+
+        def absolute_locator(self, relative_locator):
+            return self._root_locator + relative_locator
+
+        @property
+        def _root_locator(self):
+            self.wait_for_element_visible(self._coollections_locator)
+            if type(self.lookup) == int:
+                # lookup by index
+                return "%s:nth(%s) > div" % (self._coollections_locator, self.lookup)
+            else:
+                # lookup by name
+                return "%s:contains(%s) > div" % (self._coollections_locator, self.lookup)
+
+        def click_collection(self):
+            self.selenium.click(self.absolute_locator(self._link_locator))
+            self.selenium.wait_for_page_to_load(self.timeout)
+            from addons_collection_page import AddonsCollectionsPage
+            return AddonsCollectionsPage(self.testsetup)
+
+        @property
+        def name(self):
+            return self.selenium.get_text(self.absolute_locator(self._name_locator))
+
     def click_other_apps(self):
         self.selenium.click(self._other_applications_locator)
         self.wait_for_element_visible(self._other_apps_dropdown_menu_locator)
