@@ -102,6 +102,11 @@ class AddonsDetailsPage(AddonsBasePage):
     _reviews_locator = "id=reviews"
     _add_review_link_locator = "id=add-review"
 
+    _add_to_collection_locator = "css=.collection-add.widget.collection"
+    _add_to_collection_widget_locator = "css=.collection-add-login"
+    _add_to_collection_widget_button_locator = "css=.register-button .button"
+    _add_to_collection_widget_login_link_locator = 'css=.collection-add-login a:nth(1)'
+
     def __init__(self, testsetup, addon_name=None):
         #formats name for url
         AddonsBasePage.__init__(self, testsetup)
@@ -345,6 +350,30 @@ class AddonsDetailsPage(AddonsBasePage):
     @property
     def previewer(self):
         return self.ImagePreviewer(self.testsetup)
+
+    def click_add_to_collection_widget(self):
+        self.selenium.click(self._add_to_collection_locator)
+        self.wait_for_element_visible(self._add_to_collection_widget_locator)
+
+    @property
+    def is_collection_widget_visible(self):
+        return self.selenium.is_visible(self._add_to_collection_widget_locator)
+
+    @property
+    def is_collection_widget_button_visible(self):
+        return self.selenium.is_visible(self._add_to_collection_widget_button_locator)
+
+    @property
+    def collection_widget_button(self):
+        return self.selenium.get_text(self._add_to_collection_widget_button_locator)
+
+    @property
+    def is_collection_widget_login_link_visible(self):
+        return self.selenium.is_visible(self._add_to_collection_widget_login_link_locator)
+
+    @property
+    def collection_widget_login_link(self):
+        return self.selenium.get_text(self._add_to_collection_widget_login_link_locator)
 
     class ImagePreviewer(Page):
 

@@ -333,3 +333,16 @@ class TestDetailsPage:
         amo_details_page = AddonsDetailsPage(mozwebqa, 'Firebug')
         addon_review_box = amo_details_page.click_to_write_review()
         Assert.true(addon_review_box.is_review_box_visible)
+
+    def test_that_add_to_collection_flyout_for_anonymous_users(self, mozwebqa):
+        """
+        Litmus 25711
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25711
+        """
+        amo_details_page = AddonsDetailsPage(mozwebqa, 'Firebug')
+        amo_details_page.click_add_to_collection_widget()
+        Assert.true(amo_details_page.is_collection_widget_visible)
+        Assert.true(amo_details_page.is_collection_widget_button_visible)
+        Assert.equal(amo_details_page.collection_widget_button, 'Create an Add-ons Account')
+        Assert.true(amo_details_page.is_collection_widget_login_link_visible)
+        Assert.equal(amo_details_page.collection_widget_login_link, 'log in to your current account')
