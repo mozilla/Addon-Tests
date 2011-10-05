@@ -134,6 +134,6 @@ class TestHomePage:
         Litmus 25746
         https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25746
         """
-        amo_home_page = AddonsHomePage(mozwebqa)
-        extensions_page = amo_home_page.click_extensions()
+        home_page = HomePage(mozwebqa)
+        extensions_page = home_page.click_extensions()
         Assert.true(extensions_page.is_the_current_page)
