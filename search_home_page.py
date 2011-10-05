@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+
 # ***** BEGIN LICENSE BLOCK *****
 # Version: MPL 1.1/GPL 2.0/LGPL 2.1
 #
@@ -138,7 +139,6 @@ class SearchHomePage(BasePage):
                 return "css=div.results-inner div.item:nth(%s)" % self.lookup
             else:
                 # lookup by name
-
                 return "css=div.results-inner div.item:contains(%s)" % self.lookup
 
         @property

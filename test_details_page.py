@@ -48,8 +48,9 @@ from unittestzero import Assert
 from addons_site import UserFAQPage
 from details_page import DetailsPage
 from user_page import LoginPage
-from addons_site import ExtensionsHomePage
+from extensions_homepage import ExtensionsHomePage
 from homepage import HomePage
+
 
 
 class TestDetailsPage:
@@ -333,3 +334,16 @@ class TestDetailsPage:
         details_page = DetailsPage(mozwebqa, 'Firebug')
         review_box = details_page.click_to_write_review()
         Assert.true(review_box.is_review_box_visible)
+
+    def test_that_add_to_collection_flyout_for_anonymous_users(self, mozwebqa):
+        """
+        Litmus 25711
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25711
+        """
+        details_page = DetailsPage(mozwebqa, 'Firebug')
+        details_page.click_add_to_collection_widget()
+        Assert.true(details_page.is_collection_widget_visible)
+        Assert.true(details_page.is_collection_widget_button_visible)
+        Assert.equal(details_page.collection_widget_button, 'Create an Add-ons Account')
+        Assert.true(details_page.is_collection_widget_login_link_visible)
+        Assert.equal(details_page.collection_widget_login_link, 'log in to your current account')
