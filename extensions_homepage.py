@@ -36,11 +36,11 @@
 #
 # ***** END LICENSE BLOCK *****
 
-from addons_base_page import AddonsBasePage
+from base_page import BasePage
 from page import Page
 
 
-class ExtensionsHomePage(AddonsBasePage):
+class ExtensionsHomePage(BasePage):
 
     _page_title = 'Featured Extensions :: Add-ons for Firefox'
     _extensions_locator = "css=div.items div.item"

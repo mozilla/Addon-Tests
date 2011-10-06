@@ -45,10 +45,10 @@
 # ***** END LICENSE BLOCK *****
 
 from page import Page
-from addons_base_page import AddonsBasePage
+from base_page import BasePage
 
 
-class DiscoveryPane(AddonsBasePage):
+class DiscoveryPane(BasePage):
 
     _what_are_addons_section_locator = 'id=intro'
     _what_are_addons_text_locator = 'css=#intro p'
@@ -67,7 +67,7 @@ class DiscoveryPane(AddonsBasePage):
     _up_and_coming_item = "//section[@id='up-and-coming']/ul/li/a[@class='addon-title']"
 
     def __init__(self, testsetup, path):
-        AddonsBasePage.__init__(self, testsetup)
+        BasePage.__init__(self, testsetup)
         self.selenium.open("%s/%s" % (self.site_version, path))
         #resizing this page for elements that disappear when the window is < 1000
         self.selenium.get_eval("window.resizeTo(10000,10000); window.moveTo(0,0)")
@@ -141,7 +141,7 @@ class DiscoveryPane(AddonsBasePage):
         return int(self.selenium.get_xpath_count(self._up_and_coming_item))
 
 
-class DiscoveryPersonasDetailPage(AddonsBasePage):
+class DiscoveryPersonasDetailPage(BasePage):
 
     _persona_title = 'css=h1.addon'
 

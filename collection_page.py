@@ -36,10 +36,10 @@
 # ***** END LICENSE BLOCK *****
 
 
-from addons_base_page import AddonsBasePage
+from base_page import BasePage
 
 
-class AddonsCollectionsPage(AddonsBasePage):
+class CollectionsPage(BasePage):
 
     _page_title = "Featured Collections :: Add-ons for Firefox"
 
@@ -56,10 +56,10 @@ class AddonsCollectionsPage(AddonsBasePage):
         self.selenium.type(self._search_textbox_locator, search_term)
         self.selenium.click(self._search_button_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
-        return AddonsCollectionsSearchPage(self.testsetup)
+        return CollectionsSearchPage(self.testsetup)
 
 
-class AddonsCollectionsSearchPage(AddonsBasePage):
+class CollectionsSearchPage(BasePage):
 
     _results_locator = "css=div.featured-inner div.item"
 

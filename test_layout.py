@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 # ***** BEGIN LICENSE BLOCK *****
 # Version: MPL 1.1/GPL 2.0/LGPL 2.1
 #
@@ -20,7 +19,8 @@
 # Portions created by the Initial Developer are Copyright (C) 2011
 # the Initial Developer. All Rights Reserved.
 #
-# Contributor(s): Marlena Compton <mcompton@mozilla.com>
+# Contributor(s): Bebe <florin.strugariu@softvision.ro>
+#
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -36,18 +36,22 @@
 #
 # ***** END LICENSE BLOCK *****
 
+from unittestzero import Assert
+from homepage import HomePage
 
-from addons_base_page import AddonsBasePage
 
+class TestAmoLayout:
 
-class AddonsCategoryPage(AddonsBasePage):
+    def test_other_applications_thunderbird(self, mozwebqa):
+        """ Test for litmus 5037
+            https://litmus.mozilla.org/show_test.cgi?id=5037
+        """
 
-    _category_title_locator = "css=div.island > h1"
+        home_page = HomePage(mozwebqa)
 
-    @property
-    def category_page_title(self):
-        return self.selenium.get_title()
+        home_page.header.click_other_applications()
+        home_page.header.click_thunderbird()
+        Assert.true("thunderbird" in home_page.get_url_current_page())
 
-    @property
-    def category_header_title(self):
-        return self.selenium.get_text(self._category_title_locator)
+        home_page.header.click_other_applications()
+        Assert.false(home_page.header.is_thunderbird_visible())
