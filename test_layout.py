@@ -21,6 +21,7 @@
 #
 # Contributor(s): Bebe <florin.strugariu@softvision.ro>
 #
+#
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
 # the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
@@ -35,29 +36,22 @@
 #
 # ***** END LICENSE BLOCK *****
 
-
-from addons_base_page import AddonsBasePage
-
-
-class AddonsCollectionsPage(AddonsBasePage):
-
-    _page_title = "Featured Collections :: Add-ons for Firefox"
-
-    #Search box
-    _search_button_locator = "css=button.search-button"
-    _search_textbox_locator = "name=q"
-
-    def search_for(self, search_term):
-        self.selenium.type(self._search_textbox_locator, search_term)
-        self.selenium.click(self._search_button_locator)
-        self.selenium.wait_for_page_to_load(self.timeout)
-        return AddonsCollectionsSearchPage(self.testsetup)
+from unittestzero import Assert
+from homepage import HomePage
 
 
-class AddonsCollectionsSearchPage(AddonsBasePage):
+class TestAmoLayout:
 
-    _results_locator = "css=div.featured-inner div.item"
+    def test_other_applications_thunderbird(self, mozwebqa):
+        """ Test for litmus 5037
+            https://litmus.mozilla.org/show_test.cgi?id=5037
+        """
 
-    @property
-    def result_count(self):
-        return int(self.selenium.get_css_count(self._results_locator))
+        home_page = HomePage(mozwebqa)
+
+        home_page.header.click_other_applications()
+        home_page.header.click_thunderbird()
+        Assert.true("thunderbird" in home_page.get_url_current_page())
+
+        home_page.header.click_other_applications()
+        Assert.false(home_page.header.is_thunderbird_visible())

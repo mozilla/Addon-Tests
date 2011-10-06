@@ -37,10 +37,10 @@
 # ***** END LICENSE BLOCK *****
 
 
-from addons_base_page import AddonsBasePage
+from base_page import BasePage
 
 
-class AddonsCategoryPage(AddonsBasePage):
+class CategoryPage(BasePage):
 
     _category_title_locator = "css=div.island > h1"
 

@@ -41,8 +41,8 @@ import pytest
 from datetime import datetime
 from unittestzero import Assert
 
-from addons_homepage import AddonsHomePage
-from addons_details_page import AddonsDetailsPage
+from homepage import HomePage
+from details_page import DetailsPage
 
 xfail = pytest.mark.xfail
 
@@ -54,48 +54,48 @@ class TestReviews:
             https://litmus.mozilla.org/show_test.cgi?id=4843
         """
         #Open details page for Adblock Plus
-        amo_details_page = AddonsDetailsPage(mozwebqa, 'Adblock Plus')
-        Assert.true(amo_details_page.has_reviews)
+        details_page = DetailsPage(mozwebqa, 'Adblock Plus')
+        Assert.true(details_page.has_reviews)
 
-        amo_details_page.click_all_reviews_link()
-        Assert.equal(amo_details_page.review_count, 20)
+        details_page.click_all_reviews_link()
+        Assert.equal(details_page.review_count, 20)
 
         #Go to the last page and check that the next button is not present
-        amo_details_page.go_to_last_page()
-        Assert.true(amo_details_page.is_next_link_disabled)
+        details_page.go_to_last_page()
+        Assert.true(details_page.is_next_link_disabled)
 
         #Go one page back, check that it has 20 reviews
         #that the page number decreases and that the next link is visible
-        page_number = amo_details_page.current_page
-        amo_details_page.page_back()
-        Assert.true(amo_details_page.is_next_link_visible)
-        Assert.equal(amo_details_page.review_count, 20)
-        Assert.equal(amo_details_page.current_page, page_number - 1)
+        page_number = details_page.current_page
+        details_page.page_back()
+        Assert.true(details_page.is_next_link_visible)
+        Assert.equal(details_page.review_count, 20)
+        Assert.equal(details_page.current_page, page_number - 1)
 
         #Go to the first page and check that the prev button is not present
-        amo_details_page.go_to_first_page()
-        Assert.true(amo_details_page.is_prev_link_disabled)
+        details_page.go_to_first_page()
+        Assert.true(details_page.is_prev_link_disabled)
 
         #Go one page forward, check that it has 20 reviews,
         #that the page number increases and that the prev link is visible
-        page_number = amo_details_page.current_page
-        amo_details_page.page_forward()
-        Assert.true(amo_details_page.is_prev_link_visible)
-        Assert.equal(amo_details_page.review_count, 20)
-        Assert.equal(amo_details_page.current_page, page_number + 1)
+        page_number = details_page.current_page
+        details_page.page_forward()
+        Assert.true(details_page.is_prev_link_visible)
+        Assert.equal(details_page.review_count, 20)
+        Assert.equal(details_page.current_page, page_number + 1)
 
     @xfail(reason="https://www.pivotaltracker.com/story/show/17712967")
     def test_that_new_review_is_saved(self, mozwebqa):
         """ Litmus 22921
             https://litmus.mozilla.org/show_test.cgi?id=22921 """
         # Step 1 - Login into AMO
-        amo_home_page = AddonsHomePage(mozwebqa)
-        amo_home_page.login()
-        Assert.true(amo_home_page.is_the_current_page)
-        Assert.true(amo_home_page.header.is_user_logged_in)
+        home_page = HomePage(mozwebqa)
+        home_page.login()
+        Assert.true(home_page.is_the_current_page)
+        Assert.true(home_page.header.is_user_logged_in)
 
         # Step 2 - Load any addon detail page
-        details_page = AddonsDetailsPage(mozwebqa, 'Adblock Plus')
+        details_page = DetailsPage(mozwebqa, 'Adblock Plus')
 
         # Step 3 - Click on "Write review" button
         write_review_block = details_page.click_to_write_review()
@@ -123,18 +123,18 @@ class TestReviews:
         """ Litmus 22916
             https://litmus.mozilla.org/show_test.cgi?id=22916 """
         # Step 1 - Login into AMO
-        amo_home_page = AddonsHomePage(mozwebqa)
-        amo_home_page.login()
-        Assert.true(amo_home_page.header.is_user_logged_in)
+        home_page = HomePage(mozwebqa)
+        home_page.login()
+        Assert.true(home_page.header.is_user_logged_in)
 
         # Step 2 - Go to add-ons listing page sorted by rating
-        extensions_home_page = amo_home_page.click_to_explore('Top Rated')
+        extensions_home_page = home_page.click_to_explore('Top Rated')
 
         # Step 3 - Pick an addon with no reviews
         extensions_home_page.go_to_last_page()
         addon = extensions_home_page.extensions[-1]  # the last one is without rating
         addon_name = addon.name
-        details_page = AddonsDetailsPage(mozwebqa, addon_name)
+        details_page = DetailsPage(mozwebqa, addon_name)
 
         # Step 4 - Click on the "Write review" button
         write_review_block = details_page.click_to_write_review()
@@ -146,7 +146,7 @@ class TestReviews:
         write_review_block.click_to_save_review()
 
         # Step 6 - Ensure rating increased by one
-        details_page = AddonsDetailsPage(mozwebqa, addon_name)
+        details_page = DetailsPage(mozwebqa, addon_name)
         new_rating_counter = details_page.get_rating_counter(1)
         Assert.equal(new_rating_counter, 1)
 
@@ -157,18 +157,18 @@ class TestReviews:
         """ Litmus 22917
             https://litmus.mozilla.org/show_test.cgi?id=22917 """
         # Step 1 - Login into AMO
-        amo_home_page = AddonsHomePage(mozwebqa)
-        amo_home_page.login()
-        Assert.true(amo_home_page.header.is_user_logged_in)
+        home_page = HomePage(mozwebqa)
+        home_page.login()
+        Assert.true(home_page.header.is_user_logged_in)
 
         # Step 2 - Go to add-ons listing page sorted by rating
-        extensions_home_page = amo_home_page.click_to_explore('Top Rated')
+        extensions_home_page = home_page.click_to_explore('Top Rated')
 
         # Step 3 - Pick an addon with no reviews
         extensions_home_page.go_to_last_page()
         addon = extensions_home_page.extensions[-1]  # the last one is without rating
         addon_name = addon.name
-        details_page = AddonsDetailsPage(mozwebqa, addon_name)
+        details_page = DetailsPage(mozwebqa, addon_name)
 
         # Step 4 - Click on the "Write review" button
         write_review_block = details_page.click_to_write_review()
@@ -180,7 +180,7 @@ class TestReviews:
         write_review_block.click_to_save_review()
 
         # Step 6 - Ensure rating increased by one
-        details_page = AddonsDetailsPage(mozwebqa, addon_name)
+        details_page = DetailsPage(mozwebqa, addon_name)
         new_rating_counter = details_page.get_rating_counter(2)
         Assert.equal(new_rating_counter, 1)
 
@@ -191,18 +191,18 @@ class TestReviews:
         """ Litmus 22918
             https://litmus.mozilla.org/show_test.cgi?id=22918 """
         # Step 1 - Login into AMO
-        amo_home_page = AddonsHomePage(mozwebqa)
-        amo_home_page.login()
-        Assert.true(amo_home_page.header.is_user_logged_in)
+        home_page = HomePage(mozwebqa)
+        home_page.login()
+        Assert.true(home_page.header.is_user_logged_in)
 
         # Step 2 - Go to add-ons listing page sorted by rating
-        extensions_home_page = amo_home_page.click_to_explore('Top Rated')
+        extensions_home_page = home_page.click_to_explore('Top Rated')
 
         # Step 3 - Pick an addon with no reviews
         extensions_home_page.go_to_last_page()
         addon = extensions_home_page.extensions[-1]  # the last one is without rating
         addon_name = addon.name
-        details_page = AddonsDetailsPage(mozwebqa, addon_name)
+        details_page = DetailsPage(mozwebqa, addon_name)
 
         # Step 4 - Click on the "Write review" button
         write_review_block = details_page.click_to_write_review()
@@ -214,7 +214,7 @@ class TestReviews:
         write_review_block.click_to_save_review()
 
         # Step 6 - Ensure rating increased by one
-        details_page = AddonsDetailsPage(mozwebqa, addon_name)
+        details_page = DetailsPage(mozwebqa, addon_name)
         new_rating_counter = details_page.get_rating_counter(3)
         Assert.equal(new_rating_counter, 1)
 
@@ -225,18 +225,18 @@ class TestReviews:
         """ Litmus 22919
             https://litmus.mozilla.org/show_test.cgi?id=22918 """
         # Step 1 - Login into AMO
-        amo_home_page = AddonsHomePage(mozwebqa)
-        amo_home_page.login()
-        Assert.true(amo_home_page.header.is_user_logged_in)
+        home_page = HomePage(mozwebqa)
+        home_page.login()
+        Assert.true(home_page.header.is_user_logged_in)
 
         # Step 2 - Go to add-ons listing page sorted by rating
-        extensions_home_page = amo_home_page.click_to_explore('Top Rated')
+        extensions_home_page = home_page.click_to_explore('Top Rated')
 
         # Step 3 - Pick an addon with no reviews
         extensions_home_page.go_to_last_page()
         addon = extensions_home_page.extensions[-1]  # the last one is without rating
         addon_name = addon.name
-        details_page = AddonsDetailsPage(mozwebqa, addon_name)
+        details_page = DetailsPage(mozwebqa, addon_name)
 
         # Step 4 - Click on the "Write review" button
         write_review_block = details_page.click_to_write_review()
@@ -248,7 +248,7 @@ class TestReviews:
         write_review_block.click_to_save_review()
 
         # Step 6 - Ensure rating increased by one
-        details_page = AddonsDetailsPage(mozwebqa, addon_name)
+        details_page = DetailsPage(mozwebqa, addon_name)
         new_rating_counter = details_page.get_rating_counter(4)
         Assert.equal(new_rating_counter, 1)
 
@@ -259,18 +259,18 @@ class TestReviews:
         """ Litmus 22920
             https://litmus.mozilla.org/show_test.cgi?id=22920 """
         # Step 1 - Login into AMO
-        amo_home_page = AddonsHomePage(mozwebqa)
-        amo_home_page.login()
-        Assert.true(amo_home_page.header.is_user_logged_in)
+        home_page = HomePage(mozwebqa)
+        home_page.login()
+        Assert.true(home_page.header.is_user_logged_in)
 
         # Step 2 - Go to add-ons listing page sorted by rating
-        extensions_home_page = amo_home_page.click_to_explore('Top Rated')
+        extensions_home_page = home_page.click_to_explore('Top Rated')
 
         # Step 3 - Pick an addon with no reviews
         extensions_home_page.go_to_last_page()
         addon = extensions_home_page.extensions[-1]  # the last one is without rating
         addon_name = addon.name
-        details_page = AddonsDetailsPage(mozwebqa, addon_name)
+        details_page = DetailsPage(mozwebqa, addon_name)
 
         # Step 4 - Click on the "Write review" button
         write_review_block = details_page.click_to_write_review()
@@ -282,6 +282,6 @@ class TestReviews:
         write_review_block.click_to_save_review()
 
         # Step 6 - Ensure rating increased by one
-        details_page = AddonsDetailsPage(mozwebqa, addon_name)
+        details_page = DetailsPage(mozwebqa, addon_name)
         new_rating_counter = details_page.get_rating_counter(5)
         Assert.equal(new_rating_counter, 1)
