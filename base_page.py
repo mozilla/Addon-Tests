@@ -216,10 +216,6 @@ class BasePage(Page):
         def is_thunderbird_visible(self):
             return self.is_element_present(self._app_thunderbird)
 
-        @property
-        def other_applications_tooltip(self):
-            return self.selenium.get_attribute("%s@title" % self._other_applications_locator)
-
         def search_for(self, search_term):
             self.selenium.type(self._search_textbox_locator, search_term)
             self.selenium.click(self._search_button_locator)
