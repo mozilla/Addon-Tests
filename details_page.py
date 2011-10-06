@@ -309,7 +309,7 @@ class DetailsPage(BasePage):
 
     class Part_of_Collections_Snippet(Page):
 
-        _coollections_locator = "css=#collections-grid li"  # Base locator
+        _collections_locator = "css=#collections-grid li"  # Base locator
         _name_locator = " div.summary > h3"
         _link_locator = " > a"
 
@@ -322,19 +322,19 @@ class DetailsPage(BasePage):
 
         @property
         def _root_locator(self):
-            self.wait_for_element_visible(self._coollections_locator)
+            self.wait_for_element_visible(self._collections_locator)
             if type(self.lookup) == int:
                 # lookup by index
-                return "%s:nth(%s) > div" % (self._coollections_locator, self.lookup)
+                return "%s:nth(%s) > div" % (self._collections_locator, self.lookup)
             else:
                 # lookup by name
-                return "%s:contains(%s) > div" % (self._coollections_locator, self.lookup)
+                return "%s:contains(%s) > div" % (self._collections_locator, self.lookup)
 
         def click_collection(self):
             self.selenium.click(self.absolute_locator(self._link_locator))
             self.selenium.wait_for_page_to_load(self.timeout)
-            from addons_collection_page import AddonsCollectionsPage
-            return AddonsCollectionsPage(self.testsetup)
+            from collection_page import CollectionsPage
+            return CollectionsPage(self.testsetup)
 
         @property
         def name(self):

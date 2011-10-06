@@ -354,7 +354,7 @@ class TestDetailsPage:
         https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25722
         """
 
-        details_pg = AddonsDetailsPage(mozwebqa, 'Firebug')
+        details_pg = DetailsPage(mozwebqa, 'Firebug')
         collections = details_pg.part_of_collections()
 
         for collection in collections:
@@ -362,4 +362,4 @@ class TestDetailsPage:
             collection_pg = collection.click_collection()
             Assert.equal(name, collection_pg.collection_name, "expected collection name doesn't match the page header")
 
-            details_pg = AddonsDetailsPage(mozwebqa, 'Firebug')
+            details_pg = DetailsPage(mozwebqa, 'Firebug')
