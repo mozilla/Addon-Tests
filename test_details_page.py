@@ -336,9 +336,11 @@ class TestDetailsPage:
         Assert.true(review_box.is_review_box_visible)
 
     def test_the_developers_comments_section(self, mozwebqa):
-        """ Test for Litmus 25724
-            https://litmus.mozilla.org/show_test.cgi?id=25724 """
-        details_page = AddonsDetailsPage(mozwebqa, 'Firebug')
+        """ 
+        Test for Litmus 25724
+        https://litmus.mozilla.org/show_test.cgi?id=25724 
+        """
+        details_page = DetailsPage(mozwebqa, 'Firebug')
         Assert.true(details_page.is_devs_comments_section_visible)
         Assert.equal(details_page.devs_comments_title, u"Developer\u2019s Comments")
         details_page.click_devs_comments_title()
