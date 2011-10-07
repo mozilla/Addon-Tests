@@ -166,10 +166,11 @@ class HomePage(BasePage):
         return self.Categories(self.testsetup, lookup)
 
     def most_popular_item(self, lookup):
-        return self.MostPopularSection(self.testsetup, lookup)
+        return self.MostPopularRegion(self.testsetup, lookup)
 
+    @property
     def most_popular_items(self):
-        return [self.MostPopularSection(self.testsetup, i) for i in range(self.most_popular_count)]
+        return [self.MostPopularRegion(self.testsetup, i) for i in range(self.most_popular_count)]
 
     class Categories(Page):
         _categories_locator = 'css=#side-categories li'
@@ -198,10 +199,10 @@ class HomePage(BasePage):
         def click_link(self):
             self.selenium.click(self.absolute_locator(self._link_locator))
             self.selenium.wait_for_page_to_load(self.timeout)
-            from addons_category_page import AddonsCategoryPage
-            return AddonsCategoryPage(self.testsetup)
+            from category_page import CategoryPage
+            return CategoryPage(self.testsetup)
 
-    class MostPopularSection(Page):
+    class MostPopularRegion(Page):
         _name_locator = " > span"
         _users_locator = " > small"
 

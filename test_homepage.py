@@ -143,7 +143,7 @@ class TestHomePage:
         Litmus 25808
         https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25808
         """
-        amo_home_page = AddonsHomePage(mozwebqa)
-        Assert.true(amo_home_page.is_most_popular_list_visible)
-        most_popular_items = amo_home_page.most_popular_items()
+        home_page = HomePage(mozwebqa)
+        Assert.true(home_page.is_most_popular_list_visible)
+        most_popular_items = home_page.most_popular_items
         Assert.is_sorted_descending([i.users_number for i in most_popular_items])
