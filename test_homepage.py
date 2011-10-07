@@ -101,3 +101,10 @@ class TestHomePage:
         home_page = HomePage(mozwebqa)
         extensions_page = home_page.click_extensions()
         Assert.true(extensions_page.is_the_current_page)
+
+    def test_that_other_applications_link_has_tooltip(self, mozwebqa):
+        """ Litmus 22925
+            https://litmus.mozilla.org/show_test.cgi?id=29698 """
+        home_page = HomePage(mozwebqa)
+        tooltip = home_page.get_title_of_link('Other applications')
+        Assert.equal(tooltip, 'Find add-ons for other applications')
