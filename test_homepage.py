@@ -46,14 +46,6 @@ import pytest
 
 class TestHomePage:
 
-    def test_that_verifies_the_tooltip_for_Other_Applications(self, mozwebqa):
-        """
-        Litmus 22925
-        https://litmus.mozilla.org/show_test.cgi?id=22925
-        """
-        home_page = HomePage(mozwebqa)
-        Assert.equal(home_page.header.other_applications_tooltip, 'Find add-ons for other applications')
-
     def test_that_checks_the_most_popular_section_exists(self, mozwebqa):
         """
         Litmus 25807
@@ -124,7 +116,7 @@ class TestHomePage:
 
     def test_that_other_applications_link_has_tooltip(self, mozwebqa):
         """ Litmus 22925
-            https://litmus.mozilla.org/show_test.cgi?id=29698 """
+            https://litmus.mozilla.org/show_test.cgi?id=22925 """
         home_page = HomePage(mozwebqa)
         tooltip = home_page.get_title_of_link('Other applications')
         Assert.equal(tooltip, 'Find add-ons for other applications')
