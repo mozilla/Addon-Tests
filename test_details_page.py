@@ -348,7 +348,7 @@ class TestDetailsPage:
         Assert.true(details_page.is_collection_widget_login_link_visible)
         Assert.equal(details_page.collection_widget_login_link, 'log in to your current account')
 
-    def test_click_on_other_colections(self, mozwebqa):
+    def test_click_on_other_collections(self, mozwebqa):
         """
         Litmus 25722
         https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25722

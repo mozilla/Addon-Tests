@@ -307,7 +307,7 @@ class DetailsPage(BasePage):
         self.wait_for_element_present(self._part_of_collections_locator)
         return [self.Part_of_Collections_Snippet(self.testsetup, i) for i in range(self.part_of_collections_count)]
 
-    class Part_of_Collections_Snippet(Page):
+    class PartOfCollectionsSnippet(Page):
 
         _collections_locator = "css=#collections-grid li"  # Base locator
         _name_locator = " div.summary > h3"
