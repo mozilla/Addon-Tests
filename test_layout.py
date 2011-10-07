@@ -84,3 +84,11 @@ class TestAmoLayout:
         Assert.true(home_page.is_mozilla_logo_visible)
         home_page.click_mozilla_logo()
         Assert.equal(home_page.get_url_current_page(), "http://www.mozilla.org/")
+
+    def test_that_other_applications_link_has_tooltip(self, mozwebqa):
+        """ Litmus 22925
+            https://litmus.mozilla.org/show_test.cgi?id=29698 """
+        home_page = HomePage(mozwebqa)
+        tooltip = home_page.get_title_of_link('Other applications')
+        Assert.equal(tooltip, 'Find add-ons for other applications')
+
