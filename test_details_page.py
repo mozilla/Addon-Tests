@@ -341,11 +341,11 @@ class TestDetailsPage:
         https://litmus.mozilla.org/show_test.cgi?id=25724 
         """
         details_page = DetailsPage(mozwebqa, 'Firebug')
-        Assert.true(details_page.is_devs_comments_section_visible)
         Assert.equal(details_page.devs_comments_title, u"Developer\u2019s Comments")
         details_page.click_devs_comments_title()
         Assert.true(details_page.is_devs_comments_section_expanded())
-        Assert.not_none(details_page.devs_comments_message)
+        Assert.true(details_page.is_devs_comments_section_visible)
+        Assert.not_none(re.match('(\w+\s*){3,}', details_page.devs_comments_message))
 
     def test_that_add_to_collection_flyout_for_anonymous_users(self, mozwebqa):
         """
