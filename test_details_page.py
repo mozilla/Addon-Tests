@@ -45,12 +45,9 @@ import pytest
 xfail = pytest.mark.xfail
 
 from unittestzero import Assert
-from addons_site import UserFAQPage
 from details_page import DetailsPage
-from user_page import LoginPage
 from extensions_homepage import ExtensionsHomePage
 from homepage import HomePage
-
 
 
 class TestDetailsPage:
@@ -347,3 +344,19 @@ class TestDetailsPage:
         Assert.equal(details_page.collection_widget_button, 'Create an Add-ons Account')
         Assert.true(details_page.is_collection_widget_login_link_visible)
         Assert.equal(details_page.collection_widget_login_link, 'log in to your current account')
+
+    def test_that_the_development_channel_expands(self, mozwebqa):
+        """
+        Litmus 25711
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25711
+        """
+        details_page = DetailsPage(mozwebqa, 'Firebug')
+
+        Assert.true(details_page.is_development_chanel_header_visible)
+        Assert.equal("Development Channel", details_page.development_chanel_text)
+
+        Assert.false(details_page.is_development_chanel_content_visible)
+        details_page.click_development_chanel()
+        Assert.true(details_page.is_development_chanel_content_visible)
+        details_page.click_development_chanel()
+        Assert.false(details_page.is_development_chanel_content_visible)

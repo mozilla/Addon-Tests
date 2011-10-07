@@ -108,6 +108,8 @@ class DetailsPage(BasePage):
     _add_to_collection_widget_button_locator = "css=.register-button .button"
     _add_to_collection_widget_login_link_locator = 'css=.collection-add-login a:nth(1)'
 
+    _development_channel_locator = "css=#beta-channel"
+
     def __init__(self, testsetup, addon_name=None):
         #formats name for url
         BasePage.__init__(self, testsetup)
@@ -518,3 +520,22 @@ class DetailsPage(BasePage):
         self.selenium.click(self._add_review_link_locator)
         from addons_site import WriteReviewBlock
         return WriteReviewBlock(self.testsetup)
+
+    @property
+    def development_chanel_text(self):
+        return self.selenium.get_text('%s > h2' % self._development_channel_locator)
+    @property
+    def is_development_chanel_header_visible(self):
+        return self.selenium.is_visible('%s > h2' % self._development_channel_locator)
+
+    def click_development_chanel(self):
+        self.selenium.click('%s > h2 > a' % self._development_channel_locator)
+
+    @property
+    def is_development_chanel_expanded(self):
+        is_expanded = self.selenium.get_attribute("%s@class" % self._development_channel_locator)
+        return ("expanded" in is_expanded)
+
+    @property
+    def is_development_chanel_content_visible(self):
+        return self.selenium.is_visible('%s > div' % self._development_channel_locator)
