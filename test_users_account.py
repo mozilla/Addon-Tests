@@ -89,4 +89,4 @@ class TestAccounts:
 
         view_profile_page = home_page.header.click_view_profile()
 
-        Assert.equal(view_profile_page.about_me, 'About Me')
+        Assert.equal(view_profile_page.about_me, 'About me')
