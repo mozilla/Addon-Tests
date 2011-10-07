@@ -321,7 +321,7 @@ class TestSearch:
         Litmus 17349
         https://litmus.mozilla.org/show_test.cgi?id=17349
         """
-        amo_home_page = AddonsHomePage(mozwebqa)
+        amo_home_page = HomePage(mozwebqa)
         amo_personas_page = amo_home_page.click_personas()
         amo_personas_page.header.search_for("fox")
 
