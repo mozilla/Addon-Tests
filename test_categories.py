@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+
 # ***** BEGIN LICENSE BLOCK *****
 # Version: MPL 1.1/GPL 2.0/LGPL 2.1
 #
@@ -19,8 +20,9 @@
 # Portions created by the Initial Developer are Copyright (C) 2011
 # the Initial Developer. All Rights Reserved.
 #
-# Contributor(s): Bebe <florin.strugariu@softvision.ro>
-#
+# Contributor(s): Marlena Compton <mcompton@mozilla.com>
+#                 Bebe
+#                 Geo Mealer <gmealer@mozilla.com>
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -36,22 +38,51 @@
 #
 # ***** END LICENSE BLOCK *****
 
+
 from unittestzero import Assert
-from addons_homepage import AddonsHomePage
+from homepage import HomePage
 
 
-class TestAmoLayout:
+class TestCategory:
 
-    def test_other_applications_thunderbird(self, mozwebqa):
-        """ Test for litmus 5037
-            https://litmus.mozilla.org/show_test.cgi?id=5037
-        """
+    def test_that_all_category_links_work(self, mozwebqa):
+        "Test for Litmus 25796"
+        home_page = HomePage(mozwebqa)
+        categories = home_page.categories()
 
-        amo_home_page = AddonsHomePage(mozwebqa)
+        for category in categories:
+            category_name = category.name
+            category_page = category.click_link()
+            Assert.contains(category_name, category_page.category_page_title)
+            Assert.equal(category_name, category_page.category_header_title)
+            home_page = HomePage(mozwebqa)
 
-        amo_home_page.header.click_other_applications()
-        amo_home_page.header.click_thunderbird()
-        Assert.true("thunderbird" in amo_home_page.get_url_current_page())
+    def test_that_category_names_are_correct(self, mozwebqa):
+        """Test for Litmus 25795"""
 
-        amo_home_page.header.click_other_applications()
-        Assert.false(amo_home_page.header.is_thunderbird_visible())
+        expected_categories = [
+            "Alerts & Updates",
+            "Appearance",
+            "Bookmarks",
+            "Download Management",
+            "Feeds, News & Blogging",
+            "Games & Entertainment",
+            "Language Support",
+            "Photos, Music & Videos",
+            "Privacy & Security",
+            "Shopping",
+            "Social & Communication",
+            "Tabs",
+            "Web Development",
+            "Other"]
+
+        # Get actual categories
+        home_page = HomePage(mozwebqa)
+        categories = home_page.categories()
+
+        # Catch extra/missing categories with a simple count check
+        Assert.equal(len(categories), len(expected_categories))
+
+        # Check the categories that are there against the expected list
+        for category in categories:
+            Assert.contains(category.name, expected_categories)

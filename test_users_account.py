@@ -35,8 +35,12 @@
 #
 # ***** END LICENSE BLOCK *****
 
+import pytest
+
 from unittestzero import Assert
-from addons_homepage import AddonsHomePage
+from homepage import HomePage
+
+xfail = pytest.mark.xfail
 
 
 class TestAccounts:
@@ -48,13 +52,13 @@ class TestAccounts:
             https://litmus.mozilla.org/show_test.cgi?id=4859
         """
 
-        amo_home_page = AddonsHomePage(mozwebqa)
-        amo_home_page.login()
-        Assert.true(amo_home_page.is_the_current_page)
-        Assert.true(amo_home_page.header.is_user_logged_in)
+        home_page = HomePage(mozwebqa)
+        home_page.login()
+        Assert.true(home_page.is_the_current_page)
+        Assert.true(home_page.header.is_user_logged_in)
 
-        amo_home_page.header.click_logout()
-        Assert.false(amo_home_page.header.is_user_logged_in)
+        home_page.header.click_logout()
+        Assert.false(home_page.header.is_user_logged_in)
 
     def test_user_can_access_the_edit_profile_page(self, mozwebqa):
         """
@@ -62,12 +66,12 @@ class TestAccounts:
             https://litmus.mozilla.org/show_test.cgi?id=5039
         """
 
-        amo_home_page = AddonsHomePage(mozwebqa)
-        amo_home_page.login()
-        Assert.true(amo_home_page.is_the_current_page)
-        Assert.true(amo_home_page.header.is_user_logged_in)
+        home_page = HomePage(mozwebqa)
+        home_page.login()
+        Assert.true(home_page.is_the_current_page)
+        Assert.true(home_page.header.is_user_logged_in)
 
-        amo_user_edit_page = amo_home_page.header.click_edit_profile()
+        amo_user_edit_page = home_page.header.click_edit_profile()
         Assert.contains("/users/edit", amo_user_edit_page.get_url_current_page())
         Assert.true(amo_user_edit_page.is_the_current_page)
 
@@ -76,17 +80,18 @@ class TestAccounts:
         Assert.equal("Details", amo_user_edit_page.is_details_visible)
         Assert.equal("Notifications", amo_user_edit_page.is_notification_visible)
 
+    @xfail(reason="Bugzilla 682801")
     def test_user_can_access_the_view_profile_page(self, mozwebqa):
         """
         Test for litmus 15400
         https://litmus.mozilla.org/show_test.cgi?id=15400
         """
 
-        amo_home_page = AddonsHomePage(mozwebqa)
-        amo_home_page.login()
-        Assert.true(amo_home_page.is_the_current_page)
-        Assert.true(amo_home_page.header.is_user_logged_in)
+        home_page = HomePage(mozwebqa)
+        home_page.login()
+        Assert.true(home_page.is_the_current_page)
+        Assert.true(home_page.header.is_user_logged_in)
 
-        amo_view_profile_page = amo_home_page.header.click_view_profile()
+        view_profile_page = home_page.header.click_view_profile()
 
-        Assert.equal(amo_view_profile_page.about_me, 'About Me')
+        Assert.equal(view_profile_page.about_me, 'About me')

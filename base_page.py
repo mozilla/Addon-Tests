@@ -43,7 +43,7 @@ from datetime import datetime
 import re
 
 
-class AddonsBasePage(Page):
+class BasePage(Page):
 
     _next_link_locator = "css=.paginator .rel > a:nth(2)"
     _previous_link_locator = "css=.paginator .rel > a:nth(1)"
@@ -60,8 +60,8 @@ class AddonsBasePage(Page):
 
     def login (self, user="default"):
 
-        addons_login_page = self.header.click_login()
-        addons_login_page.login_user(user)
+        login_page = self.header.click_login()
+        login_page.login_user(user)
 
     @property
     def amo_logo_title(self):
@@ -130,7 +130,7 @@ class AddonsBasePage(Page):
 
     @property
     def header(self):
-        return AddonsBasePage.HeaderRegion(self.testsetup)
+        return BasePage.HeaderRegion(self.testsetup)
 
     @property
     def breadcrumbs(self):
@@ -216,16 +216,12 @@ class AddonsBasePage(Page):
         def is_thunderbird_visible(self):
             return self.is_element_present(self._app_thunderbird)
 
-        @property
-        def other_applications_tooltip(self):
-            return self.selenium.get_attribute("%s@title" % self._other_applications_locator)
-
         def search_for(self, search_term):
             self.selenium.type(self._search_textbox_locator, search_term)
             self.selenium.click(self._search_button_locator)
             self.selenium.wait_for_page_to_load(self.timeout)
-            from addons_search_home_page import AddonsSearchHomePage
-            return AddonsSearchHomePage(self.testsetup)
+            from search_home_page import SearchHomePage
+            return SearchHomePage(self.testsetup)
 
         @property
         def search_field_placeholder(self):
@@ -238,8 +234,8 @@ class AddonsBasePage(Page):
         def click_login(self):
             self.selenium.click(self._login_locator)
             self.selenium.wait_for_page_to_load(self.timeout)
-            from addons_user_page import AddonsLoginPage
-            return AddonsLoginPage(self.testsetup)
+            from user_page import LoginPage
+            return LoginPage(self.testsetup)
 
         def click_logout(self):
             self.selenium.click(self._logout_locator)
@@ -249,15 +245,15 @@ class AddonsBasePage(Page):
             self.click_my_account
             self.selenium.click('%s > li:nth(1) a' % self._account_dropdown_locator)
             self.selenium.wait_for_page_to_load(self.timeout)
-            from addons_user_page import AddonsEditProfilePage
-            return AddonsEditProfilePage(self.testsetup)
+            from user_page import EditProfilePage
+            return EditProfilePage(self.testsetup)
 
         def click_view_profile(self):
             self.click_my_account
             self.selenium.click('%s > li:nth(0) a' % self._account_dropdown_locator)
             self.selenium.wait_for_page_to_load(self.timeout)
-            from addons_user_page import AddonsViewProfilePage
-            return AddonsViewProfilePage(self.testsetup)
+            from user_page import ViewProfilePage
+            return ViewProfilePage(self.testsetup)
 
         @property
         def is_user_logged_in(self):

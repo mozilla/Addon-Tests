@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+
 # ***** BEGIN LICENSE BLOCK *****
 # Version: MPL 1.1/GPL 2.0/LGPL 2.1
 #
@@ -38,13 +39,13 @@
 
 from time import strptime, mktime
 
-from addons_base_page import AddonsBasePage
+from base_page import BasePage
 from page import Page
 import addons_site
 import refine_results_region
 
 
-class AddonsSearchHomePage(AddonsBasePage):
+class SearchHomePage(BasePage):
 
     _results_summary_locator = "css=h3.results-count"
     _results_displayed_locator = "css=div.num-results"
@@ -101,8 +102,8 @@ class AddonsSearchHomePage(AddonsBasePage):
 
     def click_addon(self, addon_name):
         self.selenium.click("link=" + addon_name)
-        from addons_details_page import AddonsDetailsPage
-        return AddonsDetailsPage(self.testsetup, addon_name)
+        from details_page import DetailsPage
+        return DetailsPage(self.testsetup, addon_name)
 
     def sort_by(self, type):
         self.selenium.click(getattr(self, '_sort_by_%s_locator' % type))
@@ -138,7 +139,6 @@ class AddonsSearchHomePage(AddonsBasePage):
                 return "css=div.results-inner div.item:nth(%s)" % self.lookup
             else:
                 # lookup by name
-
                 return "css=div.results-inner div.item:contains(%s)" % self.lookup
 
         @property

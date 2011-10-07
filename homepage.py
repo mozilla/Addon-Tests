@@ -44,10 +44,11 @@
 #
 # ***** END LICENSE BLOCK *****
 
-from addons_base_page import AddonsBasePage
+from base_page import BasePage
+from page import Page
 
 
-class AddonsHomePage(AddonsBasePage):
+class HomePage(BasePage):
 
     _page_title = "Add-ons for Firefox"
 
@@ -62,41 +63,62 @@ class AddonsHomePage(AddonsBasePage):
     _most_popular_item_locator = "css=ol.toplist li"
     _most_popular_list_heading_locator = _most_popular_list_locator + " h2"
 
+    _explore_featured_link_locator = "css=#side-nav .s-featured a"
+    _explore_most_popular_link_locator = "css=#side-nav .s-users a"
+    _explore_most_top_rated_link_locator = "css=#side-nav .s-rating a"
+
     _featured_personas_see_all_link = "css=#featured-personas h2 a"
     _featured_personas_locator = "id=featured-personas"
     _featured_personas_title_locator = "css=#featured-personas h2"
     _featured_personas_items_locator = "css=#featured-personas li"
 
+    _category_list_locator = "css=ul#side-categories"
+
+    _extensions_menu_link = "css=#extensions > a"
+
     def __init__(self, testsetup):
         ''' Creates a new instance of the class and gets the page ready for testing '''
-        AddonsBasePage.__init__(self, testsetup)
+        BasePage.__init__(self, testsetup)
         self.selenium.open("%s/" % self.site_version)
         self.selenium.window_maximize()
 
     def click_featured_personas_see_all_link(self):
         self.selenium.click(self._featured_personas_see_all_link)
         self.selenium.wait_for_page_to_load(self.timeout)
-        from addons_personas_page import AddonsPersonasPage
-        return AddonsPersonasPage(self.testsetup)
+        from personas_page import PersonasPage
+        return PersonasPage(self.testsetup)
 
     def click_personas(self):
         self.selenium.click(self._personas_link_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
-        from addons_personas_page import AddonsPersonasPage
-        return AddonsPersonasPage(self.testsetup)
+        from personas_page import PersonasPage
+        return PersonasPage(self.testsetup)
 
     def click_themes(self):
         self.wait_for_element_visible(self._themes_link_locator)
         self.selenium.click(self._themes_link_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
-        from addons_site import AddonsThemesPage
-        return AddonsThemesPage(self.testsetup)
+        from themes_page import ThemesPage
+        return ThemesPage(self.testsetup)
 
     def click_collections(self):
         self.selenium.click(self._collections_link_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
-        from addons_collection_page import AddonsCollectionsPage
-        return AddonsCollectionsPage(self.testsetup)
+        from collection_page import CollectionsPage
+        return CollectionsPage(self.testsetup)
+
+    def click_extensions(self):
+        self.selenium.click(self._extensions_menu_link)
+        self.selenium.wait_for_page_to_load(self.timeout)
+        from extensions_homepage import ExtensionsHomePage
+        return ExtensionsHomePage(self.testsetup)
+
+    def click_to_explore(self, what):
+        what = what.replace(' ', '_').lower()
+        self.selenium.click(getattr(self, "_explore_most_%s_link_locator" % what))
+        self.selenium.wait_for_page_to_load(self.timeout)
+        from extensions_homepage import ExtensionsHomePage
+        return ExtensionsHomePage(self.testsetup)
 
     @property
     def most_popular_count(self):
@@ -125,10 +147,50 @@ class AddonsHomePage(AddonsBasePage):
     def click_on_first_addon(self):
         self.selenium.click(self._first_addon_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
-        from addons_details_page import AddonsDetailsPage
-        return AddonsDetailsPage(self.testsetup)
+        from details_page import DetailsPage
+        return DetailsPage(self.testsetup)
 
     def get_title_of_link(self, name):
         name = name.lower().replace(" ", "_")
         locator = getattr(self, "_%s_link_locator" % name)
         return self.selenium.get_attribute("%s@title" % locator)
+
+    @property
+    def categories_count(self):
+        return self.selenium.get_css_count("%s li" % self._category_list_locator)
+
+    def categories(self):
+        return [self.Categories(self.testsetup, i) for i in range(self.categories_count)]
+
+    def category(self, lookup):
+        return self.Categories(self.testsetup, lookup)
+
+    class Categories(Page):
+        _categories_locator = 'css=#side-categories li'
+        _link_locator = 'a'
+
+        def __init__(self, testsetup, lookup):
+            Page.__init__(self, testsetup)
+            self.lookup = lookup
+
+        def absolute_locator(self, relative_locator=""):
+            return self._root_locator + relative_locator
+
+        @property
+        def _root_locator(self):
+            if type(self.lookup) == int:
+                # lookup by index
+                return "%s:nth(%s) " % (self._categories_locator, self.lookup)
+            else:
+                # lookup by name
+                return "%s:contains(%s) " % (self._categories_locator, self.lookup)
+
+        @property
+        def name(self):
+            return self.selenium.get_text(self.absolute_locator())
+
+        def click_link(self):
+            self.selenium.click(self.absolute_locator(self._link_locator))
+            self.selenium.wait_for_page_to_load(self.timeout)
+            from category_page import CategoryPage
+            return CategoryPage(self.testsetup)
