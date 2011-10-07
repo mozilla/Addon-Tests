@@ -43,8 +43,8 @@
 
 from unittestzero import Assert
 
-from addons_themes_page import AddonsThemesPage
-from addons_homepage import AddonsHomePage
+from themes_page import ThemesPage
+from homepage import HomePage
 import pytest
 xfail = pytest.mark.xfail
 
@@ -53,17 +53,17 @@ class TestThemes:
 
     def test_that_themes_can_be_sorted_by_name(self, mozwebqa):
         """ Test for Litmus 11727, 4839 """
-        amo_home_page = AddonsHomePage(mozwebqa)
-        amo_themes_page = amo_home_page.click_themes()
-        amo_themes_page.click_sort_by("name")
-        addons = amo_themes_page.addon_names
+        home_page = HomePage(mozwebqa)
+        themes_page = home_page.click_themes()
+        themes_page.click_sort_by("name")
+        addons = themes_page.addon_names
         addons_set = set(addons)
         Assert.equal(len(addons), len(addons_set), "There are duplicates in the names")
         addons_orig = addons
         addons.sort()
         [Assert.equal(addons_orig[i], addons[i]) for i in xrange(len(addons))]
-        amo_themes_page.page_forward()
-        addons = amo_themes_page.addon_names
+        themes_page.page_forward()
+        addons = themes_page.addon_names
         addons_set = set(addons)
         Assert.equal(len(addons), len(addons_set), "There are duplicates in the names")
         addons_orig = addons
@@ -72,107 +72,107 @@ class TestThemes:
 
     def test_that_themes_can_be_sorted_by_updated_date(self, mozwebqa):
         """ test for litmus 11638 """
-        amo_home_page = AddonsHomePage(mozwebqa)
-        amo_themes_page = amo_home_page.click_themes()
-        amo_themes_page.click_sort_by("updated")
-        addons = amo_themes_page.addon_names
+        home_page = HomePage(mozwebqa)
+        themes_page = home_page.click_themes()
+        themes_page.click_sort_by("updated")
+        addons = themes_page.addon_names
         addons_set = set(addons)
         Assert.equal(len(addons), len(addons_set), "There are duplicates in the names")
-        updated_dates = amo_themes_page.addon_updated_dates
+        updated_dates = themes_page.addon_updated_dates
         Assert.is_sorted_descending(updated_dates)
-        amo_themes_page.page_forward()
-        updated_dates.extend(amo_themes_page.addon_updated_dates)
+        themes_page.page_forward()
+        updated_dates.extend(themes_page.addon_updated_dates)
         Assert.is_sorted_descending(updated_dates)
 
     def test_that_themes_can_be_sorted_by_created_date(self, mozwebqa):
         """ test for litmus 11638 """
-        amo_home_page = AddonsHomePage(mozwebqa)
-        amo_themes_page = amo_home_page.click_themes()
-        amo_themes_page.click_sort_by("created")
-        addons = amo_themes_page.addon_names
+        home_page = HomePage(mozwebqa)
+        themes_page = home_page.click_themes()
+        themes_page.click_sort_by("created")
+        addons = themes_page.addon_names
         addons_set = set(addons)
         Assert.equal(len(addons), len(addons_set), "There are duplicates in the names")
-        created_dates = amo_themes_page.addon_created_dates
+        created_dates = themes_page.addon_created_dates
         Assert.is_sorted_descending(created_dates)
-        amo_themes_page.page_forward()
-        created_dates.extend(amo_themes_page.addon_created_dates)
+        themes_page.page_forward()
+        created_dates.extend(themes_page.addon_created_dates)
         Assert.is_sorted_descending(created_dates)
 
     def test_that_themes_can_be_sorted_by_popularity(self, mozwebqa):
         """ test for litmus 11638 """
-        amo_home_page = AddonsHomePage(mozwebqa)
-        amo_themes_page = amo_home_page.click_themes()
-        amo_themes_page.click_sort_by("popular")
-        addons = amo_themes_page.addon_names
+        home_page = HomePage(mozwebqa)
+        themes_page = home_page.click_themes()
+        themes_page.click_sort_by("popular")
+        addons = themes_page.addon_names
         addons_set = set(addons)
         Assert.equal(len(addons), len(addons_set), "There are duplicates in the names")
-        downloads = amo_themes_page.addon_download_number
+        downloads = themes_page.addon_download_number
         Assert.is_sorted_descending(downloads)
-        amo_themes_page.page_forward()
-        downloads.extend(amo_themes_page.addon_download_number)
+        themes_page.page_forward()
+        downloads.extend(themes_page.addon_download_number)
         Assert.is_sorted_descending(downloads)
 
     def test_that_themes_loads_themes_landing_page(self, mozwebqa):
         """test for litmus 15339"""
-        amo_home_page = AddonsHomePage(mozwebqa)
-        amo_themes_page = amo_home_page.click_themes()
-        url_current_page = amo_themes_page.get_url_current_page()
+        home_page = HomePage(mozwebqa)
+        themes_page = home_page.click_themes()
+        url_current_page = themes_page.get_url_current_page()
         Assert.true(url_current_page.endswith("/themes/"))
 
     def test_that_clicking_on_theme_name_loads_its_detail_page(self, mozwebqa):
         """test for litmus 15363"""
-        amo_home_page = AddonsHomePage(mozwebqa)
-        amo_themes_page = amo_home_page.click_themes()
-        addon_name = amo_themes_page.addon_names[0]
-        amo_theme_page = amo_themes_page.click_on_first_addon()
-        Assert.contains(addon_name, amo_theme_page.addon_title)
+        home_page = HomePage(mozwebqa)
+        themes_page = home_page.click_themes()
+        addon_name = themes_page.addon_names[0]
+        theme_page = themes_page.click_on_first_addon()
+        Assert.contains(addon_name, theme_page.addon_title)
 
     def test_that_themes_page_has_correct_title(self, mozwebqa):
         """test for litmus 15340"""
-        amo_home_page = AddonsHomePage(mozwebqa)
-        amo_themes_page = amo_home_page.click_themes()
+        home_page = HomePage(mozwebqa)
+        themes_page = home_page.click_themes()
         expected_title = "Most Popular :: Themes :: Add-ons for Firefox"
-        Assert.equal(expected_title, amo_themes_page.page_title)
+        Assert.equal(expected_title, themes_page.page_title)
 
     def test_themes_page_breadcrumb(self, mozwebqa):
         """test for litmus 15344"""
-        amo_home_page = AddonsHomePage(mozwebqa)
-        amo_themes_page = amo_home_page.click_themes()
+        home_page = HomePage(mozwebqa)
+        themes_page = home_page.click_themes()
         expected_breadcrumb = "Add-ons for Firefox Themes"
-        Assert.equal(expected_breadcrumb, amo_themes_page.themes_breadcrumb)
+        Assert.equal(expected_breadcrumb, themes_page.themes_breadcrumb)
 
     def test_that_clicking_on_a_subcategory_loads_expected_page(self, mozwebqa):
         """test for litmus 15949"""
-        amo_home_page = AddonsHomePage(mozwebqa)
-        amo_themes_page = amo_home_page.click_themes()
-        selected_category = amo_themes_page.themes_category
-        amo_category_page = amo_themes_page.click_on_first_category()
+        home_page = HomePage(mozwebqa)
+        themes_page = home_page.click_themes()
+        selected_category = themes_page.themes_category
+        amo_category_page = themes_page.click_on_first_category()
         Assert.equal(selected_category, amo_category_page.title)
 
     def test_themes_subcategory_page_breadcrumb(self, mozwebqa):
-        amo_home_page = AddonsHomePage(mozwebqa)
-        amo_themes_page = amo_home_page.click_themes()
-        selected_category = amo_themes_page.themes_category
-        amo_category_page = amo_themes_page.click_on_first_category()
+        home_page = HomePage(mozwebqa)
+        themes_page = home_page.click_themes()
+        selected_category = themes_page.themes_category
+        amo_category_page = themes_page.click_on_first_category()
         expected_breadcrumb = "Add-ons for Firefox Themes %s" % selected_category
         Assert.equal(expected_breadcrumb, amo_category_page.breadcrumb)
 
     def test_that_counters_show_the_same_number_of_themes(self, mozwebqa):
         """test for litmus 15345"""
-        amo_home_page = AddonsHomePage(mozwebqa)
-        amo_themes_page = amo_home_page.click_themes()
-        Assert.equal(amo_themes_page.top_counter, amo_themes_page.bottom_counter)
+        home_page = HomePage(mozwebqa)
+        themes_page = home_page.click_themes()
+        Assert.equal(themes_page.top_counter, themes_page.bottom_counter)
 
     def test_that_themes_categories_are_listed_on_left_hand_side(self, mozwebqa):
         """ test for litmus 15342"""
-        amo_home_page = AddonsHomePage(mozwebqa)
-        amo_themes_page = amo_home_page.click_themes()
-        current_page_url = amo_home_page.get_url_current_page()
+        home_page = HomePage(mozwebqa)
+        themes_page = home_page.click_themes()
+        current_page_url = home_page.get_url_current_page()
         Assert.true(current_page_url.endswith("/themes/"))
         default_categories = ["Animals", "Compact", "Large", "Miscellaneous", "Modern", "Nature", "OS Integration", "Retro", "Sports"]
-        Assert.equal(amo_themes_page.categories_count, len(default_categories))
+        Assert.equal(themes_page.categories_count, len(default_categories))
         count = 0
         for category in default_categories:
             count += 1
-            current_category = amo_themes_page.get_category(count)
+            current_category = themes_page.get_category(count)
             Assert.equal(category, current_category)

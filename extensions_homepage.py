@@ -20,7 +20,7 @@
 # Portions created by the Initial Developer are Copyright (C) 2011
 # the Initial Developer. All Rights Reserved.
 #
-# Contributor(s): Marlena Compton <mcompton@mozilla.com>
+# Contributor(s): Bebe <florin.strugariu@softvision.ro>
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -36,18 +36,42 @@
 #
 # ***** END LICENSE BLOCK *****
 
+from base_page import BasePage
+from page import Page
 
-from addons_base_page import AddonsBasePage
 
+class ExtensionsHomePage(BasePage):
 
-class AddonsCategoryPage(AddonsBasePage):
-
-    _category_title_locator = "css=div.island > h1"
-
-    @property
-    def category_page_title(self):
-        return self.selenium.get_title()
+    _page_title = 'Featured Extensions :: Add-ons for Firefox'
+    _extensions_locator = "css=div.items div.item"
 
     @property
-    def category_header_title(self):
-        return self.selenium.get_text(self._category_title_locator)
+    def extension_count(self):
+        return int(self.selenium.get_css_count(self._extensions_locator))
+
+    @property
+    def extensions(self):
+        return [self.Extension(self.testsetup, i) for i in range(self.extension_count)]
+
+    class Extension(Page):
+        _name_locator = " h3 a"
+
+        def __init__(self, testsetup, lookup):
+            Page.__init__(self, testsetup)
+            self.lookup = lookup
+
+        def absolute_locator(self, relative_locator):
+            return self.root_locator + relative_locator
+
+        @property
+        def root_locator(self):
+            if type(self.lookup) == int:
+                # lookup by index
+                return "css=div.items div.item:nth(%s)" % self.lookup
+            else:
+                # lookup by name
+                return "css=div.items div.item:contains(%s)" % self.lookup
+
+        @property
+        def name(self):
+            return self.selenium.get_text(self.absolute_locator(self._name_locator))

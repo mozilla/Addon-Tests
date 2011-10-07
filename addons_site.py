@@ -50,10 +50,10 @@ import urllib2
 from urllib2 import urlparse
 
 from page import Page
-from addons_base_page import AddonsBasePage
+from base_page import BasePage
 
 
-class AddonsWriteReviewBlock(AddonsBasePage):
+class WriteReviewBlock(BasePage):
 
     _add_review_input_field_locator = "id=id_body"
     _add_review_input_rating_locator = "css=.ratingwidget input"
@@ -71,14 +71,14 @@ class AddonsWriteReviewBlock(AddonsBasePage):
     def click_to_save_review(self):
         self.selenium.click(self._add_review_submit_button_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
-        return AddonViewReviewsPage(self.testsetup)
+        return ViewReviewsPage(self.testsetup)
 
     @property
     def is_review_box_visible(self):
         return self.selenium.is_visible(self._add_review_box)
 
 
-class AddonViewReviewsPage(AddonsBasePage):
+class ViewReviewsPage(BasePage):
 
     _review_locator = "css=div.primary div.review"
 
@@ -91,7 +91,7 @@ class AddonViewReviewsPage(AddonsBasePage):
         return [self.ReviewSnippet(self.testsetup, i) for i in
                 range(self.selenium.get_css_count(self._review_locator))]
 
-    class ReviewSnippet(AddonsBasePage):
+    class ReviewSnippet(BasePage):
 
         _review_locator = "css=div.primary div.review"
         _review_text_locator = "p.review-body"
@@ -100,7 +100,7 @@ class AddonViewReviewsPage(AddonsBasePage):
         _review_date_locator = "div.reviewed-on"
 
         def __init__(self, testsetup, index):
-            AddonsBasePage.__init__(self, testsetup)
+            BasePage.__init__(self, testsetup)
             self.index = index
 
         def absolute_locator(self, relative_locator):
@@ -114,8 +114,8 @@ class AddonViewReviewsPage(AddonsBasePage):
 
         @property
         def rating(self):
-            rating_locator = self.absolute_locator(self._review_rating_locator)
-            return int(self.selenium.get_text(rating_locator))
+            _rating_locator = self.absolute_locator(self._review_rating_locator)
+            return int(self.selenium.get_text(_rating_locator))
 
         @property
         def author(self):
@@ -131,7 +131,7 @@ class AddonViewReviewsPage(AddonsBasePage):
             return date.group(2)
 
 
-class UserFAQPage(AddonsBasePage):
+class UserFAQPage(BasePage):
 
     _license_question_locator = "css=#license"
     _license_answer_locator = "css=#license + dd"
@@ -143,7 +143,3 @@ class UserFAQPage(AddonsBasePage):
     @property
     def license_answer(self):
         return self.selenium.get_text(self._license_answer_locator)
-
-class ExtensionsHomePage(AddonsBasePage):
-
-    _page_title = 'Featured Extensions :: Add-ons for Firefox'

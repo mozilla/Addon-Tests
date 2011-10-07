@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+
 # ***** BEGIN LICENSE BLOCK *****
 # Version: MPL 1.1/GPL 2.0/LGPL 2.1
 #
@@ -19,7 +20,7 @@
 # Portions created by the Initial Developer are Copyright (C) 2011
 # the Initial Developer. All Rights Reserved.
 #
-# Contributor(s): Bebe <florin.strugariu@softvision.ro>
+# Contributor(s): Marlena Compton <mcompton@mozilla.com>
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -36,28 +37,17 @@
 # ***** END LICENSE BLOCK *****
 
 
-from addons_base_page import AddonsBasePage
+from base_page import BasePage
 
 
-class AddonsCollectionsPage(AddonsBasePage):
+class CategoryPage(BasePage):
 
-    _page_title = "Featured Collections :: Add-ons for Firefox"
-
-    #Search box
-    _search_button_locator = "css=button.search-button"
-    _search_textbox_locator = "name=q"
-
-    def search_for(self, search_term):
-        self.selenium.type(self._search_textbox_locator, search_term)
-        self.selenium.click(self._search_button_locator)
-        self.selenium.wait_for_page_to_load(self.timeout)
-        return AddonsCollectionsSearchPage(self.testsetup)
-
-
-class AddonsCollectionsSearchPage(AddonsBasePage):
-
-    _results_locator = "css=div.featured-inner div.item"
+    _category_title_locator = "css=div.island > h1"
 
     @property
-    def result_count(self):
-        return int(self.selenium.get_css_count(self._results_locator))
+    def category_page_title(self):
+        return self.selenium.get_title()
+
+    @property
+    def category_header_title(self):
+        return self.selenium.get_text(self._category_title_locator)
