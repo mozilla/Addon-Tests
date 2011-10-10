@@ -522,20 +522,21 @@ class DetailsPage(BasePage):
         return WriteReviewBlock(self.testsetup)
 
     @property
-    def development_chanel_text(self):
+    def development_channel_text(self):
         return self.selenium.get_text('%s > h2' % self._development_channel_locator)
+
     @property
-    def is_development_chanel_header_visible(self):
+    def is_development_channel_header_visible(self):
         return self.selenium.is_visible('%s > h2' % self._development_channel_locator)
 
-    def click_development_chanel(self):
+    def click_development_channel(self):
         self.selenium.click('%s > h2 > a' % self._development_channel_locator)
 
     @property
-    def is_development_chanel_expanded(self):
+    def is_development_channel_expanded(self):
         is_expanded = self.selenium.get_attribute("%s@class" % self._development_channel_locator)
-        return ("expanded" in is_expanded)
+        return "expanded" in is_expanded
 
     @property
-    def is_development_chanel_content_visible(self):
+    def is_development_channel_content_visible(self):
         return self.selenium.is_visible('%s > div' % self._development_channel_locator)

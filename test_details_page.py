@@ -352,11 +352,11 @@ class TestDetailsPage:
         """
         details_page = DetailsPage(mozwebqa, 'Firebug')
 
-        Assert.true(details_page.is_development_chanel_header_visible)
-        Assert.equal("Development Channel", details_page.development_chanel_text)
+        Assert.true(details_page.is_development_channel_header_visible)
+        Assert.equal("Development Channel", details_page.development_channel_text)
 
-        Assert.false(details_page.is_development_chanel_content_visible)
-        details_page.click_development_chanel()
-        Assert.true(details_page.is_development_chanel_content_visible)
-        details_page.click_development_chanel()
-        Assert.false(details_page.is_development_chanel_content_visible)
+        Assert.false(details_page.is_development_channel_content_visible)
+        details_page.click_development_channel()
+        Assert.true(details_page.is_development_channel_content_visible)
+        details_page.click_development_channel()
+        Assert.false(details_page.is_development_channel_content_visible)
