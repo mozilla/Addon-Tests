@@ -141,8 +141,8 @@ class TestHomePage:
 
     def test_that_verifies_upper_menu_navigation_items(self, mozwebqa):
         """
-        Litmus 25758
-        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25758
+        Litmus 25744 =>  25796
+        http://bit.ly/pfDkXq
         """
 
         menu_values_list = {

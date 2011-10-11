@@ -209,8 +209,8 @@ class BasePage(Page):
         def site_nav(self, lookup):
             if type(lookup) != int:
                 lookup = capitalize(lookup)
-            from site_nav_region import SiteNav
-            return SiteNav(self.testsetup, lookup)
+            from site_nav_region import HeaderMenu
+            return HeaderMenu(self.testsetup, lookup)
 
         #TODO:hover other apps
         def click_other_applications(self):

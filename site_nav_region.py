@@ -39,9 +39,18 @@
 from page import Page
 
 
-class SiteNav(Page):
+class HeaderMenu(Page):
+#This class access the header area from the top of the AMO impala pages
+#to access it just use:
+#    HeaderMenu(self.testsetup, lookup)
+#Where lookup is:
+#    -the menu name you want to access;
+#    -the menu item number you want to access;
+#Ex:
+#    HeaderMenu(self.testsetup, 'Extensions') returns the Extension menu
+#    HeaderMenu(self.testsetup, 1) returns the Personas menu
 
-    _site_nav_locator = 'css=#site-nav > ul > li'
+    _header_menu_locator = 'css=#site-nav > ul > li'
     _link_locator = '> a'
     _menu_count_locator = '>ul > li'
 
@@ -56,10 +65,10 @@ class SiteNav(Page):
     def _root_locator(self):
         if type(self.lookup) == int:
             # lookup by index
-            return "%s:nth(%s) " % (self._site_nav_locator, self.lookup)
+            return "%s:nth(%s) " % (self._header_menu_locator, self.lookup)
         else:
             # lookup by name
-            return "%s:contains(%s) " % (self._site_nav_locator, self.lookup)
+            return "%s:contains(%s) " % (self._header_menu_locator, self.lookup)
 
     @property
     def _menu_count(self):
