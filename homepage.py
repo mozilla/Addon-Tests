@@ -165,6 +165,13 @@ class HomePage(BasePage):
     def category(self, lookup):
         return self.Categories(self.testsetup, lookup)
 
+    def most_popular_item(self, lookup):
+        return self.MostPopularRegion(self.testsetup, lookup)
+
+    @property
+    def most_popular_items(self):
+        return [self.MostPopularRegion(self.testsetup, i) for i in range(self.most_popular_count)]
+
     class Categories(Page):
         _categories_locator = 'css=#side-categories li'
         _link_locator = 'a'
@@ -192,5 +199,41 @@ class HomePage(BasePage):
         def click_link(self):
             self.selenium.click(self.absolute_locator(self._link_locator))
             self.selenium.wait_for_page_to_load(self.timeout)
+            from category_page import CategoryPage
+            return CategoryPage(self.testsetup)
+
+    class MostPopularRegion(Page):
+        _name_locator = " > span"
+        _users_locator = " > small"
+
+        def __init__(self, testsetup, lookup):
+            Page.__init__(self, testsetup)
+            self.lookup = lookup
+
+        def absolute_locator(self, relative_locator):
+            return self.root_locator + relative_locator
+
+        @property
+        def root_locator(self):
+            if type(self.lookup) == int:
+                # lookup by index
+                return "css=.toplist > li:nth(%s) > a" % self.lookup
+            else:
+                # lookup by name
+                return "css=.toplist > li:contains(%s) > a" % self.lookup
+
+        @property
+        def name(self):
+            return self.selenium.get_text(self.absolute_locator(self._name_locator))
+
+        @property
+        def users_text(self):
+            return self.selenium.get_text(self.absolute_locator(self._users_locator))
+
+        @property
+        def users_number(self):
+            number_str = self.users_text.split(' ')[0]
+            number_str = number_str.replace(",", "")
+            return int(number_str)
             from category_page import CategoryPage
             return CategoryPage(self.testsetup)

@@ -20,6 +20,7 @@
 # the Initial Developer. All Rights Reserved.
 #
 # Contributor(s): Bebe <florin.strugariu@softvision.ro>
+#                 Alex Lakatos <alex@greensqr.com>
 #
 #
 # Alternatively, the contents of this file may be used under the terms of
@@ -55,3 +56,38 @@ class TestAmoLayout:
 
         home_page.header.click_other_applications()
         Assert.false(home_page.header.is_thunderbird_visible())
+
+    def test_that_checks_the_tooltip_for_amo_logo(self, mozwebqa):
+        """
+        Litmus 22924
+        https://litmus.mozilla.org/show_test.cgi?id=22924
+        """
+        home_page = HomePage(mozwebqa)
+        Assert.true(home_page.is_amo_logo_visible)
+        Assert.equal(home_page.amo_logo_title, "Return to the Firefox Add-ons homepage")
+
+    def test_that_checks_the_image_for_amo_logo(self, mozwebqa):
+        """
+        Litmus 25742
+        https://litmus.mozilla.org/show_test.cgi?id=25742
+        """
+        home_page = HomePage(mozwebqa)
+        Assert.true(home_page.is_amo_logo_image_visible)
+        Assert.contains("-cdn.allizom.org/media/img/app-icons/med/firefox.png", home_page.amo_logo_image_source)
+
+    def test_that_clicking_mozilla_logo_loads_mozilla_dot_org(self, mozwebqa):
+        """
+        Litmus 22922
+        https://litmus.mozilla.org/show_test.cgi?id=22922
+        """
+        home_page = HomePage(mozwebqa)
+        Assert.true(home_page.is_mozilla_logo_visible)
+        home_page.click_mozilla_logo()
+        Assert.equal(home_page.get_url_current_page(), "http://www.mozilla.org/")
+
+    def test_that_other_applications_link_has_tooltip(self, mozwebqa):
+        """ Litmus 22925
+            https://litmus.mozilla.org/show_test.cgi?id=29698 """
+        home_page = HomePage(mozwebqa)
+        tooltip = home_page.get_title_of_link('Other applications')
+        Assert.equal(tooltip, 'Find add-ons for other applications')

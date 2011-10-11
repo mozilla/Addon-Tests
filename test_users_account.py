@@ -35,8 +35,12 @@
 #
 # ***** END LICENSE BLOCK *****
 
+import pytest
+
 from unittestzero import Assert
 from homepage import HomePage
+
+xfail = pytest.mark.xfail
 
 
 class TestAccounts:
@@ -76,6 +80,7 @@ class TestAccounts:
         Assert.equal("Details", amo_user_edit_page.is_details_visible)
         Assert.equal("Notifications", amo_user_edit_page.is_notification_visible)
 
+    @xfail(reason="Bugzilla 682801")
     def test_user_can_access_the_view_profile_page(self, mozwebqa):
         """
         Test for litmus 15400
@@ -89,4 +94,4 @@ class TestAccounts:
 
         view_profile_page = home_page.header.click_view_profile()
 
-        Assert.equal(view_profile_page.about_me, 'About Me')
+        Assert.equal(view_profile_page.about_me, 'About me')
