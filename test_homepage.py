@@ -45,6 +45,20 @@ from homepage import HomePage
 
 class TestHomePage:
 
+    header_menu_values_list = {
+                "Extensions":  ["Featured", "Most Popular", "Top Rated", "Alerts & Updates", "Appearance", "Bookmarks",
+                                "Download Management", "Feeds, News & Blogging", "Games & Entertainment",
+                                "Language Support", "Photos, Music & Videos", "Privacy & Security", "Shopping",
+                                "Social & Communication", "Tabs", "Web Development", "Other"],
+                "Personas":    ["Featured", "Most Popular", "Top Rated", "Abstract", "Causes", "Fashion", "Film and TV",
+                                "Firefox", "Foxkeh", "Holiday", "Music", "Nature", "Other", "Scenery", "Seasonal", "Solid", "Sports", "Websites"],
+                "Themes":      ["Featured", "Most Popular", "Top Rated", "Animals", "Compact", "Large", "Miscellaneous", "Modern", "Nature",
+                                "OS Integration", "Retro", "Sports"],
+                "Collections": ["Featured", "Most Followers", "Newest", "Collections I've Made", "Collections I'm Following",
+                                "My Favorite Add-ons"],
+                "More…":       ["Add-ons for Mobile", "Dictionaries & Language Packs", "Plugins", "Search Tools", "Developer Hub"]
+                }
+
     def test_that_checks_the_most_popular_section_exists(self, mozwebqa):
         """
         Litmus 25807
@@ -145,24 +159,10 @@ class TestHomePage:
         http://bit.ly/pfDkXq
         """
 
-        menu_values_list = {
-                    "Extensions": ["Featured", "Most Popular", "Top Rated", "Alerts & Updates", "Appearance", "Bookmarks",
-                                 "Download Management", "Feeds, News & Blogging", "Games & Entertainment",
-                                 "Language Support", "Photos, Music & Videos", "Privacy & Security", "Shopping",
-                                 "Social & Communication", "Tabs", "Web Development", "Other"],
-                    "Personas": ["Featured", "Most Popular", "Top Rated", "Abstract", "Causes", "Fashion", "Film and TV",
-                               "Firefox", "Foxkeh", "Holiday", "Music", "Nature", "Other", "Scenery", "Seasonal", "Solid", "Sports", "Websites"],
-                    "Themes": ["Featured", "Most Popular", "Top Rated", "Animals", "Compact", "Large", "Miscellaneous", "Modern", "Nature",
-                                 "OS Integration", "Retro", "Sports"],
-                    "Collections": ["Featured", "Most Followers", "Newest", "Collections I've Made", "Collections I'm Following",
-                                 "My Favorite Add-ons"],
-                    "More…": ["Dictionaries & Language Packs", "Plugins", "Search Tools", "Developer Hub"]
-                    }
-
         home_page = HomePage(mozwebqa)
 
-        for menu in menu_values_list:
-            card_items_list = menu_values_list[menu]
+        for menu in self.header_menu_values_list:
+            card_items_list = self.header_menu_values_list[menu]
             menu_nav = home_page.header.site_nav(menu)
 
             Assert.equal(menu, menu_nav.name)
