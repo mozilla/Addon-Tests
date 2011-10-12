@@ -97,7 +97,6 @@ class TestDetailsPageAgainstXML:
         firebug_page = DetailsPage(mozwebqa, self.firebug)
         Assert.equal("5", firebug_page.rating)
 
-    @xfail(reason="needs to be updated for impala")
     def test_that_description_text_is_correct(self, mozwebqa):
         """litmus 15321"""
         #browser
@@ -108,7 +107,7 @@ class TestDetailsPageAgainstXML:
         addons_xml = AddOnsAPI(mozwebqa)
         xml_description = addons_xml.get_addon_description(self.firebug)
 
-        Assert.equal(browser_description, xml_description)
+        Assert.equal(browser_description.replace('\n', ''), xml_description.replace('\n', ''))
 
     @xfail(reason="needs to be updated for impala")
     def test_that_icon_is_correct(self, mozwebqa):
