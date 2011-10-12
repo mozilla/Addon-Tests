@@ -21,6 +21,7 @@
 #
 # Contributor(s): Marlena Compton <mcompton@mozilla.com>
 #                 Teodosia Pop <teodosia.pop@softvision.ro>
+#                 Alin Trif <alin.trif@softvision.ro>
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
