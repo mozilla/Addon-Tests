@@ -58,7 +58,7 @@ class LoginPage(BasePage):
 class ViewProfilePage(BasePage):
 
     _page_title = 'User Info for Test :: Add-ons for Firefox'
-    _about_locator = 'css=div.featured-inner.object-lead > h3'
+    _about_locator = 'css=div.island > section.primary > h2'
 
     @property
     def about_me(self):

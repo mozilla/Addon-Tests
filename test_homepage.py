@@ -41,18 +41,9 @@
 
 from unittestzero import Assert
 from homepage import HomePage
-import pytest
 
 
 class TestHomePage:
-
-    def test_that_verifies_the_tooltip_for_Other_Applications(self, mozwebqa):
-        """
-        Litmus 22925
-        https://litmus.mozilla.org/show_test.cgi?id=22925
-        """
-        home_page = HomePage(mozwebqa)
-        Assert.equal(home_page.header.other_applications_tooltip, 'Find add-ons for other applications')
 
     def test_that_checks_the_most_popular_section_exists(self, mozwebqa):
         """
@@ -63,34 +54,6 @@ class TestHomePage:
         Assert.true(home_page.is_most_popular_list_visible)
         Assert.contains('Most Popular', home_page.most_popular_list_heading)
         Assert.equal(home_page.most_popular_count, 10)
-
-    def test_that_checks_the_tooltip_for_amo_logo(self, mozwebqa):
-        """
-        Litmus 22924
-        https://litmus.mozilla.org/show_test.cgi?id=22924
-        """
-        home_page = HomePage(mozwebqa)
-        Assert.true(home_page.is_amo_logo_visible)
-        Assert.equal(home_page.amo_logo_title, "Return to the Firefox Add-ons homepage")
-
-    def test_that_checks_the_image_for_amo_logo(self, mozwebqa):
-        """
-        Litmus 25742
-        https://litmus.mozilla.org/show_test.cgi?id=25742
-        """
-        home_page = HomePage(mozwebqa)
-        Assert.true(home_page.is_amo_logo_image_visible)
-        Assert.contains("-cdn.allizom.org/media/img/app-icons/med/firefox.png", home_page.amo_logo_image_source)
-
-    def test_that_clicking_mozilla_logo_loads_mozilla_dot_org(self, mozwebqa):
-        """
-        Litmus 22922
-        https://litmus.mozilla.org/show_test.cgi?id=22922
-        """
-        home_page = HomePage(mozwebqa)
-        Assert.true(home_page.is_mozilla_logo_visible)
-        home_page.click_mozilla_logo()
-        Assert.equal(home_page.get_url_current_page(), "http://www.mozilla.org/")
 
     def test_that_clicking_on_addon_name_loads_details_page(self, mozwebqa):
         """ Litmus 25812
@@ -122,13 +85,6 @@ class TestHomePage:
         Assert.true(featured_persona_page.is_the_current_page)
         Assert.equal(featured_persona_page.persona_header, 'Personas')
 
-    def test_that_other_applications_link_has_tooltip(self, mozwebqa):
-        """ Litmus 22925
-            https://litmus.mozilla.org/show_test.cgi?id=29698 """
-        home_page = HomePage(mozwebqa)
-        tooltip = home_page.get_title_of_link('Other applications')
-        Assert.equal(tooltip, 'Find add-ons for other applications')
-
     def test_that_extensions_link_loads_extensions_page(self, mozwebqa):
         """
         Litmus 25746
@@ -137,3 +93,13 @@ class TestHomePage:
         home_page = HomePage(mozwebqa)
         extensions_page = home_page.click_extensions()
         Assert.true(extensions_page.is_the_current_page)
+
+    def test_that_most_popular_section_is_ordered_by_users(self, mozwebqa):
+        """
+        Litmus 25808
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25808
+        """
+        home_page = HomePage(mozwebqa)
+        Assert.true(home_page.is_most_popular_list_visible)
+        most_popular_items = home_page.most_popular_items
+        Assert.is_sorted_descending([i.users_number for i in most_popular_items])
