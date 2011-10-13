@@ -49,8 +49,6 @@ xfail = pytest.mark.xfail
 
 class TestSearch:
 
-    _count_regex = '^.* (\d+) - (\d+)'
-    _total_count_regex = '^.* \d+ - \d+ of (\d+)'
     """
     Test for litmus 17339
     https://litmus.mozilla.org/show_test.cgi?id=17339
@@ -65,34 +63,35 @@ class TestSearch:
         first_expected = 1
         second_expected = 20
 
-        # Go Forward 10 times
+        #Go Forward 10 times
         for i in range(10):
             search_page.page_forward()
-            results_summary = search_page.results_summary
+            results_summary = search_page.results_displayed
 
-            matches = re.search(self._count_regex, results_summary)
-            first_count = matches.group(1)
-            second_count = matches.group(2)
+            results = re.split("\W+", results_summary)
+            first_count = results[1]
+            second_count = results[2]
 
             first_expected += 20
             second_expected += 20
             Assert.equal(str(first_expected), first_count)
             Assert.equal(str(second_expected), second_count)
 
-        # Go Back 10 Times
+        #Go Back 10 Times
         for i in range(10):
             search_page.page_back()
-            results_summary = search_page.results_summary
+            results_summary = search_page.results_displayed
 
-            matches = re.search(self._count_regex, results_summary)
-            first_count = matches.group(1)
-            second_count = matches.group(2)
+            results = re.split("\W+", results_summary)
+            first_count = results[1]
+            second_count = results[2]
 
             first_expected -= 20
             second_expected -= 20
             Assert.equal(str(first_expected), first_count)
             Assert.equal(str(second_expected), second_count)
 
+    @xfail(reason="disabled due to elastic search")
     def test_that_character_escaping_doesnt_go_into_the_test(self, mozwebqa):
         """ Test for Litmus 4857
             https://litmus.mozilla.org/show_test.cgi?id=4857"""
@@ -109,9 +108,10 @@ class TestSearch:
         home_page = HomePage(mozwebqa)
         search_page = home_page.header.search_for("a" * 255)
 
-        Assert.true(search_page.is_text_present("No results found."))
-        results_summary = search_page.results_summary
-        Assert.true("0 - 0 of 0" in results_summary)
+        Assert.true(search_page.is_no_results_present)
+        Assert.equal("No results found.", search_page.no_results_text)
+
+        Assert.true("0 matching results" in search_page.number_of_results_text)
 
     def test_that_searching_with_unicode_characters_returns_results(self, mozwebqa):
         """ Litmus 9575
@@ -120,9 +120,8 @@ class TestSearch:
         search_str = u'\u0421\u043b\u043e\u0432\u0430\u0440\u0438 \u042f\u043d\u0434\u0435\u043a\u0441'
         search_page = home_page.header.search_for(search_str)
 
-        Assert.true(search_page.is_text_present(search_str))
-        results_summary = search_page.results_summary
-        Assert.false("0 - 0 of 0" in results_summary)
+        Assert.contains(search_str, search_page.search_results_title)
+        Assert.false("0 matching results" in search_page.number_of_results_text)
 
     def test_that_searching_with_substrings_returns_results(self, mozwebqa):
         """ Litmus 9561
@@ -130,11 +129,12 @@ class TestSearch:
         home_page = HomePage(mozwebqa)
         search_page = home_page.header.search_for("fox")
 
-        Assert.false(search_page.is_text_present("No results found."))
-        results_summary = search_page.results_summary
-        Assert.false("0 - 0 of 0" in results_summary)
-        matches = re.search(self._total_count_regex, results_summary)
-        Assert.true(int(matches.group(1)) > 1)
+        Assert.false(search_page.is_no_results_present, 'No results where found')
+
+        results_text_sumary = search_page.number_of_results_text
+        Assert.false("0 matching results" in results_text_sumary)
+
+        Assert.true(int(results_text_sumary.split()[0]) > 1)
 
     @xfail(reason="disabled due to bug 619052")
     def test_that_blank_search_returns_results(self, mozwebqa):
@@ -155,7 +155,7 @@ class TestSearch:
         search_keyword = 'Search term'
         search_page = home_page.header.search_for(search_keyword)
 
-        expected_title = 'Add-on Search Results for %s :: Add-ons for Firefox' % search_keyword
+        expected_title = '%s :: Search :: Add-ons for Firefox' % search_keyword
         Assert.equal(expected_title, search_page.page_title)
 
     def test_that_searching_for_fire_returns_firebug(self, mozwebqa):
@@ -168,6 +168,7 @@ class TestSearch:
 
         Assert.equal(search_page.result(0).name, 'Firebug')
 
+    @xfail(reason="disabled due to elastic search")
     def test_that_searching_for_twitter_returns_yoono(self, mozwebqa):
         """
         Litmus 17354
@@ -178,7 +179,7 @@ class TestSearch:
 
         Assert.equal(search_page.result(0).name, 'Yoono: Twitter Facebook LinkedIn YouTube GTalk AIM')
 
-    def test_that_searching_for_cool_returns_cooliris(self, mozwebqa):
+    def test_that_searching_for_cool_returns_results_with_cool_in_their_name_description(self, mozwebqa):
         """
         Litmus 17353
         https://litmus.mozilla.org/show_test.cgi?id=17353
@@ -186,7 +187,8 @@ class TestSearch:
         home_page = HomePage(mozwebqa)
         search_page = home_page.header.search_for("Cool")
 
-        Assert.equal(search_page.result(0).name, 'Cooliris')
+        for i in range(10):
+            Assert.contains('cool', search_page.result(i).text.lower())
 
     #:TODO To be merged into a layout test
     def test_the_search_field_placeholder(self, mozwebqa):
@@ -205,52 +207,41 @@ class TestSearch:
         home_page = HomePage(mozwebqa)
         search_page = home_page.header.search_for("1")
 
-        Assert.true(search_page.result_count > 0)
+        Assert.greater(search_page.result_count, 0)
+        Assert.true(int(search_page.number_of_results_text.split()[0]) > 0)
 
-    def test_that_verify_the_breadcrumb_on_search_results_page(self, mozwebqa):
-        """
-        Litmus 17341
-        https://litmus.mozilla.org/show_test.cgi?id=17341
-        """
-        home_page = HomePage(mozwebqa)
-        search_page = home_page.header.search_for("text")
-
-        Assert.equal(search_page.breadcrumbs_value, 'Add-ons for Firefox Search')
-
-    @xfail(reason="disabled due to bug 688394")
     def test_sorting_by_downloads(self, mozwebqa):
         """ Litmus 17342
             https://litmus.mozilla.org/show_test.cgi?id=17342 """
         HomePage(mozwebqa).header.search_for('firebug')
-        search_page = SearchHomePage(mozwebqa).sort_by('downloads')
-        Assert.true('sort=weeklydownloads' in search_page.get_url_current_page())
+        search_page = SearchHomePage(mozwebqa).sort_by('Weekly Downloads')
+        Assert.true('sort=downloads' in search_page.get_url_current_page())
         Assert.is_sorted_descending([i.downloads for i in search_page.results()])
 
     def test_sorting_by_created_date(self, mozwebqa):
         """ Litmus 17343
             https://litmus.mozilla.org/show_test.cgi?id=17343 """
         HomePage(mozwebqa).header.search_for('firebug')
-        search_page = SearchHomePage(mozwebqa).sort_by('created')
-        Assert.true('sort=newest' in search_page.get_url_current_page())
+        search_page = SearchHomePage(mozwebqa).sort_by('Newest')
+        Assert.true('sort=created' in search_page.get_url_current_page())
         Assert.is_sorted_descending([i.created_date for i in search_page.results()])
 
-    @xfail(reason="Disabled due to bug 685704.")
     def test_sorting_by_updated_date(self, mozwebqa):
         """ Litmus 17345
             https://litmus.mozilla.org/show_test.cgi?id=17345 """
         HomePage(mozwebqa).header.search_for('firebug')
-        search_page = SearchHomePage(mozwebqa).sort_by('updated')
+        search_page = SearchHomePage(mozwebqa).sort_by('Recently Updated')
         Assert.true('sort=updated' in search_page.get_url_current_page())
         Assert.is_sorted_descending([i.updated_date for i in search_page.results()])
 
-    @xfail(reason="disabled due to bug 688393")
     def test_sorting_by_users_number(self, mozwebqa):
         """Litmus 24867"""
         HomePage(mozwebqa).header.search_for('firebug')
-        search_page = SearchHomePage(mozwebqa).sort_by('users')
+        search_page = SearchHomePage(mozwebqa).sort_by('Most Users')
         Assert.true('sort=users' in search_page.get_url_current_page())
         Assert.is_sorted_descending([i.users for i in search_page.results()])
 
+    @xfail(reason="ToDO: https://www.pivotaltracker.com/story/show/19639893")
     def test_that_searching_for_a_tag_returns_results(self, mozwebqa):
         """
         Litmus 7848
@@ -263,6 +254,7 @@ class TestSearch:
         Assert.equal(search_page.refine_results.tag("development").name, "development")
         Assert.true(search_page.refine_results.tag_count > 1)
 
+    @xfail(reason="to few results")
     def test_that_search_returns_top_1000_results(self, mozwebqa):
 
         home_page = HomePage(mozwebqa)
@@ -284,7 +276,7 @@ class TestSearch:
         first_expected = 1
         second_expected = 20
 
-        while(search_page.is_forword_present):
+        while(not search_page.is_next_link_disabled):
             results_summary = search_page.results_displayed
             results = re.split("\W+", results_summary)
             first_count = results[1]
