@@ -21,6 +21,7 @@
 #
 # Contributor(s): Bebe <florin.strugariu@softvision.ro>
 #                 Alex Lakatos <alex@greensqr.com>
+#                 Teodosia Pop <teodosia.pop@softvision.ro>
 #
 #
 # Alternatively, the contents of this file may be used under the terms of
@@ -91,3 +92,22 @@ class TestAmoLayout:
         home_page = HomePage(mozwebqa)
         tooltip = home_page.get_title_of_link('Other applications')
         Assert.equal(tooltip, 'Find add-ons for other applications')
+
+    #TODO: Add a method to check the mouse hover on "Other Applications" link after the hover issue is fixed
+    def test_the_applications_listed_in_other_applications(self, mozwebqa):
+        """
+        Test for Litmus 25740
+        https://litmus.mozilla.org/show_test.cgi?id=25740
+        """
+        expected_apps = [
+            "Thunderbird",
+            "Mobile",
+            "SeaMonkey",
+            "Sunbird"]
+        home_page = HomePage(mozwebqa)
+        home_page.header.click_other_applications()
+        other_apps = home_page.header.other_applications
+
+        for app in other_apps:
+            Assert.contains(app.name, expected_apps)
+            Assert.true(app.is_application_visible)
