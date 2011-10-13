@@ -47,9 +47,11 @@ class BasePage(Page):
 
     _next_link_locator = "css=.paginator .rel > a:nth(2)"
     _previous_link_locator = "css=.paginator .rel > a:nth(1)"
-    _current_page_locator = "css=.paginator .num > a"
+    _current_page_locator = "css=.paginator .num > a:nth(0)"
     _last_page_link_locator = "css=.paginator .rel > a:nth(3)"
     _first_page_link_locator = "css=.paginator .rel > a:nth(0)"
+    _results_displayed_text_locator = "css=.paginator .pos"
+
 
     _amo_logo_link_locator = "css=.site-title a"
     _amo_logo_image_locator = "css=.site-title img"
@@ -59,9 +61,12 @@ class BasePage(Page):
     _breadcrumbs_locator = "css=#breadcrumbs>ol>li"
 
     def login (self, user="default"):
-
         login_page = self.header.click_login()
         login_page.login_user(user)
+
+    @property
+    def page_title(self):
+        return self.selenium.get_title()
 
     @property
     def amo_logo_title(self):
@@ -116,6 +121,10 @@ class BasePage(Page):
     @property
     def current_page(self):
         return int(self.selenium.get_text(self._current_page_locator))
+
+    @property
+    def results_displayed(self):
+        return self.selenium.get_text(self._results_displayed_text_locator)
 
     def go_to_last_page(self):
         self.selenium.click(self._last_page_link_locator)
