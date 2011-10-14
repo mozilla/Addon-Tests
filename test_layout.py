@@ -105,9 +105,8 @@ class TestAmoLayout:
             "SeaMonkey",
             "Sunbird"]
         home_page = HomePage(mozwebqa)
-        home_page.header.click_other_applications()
         other_apps = home_page.header.other_applications
 
         for app in other_apps:
-            Assert.contains(app.name, expected_apps)
+            Assert.contains(app.name, expected_apps[app.index])
             Assert.true(app.is_application_visible)

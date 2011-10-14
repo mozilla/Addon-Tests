@@ -300,6 +300,10 @@ class BasePage(Page):
             def is_application_visible(self):
                 return self.is_element_present(self.absolute_locator(self._name_locator))
 
+            @property
+            def index(self):
+                return self.lookup
+
     class BreadcrumbsRegion(Page):
 
         _breadcrumb_locator = "css=#breadcrumbs>ol"  # Base locator
