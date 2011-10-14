@@ -199,6 +199,7 @@ class BasePage(Page):
 
         #other applications
         _other_applications_locator = "id=other-apps"
+        _other_apps_list_locator = "css=ul.other-apps"
         _app_thunderbird = "css=#app-thunderbird a"
 
         #Search box
@@ -270,6 +271,47 @@ class BasePage(Page):
                 return self.selenium.is_visible(self._account_controller_locator)
             except:
                 return False
+
+        @property
+        def other_applications_count(self):
+            return int(self.selenium.get_css_count("%s li" % self._other_apps_list_locator))
+
+        @property
+        def other_applications(self):
+            return [self.OtherApplications(self.testsetup, i) for i in range(self.other_applications_count)]
+
+        class OtherApplications(Page):
+
+            _name_locator = " > a"
+            _other_apps_locator = "css=ul.other-apps > li"
+
+            def __init__(self, testsetup, lookup):
+                Page.__init__(self, testsetup)
+                self.lookup = lookup
+
+            def absolute_locator(self, relative_locator):
+                return self.root_locator + relative_locator
+
+            @property
+            def root_locator(self):
+                if type(self.lookup) == int:
+                #   lookup by index
+                    return "%s:nth(%s)" % (self._other_apps_locator, self.lookup)
+                else:
+                    # lookup by name
+                    return "%s:contains(%s)" % (self._other_apps_locator, self.lookup)
+
+            @property
+            def name(self):
+                return self.selenium.get_text(self.absolute_locator(self._name_locator))
+
+            @property
+            def is_application_visible(self):
+                return self.is_element_present(self.absolute_locator(self._name_locator))
+
+            @property
+            def index(self):
+                return self.lookup
 
     class BreadcrumbsRegion(Page):
 
