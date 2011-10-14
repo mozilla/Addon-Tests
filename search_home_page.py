@@ -41,7 +41,6 @@ from time import strptime, mktime
 
 from base_page import BasePage
 from page import Page
-import addons_site
 import refine_results_region
 
 
@@ -50,18 +49,18 @@ class SearchHomePage(BasePage):
     _number_of_results_found = 'css=#search-facets > p'
 
     _no_results_locator = 'css=p.no-results'
-    _search_results_title_locator = 'css=div.listing.results.island.hero.c>h1'
-    _results_locator = "css=div.items div.item.addon"
+    _search_results_title_locator = 'css=section.primary>h1'
+    _results_locator = 'css=div.items div.item.addon'
 
-    _sort_by_relevance_locator = "css=#sorter > ul > li >a:contains('Relevance')"
-    _sort_by_most_users_locator = "css=#sorter > ul > li >a:contains('Most Users')"
-    _sort_by_top_reated_locator = "css=#sorter > ul > li >a:contains('Top Rated')"
-    _sort_by_newest_locator = "css=#sorter > ul > li >a:contains('Newest')"
+    _sort_by_relevance_locator = "css=#sorter > ul > li > a:contains('Relevance')"
+    _sort_by_most_users_locator = "css=#sorter > ul > li > a:contains('Most Users')"
+    _sort_by_top_reated_locator = "css=#sorter > ul > li > a:contains('Top Rated')"
+    _sort_by_newest_locator = "css=#sorter > ul > li > a:contains('Newest')"
 
-    _sort_by_name_locator = "css=#sorter >ul > li > ul > li >a:contains('Name')"
-    _sort_by_weekly_downloads_locator = "css=#sorter >ul > li > ul > li >a:contains('Weekly Downloads')"
-    _sort_by_recently_updated_locator = "css=#sorter >ul > li > ul > li >a:contains('Recently Updated')"
-    _sort_by_up_and_coming_locator = "css=#sorter >ul > li > ul > li >a:contains('Up & Coming')"
+    _sort_by_name_locator = "css=#sorter >ul > li > ul > li > a:contains('Name')"
+    _sort_by_weekly_downloads_locator = "css=#sorter >ul > li > ul > li > a:contains('Weekly Downloads')"
+    _sort_by_recently_updated_locator = "css=#sorter >ul > li > ul > li > a:contains('Recently Updated')"
+    _sort_by_up_and_coming_locator = "css=#sorter >ul > li > ul > li > a:contains('Up & Coming')"
 
     @property
     def is_no_results_present(self):
@@ -88,7 +87,7 @@ class SearchHomePage(BasePage):
         return int(self.selenium.get_css_count(self._results_locator))
 
     def sort_by(self, type):
-        self.selenium.click(getattr(self, '_sort_by_%s_locator' % type.replace(" ", "_").lower()))
+        self.selenium.click(getattr(self, '_sort_by_%s_locator' % type.replace(' ', '_').lower()))
         self.selenium.wait_for_page_to_load(self.timeout)
         return self
 
@@ -99,9 +98,9 @@ class SearchHomePage(BasePage):
         return [self.SearchResult(self.testsetup, i) for i in range(self.result_count)]
 
     class SearchResult(Page):
-        _name_locator = "> div.info > h3 > a"
-        _created_date = "> div.info > div.vitals > div.updated"
-        _sort_criteria = "> div.info > div.vitals > div.adu"
+        _name_locator = '> div.info > h3 > a'
+        _created_date = '> div.info > div.vitals > div.updated'
+        _sort_criteria = '> div.info > div.vitals > div.adu'
 
         def __init__(self, testsetup, lookup):
             Page.__init__(self, testsetup)
@@ -114,10 +113,10 @@ class SearchHomePage(BasePage):
         def root_locator(self):
             if type(self.lookup) == int:
                 # lookup by index
-                return "css=div.items > div.item.addon:nth(%s) " % self.lookup
+                return 'css=div.items > div.item.addon:nth(%s) ' % self.lookup
             else:
                 # lookup by name
-                return "css=div.items > div.item.addon:contains(%s) " % self.lookup
+                return 'css=div.items > div.item.addon:contains(%s) ' % self.lookup
 
         @property
         def name(self):
@@ -130,12 +129,12 @@ class SearchHomePage(BasePage):
         @property
         def downloads(self):
             number = self.selenium.get_text(self.absolute_locator(self._sort_criteria))
-            return int(number.split()[0].replace(",", ""))
+            return int(number.split()[0].replace(',', ''))
 
         @property
         def users(self):
             number = self.selenium.get_text(self.absolute_locator(self._sort_criteria))
-            return int(number.split()[0].replace(",", ""))
+            return int(number.split()[0].replace(',', ''))
 
         @property
         def created_date(self):
