@@ -138,7 +138,7 @@ class TestThemes:
         """test for litmus 15344"""
         home_page = HomePage(mozwebqa)
         themes_page = home_page.click_themes()
-        expected_breadcrumb = "Add-ons for Firefox Themes"
+        expected_breadcrumb = "Themes"
         Assert.equal(expected_breadcrumb, themes_page.themes_breadcrumb)
 
     def test_that_clicking_on_a_subcategory_loads_expected_page(self, mozwebqa):
