@@ -173,7 +173,7 @@ class ThemePage(BasePage):
 
 class ThemesCategoryPage(BasePage):
 
-    _title_locator = "css=h2"
+    _title_locator = "css=section.primary > h1"
     _breadcrumb_locator = "css=ol.breadcrumbs"
 
     @property
