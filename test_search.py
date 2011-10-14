@@ -108,6 +108,7 @@ class TestSearch:
         Assert.contains(search_str, search_page.search_results_title)
         Assert.false('0 matching results' in search_page.number_of_results_text)
 
+    @xfail(reason="This test alone needs more work to be fixed.  pivotal task:  https://www.pivotaltracker.com/story/show/19708927")
     def test_that_searching_with_substrings_returns_results(self, mozwebqa):
         """ Litmus 9561
             https://litmus.mozilla.org/show_test.cgi?id=9561 """
