@@ -131,7 +131,7 @@ class TestThemes:
         """test for litmus 15340"""
         home_page = HomePage(mozwebqa)
         themes_page = home_page.click_themes()
-        expected_title = "Most Popular :: Themes :: Add-ons for Firefox"
+        expected_title = "Most Popular Themes :: Add-ons for Firefox"
         Assert.equal(expected_title, themes_page.page_title)
 
     def test_themes_page_breadcrumb(self, mozwebqa):
