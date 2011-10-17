@@ -174,7 +174,7 @@ class ThemePage(BasePage):
 class ThemesCategoryPage(BasePage):
 
     _title_locator = "css=section.primary > h1"
-    _breadcrumb_locator = "css=ol.breadcrumbs"
+    _breadcrumb_locator = "css=#breadcrumbs > ol"
 
     @property
     def title(self):
