@@ -60,13 +60,10 @@ class ThemesPage(BasePage):
     _addon_name_locator = _addons_root_locator + " / h4 / a"
     _addons_metadata_locator = _addons_root_locator + " / p[@class = 'meta']"
     _addons_rating_locator = _addons_metadata_locator + " / span / span"
-    _breadcrumb_locator = "css = ol.breadcrumbs"
-    _category_locator = "css = #c-30 > a"
     _addons_root_locator = "//div[@class='details']"
     _addon_name_locator = _addons_root_locator + "/h4/a"
     _addons_metadata_locator = _addons_root_locator + "/p[@class='meta']"
     _addons_rating_locator = _addons_metadata_locator + "/span/span"
-    _breadcrumb_locator = "css=ol.breadcrumbs"
     _category_locator = "css=#c-30 > a"
     _categories_locator = "css=.other-categories ul:nth-of-type(2) li"
     _category_link_locator = _categories_locator + ":nth-of-type(%s) a"
@@ -104,10 +101,6 @@ class ThemesPage(BasePage):
     @property
     def page_title(self):
         return self.selenium.get_title()
-
-    @property
-    def themes_breadcrumb(self):
-        return self.selenium.get_text(self._breadcrumb_locator)
 
     @property
     def themes_category(self):
