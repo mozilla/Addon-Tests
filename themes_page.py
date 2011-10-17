@@ -68,7 +68,7 @@ class ThemesPage(BasePage):
     _addons_rating_locator = _addons_metadata_locator + "/span/span"
     _breadcrumb_locator = "css=ol.breadcrumbs"
     _category_locator = "css=#c-30 > a"
-    _categories_locator = "css=.other-categories ul:nth-of-type(2) li"
+    _categories_locator = "css=#side-categories li"
     _category_link_locator = _categories_locator + ":nth-of-type(%s) a"
     _top_counter_locator = "css=div.primary>header b"
     _bottom_counter_locator = "css=div.num-results > strong:nth(2)"
