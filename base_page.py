@@ -133,6 +133,10 @@ class BasePage(Page):
         return BasePage.HeaderRegion(self.testsetup)
 
     @property
+    def breadcrumb_name(self):
+        return self.selenium.get_text("%s > span" % self._breadcrumbs_locator)
+
+    @property
     def breadcrumbs(self):
         return [self.BreadcrumbsRegion(self.testsetup, i) for i in range(self.breadcrumbs_count)]
 
