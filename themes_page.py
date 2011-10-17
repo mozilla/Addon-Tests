@@ -51,11 +51,11 @@ from base_page import BasePage
 
 class ThemesPage(BasePage):
 
-    _sort_by_name_locator = 'name=_t-name'
-    _sort_by_updated_locator = 'name=_t-updated'
-    _sort_by_created_locator = 'name=_t-created'
-    _sort_by_popular_locator = 'name=_t-popular'
-    _sort_by_rating_locator = 'name=_t-rating'
+    _sort_by_name_locator = "css=li.extras > ul > li:nth(0) > a"
+    _sort_by_updated_locator = "css=li.extras > ul > li:nth(3) > a"
+    _sort_by_created_locator = "css=div#sorter > ul > li:nth(2) > a"
+    _sort_by_popular_locator = "css=li.extras > ul > li:nth(2) > a"
+    _sort_by_rating_locator = "css=div#sorter > ul > li:nth(1) > a"
     _addons_root_locator = " // div[@class = 'details']"
     _addon_name_locator = _addons_root_locator + " / h4 / a"
     _addons_metadata_locator = _addons_root_locator + " / p[@class = 'meta']"
@@ -70,16 +70,8 @@ class ThemesPage(BasePage):
     _top_counter_locator = "css=div.primary>header b"
     _bottom_counter_locator = "css=div.num-results > strong:nth(2)"
 
-    # TODO: remove pagination locators when impala pages are available for themes
-    _next_link_locator = "link=Next"
-
     def __init__(self, testsetup):
         BasePage.__init__(self, testsetup)
-
-    # TODO: remove method when impala pages are available for themes
-    def page_forward(self):
-        self.selenium.click(self._next_link_locator)
-        self.selenium.wait_for_page_to_load(self.timeout)
 
     def click_sort_by(self, type_):
         self.selenium.click(getattr(self, "_sort_by_%s_locator" % type_))
