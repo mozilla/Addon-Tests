@@ -41,8 +41,8 @@ import pytest
 from datetime import datetime
 from unittestzero import Assert
 
-from homepage import HomePage
-from details_page import DetailsPage
+from pages.homepage import HomePage
+from pages.details_page import DetailsPage
 
 xfail = pytest.mark.xfail
 

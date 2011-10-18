@@ -43,8 +43,8 @@
 
 from unittestzero import Assert
 
-from themes_page import ThemesPage
-from homepage import HomePage
+from pages.themes_page import ThemesPage
+from pages.homepage import HomePage
 import pytest
 xfail = pytest.mark.xfail
 

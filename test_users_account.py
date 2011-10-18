@@ -38,7 +38,7 @@
 import pytest
 
 from unittestzero import Assert
-from homepage import HomePage
+from pages.homepage import HomePage
 
 xfail = pytest.mark.xfail
 

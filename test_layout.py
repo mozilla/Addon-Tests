@@ -39,7 +39,7 @@
 # ***** END LICENSE BLOCK *****
 
 from unittestzero import Assert
-from homepage import HomePage
+from pages.homepage import HomePage
 
 
 class TestAmoLayout:

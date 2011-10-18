@@ -40,9 +40,9 @@
 
 #from selenium import selenium
 #from addons_site import HomePage
-from details_page import DetailsPage
+from pages.details_page import DetailsPage
 #from search_home_page import SearchHomePage
-from addons_api import AddOnsAPI
+from pages.addons_api import AddOnsAPI
 
 import pytest
 xfail = pytest.mark.xfail

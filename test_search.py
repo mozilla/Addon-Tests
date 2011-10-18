@@ -42,8 +42,8 @@
 import re
 import pytest
 from unittestzero import Assert
-from search_home_page import SearchHomePage
-from homepage import HomePage
+from pages.search_home_page import SearchHomePage
+from pages.homepage import HomePage
 xfail = pytest.mark.xfail
 
 

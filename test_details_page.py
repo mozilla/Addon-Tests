@@ -45,9 +45,9 @@ import pytest
 xfail = pytest.mark.xfail
 
 from unittestzero import Assert
-from details_page import DetailsPage
-from extensions_homepage import ExtensionsHomePage
-from homepage import HomePage
+from pages.details_page import DetailsPage
+from pages.extensions_homepage import ExtensionsHomePage
+from pages.homepage import HomePage
 
 
 class TestDetailsPage:

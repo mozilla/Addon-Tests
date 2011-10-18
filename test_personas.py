@@ -42,8 +42,8 @@ import pytest
 xfail = pytest.mark.xfail
 
 from unittestzero import Assert
-from homepage import HomePage
-from personas_page import PersonasPage
+from pages.homepage import HomePage
+from pages.personas_page import PersonasPage
 
 
 class TestPersonas:

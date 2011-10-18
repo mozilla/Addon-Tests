@@ -37,7 +37,7 @@
 #
 # ***** END LICENSE BLOCK *****
 
-from addons_api import AddOnsAPI
+from pages.addons_api import AddOnsAPI
 from unittestzero import Assert
 import pytest
 
