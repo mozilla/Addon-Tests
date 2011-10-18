@@ -103,7 +103,7 @@ class HeaderMenu(Page):
     class Menu(Page):
 
         _link_tag = "a"
-        _fetured_tag = "> em"
+        _featured_tag = "> em"
 
         def __init__(self, testsetup, lookup, locator):
             Page.__init__(self, testsetup)
@@ -146,4 +146,4 @@ class HeaderMenu(Page):
         @property
         def is_featured(self):
             #Todo: transform in visible after hover
-            return self.selenium.is_element_present(self.absolute_locator(self._fetured_tag))
+            return self.selenium.is_element_present(self.absolute_locator(self._featured_tag))
