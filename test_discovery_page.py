@@ -42,12 +42,11 @@
 
 import re
 import pytest
-xfail = pytest.mark.xfail
 
 from unittestzero import Assert
-
 from pages.discovery_page import DiscoveryPane
-#from homepage import HomePage
+
+xfail = pytest.mark.xfail
 
 
 class TestDiscoveryPane:

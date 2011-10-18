@@ -38,9 +38,9 @@
 # ***** END LICENSE BLOCK *****
 
 import pytest
+
 from datetime import datetime
 from unittestzero import Assert
-
 from pages.homepage import HomePage
 from pages.details_page import DetailsPage
 

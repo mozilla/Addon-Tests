@@ -42,13 +42,13 @@
 
 import re
 import pytest
-xfail = pytest.mark.xfail
 
 from unittestzero import Assert
 from pages.details_page import DetailsPage
 from pages.extensions_homepage import ExtensionsHomePage
 from pages.homepage import HomePage
 
+xfail = pytest.mark.xfail
 
 class TestDetailsPage:
 

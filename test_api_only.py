@@ -37,9 +37,10 @@
 #
 # ***** END LICENSE BLOCK *****
 
+import pytest
+
 from pages.addons_api import AddOnsAPI
 from unittestzero import Assert
-import pytest
 
 #These tests should only call the api.
 #There should be no tests requiring selenium in this class.

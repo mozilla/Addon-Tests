@@ -40,12 +40,11 @@
 #
 # ***** END LICENSE BLOCK *****
 
+import pytest
 
 from unittestzero import Assert
-
-from pages.themes_page import ThemesPage
 from pages.homepage import HomePage
-import pytest
+
 xfail = pytest.mark.xfail
 
 

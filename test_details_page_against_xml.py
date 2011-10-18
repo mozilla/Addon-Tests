@@ -37,18 +37,14 @@
 #
 # ***** END LICENSE BLOCK *****
 
-
-#from selenium import selenium
-#from addons_site import HomePage
-from pages.details_page import DetailsPage
-#from search_home_page import SearchHomePage
-from pages.addons_api import AddOnsAPI
-
+import re
 import pytest
-xfail = pytest.mark.xfail
 
 from unittestzero import Assert
-import re
+from pages.details_page import DetailsPage
+from pages.addons_api import AddOnsAPI
+
+xfail = pytest.mark.xfail
 
 
 class TestDetailsPageAgainstXML:

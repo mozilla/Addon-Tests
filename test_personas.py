@@ -39,12 +39,12 @@
 
 import random
 import pytest
-xfail = pytest.mark.xfail
 
 from unittestzero import Assert
 from pages.homepage import HomePage
 from pages.personas_page import PersonasPage
 
+xfail = pytest.mark.xfail
 
 class TestPersonas:
 

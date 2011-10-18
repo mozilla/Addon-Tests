@@ -40,6 +40,7 @@
 # ***** END LICENSE BLOCK *****
 
 from unittestzero import Assert
+
 from pages.homepage import HomePage
 
 
