@@ -156,11 +156,6 @@ class TestThemes:
         expected_breadcrumb = "Add-ons for Firefox Themes %s" % selected_category
         Assert.equal(expected_breadcrumb, amo_category_page.breadcrumb)
 
-    def test_that_counters_show_the_same_number_of_themes(self, mozwebqa):
-        """test for litmus 15345"""
-        home_page = Home(mozwebqa)
-        themes_page = home_page.click_themes()
-        Assert.equal(themes_page.top_counter, themes_page.bottom_counter)
 
     def test_that_themes_categories_are_listed_on_left_hand_side(self, mozwebqa):
         """ test for litmus 15342"""
