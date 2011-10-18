@@ -88,17 +88,17 @@ class HeaderMenu(Page):
         self.selenium.wait_for_page_to_load(self.timeout)
 
         if "Extensions" in self.name:
-            from extensions_homepage import ExtensionsHomePage
-            return ExtensionsHomePage(self.testsetup)
+            from page.extensions import ExtensionsHome
+            return ExtensionsHome(self.testsetup)
         elif "Personas" in self.name:
-            from personas_page import PersonasPage
-            return PersonasPage(self.testsetup)
+            from page.personas import Personas
+            return Personas(self.testsetup)
         elif "Themes" in self.name:
-            from themes_page import ThemesPage
-            return ThemesPage(self.testsetup)
+            from page.themes import Themes
+            return Themes(self.testsetup)
         elif "Collections" in self.name:
-            from collection_page import CollectionsPage
-            return CollectionsPage(self.testsetup)
+            from page.collection import Collections
+            return Collections(self.testsetup)
 
     class Menu(Page):
 
@@ -131,17 +131,17 @@ class HeaderMenu(Page):
             self.selenium.wait_for_page_to_load(self.timeout)
 
             if "Extensions" in self.absolute_locator(self._link_locator):
-                from extensions_homepage import ExtensionsHomePage
-                return ExtensionsHomePage(self.testsetup)
+                from page.extensions import ExtensionsHome
+                return ExtensionsHome(self.testsetup)
             elif "Personas" in self.absolute_locator(self._link_locator):
-                from personas_page import PersonasPage
-                return PersonasPage(self.testsetup)
+                from page.personas import Personas
+                return Personas(self.testsetup)
             elif "Themes" in self.absolute_locator(self._link_locator):
-                from themes_page import ThemesPage
-                return ThemesPage(self.testsetup)
+                from page.themes import Themes
+                return Themes(self.testsetup)
             elif "Collections" in self.absolute_locator(self._link_locator):
-                from collection_page import CollectionsPage
-                return CollectionsPage(self.testsetup)
+                from page.collection import Collections
+                return Collections(self.testsetup)
 
         @property
         def is_featured(self):
