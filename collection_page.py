@@ -46,6 +46,11 @@ class CollectionsPage(BasePage):
     #Search box
     _search_button_locator = "css=button.search-button"
     _search_textbox_locator = "name=q"
+    _collection_name = 'css=h2.collection > span'
+
+    @property
+    def collection_name(self):
+        return self.selenium.get_text(self._collection_name)
 
     def search_for(self, search_term):
         self.selenium.type(self._search_textbox_locator, search_term)

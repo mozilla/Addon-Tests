@@ -41,72 +41,53 @@ from time import strptime, mktime
 
 from base_page import BasePage
 from page import Page
-import addons_site
 import refine_results_region
 
 
 class SearchHomePage(BasePage):
 
-    _results_summary_locator = "css=h3.results-count"
-    _results_displayed_locator = "css=div.num-results"
-    _results_locator = "css=div.results-inner div.item"
+    _number_of_results_found = 'css=#search-facets > p'
 
-    _pagination_loctor = "css=div.listing-footer li"
-    _next_link_locator = "link=Next"
-    _previous_link_locator = "link=Prev"
+    _no_results_locator = 'css=p.no-results'
+    _search_results_title_locator = 'css=section.primary>h1'
+    _results_locator = 'css=div.items div.item.addon'
 
-    _breadcrumbs_locator = "css=ol.breadcrumbs"
+    _sort_by_relevance_locator = "css=#sorter > ul > li > a:contains('Relevance')"
+    _sort_by_most_users_locator = "css=#sorter > ul > li > a:contains('Most Users')"
+    _sort_by_top_reated_locator = "css=#sorter > ul > li > a:contains('Top Rated')"
+    _sort_by_newest_locator = "css=#sorter > ul > li > a:contains('Newest')"
 
-    _sort_by_keyword_match_locator = "css=div.listing-header a:contains('Keyword Match')"
-    _sort_by_created_locator = "css=div.listing-header a:contains('Created')"
-    _sort_by_updated_locator = "css=div.listing-header a:contains('Updated')"
-    _sort_by_rating_locator = "css=div.listing-header a:contains('Rating')"
-    _sort_by_downloads_locator = "css=div.listing-header a:contains('Downloads')"
-    _sort_by_users_locator = "css=div.listing-header a:contains('Users')"
-
-    def page_forward(self):
-        self.selenium.click(self._next_link_locator)
-        self.selenium.wait_for_page_to_load(self.timeout)
-
-    def page_back(self):
-        self.selenium.click(self._previous_link_locator)
-        self.selenium.wait_for_page_to_load(self.timeout)
+    _sort_by_name_locator = "css=#sorter >ul > li > ul > li > a:contains('Name')"
+    _sort_by_weekly_downloads_locator = "css=#sorter >ul > li > ul > li > a:contains('Weekly Downloads')"
+    _sort_by_recently_updated_locator = "css=#sorter >ul > li > ul > li > a:contains('Recently Updated')"
+    _sort_by_up_and_coming_locator = "css=#sorter >ul > li > ul > li > a:contains('Up & Coming')"
 
     @property
-    def is_forword_present(self):
-        return self.is_element_present(self._next_link_locator)
+    def is_no_results_present(self):
+        return self.is_element_present(self._no_results_locator)
+
+    @property
+    def no_results_text(self):
+        return self.selenium.get_text(self._no_results_locator)
+
+    @property
+    def number_of_results_text(self):
+        return self.selenium.get_text(self._number_of_results_found)
+
+    @property
+    def search_results_title(self):
+        return self.selenium.get_text(self._search_results_title_locator)
 
     @property
     def refine_results(self):
         return refine_results_region.RefineResults(self.testsetup)
 
     @property
-    def breadcrumbs_value(self):
-        return self.selenium.get_text(self._breadcrumbs_locator)
-
-    @property
-    def page_title(self):
-        return self.selenium.get_title()
-
-    @property
-    def results_summary(self):
-        return self.selenium.get_text(self._results_summary_locator)
-
-    @property
-    def results_displayed(self):
-        return self.selenium.get_text(self._results_displayed_locator)
-
-    @property
     def result_count(self):
         return int(self.selenium.get_css_count(self._results_locator))
 
-    def click_addon(self, addon_name):
-        self.selenium.click("link=" + addon_name)
-        from details_page import DetailsPage
-        return DetailsPage(self.testsetup, addon_name)
-
     def sort_by(self, type):
-        self.selenium.click(getattr(self, '_sort_by_%s_locator' % type))
+        self.selenium.click(getattr(self, '_sort_by_%s_locator' % type.replace(' ', '_').lower()))
         self.selenium.wait_for_page_to_load(self.timeout)
         return self
 
@@ -116,14 +97,10 @@ class SearchHomePage(BasePage):
     def results(self):
         return [self.SearchResult(self.testsetup, i) for i in range(self.result_count)]
 
-    def click_last_results_page(self):
-        count = self.selenium.get_css_count(self._pagination_loctor)
-        if self.selenium.get_text("%s:nth(%s) a" % (self._pagination_loctor, count - 1)) == "Next":
-            self.selenium.click("%s:nth(%s) a" % (self._pagination_loctor, count - 2))
-            self.selenium.wait_for_page_to_load(self.timeout)
-
     class SearchResult(Page):
-        _name_locator = " h3 a"
+        _name_locator = '> div.info > h3 > a'
+        _created_date = '> div.info > div.vitals > div.updated'
+        _sort_criteria = '> div.info > div.vitals > div.adu'
 
         def __init__(self, testsetup, lookup):
             Page.__init__(self, testsetup)
@@ -136,39 +113,33 @@ class SearchHomePage(BasePage):
         def root_locator(self):
             if type(self.lookup) == int:
                 # lookup by index
-                return "css=div.results-inner div.item:nth(%s)" % self.lookup
+                return 'css=div.items > div.item.addon:nth(%s) ' % self.lookup
             else:
                 # lookup by name
-                return "css=div.results-inner div.item:contains(%s)" % self.lookup
+                return 'css=div.items > div.item.addon:contains(%s) ' % self.lookup
 
         @property
         def name(self):
             return self.selenium.get_text(self.absolute_locator(self._name_locator))
 
-        def click(self):
-            self.selenium.click(self.absolute_locator(self._name_locator))
-            self.selenium.wait_for_page_to_load(self.timeout)
+        @property
+        def text(self):
+            return self.selenium.get_text(self.root_locator)
 
         @property
         def downloads(self):
-            locator = self.root_locator + ' div.item-info p.downloads strong'
-            return int(self.selenium.get_text(locator).replace(',', ''))
+            number = self.selenium.get_text(self.absolute_locator(self._sort_criteria))
+            return int(number.split()[0].replace(',', ''))
 
         @property
         def users(self):
-            """ Alias for self.downloads """
-            return self.downloads
-
-        @property
-        def rating(self):
-            locator = self.root_locator + ' div.item-info p.addon-rating span span'
-            return int(self.selenium.get_text(locator))
+            number = self.selenium.get_text(self.absolute_locator(self._sort_criteria))
+            return int(number.split()[0].replace(',', ''))
 
         @property
         def created_date(self):
             """ Returns created date of result in POSIX format """
-            locator = self.root_locator + ' div.item-info p.updated'
-            date = self.selenium.get_text(locator).strip().replace('Added ', '')
+            date = self.selenium.get_text(self.absolute_locator(self._created_date)).strip().replace('Added ', '')
             # convert to POSIX format
             date = strptime(date, '%B %d, %Y')
             return mktime(date)
@@ -176,8 +147,7 @@ class SearchHomePage(BasePage):
         @property
         def updated_date(self):
             """ Returns updated date of result in POSIX format """
-            locator = self.root_locator + ' div.item-info p.updated'
-            date = self.selenium.get_text(locator).strip().replace('Updated ', '')
+            date = self.selenium.get_text(self.absolute_locator(self._created_date)).replace('Updated ', '')
             # convert to POSIX format
             date = strptime(date, '%B %d, %Y')
             return mktime(date)
