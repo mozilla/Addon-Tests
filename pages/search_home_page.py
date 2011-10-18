@@ -39,9 +39,9 @@
 
 from time import strptime, mktime
 
-from base_page import BasePage
+from pages.base_page import BasePage
 from page import Page
-import refine_results_region
+from pages.refine_results_region import RefineResults
 
 
 class SearchHomePage(BasePage):
@@ -80,7 +80,7 @@ class SearchHomePage(BasePage):
 
     @property
     def refine_results(self):
-        return refine_results_region.RefineResults(self.testsetup)
+        return RefineResults(self.testsetup)
 
     @property
     def result_count(self):

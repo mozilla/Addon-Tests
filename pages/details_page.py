@@ -44,7 +44,7 @@
 #
 # ***** END LICENSE BLOCK *****
 
-from base_page import BasePage
+from pages.base_page import BasePage
 import re
 from urllib2 import urlparse
 from page import Page
