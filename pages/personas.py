@@ -47,7 +47,7 @@
 
 import re
 
-from pages.base_page import BasePage
+from pages.base import BasePage
 
 
 class PersonasPage(BasePage):

@@ -63,8 +63,8 @@ class BasePage(Page):
     _breadcrumbs_locator = "css=#breadcrumbs>ol>li"
 
     def login (self, user="default"):
-        login_page = self.header.click_login()
-        login_page.login_user(user)
+        login = self.header.click_login()
+        login.login_user(user)
 
     @property
     def page_title(self):
@@ -236,7 +236,7 @@ class BasePage(Page):
             self.selenium.type(self._search_textbox_locator, search_term)
             self.selenium.click(self._search_button_locator)
             self.selenium.wait_for_page_to_load(self.timeout)
-            from pages.search_home_page import SearchHomePage
+            from pages.search import SearchHomePage
             return SearchHomePage(self.testsetup)
 
         @property
@@ -250,7 +250,7 @@ class BasePage(Page):
         def click_login(self):
             self.selenium.click(self._login_locator)
             self.selenium.wait_for_page_to_load(self.timeout)
-            from pages.user_page import LoginPage
+            from pages.user import LoginPage
             return LoginPage(self.testsetup)
 
         def click_logout(self):
@@ -261,14 +261,14 @@ class BasePage(Page):
             self.click_my_account
             self.selenium.click('%s > li:nth(1) a' % self._account_dropdown_locator)
             self.selenium.wait_for_page_to_load(self.timeout)
-            from pages.user_page import EditProfilePage
+            from pages.user import EditProfilePage
             return EditProfilePage(self.testsetup)
 
         def click_view_profile(self):
             self.click_my_account
             self.selenium.click('%s > li:nth(0) a' % self._account_dropdown_locator)
             self.selenium.wait_for_page_to_load(self.timeout)
-            from pages.user_page import ViewProfilePage
+            from pages.user import ViewProfilePage
             return ViewProfilePage(self.testsetup)
 
         @property

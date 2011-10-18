@@ -48,7 +48,7 @@
 import re
 
 from page import Page
-from pages.base_page import BasePage
+from pages.base import BasePage
 from urllib2 import urlparse
 
 
@@ -354,7 +354,7 @@ class DetailsPage(BasePage):
         def click_collection(self):
             self.selenium.click(self.absolute_locator(self._link_locator))
             self.selenium.wait_for_page_to_load(self.timeout)
-            from pages.collection_page import CollectionsPage
+            from pages.collection import CollectionsPage
             return CollectionsPage(self.testsetup)
 
         @property
@@ -576,7 +576,7 @@ class DetailsPage(BasePage):
         def click_username(self):
             self.selenium.click(self.absolute_locator(self._username_locator))
             self.selenium.wait_for_page_to_load(self.timeout)
-            from pages.user_page import UserPage
+            from pages.user import UserPage
             return UserPage(self.testsetup)
 
     def click_to_write_review(self):

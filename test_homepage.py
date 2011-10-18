@@ -42,7 +42,7 @@
 
 from unittestzero import Assert
 
-from pages.homepage import HomePage
+from pages.home import HomePage
 
 
 class TestHomePage:

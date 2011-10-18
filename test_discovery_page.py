@@ -44,7 +44,7 @@ import re
 import pytest
 
 from unittestzero import Assert
-from pages.discovery_page import DiscoveryPane
+from pages.discovery import DiscoveryPane
 
 xfail = pytest.mark.xfail
 

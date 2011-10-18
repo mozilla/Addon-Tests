@@ -39,7 +39,7 @@
 import pytest
 
 from unittestzero import Assert
-from pages.homepage import HomePage
+from pages.home import HomePage
 
 xfail = pytest.mark.xfail
 

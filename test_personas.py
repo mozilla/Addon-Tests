@@ -41,8 +41,8 @@ import random
 import pytest
 
 from unittestzero import Assert
-from pages.homepage import HomePage
-from pages.personas_page import PersonasPage
+from pages.home import HomePage
+from pages.personas import PersonasPage
 
 xfail = pytest.mark.xfail
 

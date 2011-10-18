@@ -42,7 +42,7 @@ import re
 import pytest
 
 from unittestzero import Assert
-from pages.details_page import DetailsPage
+from pages.details import DetailsPage
 from pages.addons_api import AddOnsAPI
 
 xfail = pytest.mark.xfail
