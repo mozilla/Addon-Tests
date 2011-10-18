@@ -465,7 +465,7 @@ class DetailsPage(BasePage):
 
         def click_image(self, image_no=0):
             self.selenium.click('%s li:nth(%s) a' % (self._image_locator, image_no))
-            from pages.image_viewer_region import ImageViewer
+            from regions.image_viewer import ImageViewer
             image_viewer = ImageViewer(self.testsetup)
             image_viewer.wait_for_image_viewer_to_finish_animating()
             return image_viewer

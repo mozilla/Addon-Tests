@@ -40,7 +40,7 @@
 from page import Page
 from time import strptime, mktime
 from pages.base import BasePage
-from pages.refine_results_region import RefineResults
+from regions.refine_results import RefineResults
 
 
 class SearchHomePage(BasePage):
