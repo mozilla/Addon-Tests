@@ -123,9 +123,9 @@ class TestThemes:
         """test for litmus 15363"""
         home_page = HomePage(mozwebqa)
         themes_page = home_page.click_themes()
-        addon_name = themes_page.addon_names[0]
+        theme_name = themes_page.addon_name(1)
         theme_page = themes_page.click_on_first_addon()
-        Assert.contains(addon_name, theme_page.addon_title)
+        Assert.contains(theme_name, theme_page.addon_title)
 
     def test_that_themes_page_has_correct_title(self, mozwebqa):
         """test for litmus 15340"""
