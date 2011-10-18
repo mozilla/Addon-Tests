@@ -46,10 +46,7 @@
 # ***** END LICENSE BLOCK *****
 
 import re
-import urllib2
-from urllib2 import urlparse
 
-from page import Page
 from pages.base import Base
 
 

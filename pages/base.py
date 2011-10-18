@@ -41,7 +41,7 @@
 
 import re
 
-from page import Page
+from pages.page import Page
 from datetime import datetime
 from string import capitalize
 

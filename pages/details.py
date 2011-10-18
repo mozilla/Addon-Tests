@@ -47,7 +47,7 @@
 
 import re
 
-from page import Page
+from pages.page import Page
 from pages.base import Base
 from urllib2 import urlparse
 

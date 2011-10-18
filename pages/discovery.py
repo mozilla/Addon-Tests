@@ -45,7 +45,6 @@
 #
 # ***** END LICENSE BLOCK *****
 
-from page import Page
 from pages.base import Base
 
 

@@ -126,7 +126,7 @@ class TestHome:
         http://bit.ly/pfDkXq
         """
 
-        home_page = HomePage(mozwebqa)
+        home_page = Home(mozwebqa)
 
         for menu in self.header_menu_values_list:
             card_items_list = self.header_menu_values_list[menu]

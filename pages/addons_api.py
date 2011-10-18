@@ -36,9 +36,7 @@
 #
 # ***** END LICENSE BLOCK *****
 
-import py
 import re
-import pytest
 import urllib2
 
 from BeautifulSoup import BeautifulStoneSoup

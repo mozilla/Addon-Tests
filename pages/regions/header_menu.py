@@ -36,7 +36,7 @@
 #
 # ***** END LICENSE BLOCK *****
 
-from page import Page
+from pages.page import Page
 
 
 class HeaderMenu(Page):
@@ -88,16 +88,16 @@ class HeaderMenu(Page):
         self.selenium.wait_for_page_to_load(self.timeout)
 
         if "Extensions" in self.name:
-            from page.extensions import ExtensionsHome
+            from pages.extensions import ExtensionsHome
             return ExtensionsHome(self.testsetup)
         elif "Personas" in self.name:
-            from page.personas import Personas
+            from pages.personas import Personas
             return Personas(self.testsetup)
         elif "Themes" in self.name:
-            from page.themes import Themes
+            from pages.themes import Themes
             return Themes(self.testsetup)
         elif "Collections" in self.name:
-            from page.collection import Collections
+            from pages.collection import Collections
             return Collections(self.testsetup)
 
     class Menu(Page):
@@ -131,16 +131,16 @@ class HeaderMenu(Page):
             self.selenium.wait_for_page_to_load(self.timeout)
 
             if "Extensions" in self.absolute_locator(self._link_locator):
-                from page.extensions import ExtensionsHome
+                from pages.extensions import ExtensionsHome
                 return ExtensionsHome(self.testsetup)
             elif "Personas" in self.absolute_locator(self._link_locator):
-                from page.personas import Personas
+                from pages.personas import Personas
                 return Personas(self.testsetup)
             elif "Themes" in self.absolute_locator(self._link_locator):
-                from page.themes import Themes
+                from pages.themes import Themes
                 return Themes(self.testsetup)
             elif "Collections" in self.absolute_locator(self._link_locator):
-                from page.collection import Collections
+                from pages.collection import Collections
                 return Collections(self.testsetup)
 
         @property

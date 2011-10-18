@@ -36,7 +36,7 @@
 #
 # ***** END LICENSE BLOCK *****
 
-from page import Page
+from pages.page import Page
 
 
 class ImageViewer(Page):
