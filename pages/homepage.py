@@ -85,39 +85,39 @@ class HomePage(BasePage):
     def click_featured_personas_see_all_link(self):
         self.selenium.click(self._featured_personas_see_all_link)
         self.selenium.wait_for_page_to_load(self.timeout)
-        from personas_page import PersonasPage
+        from pages.personas_page import PersonasPage
         return PersonasPage(self.testsetup)
 
     def click_personas(self):
         self.selenium.click(self._personas_link_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
-        from personas_page import PersonasPage
+        from pages.personas_page import PersonasPage
         return PersonasPage(self.testsetup)
 
     def click_themes(self):
         self.wait_for_element_visible(self._themes_link_locator)
         self.selenium.click(self._themes_link_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
-        from themes_page import ThemesPage
+        from pages.themes_page import ThemesPage
         return ThemesPage(self.testsetup)
 
     def click_collections(self):
         self.selenium.click(self._collections_link_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
-        from collection_page import CollectionsPage
+        from pages.collection_page import CollectionsPage
         return CollectionsPage(self.testsetup)
 
     def click_extensions(self):
         self.selenium.click(self._extensions_menu_link)
         self.selenium.wait_for_page_to_load(self.timeout)
-        from extensions_homepage import ExtensionsHomePage
+        from pages.extensions_homepage import ExtensionsHomePage
         return ExtensionsHomePage(self.testsetup)
 
     def click_to_explore(self, what):
         what = what.replace(' ', '_').lower()
         self.selenium.click(getattr(self, "_explore_most_%s_link_locator" % what))
         self.selenium.wait_for_page_to_load(self.timeout)
-        from extensions_homepage import ExtensionsHomePage
+        from pages.extensions_homepage import ExtensionsHomePage
         return ExtensionsHomePage(self.testsetup)
 
     @property
@@ -147,7 +147,7 @@ class HomePage(BasePage):
     def click_on_first_addon(self):
         self.selenium.click(self._first_addon_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
-        from details_page import DetailsPage
+        from pages.details_page import DetailsPage
         return DetailsPage(self.testsetup)
 
     def get_title_of_link(self, name):
@@ -199,7 +199,7 @@ class HomePage(BasePage):
         def click_link(self):
             self.selenium.click(self.absolute_locator(self._link_locator))
             self.selenium.wait_for_page_to_load(self.timeout)
-            from category_page import CategoryPage
+            from pages.category_page import CategoryPage
             return CategoryPage(self.testsetup)
 
     class MostPopularRegion(Page):
@@ -235,5 +235,5 @@ class HomePage(BasePage):
             number_str = self.users_text.split(' ')[0]
             number_str = number_str.replace(",", "")
             return int(number_str)
-            from category_page import CategoryPage
+            from pages.category_page import CategoryPage
             return CategoryPage(self.testsetup)

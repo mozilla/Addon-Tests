@@ -235,7 +235,7 @@ class BasePage(Page):
             self.selenium.type(self._search_textbox_locator, search_term)
             self.selenium.click(self._search_button_locator)
             self.selenium.wait_for_page_to_load(self.timeout)
-            from search_home_page import SearchHomePage
+            from pages.search_home_page import SearchHomePage
             return SearchHomePage(self.testsetup)
 
         @property
@@ -249,7 +249,7 @@ class BasePage(Page):
         def click_login(self):
             self.selenium.click(self._login_locator)
             self.selenium.wait_for_page_to_load(self.timeout)
-            from user_page import LoginPage
+            from pages.user_page import LoginPage
             return LoginPage(self.testsetup)
 
         def click_logout(self):
@@ -260,14 +260,14 @@ class BasePage(Page):
             self.click_my_account
             self.selenium.click('%s > li:nth(1) a' % self._account_dropdown_locator)
             self.selenium.wait_for_page_to_load(self.timeout)
-            from user_page import EditProfilePage
+            from pages.user_page import EditProfilePage
             return EditProfilePage(self.testsetup)
 
         def click_view_profile(self):
             self.click_my_account
             self.selenium.click('%s > li:nth(0) a' % self._account_dropdown_locator)
             self.selenium.wait_for_page_to_load(self.timeout)
-            from user_page import ViewProfilePage
+            from pages.user_page import ViewProfilePage
             return ViewProfilePage(self.testsetup)
 
         @property

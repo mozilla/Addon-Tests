@@ -49,7 +49,7 @@ import urllib2
 from urllib2 import urlparse
 
 from page import Page
-from base_page import BasePage
+from pages.base_page import BasePage
 
 
 class WriteReviewBlock(BasePage):

@@ -182,7 +182,7 @@ class DetailsPage(BasePage):
     def click_whats_this_license(self):
         self.selenium.click(self._whats_this_license_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
-        from addons_site import UserFAQPage
+        from pages.addons_site import UserFAQPage
         return UserFAQPage(self.testsetup)
 
     @property
@@ -353,7 +353,7 @@ class DetailsPage(BasePage):
         def click_collection(self):
             self.selenium.click(self.absolute_locator(self._link_locator))
             self.selenium.wait_for_page_to_load(self.timeout)
-            from collection_page import CollectionsPage
+            from pages.collection_page import CollectionsPage
             return CollectionsPage(self.testsetup)
 
         @property
@@ -464,7 +464,7 @@ class DetailsPage(BasePage):
 
         def click_image(self, image_no=0):
             self.selenium.click('%s li:nth(%s) a' % (self._image_locator, image_no))
-            from image_viewer_region import ImageViewer
+            from pages.image_viewer_region import ImageViewer
             image_viewer = ImageViewer(self.testsetup)
             image_viewer.wait_for_image_viewer_to_finish_animating()
             return image_viewer
@@ -575,12 +575,12 @@ class DetailsPage(BasePage):
         def click_username(self):
             self.selenium.click(self.absolute_locator(self._username_locator))
             self.selenium.wait_for_page_to_load(self.timeout)
-            from user_page import UserPage
+            from pages.user_page import UserPage
             return UserPage(self.testsetup)
 
     def click_to_write_review(self):
         self.selenium.click(self._add_review_link_locator)
-        from addons_site import WriteReviewBlock
+        from pages.addons_site import WriteReviewBlock
         return WriteReviewBlock(self.testsetup)
 
     @property
