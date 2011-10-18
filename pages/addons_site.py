@@ -44,7 +44,6 @@
 #
 # ***** END LICENSE BLOCK *****
 
-
 import re
 import urllib2
 from urllib2 import urlparse

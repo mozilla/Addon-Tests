@@ -35,8 +35,8 @@
 #
 # ***** END LICENSE BLOCK *****
 
-from pages.base_page import BasePage
 from page import Page
+from pages.base_page import BasePage
 
 
 class RefineResults(BasePage):

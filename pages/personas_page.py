@@ -44,9 +44,9 @@
 #
 # ***** END LICENSE BLOCK *****
 
+import re
 
 from pages.base_page import BasePage
-import re
 
 
 class PersonasPage(BasePage):

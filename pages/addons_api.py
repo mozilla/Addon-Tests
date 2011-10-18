@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 
-from BeautifulSoup import BeautifulStoneSoup
-import urllib2
-import pytest
 import py
 import re
+import pytest
+import urllib2
+
+from BeautifulSoup import BeautifulStoneSoup
 
 
 class AddOnsAPI(object):

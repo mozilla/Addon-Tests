@@ -44,10 +44,11 @@
 #
 # ***** END LICENSE BLOCK *****
 
-from pages.base_page import BasePage
 import re
-from urllib2 import urlparse
+
 from page import Page
+from pages.base_page import BasePage
+from urllib2 import urlparse
 
 
 class DetailsPage(BasePage):

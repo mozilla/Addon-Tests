@@ -37,10 +37,9 @@
 #
 # ***** END LICENSE BLOCK *****
 
-from time import strptime, mktime
-
-from pages.base_page import BasePage
 from page import Page
+from time import strptime, mktime
+from pages.base_page import BasePage
 from pages.refine_results_region import RefineResults
 
 
