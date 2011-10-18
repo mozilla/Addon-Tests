@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+
 # ***** BEGIN LICENSE BLOCK *****
 # Version: MPL 1.1/GPL 2.0/LGPL 2.1
 #
@@ -46,17 +47,17 @@ from homepage import HomePage
 class TestHomePage:
 
     header_menu_values_list = {
-                "Extensions":  ["Featured", "Most Popular", "Top Rated", "Alerts & Updates", "Appearance", "Bookmarks",
-                                "Download Management", "Feeds, News & Blogging", "Games & Entertainment",
-                                "Language Support", "Photos, Music & Videos", "Privacy & Security", "Shopping",
-                                "Social & Communication", "Tabs", "Web Development", "Other"],
-                "Personas":    ["Featured", "Most Popular", "Top Rated", "Abstract", "Causes", "Fashion", "Film and TV",
-                                "Firefox", "Foxkeh", "Holiday", "Music", "Nature", "Other", "Scenery", "Seasonal", "Solid", "Sports", "Websites"],
-                "Themes":      ["Featured", "Most Popular", "Top Rated", "Animals", "Compact", "Large", "Miscellaneous", "Modern", "Nature",
-                                "OS Integration", "Retro", "Sports"],
-                "Collections": ["Featured", "Most Followers", "Newest", "Collections I've Made", "Collections I'm Following",
-                                "My Favorite Add-ons"],
-                "More…":       ["Add-ons for Mobile", "Dictionaries & Language Packs", "Plugins", "Search Tools", "Developer Hub"]
+                "Extensions":       ["Featured", "Most Popular", "Top Rated", "Alerts & Updates", "Appearance", "Bookmarks",
+                                     "Download Management", "Feeds, News & Blogging", "Games & Entertainment",
+                                     "Language Support", "Photos, Music & Videos", "Privacy & Security", "Shopping",
+                                     "Social & Communication", "Tabs", "Web Development", "Other"],
+                "Personas":         ["Featured", "Most Popular", "Top Rated", "Abstract", "Causes", "Fashion", "Film and TV",
+                                     "Firefox", "Foxkeh", "Holiday", "Music", "Nature", "Other", "Scenery", "Seasonal", "Solid", "Sports", "Websites"],
+                "Themes":           ["Most Popular", "Top Rated", "Newest", "Animals", "Compact", "Large", "Miscellaneous", "Modern", "Nature",
+                                     "OS Integration", "Retro", "Sports"],
+                "Collections":      ["Featured", "Most Followers", "Newest", "Collections I've Made", "Collections I'm Following",
+                                     "My Favorite Add-ons"],
+                u"More\u2026":      ["Add-ons for Mobile", "Dictionaries & Language Packs", "Plugins", "Search Tools", "Developer Hub"]
                 }
 
     def test_that_checks_the_most_popular_section_exists(self, mozwebqa):
@@ -129,14 +130,13 @@ class TestHomePage:
         for menu in self.header_menu_values_list:
             card_items_list = self.header_menu_values_list[menu]
             menu_nav = home_page.header.site_nav(menu)
-
             Assert.equal(menu, menu_nav.name)
-
             card_items = menu_nav.menu
+            print menu_nav.name
             for i in range(len(card_items_list)):
                 Assert.equal(card_items_list[i], card_items[i].name)
 
-                if i < 3 and menu_nav.name != "More…":
+                if i < 3 and menu_nav.name != u"More\u2026":
                     Assert.true(card_items[i].is_featured, "%s is not highlighted" % card_items[i].name)
                 else:
                     Assert.false(card_items[i].is_featured, "%s is highlighted" % card_items[i].name)
