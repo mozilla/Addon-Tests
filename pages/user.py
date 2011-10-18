@@ -37,10 +37,10 @@
 #
 # ***** END LICENSE BLOCK *****
 
-from pages.base import BasePage
+from pages.base import Base
 
 
-class LoginPage(BasePage):
+class Login(Base):
 
     _page_title = 'User Login :: Add-ons for Firefox'
     _email_locator = 'id=id_username'
@@ -56,7 +56,7 @@ class LoginPage(BasePage):
         self.selenium.wait_for_page_to_load(self.timeout)
 
 
-class ViewProfilePage(BasePage):
+class ViewProfile(Base):
 
     _page_title = 'User Info for Test :: Add-ons for Firefox'
     _about_locator = 'css=div.island > section.primary > h2'
@@ -66,7 +66,7 @@ class ViewProfilePage(BasePage):
         return self.selenium.get_text(self._about_locator)
 
 
-class UserPage(BasePage):
+class User(Base):
 
         _username_locator = "css=div.vcard h2.fn"
 
@@ -75,7 +75,7 @@ class UserPage(BasePage):
             return self.selenium.get_text(self._username_locator)
 
 
-class EditProfilePage(BasePage):
+class EditProfile(Base):
 
     _page_title = 'Account Settings :: Add-ons for Firefox'
     _account_locator = "css=#acct-account > legend"

@@ -40,14 +40,14 @@
 
 
 from unittestzero import Assert
-from pages.home import HomePage
+from pages.home import Home
 
 
 class TestCategory:
 
     def test_that_all_category_links_work(self, mozwebqa):
         "Test for Litmus 25796"
-        home_page = HomePage(mozwebqa)
+        home_page = Home(mozwebqa)
         categories = home_page.categories()
 
         for category in categories:
@@ -55,7 +55,7 @@ class TestCategory:
             category_page = category.click_link()
             Assert.contains(category_name, category_page.category_page_title)
             Assert.equal(category_name, category_page.category_header_title)
-            home_page = HomePage(mozwebqa)
+            home_page = Home(mozwebqa)
 
     def test_that_category_names_are_correct(self, mozwebqa):
         """Test for Litmus 25795"""
@@ -77,7 +77,7 @@ class TestCategory:
             "Other"]
 
         # Get actual categories
-        home_page = HomePage(mozwebqa)
+        home_page = Home(mozwebqa)
         categories = home_page.categories()
 
         # Catch extra/missing categories with a simple count check

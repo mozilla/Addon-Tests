@@ -39,7 +39,7 @@
 import pytest
 
 from unittestzero import Assert
-from pages.home import HomePage
+from pages.home import Home
 
 xfail = pytest.mark.xfail
 
@@ -53,7 +53,7 @@ class TestAccounts:
             https://litmus.mozilla.org/show_test.cgi?id=4859
         """
 
-        home_page = HomePage(mozwebqa)
+        home_page = Home(mozwebqa)
         home_page.login()
         Assert.true(home_page.is_the_current_page)
         Assert.true(home_page.header.is_user_logged_in)
@@ -67,7 +67,7 @@ class TestAccounts:
             https://litmus.mozilla.org/show_test.cgi?id=5039
         """
 
-        home_page = HomePage(mozwebqa)
+        home_page = Home(mozwebqa)
         home_page.login()
         Assert.true(home_page.is_the_current_page)
         Assert.true(home_page.header.is_user_logged_in)
@@ -88,7 +88,7 @@ class TestAccounts:
         https://litmus.mozilla.org/show_test.cgi?id=15400
         """
 
-        home_page = HomePage(mozwebqa)
+        home_page = Home(mozwebqa)
         home_page.login()
         Assert.true(home_page.is_the_current_page)
         Assert.true(home_page.header.is_user_logged_in)

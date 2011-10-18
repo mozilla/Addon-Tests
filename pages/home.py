@@ -46,10 +46,10 @@
 # ***** END LICENSE BLOCK *****
 
 from page import Page
-from pages.base import BasePage
+from pages.base import Base
 
 
-class HomePage(BasePage):
+class Home(Base):
 
     _page_title = "Add-ons for Firefox"
 
@@ -79,47 +79,47 @@ class HomePage(BasePage):
 
     def __init__(self, testsetup):
         ''' Creates a new instance of the class and gets the page ready for testing '''
-        BasePage.__init__(self, testsetup)
+        Base.__init__(self, testsetup)
         self.selenium.open("%s/" % self.site_version)
         self.selenium.window_maximize()
 
     def click_featured_personas_see_all_link(self):
         self.selenium.click(self._featured_personas_see_all_link)
         self.selenium.wait_for_page_to_load(self.timeout)
-        from pages.personas import PersonasPage
-        return PersonasPage(self.testsetup)
+        from pages.personas import Personas
+        return Personas(self.testsetup)
 
     def click_personas(self):
         self.selenium.click(self._personas_link_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
-        from pages.personas import PersonasPage
-        return PersonasPage(self.testsetup)
+        from pages.personas import Personas
+        return Personas(self.testsetup)
 
     def click_themes(self):
         self.wait_for_element_visible(self._themes_link_locator)
         self.selenium.click(self._themes_link_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
-        from pages.themes import ThemesPage
-        return ThemesPage(self.testsetup)
+        from pages.themes import Themes
+        return Themes(self.testsetup)
 
     def click_collections(self):
         self.selenium.click(self._collections_link_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
-        from pages.collection import CollectionsPage
-        return CollectionsPage(self.testsetup)
+        from pages.collection import Collections
+        return Collections(self.testsetup)
 
     def click_extensions(self):
         self.selenium.click(self._extensions_menu_link)
         self.selenium.wait_for_page_to_load(self.timeout)
-        from pages.extensions import ExtensionsHomePage
-        return ExtensionsHomePage(self.testsetup)
+        from pages.extensions import ExtensionsHome
+        return ExtensionsHome(self.testsetup)
 
     def click_to_explore(self, what):
         what = what.replace(' ', '_').lower()
         self.selenium.click(getattr(self, "_explore_most_%s_link_locator" % what))
         self.selenium.wait_for_page_to_load(self.timeout)
-        from pages.extensions import ExtensionsHomePage
-        return ExtensionsHomePage(self.testsetup)
+        from pages.extensions import ExtensionsHome
+        return ExtensionsHome(self.testsetup)
 
     @property
     def most_popular_count(self):
@@ -148,8 +148,8 @@ class HomePage(BasePage):
     def click_on_first_addon(self):
         self.selenium.click(self._first_addon_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
-        from pages.details import DetailsPage
-        return DetailsPage(self.testsetup)
+        from pages.details import Details
+        return Details(self.testsetup)
 
     def get_title_of_link(self, name):
         name = name.lower().replace(" ", "_")
@@ -200,8 +200,8 @@ class HomePage(BasePage):
         def click_link(self):
             self.selenium.click(self.absolute_locator(self._link_locator))
             self.selenium.wait_for_page_to_load(self.timeout)
-            from pages.category import CategoryPage
-            return CategoryPage(self.testsetup)
+            from pages.category import Category
+            return Category(self.testsetup)
 
     class MostPopularRegion(Page):
         _name_locator = " > span"
@@ -236,5 +236,5 @@ class HomePage(BasePage):
             number_str = self.users_text.split(' ')[0]
             number_str = number_str.replace(",", "")
             return int(number_str)
-            from pages.category import CategoryPage
-            return CategoryPage(self.testsetup)
+            from pages.category import Category
+            return Category(self.testsetup)

@@ -42,17 +42,17 @@
 
 from unittestzero import Assert
 
-from pages.home import HomePage
+from pages.home import Home
 
 
-class TestHomePage:
+class TestHome:
 
     def test_that_checks_the_most_popular_section_exists(self, mozwebqa):
         """
         Litmus 25807
         https://litmus.mozilla.org/show_test.cgi?id=25807
         """
-        home_page = HomePage(mozwebqa)
+        home_page = Home(mozwebqa)
         Assert.true(home_page.is_most_popular_list_visible)
         Assert.contains('Most Popular', home_page.most_popular_list_heading)
         Assert.equal(home_page.most_popular_count, 10)
@@ -60,16 +60,16 @@ class TestHomePage:
     def test_that_clicking_on_addon_name_loads_details_page(self, mozwebqa):
         """ Litmus 25812
             https://litmus.mozilla.org/show_test.cgi?id=25812"""
-        home_page = HomePage(mozwebqa)
+        home_page = Home(mozwebqa)
         details_page = home_page.click_on_first_addon()
         Assert.true(details_page.is_the_current_page)
 
-    def test_that_featured_personas_exist_on_the_homepage(self, mozwebqa):
+    def test_that_featured_personas_exist_on_the_Home(self, mozwebqa):
         """
         Litmus29698
         https://litmus.mozilla.org/show_test.cgi?id=29698
         """
-        home_page = HomePage(mozwebqa)
+        home_page = Home(mozwebqa)
 
         Assert.true(home_page.is_featured_personas_visible, "Featured Personas region is not visible")
         Assert.equal(home_page.fetaured_personas_title, u"Featured Personas See all \xbb", "Featured Personas region title doesn't match")
@@ -81,7 +81,7 @@ class TestHomePage:
         Litmus 29699
         https://litmus.mozilla.org/show_test.cgi?id=29699
         """
-        home_page = HomePage(mozwebqa)
+        home_page = Home(mozwebqa)
         featured_persona_page = home_page.click_featured_personas_see_all_link()
 
         Assert.true(featured_persona_page.is_the_current_page)
@@ -92,7 +92,7 @@ class TestHomePage:
         Litmus 25746
         https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25746
         """
-        home_page = HomePage(mozwebqa)
+        home_page = Home(mozwebqa)
         extensions_page = home_page.click_extensions()
         Assert.true(extensions_page.is_the_current_page)
 
@@ -101,7 +101,7 @@ class TestHomePage:
         Litmus 25808
         https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25808
         """
-        home_page = HomePage(mozwebqa)
+        home_page = Home(mozwebqa)
         Assert.true(home_page.is_most_popular_list_visible)
         most_popular_items = home_page.most_popular_items
         Assert.is_sorted_descending([i.users_number for i in most_popular_items])

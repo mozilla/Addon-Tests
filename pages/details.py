@@ -48,11 +48,11 @@
 import re
 
 from page import Page
-from pages.base import BasePage
+from pages.base import Base
 from urllib2 import urlparse
 
 
-class DetailsPage(BasePage):
+class Details(Base):
 
     _breadcrumb_locator = "id=breadcrumbs"
     _current_page_breadcrumb_locator = "css=#breadcrumbs > ol > li:nth(2)"
@@ -115,7 +115,7 @@ class DetailsPage(BasePage):
 
     def __init__(self, testsetup, addon_name=None):
         #formats name for url
-        BasePage.__init__(self, testsetup)
+        Base.__init__(self, testsetup)
         if (addon_name != None):
             self.addon_name = addon_name.replace(" ", "-")
             self.addon_name = re.sub(r'[^A-Za-z0-9\-]', '', self.addon_name).lower()
@@ -183,8 +183,8 @@ class DetailsPage(BasePage):
     def click_whats_this_license(self):
         self.selenium.click(self._whats_this_license_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
-        from pages.addons_site import UserFAQPage
-        return UserFAQPage(self.testsetup)
+        from pages.addons_site import UserFAQ
+        return UserFAQ(self.testsetup)
 
     @property
     def description(self):
@@ -354,8 +354,8 @@ class DetailsPage(BasePage):
         def click_collection(self):
             self.selenium.click(self.absolute_locator(self._link_locator))
             self.selenium.wait_for_page_to_load(self.timeout)
-            from pages.collection import CollectionsPage
-            return CollectionsPage(self.testsetup)
+            from pages.collection import Collections
+            return Collections(self.testsetup)
 
         @property
         def name(self):
@@ -576,8 +576,8 @@ class DetailsPage(BasePage):
         def click_username(self):
             self.selenium.click(self.absolute_locator(self._username_locator))
             self.selenium.wait_for_page_to_load(self.timeout)
-            from pages.user import UserPage
-            return UserPage(self.testsetup)
+            from pages.user import User
+            return User(self.testsetup)
 
     def click_to_write_review(self):
         self.selenium.click(self._add_review_link_locator)

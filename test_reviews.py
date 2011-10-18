@@ -41,8 +41,8 @@ import pytest
 
 from datetime import datetime
 from unittestzero import Assert
-from pages.home import HomePage
-from pages.details import DetailsPage
+from pages.home import Home
+from pages.details import Details
 
 xfail = pytest.mark.xfail
 
@@ -54,7 +54,7 @@ class TestReviews:
             https://litmus.mozilla.org/show_test.cgi?id=4843
         """
         #Open details page for Adblock Plus
-        details_page = DetailsPage(mozwebqa, 'Adblock Plus')
+        details_page = Details(mozwebqa, 'Adblock Plus')
         Assert.true(details_page.has_reviews)
 
         details_page.click_all_reviews_link()
@@ -89,13 +89,13 @@ class TestReviews:
         """ Litmus 22921
             https://litmus.mozilla.org/show_test.cgi?id=22921 """
         # Step 1 - Login into AMO
-        home_page = HomePage(mozwebqa)
+        home_page = Home(mozwebqa)
         home_page.login()
         Assert.true(home_page.is_the_current_page)
         Assert.true(home_page.header.is_user_logged_in)
 
         # Step 2 - Load any addon detail page
-        details_page = DetailsPage(mozwebqa, 'Adblock Plus')
+        details_page = Details(mozwebqa, 'Adblock Plus')
 
         # Step 3 - Click on "Write review" button
         write_review_block = details_page.click_to_write_review()
@@ -116,14 +116,14 @@ class TestReviews:
         Assert.equal(review.date, date)
         Assert.equal(review.text, body)
 
-    @xfail(reason="there are 2 bugs in AddonsDetailsPage \
+    @xfail(reason="there are 2 bugs in AddonsDetails \
                     https://www.pivotaltracker.com/story/show/19150339 \
                     https://www.pivotaltracker.com/story/show/19150295")
     def test_that_one_star_rating_increments(self, mozwebqa):
         """ Litmus 22916
             https://litmus.mozilla.org/show_test.cgi?id=22916 """
         # Step 1 - Login into AMO
-        home_page = HomePage(mozwebqa)
+        home_page = Home(mozwebqa)
         home_page.login()
         Assert.true(home_page.header.is_user_logged_in)
 
@@ -134,7 +134,7 @@ class TestReviews:
         extensions_home_page.go_to_last_page()
         addon = extensions_home_page.extensions[-1]  # the last one is without rating
         addon_name = addon.name
-        details_page = DetailsPage(mozwebqa, addon_name)
+        details_page = Details(mozwebqa, addon_name)
 
         # Step 4 - Click on the "Write review" button
         write_review_block = details_page.click_to_write_review()
@@ -146,18 +146,18 @@ class TestReviews:
         write_review_block.click_to_save_review()
 
         # Step 6 - Ensure rating increased by one
-        details_page = DetailsPage(mozwebqa, addon_name)
+        details_page = Details(mozwebqa, addon_name)
         new_rating_counter = details_page.get_rating_counter(1)
         Assert.equal(new_rating_counter, 1)
 
-    @xfail(reason="there are 2 bugs in AddonsDetailsPage \
+    @xfail(reason="there are 2 bugs in AddonsDetails \
                     https://www.pivotaltracker.com/story/show/19150339 \
                     https://www.pivotaltracker.com/story/show/19150295")
     def test_that_two_star_rating_increments(self, mozwebqa):
         """ Litmus 22917
             https://litmus.mozilla.org/show_test.cgi?id=22917 """
         # Step 1 - Login into AMO
-        home_page = HomePage(mozwebqa)
+        home_page = Home(mozwebqa)
         home_page.login()
         Assert.true(home_page.header.is_user_logged_in)
 
@@ -168,7 +168,7 @@ class TestReviews:
         extensions_home_page.go_to_last_page()
         addon = extensions_home_page.extensions[-1]  # the last one is without rating
         addon_name = addon.name
-        details_page = DetailsPage(mozwebqa, addon_name)
+        details_page = Details(mozwebqa, addon_name)
 
         # Step 4 - Click on the "Write review" button
         write_review_block = details_page.click_to_write_review()
@@ -180,18 +180,18 @@ class TestReviews:
         write_review_block.click_to_save_review()
 
         # Step 6 - Ensure rating increased by one
-        details_page = DetailsPage(mozwebqa, addon_name)
+        details_page = Details(mozwebqa, addon_name)
         new_rating_counter = details_page.get_rating_counter(2)
         Assert.equal(new_rating_counter, 1)
 
-    @xfail(reason="there are 2 bugs in AddonsDetailsPage \
+    @xfail(reason="there are 2 bugs in AddonsDetails \
                     https://www.pivotaltracker.com/story/show/19150339 \
                     https://www.pivotaltracker.com/story/show/19150295")
     def test_that_three_star_rating_increments(self, mozwebqa):
         """ Litmus 22918
             https://litmus.mozilla.org/show_test.cgi?id=22918 """
         # Step 1 - Login into AMO
-        home_page = HomePage(mozwebqa)
+        home_page = Home(mozwebqa)
         home_page.login()
         Assert.true(home_page.header.is_user_logged_in)
 
@@ -202,7 +202,7 @@ class TestReviews:
         extensions_home_page.go_to_last_page()
         addon = extensions_home_page.extensions[-1]  # the last one is without rating
         addon_name = addon.name
-        details_page = DetailsPage(mozwebqa, addon_name)
+        details_page = Details(mozwebqa, addon_name)
 
         # Step 4 - Click on the "Write review" button
         write_review_block = details_page.click_to_write_review()
@@ -214,18 +214,18 @@ class TestReviews:
         write_review_block.click_to_save_review()
 
         # Step 6 - Ensure rating increased by one
-        details_page = DetailsPage(mozwebqa, addon_name)
+        details_page = Details(mozwebqa, addon_name)
         new_rating_counter = details_page.get_rating_counter(3)
         Assert.equal(new_rating_counter, 1)
 
-    @xfail(reason="there are 2 bugs in AddonsDetailsPage \
+    @xfail(reason="there are 2 bugs in AddonsDetails \
                     https://www.pivotaltracker.com/story/show/19150339 \
                     https://www.pivotaltracker.com/story/show/19150295")
     def test_that_four_star_rating_increments(self, mozwebqa):
         """ Litmus 22919
             https://litmus.mozilla.org/show_test.cgi?id=22918 """
         # Step 1 - Login into AMO
-        home_page = HomePage(mozwebqa)
+        home_page = Home(mozwebqa)
         home_page.login()
         Assert.true(home_page.header.is_user_logged_in)
 
@@ -236,7 +236,7 @@ class TestReviews:
         extensions_home_page.go_to_last_page()
         addon = extensions_home_page.extensions[-1]  # the last one is without rating
         addon_name = addon.name
-        details_page = DetailsPage(mozwebqa, addon_name)
+        details_page = Details(mozwebqa, addon_name)
 
         # Step 4 - Click on the "Write review" button
         write_review_block = details_page.click_to_write_review()
@@ -248,18 +248,18 @@ class TestReviews:
         write_review_block.click_to_save_review()
 
         # Step 6 - Ensure rating increased by one
-        details_page = DetailsPage(mozwebqa, addon_name)
+        details_page = Details(mozwebqa, addon_name)
         new_rating_counter = details_page.get_rating_counter(4)
         Assert.equal(new_rating_counter, 1)
 
-    @xfail(reason="there are 2 bugs in AddonsDetailsPage \
+    @xfail(reason="there are 2 bugs in AddonsDetails \
                     https://www.pivotaltracker.com/story/show/19150339 \
                     https://www.pivotaltracker.com/story/show/19150295")
     def test_that_five_star_rating_increments(self, mozwebqa):
         """ Litmus 22920
             https://litmus.mozilla.org/show_test.cgi?id=22920 """
         # Step 1 - Login into AMO
-        home_page = HomePage(mozwebqa)
+        home_page = Home(mozwebqa)
         home_page.login()
         Assert.true(home_page.header.is_user_logged_in)
 
@@ -270,7 +270,7 @@ class TestReviews:
         extensions_home_page.go_to_last_page()
         addon = extensions_home_page.extensions[-1]  # the last one is without rating
         addon_name = addon.name
-        details_page = DetailsPage(mozwebqa, addon_name)
+        details_page = Details(mozwebqa, addon_name)
 
         # Step 4 - Click on the "Write review" button
         write_review_block = details_page.click_to_write_review()
@@ -282,6 +282,6 @@ class TestReviews:
         write_review_block.click_to_save_review()
 
         # Step 6 - Ensure rating increased by one
-        details_page = DetailsPage(mozwebqa, addon_name)
+        details_page = Details(mozwebqa, addon_name)
         new_rating_counter = details_page.get_rating_counter(5)
         Assert.equal(new_rating_counter, 1)

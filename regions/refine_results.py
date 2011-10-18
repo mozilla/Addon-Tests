@@ -37,10 +37,10 @@
 # ***** END LICENSE BLOCK *****
 
 from page import Page
-from pages.base import BasePage
+from pages.base import Base
 
 
-class RefineResults(BasePage):
+class RefineResults(Base):
 
     _platforms_locator = "css=#refine-platform"
     _compatible_locator = "css=#refine-compatibility"

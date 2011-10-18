@@ -46,10 +46,10 @@
 # ***** END LICENSE BLOCK *****
 
 from page import Page
-from pages.base import BasePage
+from pages.base import Base
 
 
-class ThemesPage(BasePage):
+class Themes(Base):
 
     _sort_by_name_locator = "css=li.extras > ul > li:nth(0) > a"
     _sort_by_updated_locator = "css=li.extras > ul > li:nth(3) > a"
@@ -71,7 +71,7 @@ class ThemesPage(BasePage):
     _bottom_counter_locator = "css=div.num-results > strong:nth(2)"
 
     def __init__(self, testsetup):
-        BasePage.__init__(self, testsetup)
+        Base.__init__(self, testsetup)
 
     def click_sort_by(self, type_):
         self.selenium.click(getattr(self, "_sort_by_%s_locator" % type_))
@@ -80,12 +80,12 @@ class ThemesPage(BasePage):
     def click_on_first_addon(self):
         self.selenium.click(self._addon_name_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
-        return ThemePage(self.testsetup)
+        return Theme(self.testsetup)
 
     def click_on_first_category(self):
         self.selenium.click(self._category_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
-        return ThemesCategoryPage(self.testsetup)
+        return ThemesCategory(self.testsetup)
 
     def get_category(self, lookup):
         return self.selenium.get_text(self._category_link_locator % lookup)
@@ -147,7 +147,7 @@ class ThemesPage(BasePage):
         return self.selenium.get_text(self._bottom_counter_locator)
 
 
-class ThemePage(BasePage):
+class Theme(Base):
 
     _addon_title = "css=h1.addon"
 
@@ -156,7 +156,7 @@ class ThemePage(BasePage):
         return self.selenium.get_text(self._addon_title)
 
 
-class ThemesCategoryPage(BasePage):
+class ThemesCategory(Base):
 
     _title_locator = "css=section.primary > h1"
     _breadcrumb_locator = "css=#breadcrumbs > ol"

@@ -47,10 +47,10 @@
 
 import re
 
-from pages.base import BasePage
+from pages.base import Base
 
 
-class PersonasPage(BasePage):
+class Personas(Base):
 
     _page_title = "Personas :: Add-ons for Firefox"
     _personas_locator = "//div[@class='persona persona-small']"
@@ -62,7 +62,7 @@ class PersonasPage(BasePage):
     _persona_header_locator = "css=.featured-inner>h2"
 
     def __init__(self, testsetup):
-        BasePage.__init__(self, testsetup)
+        Base.__init__(self, testsetup)
 
     @property
     def persona_count(self):
@@ -73,12 +73,12 @@ class PersonasPage(BasePage):
         """ Clicks on the persona with the given index in the page. """
         self.selenium.click("xpath=(%s)[%d]//a" % (self._personas_locator, index))
         self.selenium.wait_for_page_to_load(self.timeout)
-        return PersonasDetailPage(self.testsetup)
+        return PersonasDetail(self.testsetup)
 
     def open_persona_detail_page(self, persona_key):
         self.selenium.open("%s/addon/%s" % (self.site_version, persona_key))
         self.selenium.wait_for_page_to_load(self.timeout)
-        return PersonasDetailPage(self.testsetup)
+        return PersonasDetail(self.testsetup)
 
     @property
     def is_featured_addons_present(self):
@@ -87,7 +87,7 @@ class PersonasPage(BasePage):
     def click_start_exploring(self):
         self.selenium.click(self._start_exploring_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
-        return PersonasBrowsePage(self.testsetup)
+        return PersonasBrowse(self.testsetup)
 
     @property
     def featured_personas_count(self):
@@ -135,7 +135,7 @@ class PersonasPage(BasePage):
         return self.selenium.get_text(self._persona_header_locator)
 
 
-class PersonasDetailPage(BasePage):
+class PersonasDetail(Base):
 
     _page_title_regex = '.+ :: Add-ons for Firefox'
     _personas_title_locator = 'css=h2.addon'
@@ -144,7 +144,7 @@ class PersonasDetailPage(BasePage):
     _breadcrumb_item_text_locator = '/li//*[text()="%s"]'
 
     def __init__(self, testsetup):
-        BasePage.__init__(self, testsetup)
+        Base.__init__(self, testsetup)
 
     @property
     def is_the_current_page(self):
@@ -186,7 +186,7 @@ class PersonasDetailPage(BasePage):
         self.selenium.wait_for_page_to_load(self.timeout)
 
 
-class PersonasBrowsePage(BasePage):
+class PersonasBrowse(Base):
     """
     The personas browse page allows browsing the personas according to
     some sort criteria (eg. top rated or most downloaded).
@@ -197,7 +197,7 @@ class PersonasBrowsePage(BasePage):
     _personas_grid_locator = "css=.featured.listing ul.personas-grid"
 
     def __init__(self, testsetup):
-        BasePage.__init__(self, testsetup)
+        Base.__init__(self, testsetup)
 
     @property
     def sort_key(self):

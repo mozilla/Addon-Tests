@@ -50,10 +50,10 @@ import urllib2
 from urllib2 import urlparse
 
 from page import Page
-from pages.base import BasePage
+from pages.base import Base
 
 
-class WriteReviewBlock(BasePage):
+class WriteReviewBlock(Base):
 
     _add_review_input_field_locator = "id=id_body"
     _add_review_input_rating_locator = "css=.ratingwidget input"
@@ -71,14 +71,14 @@ class WriteReviewBlock(BasePage):
     def click_to_save_review(self):
         self.selenium.click(self._add_review_submit_button_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
-        return ViewReviewsPage(self.testsetup)
+        return ViewReviews(self.testsetup)
 
     @property
     def is_review_box_visible(self):
         return self.selenium.is_visible(self._add_review_box)
 
 
-class ViewReviewsPage(BasePage):
+class ViewReviews(Base):
 
     _review_locator = "css=div.primary div.review"
 
@@ -91,7 +91,7 @@ class ViewReviewsPage(BasePage):
         return [self.ReviewSnippet(self.testsetup, i) for i in
                 range(self.selenium.get_css_count(self._review_locator))]
 
-    class ReviewSnippet(BasePage):
+    class ReviewSnippet(Base):
 
         _review_locator = "css=div.primary div.review"
         _review_text_locator = "p.review-body"
@@ -100,7 +100,7 @@ class ViewReviewsPage(BasePage):
         _review_date_locator = "div.reviewed-on"
 
         def __init__(self, testsetup, index):
-            BasePage.__init__(self, testsetup)
+            Base.__init__(self, testsetup)
             self.index = index
 
         def absolute_locator(self, relative_locator):
@@ -131,7 +131,7 @@ class ViewReviewsPage(BasePage):
             return date.group(2)
 
 
-class UserFAQPage(BasePage):
+class UserFAQ(Base):
 
     _license_question_locator = "css=#license"
     _license_answer_locator = "css=#license + dd"

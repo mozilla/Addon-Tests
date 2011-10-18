@@ -39,11 +39,11 @@
 
 from page import Page
 from time import strptime, mktime
-from pages.base import BasePage
+from pages.base import Base
 from regions.refine_results import RefineResults
 
 
-class SearchHomePage(BasePage):
+class SearchHome(Base):
 
     _number_of_results_found = 'css=#search-facets > p'
 

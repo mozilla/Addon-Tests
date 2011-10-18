@@ -36,10 +36,10 @@
 #
 # ***** END LICENSE BLOCK *****
 
-from pages.base import BasePage
+from pages.base import Base
 
 
-class CategoryPage(BasePage):
+class Category(Base):
 
     _category_title_locator = "css=div.island > h1"
 

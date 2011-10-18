@@ -45,7 +45,7 @@ from page import Page
 from datetime import datetime
 
 
-class BasePage(Page):
+class Base(Page):
 
     _next_link_locator = "css=.paginator .rel > a:nth(2)"
     _previous_link_locator = "css=.paginator .rel > a:nth(1)"
@@ -141,7 +141,7 @@ class BasePage(Page):
 
     @property
     def header(self):
-        return BasePage.HeaderRegion(self.testsetup)
+        return Base.HeaderRegion(self.testsetup)
 
     @property
     def breadcrumb_name(self):
@@ -236,8 +236,8 @@ class BasePage(Page):
             self.selenium.type(self._search_textbox_locator, search_term)
             self.selenium.click(self._search_button_locator)
             self.selenium.wait_for_page_to_load(self.timeout)
-            from pages.search import SearchHomePage
-            return SearchHomePage(self.testsetup)
+            from pages.search import SearchHome
+            return SearchHome(self.testsetup)
 
         @property
         def search_field_placeholder(self):
@@ -250,8 +250,8 @@ class BasePage(Page):
         def click_login(self):
             self.selenium.click(self._login_locator)
             self.selenium.wait_for_page_to_load(self.timeout)
-            from pages.user import LoginPage
-            return LoginPage(self.testsetup)
+            from pages.user import Login
+            return Login(self.testsetup)
 
         def click_logout(self):
             self.selenium.click(self._logout_locator)
@@ -261,15 +261,15 @@ class BasePage(Page):
             self.click_my_account
             self.selenium.click('%s > li:nth(1) a' % self._account_dropdown_locator)
             self.selenium.wait_for_page_to_load(self.timeout)
-            from pages.user import EditProfilePage
-            return EditProfilePage(self.testsetup)
+            from pages.user import EditProfile
+            return EditProfile(self.testsetup)
 
         def click_view_profile(self):
             self.click_my_account
             self.selenium.click('%s > li:nth(0) a' % self._account_dropdown_locator)
             self.selenium.wait_for_page_to_load(self.timeout)
-            from pages.user import ViewProfilePage
-            return ViewProfilePage(self.testsetup)
+            from pages.user import ViewProfile
+            return ViewProfile(self.testsetup)
 
         @property
         def is_user_logged_in(self):
