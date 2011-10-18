@@ -47,6 +47,20 @@ from pages.home import Home
 
 class TestHome:
 
+    header_menu_values_list = {
+                "Extensions":       ["Featured", "Most Popular", "Top Rated", "Alerts & Updates", "Appearance", "Bookmarks",
+                                     "Download Management", "Feeds, News & Blogging", "Games & Entertainment",
+                                     "Language Support", "Photos, Music & Videos", "Privacy & Security", "Shopping",
+                                     "Social & Communication", "Tabs", "Web Development", "Other"],
+                "Personas":         ["Featured", "Most Popular", "Top Rated", "Abstract", "Causes", "Fashion", "Film and TV",
+                                     "Firefox", "Foxkeh", "Holiday", "Music", "Nature", "Other", "Scenery", "Seasonal", "Solid", "Sports", "Websites"],
+                "Themes":           ["Most Popular", "Top Rated", "Newest", "Animals", "Compact", "Large", "Miscellaneous", "Modern", "Nature",
+                                     "OS Integration", "Retro", "Sports"],
+                "Collections":      ["Featured", "Most Followers", "Newest", "Collections I've Made", "Collections I'm Following",
+                                     "My Favorite Add-ons"],
+                u"More\u2026":      ["Add-ons for Mobile", "Dictionaries & Language Packs", "Plugins", "Search Tools", "Developer Hub"]
+                }
+
     def test_that_checks_the_most_popular_section_exists(self, mozwebqa):
         """
         Litmus 25807
@@ -105,3 +119,25 @@ class TestHome:
         Assert.true(home_page.is_most_popular_list_visible)
         most_popular_items = home_page.most_popular_items
         Assert.is_sorted_descending([i.users_number for i in most_popular_items])
+
+    def test_that_verifies_upper_menu_navigation_items(self, mozwebqa):
+        """
+        Litmus 25744 =>  25796
+        http://bit.ly/pfDkXq
+        """
+
+        home_page = HomePage(mozwebqa)
+
+        for menu in self.header_menu_values_list:
+            card_items_list = self.header_menu_values_list[menu]
+            menu_nav = home_page.header.site_nav(menu)
+            Assert.equal(menu, menu_nav.name)
+            card_items = menu_nav.menu
+            print menu_nav.name
+            for i in range(len(card_items_list)):
+                Assert.equal(card_items_list[i], card_items[i].name)
+
+                if i < 3 and menu_nav.name != u"More\u2026":
+                    Assert.true(card_items[i].is_featured, "%s is not highlighted" % card_items[i].name)
+                else:
+                    Assert.false(card_items[i].is_featured, "%s is highlighted" % card_items[i].name)
