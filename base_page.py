@@ -41,6 +41,7 @@
 from page import Page
 from datetime import datetime
 import re
+from string import capitalize
 
 
 class BasePage(Page):
@@ -60,7 +61,7 @@ class BasePage(Page):
 
     _breadcrumbs_locator = "css=#breadcrumbs>ol>li"
 
-    def login (self, user="default"):
+    def login(self, user="default"):
         login_page = self.header.click_login()
         login_page.login_user(user)
 
@@ -218,6 +219,12 @@ class BasePage(Page):
         _account_controller_locator = 'css=#aux-nav .account .user'
         _account_dropdown_locator = "css=#aux-nav .account ul"
         _logout_locator = 'css=li.nomenu.logout > a'
+
+        def site_nav(self, lookup):
+            if type(lookup) != int:
+                lookup = capitalize(lookup)
+            from site_nav_region import HeaderMenu
+            return HeaderMenu(self.testsetup, lookup)
 
         #TODO:hover other apps
         def click_other_applications(self):

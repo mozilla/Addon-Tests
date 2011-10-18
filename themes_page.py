@@ -64,8 +64,6 @@ class ThemesPage(BasePage):
     _category_locator = "css=#c-30 > a"
     _categories_locator = "css=#side-categories li"
     _category_link_locator = _categories_locator + ":nth-of-type(%s) a"
-    _top_counter_locator = "css=div.primary>header b"
-    _bottom_counter_locator = "css=div.num-results > strong:nth(2)"
 
     def __init__(self, testsetup):
         BasePage.__init__(self, testsetup)
@@ -137,14 +135,6 @@ class ThemesPage(BasePage):
         ratings_locator = self._addons_rating_locator
         ratings = self._extract_integers(ratings_locator, pattern, self.addon_count)
         return ratings
-
-    @property
-    def top_counter(self):
-        return self.selenium.get_text(self._top_counter_locator)
-
-    @property
-    def bottom_counter(self):
-        return self.selenium.get_text(self._bottom_counter_locator)
 
 
 class ThemePage(BasePage):
