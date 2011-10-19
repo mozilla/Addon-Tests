@@ -55,14 +55,11 @@ class Themes(Base):
     _sort_by_created_locator = "css=div#sorter > ul > li:nth(2) > a"
     _sort_by_popular_locator = "css=li.extras > ul > li:nth(2) > a"
     _sort_by_rating_locator = "css=div#sorter > ul > li:nth(1) > a"
-    _addons_root_locator = " // div[@class = 'details']"
-    _addon_name_locator = _addons_root_locator + " / h4 / a"
-    _addons_metadata_locator = _addons_root_locator + " / p[@class = 'meta']"
+    _addons_root_locator = "// div[@class = 'hovercard addon theme']"
+    _addon_name_locator = _addons_root_locator + " / a / div[@class='summary'] / h3"
+    _addons_metadata_locator = _addons_root_locator + " // div[@class = 'vital']/span[@class='updated']"
+    _addons_download_locator = _addons_root_locator + " / div[@class = 'vital']/span[@class='adu']"
     _addons_rating_locator = _addons_metadata_locator + " / span / span"
-    _addons_root_locator = "//div[@class='details']"
-    _addon_name_locator = _addons_root_locator + "/h4/a"
-    _addons_metadata_locator = _addons_root_locator + "/p[@class='meta']"
-    _addons_rating_locator = _addons_metadata_locator + "/span/span"
     _category_locator = "css=#c-30 > a"
     _categories_locator = "css=#side-categories li"
     _category_link_locator = _categories_locator + ":nth-of-type(%s) a"
@@ -106,6 +103,9 @@ class Themes(Base):
                         for i in xrange(addon_count)]
         return _addon_names
 
+    def addon_name(self, lookup):
+        return self.get_text("xpath=//li[%s] %s" % (lookup, self._addon_name_locator))
+
     @property
     def addon_count(self):
         count = self.selenium.get_xpath_count(self._addon_name_locator)
@@ -124,7 +124,7 @@ class Themes(Base):
     @property
     def addon_download_number(self):
         pattern = "(\d+(?:[,]\d+)*) weekly downloads"
-        downloads_locator = self._addons_metadata_locator
+        downloads_locator = self._addons_download_locator
         downloads = self._extract_integers(downloads_locator, pattern, self.addon_count)
         return downloads
 
