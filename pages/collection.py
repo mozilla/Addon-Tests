@@ -20,8 +20,7 @@
 # Portions created by the Initial Developer are Copyright (C) 2011
 # the Initial Developer. All Rights Reserved.
 #
-# Contributor(s): Dave Hunt <dhunt@mozilla.com>
-#                 Bebe <florin.strugariu@softvision.ro>
+# Contributor(s): Bebe <florin.strugariu@softvision.ro>
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -37,10 +36,33 @@
 #
 # ***** END LICENSE BLOCK *****
 
-import mozwebqa
+from pages.base import Base
 
-def pytest_runtest_setup(item):
-    mozwebqa.TestSetup.site_version = 'impala' in item.keywords and '/i' or ''
 
-def pytest_funcarg__mozwebqa(request):
-    return mozwebqa.TestSetup(request)
+class Collections(Base):
+
+    _page_title = "Featured Collections :: Add-ons for Firefox"
+
+    #Search box
+    _search_button_locator = "css=button.search-button"
+    _search_textbox_locator = "name=q"
+    _collection_name = 'css=h2.collection > span'
+
+    @property
+    def collection_name(self):
+        return self.selenium.get_text(self._collection_name)
+
+    def search_for(self, search_term):
+        self.selenium.type(self._search_textbox_locator, search_term)
+        self.selenium.click(self._search_button_locator)
+        self.selenium.wait_for_page_to_load(self.timeout)
+        return CollectionsSearch(self.testsetup)
+
+
+class CollectionsSearch(Base):
+
+    _results_locator = "css=div.featured-inner div.item"
+
+    @property
+    def result_count(self):
+        return int(self.selenium.get_css_count(self._results_locator))

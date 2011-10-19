@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-
+#
 # ***** BEGIN LICENSE BLOCK *****
 # Version: MPL 1.1/GPL 2.0/LGPL 2.1
 #
@@ -20,8 +20,8 @@
 # Portions created by the Initial Developer are Copyright (C) 2011
 # the Initial Developer. All Rights Reserved.
 #
-# Contributor(s): Dave Hunt <dhunt@mozilla.com>
-#                 Bebe <florin.strugariu@softvision.ro>
+# Contributor(s): Marlena Compton <mcompton@mozilla.com>
+#                 Teodosia Pop <teodosia.pop@softvision.ro>
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -37,10 +37,39 @@
 #
 # ***** END LICENSE BLOCK *****
 
-import mozwebqa
+import pytest
 
-def pytest_runtest_setup(item):
-    mozwebqa.TestSetup.site_version = 'impala' in item.keywords and '/i' or ''
+from pages.addons_api import AddOnsAPI
+from unittestzero import Assert
 
-def pytest_funcarg__mozwebqa(request):
-    return mozwebqa.TestSetup(request)
+#These tests should only call the api.
+#There should be no tests requiring selenium in this class.
+
+
+@pytest.mark.skip_selenium
+class TestAPIOnlyTests:
+
+    def test_that_firebug_is_listed_first_in_addons_search_for_fire(self, mozwebqa):
+        """TestCase for Litmus 15314"""
+        addons_xml = AddOnsAPI(mozwebqa, 'fire')
+        Assert.equal("Firebug", addons_xml.get_name_of_first_addon())
+
+    def test_that_firebug_is_listed_first_in_addons_search_for_firebug(self, mozwebqa):
+        """TestCase for Litmus 15316"""
+        addons_xml = AddOnsAPI(mozwebqa)
+        Assert.equal("Firebug", addons_xml.get_name_of_first_addon())
+
+    def test_that_firebug_addon_type_name_is_extension(self, mozwebqa):
+        """Testcase for Litmus 15316"""
+        addons_xml = AddOnsAPI(mozwebqa)
+        Assert.equal("Extension", addons_xml.get_addon_type_name("Firebug"))
+
+    def test_that_firebug_addon_type_id_is_1(self, mozwebqa):
+        """Testcase for Litmus 15316"""
+        addon_xml = AddOnsAPI(mozwebqa)
+        Assert.equal("1", addon_xml.get_addon_type_id("Firebug"))
+
+    def test_firebug_version_number(self, mozwebqa):
+        """Testcase for Litmus 15317"""
+        addon_xml = AddOnsAPI(mozwebqa)
+        Assert.equal("1.8.2", addon_xml.get_addon_version_number("Firebug"))
