@@ -45,12 +45,9 @@ import pytest
 xfail = pytest.mark.xfail
 
 from unittestzero import Assert
-from addons_site import UserFAQPage
 from details_page import DetailsPage
-from user_page import LoginPage
 from extensions_homepage import ExtensionsHomePage
 from homepage import HomePage
-
 
 
 class TestDetailsPage:
@@ -335,6 +332,18 @@ class TestDetailsPage:
         review_box = details_page.click_to_write_review()
         Assert.true(review_box.is_review_box_visible)
 
+    def test_the_developers_comments_section(self, mozwebqa):
+        """ 
+        Test for Litmus 25724
+        https://litmus.mozilla.org/show_test.cgi?id=25724 
+        """
+        details_page = DetailsPage(mozwebqa, 'Firebug')
+        Assert.equal(details_page.devs_comments_title, u"Developer\u2019s Comments")
+        details_page.click_devs_comments_title()
+        Assert.true(details_page.is_devs_comments_section_expanded())
+        Assert.true(details_page.is_devs_comments_section_visible)
+        Assert.not_none(re.match('(\w+\s*){3,}', details_page.devs_comments_message))
+
     def test_that_add_to_collection_flyout_for_anonymous_users(self, mozwebqa):
         """
         Litmus 25711
@@ -347,3 +356,35 @@ class TestDetailsPage:
         Assert.equal(details_page.collection_widget_button, 'Create an Add-ons Account')
         Assert.true(details_page.is_collection_widget_login_link_visible)
         Assert.equal(details_page.collection_widget_login_link, 'log in to your current account')
+
+    def test_that_the_development_channel_expands(self, mozwebqa):
+        """
+        Litmus 25711
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25711
+        """
+        details_page = DetailsPage(mozwebqa, 'Firebug')
+
+        Assert.true(details_page.is_development_channel_header_visible)
+        Assert.equal("Development Channel", details_page.development_channel_text)
+
+        Assert.false(details_page.is_development_channel_content_visible)
+        details_page.click_development_channel()
+        Assert.true(details_page.is_development_channel_content_visible)
+        details_page.click_development_channel()
+        Assert.false(details_page.is_development_channel_content_visible)
+
+    def test_click_on_other_collections(self, mozwebqa):
+        """
+        Litmus 25722
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25722
+        """
+
+        details_pg = DetailsPage(mozwebqa, 'Firebug')
+        collections = details_pg.part_of_collections()
+
+        for collection in collections:
+            name = collection.name
+            collection_pg = collection.click_collection()
+            Assert.equal(name, collection_pg.collection_name, "expected collection name doesn't match the page header")
+
+            details_pg = DetailsPage(mozwebqa, 'Firebug')

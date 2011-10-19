@@ -123,23 +123,23 @@ class TestThemes:
         """test for litmus 15363"""
         home_page = HomePage(mozwebqa)
         themes_page = home_page.click_themes()
-        addon_name = themes_page.addon_names[0]
+        theme_name = themes_page.addon_name(1)
         theme_page = themes_page.click_on_first_addon()
-        Assert.contains(addon_name, theme_page.addon_title)
+        Assert.contains(theme_name, theme_page.addon_title)
 
     def test_that_themes_page_has_correct_title(self, mozwebqa):
         """test for litmus 15340"""
         home_page = HomePage(mozwebqa)
         themes_page = home_page.click_themes()
-        expected_title = "Most Popular :: Themes :: Add-ons for Firefox"
+        expected_title = "Most Popular Themes :: Add-ons for Firefox"
         Assert.equal(expected_title, themes_page.page_title)
 
     def test_themes_page_breadcrumb(self, mozwebqa):
         """test for litmus 15344"""
         home_page = HomePage(mozwebqa)
         themes_page = home_page.click_themes()
-        expected_breadcrumb = "Add-ons for Firefox Themes"
-        Assert.equal(expected_breadcrumb, themes_page.themes_breadcrumb)
+        expected_breadcrumb = "Themes"
+        Assert.equal(expected_breadcrumb, themes_page.breadcrumb_name)
 
     def test_that_clicking_on_a_subcategory_loads_expected_page(self, mozwebqa):
         """test for litmus 15949"""
@@ -156,12 +156,6 @@ class TestThemes:
         amo_category_page = themes_page.click_on_first_category()
         expected_breadcrumb = "Add-ons for Firefox Themes %s" % selected_category
         Assert.equal(expected_breadcrumb, amo_category_page.breadcrumb)
-
-    def test_that_counters_show_the_same_number_of_themes(self, mozwebqa):
-        """test for litmus 15345"""
-        home_page = HomePage(mozwebqa)
-        themes_page = home_page.click_themes()
-        Assert.equal(themes_page.top_counter, themes_page.bottom_counter)
 
     def test_that_themes_categories_are_listed_on_left_hand_side(self, mozwebqa):
         """ test for litmus 15342"""

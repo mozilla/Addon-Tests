@@ -41,15 +41,18 @@
 from page import Page
 from datetime import datetime
 import re
+from string import capitalize
 
 
 class BasePage(Page):
 
     _next_link_locator = "css=.paginator .rel > a:nth(2)"
     _previous_link_locator = "css=.paginator .rel > a:nth(1)"
-    _current_page_locator = "css=.paginator .num > a"
+    _current_page_locator = "css=.paginator .num > a:nth(0)"
     _last_page_link_locator = "css=.paginator .rel > a:nth(3)"
     _first_page_link_locator = "css=.paginator .rel > a:nth(0)"
+    _results_displayed_text_locator = "css=.paginator .pos"
+
 
     _amo_logo_link_locator = "css=.site-title a"
     _amo_logo_image_locator = "css=.site-title img"
@@ -58,10 +61,13 @@ class BasePage(Page):
 
     _breadcrumbs_locator = "css=#breadcrumbs>ol>li"
 
-    def login (self, user="default"):
-
+    def login(self, user="default"):
         login_page = self.header.click_login()
         login_page.login_user(user)
+
+    @property
+    def page_title(self):
+        return self.selenium.get_title()
 
     @property
     def amo_logo_title(self):
@@ -117,6 +123,10 @@ class BasePage(Page):
     def current_page(self):
         return int(self.selenium.get_text(self._current_page_locator))
 
+    @property
+    def results_displayed(self):
+        return self.selenium.get_text(self._results_displayed_text_locator)
+
     def go_to_last_page(self):
         self.selenium.click(self._last_page_link_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
@@ -131,6 +141,10 @@ class BasePage(Page):
     @property
     def header(self):
         return BasePage.HeaderRegion(self.testsetup)
+
+    @property
+    def breadcrumb_name(self):
+        return self.selenium.get_text("%s > span" % self._breadcrumbs_locator)
 
     @property
     def breadcrumbs(self):
@@ -190,6 +204,7 @@ class BasePage(Page):
 
         #other applications
         _other_applications_locator = "id=other-apps"
+        _other_apps_list_locator = "css=ul.other-apps"
         _app_thunderbird = "css=#app-thunderbird a"
 
         #Search box
@@ -204,6 +219,12 @@ class BasePage(Page):
         _account_controller_locator = 'css=#aux-nav .account .user'
         _account_dropdown_locator = "css=#aux-nav .account ul"
         _logout_locator = 'css=li.nomenu.logout > a'
+
+        def site_nav(self, lookup):
+            if type(lookup) != int:
+                lookup = capitalize(lookup)
+            from site_nav_region import HeaderMenu
+            return HeaderMenu(self.testsetup, lookup)
 
         #TODO:hover other apps
         def click_other_applications(self):
@@ -261,6 +282,47 @@ class BasePage(Page):
                 return self.selenium.is_visible(self._account_controller_locator)
             except:
                 return False
+
+        @property
+        def other_applications_count(self):
+            return int(self.selenium.get_css_count("%s li" % self._other_apps_list_locator))
+
+        @property
+        def other_applications(self):
+            return [self.OtherApplications(self.testsetup, i) for i in range(self.other_applications_count)]
+
+        class OtherApplications(Page):
+
+            _name_locator = " > a"
+            _other_apps_locator = "css=ul.other-apps > li"
+
+            def __init__(self, testsetup, lookup):
+                Page.__init__(self, testsetup)
+                self.lookup = lookup
+
+            def absolute_locator(self, relative_locator):
+                return self.root_locator + relative_locator
+
+            @property
+            def root_locator(self):
+                if type(self.lookup) == int:
+                #   lookup by index
+                    return "%s:nth(%s)" % (self._other_apps_locator, self.lookup)
+                else:
+                    # lookup by name
+                    return "%s:contains(%s)" % (self._other_apps_locator, self.lookup)
+
+            @property
+            def name(self):
+                return self.selenium.get_text(self.absolute_locator(self._name_locator))
+
+            @property
+            def is_application_visible(self):
+                return self.is_element_present(self.absolute_locator(self._name_locator))
+
+            @property
+            def index(self):
+                return self.lookup
 
     class BreadcrumbsRegion(Page):
 

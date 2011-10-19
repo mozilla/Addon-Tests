@@ -51,38 +51,22 @@ from base_page import BasePage
 
 class ThemesPage(BasePage):
 
-    _sort_by_name_locator = 'name=_t-name'
-    _sort_by_updated_locator = 'name=_t-updated'
-    _sort_by_created_locator = 'name=_t-created'
-    _sort_by_popular_locator = 'name=_t-popular'
-    _sort_by_rating_locator = 'name=_t-rating'
-    _addons_root_locator = " // div[@class = 'details']"
-    _addon_name_locator = _addons_root_locator + " / h4 / a"
-    _addons_metadata_locator = _addons_root_locator + " / p[@class = 'meta']"
+    _sort_by_name_locator = "css=li.extras > ul > li:nth(0) > a"
+    _sort_by_updated_locator = "css=li.extras > ul > li:nth(3) > a"
+    _sort_by_created_locator = "css=div#sorter > ul > li:nth(2) > a"
+    _sort_by_popular_locator = "css=li.extras > ul > li:nth(2) > a"
+    _sort_by_rating_locator = "css=div#sorter > ul > li:nth(1) > a"
+    _addons_root_locator = "// div[@class = 'hovercard addon theme']"
+    _addon_name_locator = _addons_root_locator + " / a / div[@class='summary'] / h3"
+    _addons_metadata_locator = _addons_root_locator + " // div[@class = 'vital']/span[@class='updated']"
+    _addons_download_locator = _addons_root_locator + " / div[@class = 'vital']/span[@class='adu']"
     _addons_rating_locator = _addons_metadata_locator + " / span / span"
-    _breadcrumb_locator = "css = ol.breadcrumbs"
-    _category_locator = "css = #c-30 > a"
-    _addons_root_locator = "//div[@class='details']"
-    _addon_name_locator = _addons_root_locator + "/h4/a"
-    _addons_metadata_locator = _addons_root_locator + "/p[@class='meta']"
-    _addons_rating_locator = _addons_metadata_locator + "/span/span"
-    _breadcrumb_locator = "css=ol.breadcrumbs"
     _category_locator = "css=#c-30 > a"
-    _categories_locator = "css=.other-categories ul:nth-of-type(2) li"
+    _categories_locator = "css=#side-categories li"
     _category_link_locator = _categories_locator + ":nth-of-type(%s) a"
-    _top_counter_locator = "css=div.primary>header b"
-    _bottom_counter_locator = "css=div.num-results > strong:nth(2)"
-
-    # TODO: remove pagination locators when impala pages are available for themes
-    _next_link_locator = "link=Next"
 
     def __init__(self, testsetup):
         BasePage.__init__(self, testsetup)
-
-    # TODO: remove method when impala pages are available for themes
-    def page_forward(self):
-        self.selenium.click(self._next_link_locator)
-        self.selenium.wait_for_page_to_load(self.timeout)
 
     def click_sort_by(self, type_):
         self.selenium.click(getattr(self, "_sort_by_%s_locator" % type_))
@@ -106,10 +90,6 @@ class ThemesPage(BasePage):
         return self.selenium.get_title()
 
     @property
-    def themes_breadcrumb(self):
-        return self.selenium.get_text(self._breadcrumb_locator)
-
-    @property
     def themes_category(self):
         return self.selenium.get_text(self._category_locator)
 
@@ -123,6 +103,9 @@ class ThemesPage(BasePage):
         _addon_names = [self.selenium.get_text("xpath=(" + self._addon_name_locator + ")[%s]" % str(i + 1))
                         for i in xrange(addon_count)]
         return _addon_names
+
+    def addon_name(self, lookup):
+        return self.get_text("xpath=//li[%s] %s" % (lookup, self._addon_name_locator))
 
     @property
     def addon_count(self):
@@ -142,7 +125,7 @@ class ThemesPage(BasePage):
     @property
     def addon_download_number(self):
         pattern = "(\d+(?:[,]\d+)*) weekly downloads"
-        downloads_locator = self._addons_metadata_locator
+        downloads_locator = self._addons_download_locator
         downloads = self._extract_integers(downloads_locator, pattern, self.addon_count)
         return downloads
 
@@ -152,14 +135,6 @@ class ThemesPage(BasePage):
         ratings_locator = self._addons_rating_locator
         ratings = self._extract_integers(ratings_locator, pattern, self.addon_count)
         return ratings
-
-    @property
-    def top_counter(self):
-        return self.selenium.get_text(self._top_counter_locator)
-
-    @property
-    def bottom_counter(self):
-        return self.selenium.get_text(self._bottom_counter_locator)
 
 
 class ThemePage(BasePage):
@@ -173,8 +148,8 @@ class ThemePage(BasePage):
 
 class ThemesCategoryPage(BasePage):
 
-    _title_locator = "css=h2"
-    _breadcrumb_locator = "css=ol.breadcrumbs"
+    _title_locator = "css=section.primary > h1"
+    _breadcrumb_locator = "css=#breadcrumbs > ol"
 
     @property
     def title(self):
