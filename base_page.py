@@ -102,18 +102,18 @@ class BasePage(Page):
         self.selenium.wait_for_page_to_load(self.timeout)
 
     @property
-    def is_prev_link_disabled(self):
+    def is_prev_link_enabled(self):
         button = self.selenium.get_attribute(self._previous_link_locator + "%s" % "@class")
-        return ("disabled" in button)
+        return not ("disabled" in button)
 
     @property
     def is_prev_link_visible(self):
         return self.selenium.is_visible(self._previous_link_locator)
 
     @property
-    def is_next_link_disabled(self):
+    def is_next_link_enabeld(self):
         button = self.selenium.get_attribute(self._next_link_locator + "%s" % "@class")
-        return ("disabled" in button)
+        return not("disabled" in button)
 
     @property
     def is_next_link_visible(self):
