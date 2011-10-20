@@ -68,7 +68,6 @@ class TestDiscoveryPane:
 
         Assert.equal(what_are_addons_expected, discovery_pane.what_are_addons_text)
 
-    @xfail(reason="Disabled until bug 695637 is fixed.")
     def test_that_mission_statement_is_on_addons_home_page(self, mozwebqa):
         """ TestCase for Litmus 15065 """
         discovery_pane = DiscoveryPane(mozwebqa, self.basepath)
