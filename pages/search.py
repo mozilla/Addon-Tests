@@ -40,7 +40,7 @@
 from pages.page import Page
 from time import strptime, mktime
 from pages.base import Base
-from pages.regions.refine_results import RefineResults
+from pages.regions.refine_results import FilterResults #RefineResults
 
 
 class SearchHome(Base):
@@ -77,9 +77,13 @@ class SearchHome(Base):
     def search_results_title(self):
         return self.selenium.get_text(self._search_results_title_locator)
 
+#    @property
+#    def refine_results(self):
+#        return RefineResults(self.testsetup)
+
     @property
-    def refine_results(self):
-        return RefineResults(self.testsetup)
+    def filter_results(self):
+        return FilterResults(self.testsetup)
 
     @property
     def result_count(self):

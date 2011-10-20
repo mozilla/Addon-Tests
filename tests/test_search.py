@@ -52,220 +52,244 @@ xfail = pytest.mark.xfail
 
 class TestSearch:
 
-    """Test for litmus 17339
-    https://litmus.mozilla.org/show_test.cgi?id=17339"""
-    def test_that_search_all_add_ons_results_have_pagination_that_moves_through_results(self, mozwebqa):
-        """Test for litmus 4839
-        https://litmus.mozilla.org/show_test.cgi?id=4839"""
-        home_page = Home(mozwebqa)
-        search_page = home_page.header.search_for('addon')
-        first_expected = 1
-        second_expected = 20
+#    """Test for litmus 17339
+#    https://litmus.mozilla.org/show_test.cgi?id=17339"""
+#    def test_that_search_all_add_ons_results_have_pagination_that_moves_through_results(self, mozwebqa):
+#        """Test for litmus 4839
+#        https://litmus.mozilla.org/show_test.cgi?id=4839"""
+#        home_page = Home(mozwebqa)
+#        search_page = home_page.header.search_for('addon')
+#        first_expected = 1
+#        second_expected = 20
+#
+#        # Go Forward 10 times
+#        for i in range(10):
+#            search_page.page_forward()
+#            results_summary = search_page.results_displayed
+#
+#            results = re.split('\W+', results_summary)
+#            first_count = results[1]
+#            second_count = results[2]
+#
+#            first_expected += 20
+#            second_expected += 20
+#            Assert.equal(str(first_expected), first_count)
+#            Assert.equal(str(second_expected), second_count)
+#
+#        # Go Back 10 Times
+#        for i in range(10):
+#            search_page.page_back()
+#            results_summary = search_page.results_displayed
+#
+#            results = re.split('\W+', results_summary)
+#            first_count = results[1]
+#            second_count = results[2]
+#
+#            first_expected -= 20
+#            second_expected -= 20
+#            Assert.equal(str(first_expected), first_count)
+#            Assert.equal(str(second_expected), second_count)
+#
+#    def test_that_entering_a_long_string_returns_no_results(self, mozwebqa):
+#        """ Litmus 4856
+#            https://litmus.mozilla.org/show_test.cgi?id=4856 """
+#        home_page = Home(mozwebqa)
+#        search_page = home_page.header.search_for('a' * 255)
+#
+#        Assert.true(search_page.is_no_results_present)
+#        Assert.equal('No results found.', search_page.no_results_text)
+#
+#        Assert.true('0 matching results' in search_page.number_of_results_text)
+#
+#    def test_that_searching_with_unicode_characters_returns_results(self, mozwebqa):
+#        """ Litmus 9575
+#            https://litmus.mozilla.org/show_test.cgi?id=9575 """
+#        home_page = Home(mozwebqa)
+#        search_str = u'\u0421\u043b\u043e\u0432\u0430\u0440\u0438 \u042f\u043d\u0434\u0435\u043a\u0441'
+#        search_page = home_page.header.search_for(search_str)
+#
+#        Assert.contains(search_str, search_page.search_results_title)
+#        Assert.false('0 matching results' in search_page.number_of_results_text)
+#
+#    def test_that_searching_with_substrings_returns_results(self, mozwebqa):
+#        """ Litmus 9561
+#            https://litmus.mozilla.org/show_test.cgi?id=9561 """
+#        home_page = Home(mozwebqa)
+#        search_page = home_page.header.search_for('fox')
+#
+#        Assert.false(search_page.is_no_results_present, 'No results where found')
+#
+#        results_text_sumary = search_page.number_of_results_text
+#        Assert.false('0 matching results' in results_text_sumary)
+#
+#        Assert.true(int(results_text_sumary.split()[0]) > 1)
+#
+#    @xfail(reason="disabled due to bug 619052")
+#    def test_that_blank_search_returns_results(self, mozwebqa):
+#        """ Litmus 11759
+#            https://litmus.mozilla.org/show_test.cgi?id=11759 """
+#        home_page = Home(mozwebqa)
+#        search_page = home_page.header.search_for("")
+#
+#        Assert.false(search_page.is_text_present("Search is currently unavailable"))
+#        Assert.false(search_page.is_text_present("No results found."))
+#        results_summary = search_page.results_summary
+#        Assert.false("0 - 0 of 0" in results_summary)
+#
+#    def test_that_page_with_search_results_has_correct_title(self, mozwebqa):
+#        """ Litmus 17338
+#            https://litmus.mozilla.org/show_test.cgi?id=17338 """
+#        home_page = Home(mozwebqa)
+#        search_keyword = 'Search term'
+#        search_page = home_page.header.search_for(search_keyword)
+#
+#        expected_title = '%s :: Search :: Add-ons for Firefox' % search_keyword
+#        Assert.equal(expected_title, search_page.page_title)
+#
+#    def test_that_searching_for_fire_returns_firebug(self, mozwebqa):
+#        """Litmus 15314
+#        https://litmus.mozilla.org/show_test.cgi?id=15314"""
+#        home_page = Home(mozwebqa)
+#        search_page = home_page.header.search_for('fire')
+#
+#        Assert.equal(search_page.result(0).name, 'Firebug')
+#
+#    def test_that_searching_for_cool_returns_results_with_cool_in_their_name_description(self, mozwebqa):
+#        """Litmus 17353
+#        https://litmus.mozilla.org/show_test.cgi?id=17353"""
+#        home_page = Home(mozwebqa)
+#        search_page = home_page.header.search_for('Cool')
+#
+#        for i in range(10):
+#            Assert.contains('cool', search_page.result(i).text.lower())
+#
+#    #:TODO To be merged into a layout test
+#    def test_the_search_field_placeholder(self, mozwebqa):
+#        """Litmus 4826
+#        https://litmus.mozilla.org/show_test.cgi?id=4826"""
+#        home_page = Home(mozwebqa)
+#        Assert.equal(home_page.header.search_field_placeholder, 'search for add-ons')
+#
+#    def test_that_searching_with_numerals_returns_results(self, mozwebqa):
+#        """Litmus 17347
+#        https://litmus.mozilla.org/show_test.cgi?id=17347"""
+#        home_page = Home(mozwebqa)
+#        search_page = home_page.header.search_for('1')
+#
+#        Assert.greater(search_page.result_count, 0)
+#        Assert.true(int(search_page.number_of_results_text.split()[0]) > 0)
+#
+#    def test_sorting_by_downloads(self, mozwebqa):
+#        """ Litmus 17342
+#            https://litmus.mozilla.org/show_test.cgi?id=17342 """
+#        Home(mozwebqa).header.search_for('firebug')
+#        search_page = SearchHome(mozwebqa).sort_by('Weekly Downloads')
+#        Assert.true('sort=downloads' in search_page.get_url_current_page())
+#        Assert.is_sorted_descending([i.downloads for i in search_page.results()])
+#
+#    def test_sorting_by_newest(self, mozwebqa):
+#        """ Litmus 17343
+#            https://litmus.mozilla.org/show_test.cgi?id=17343 """
+#        Home(mozwebqa).header.search_for('firebug')
+#        search_page = SearchHome(mozwebqa).sort_by('Newest')
+#        Assert.true('sort=created' in search_page.get_url_current_page())
+#        Assert.is_sorted_descending([i.created_date for i in search_page.results()])
+#
+#    def test_sorting_by_most_recently_updated(self, mozwebqa):
+#        """ Litmus 17345
+#            https://litmus.mozilla.org/show_test.cgi?id=17345 """
+#        Home(mozwebqa).header.search_for('firebug')
+#        search_page = SearchHome(mozwebqa).sort_by('Recently Updated')
+#        Assert.true('sort=updated' in search_page.get_url_current_page())
+#        Assert.is_sorted_descending([i.updated_date for i in search_page.results()])
+#
+#    def test_sorting_by_number_of_most_users(self, mozwebqa):
+#        """Litmus 24867
+#        https://litmus.mozilla.org/show_test.cgi?id=24867"""
+#        Home(mozwebqa).header.search_for('firebug')
+#        search_page = SearchHome(mozwebqa).sort_by('Most Users')
+#        Assert.true('sort=users' in search_page.get_url_current_page())
+#        Assert.is_sorted_descending([i.users for i in search_page.results()])
 
-        # Go Forward 10 times
-        for i in range(10):
-            search_page.page_forward()
-            results_summary = search_page.results_displayed
+#    @xfail(reason="To-do: https://www.pivotaltracker.com/story/show/19639893")
+##    def test_that_searching_for_a_tag_returns_results(self, mozwebqa):
+##        """Litmus 7848
+##        https://litmus.mozilla.org/show_test.cgi?id=7848"""
+##        home_page = Home(mozwebqa)
+##        search_page = home_page.header.search_for('development')
+##
+##        Assert.true(search_page.result_count > 0)
+##        Assert.equal(search_page.refine_results.tag('development').name, 'development')
+##        Assert.true(search_page.refine_results.tag_count > 1)
+#
 
-            results = re.split('\W+', results_summary)
-            first_count = results[1]
-            second_count = results[2]
-
-            first_expected += 20
-            second_expected += 20
-            Assert.equal(str(first_expected), first_count)
-            Assert.equal(str(second_expected), second_count)
-
-        # Go Back 10 Times
-        for i in range(10):
-            search_page.page_back()
-            results_summary = search_page.results_displayed
-
-            results = re.split('\W+', results_summary)
-            first_count = results[1]
-            second_count = results[2]
-
-            first_expected -= 20
-            second_expected -= 20
-            Assert.equal(str(first_expected), first_count)
-            Assert.equal(str(second_expected), second_count)
-
-    def test_that_entering_a_long_string_returns_no_results(self, mozwebqa):
-        """ Litmus 4856
-            https://litmus.mozilla.org/show_test.cgi?id=4856 """
-        home_page = Home(mozwebqa)
-        search_page = home_page.header.search_for('a' * 255)
-
-        Assert.true(search_page.is_no_results_present)
-        Assert.equal('No results found.', search_page.no_results_text)
-
-        Assert.true('0 matching results' in search_page.number_of_results_text)
-
-    def test_that_searching_with_unicode_characters_returns_results(self, mozwebqa):
-        """ Litmus 9575
-            https://litmus.mozilla.org/show_test.cgi?id=9575 """
-        home_page = Home(mozwebqa)
-        search_str = u'\u0421\u043b\u043e\u0432\u0430\u0440\u0438 \u042f\u043d\u0434\u0435\u043a\u0441'
-        search_page = home_page.header.search_for(search_str)
-
-        Assert.contains(search_str, search_page.search_results_title)
-        Assert.false('0 matching results' in search_page.number_of_results_text)
-
-    def test_that_searching_with_substrings_returns_results(self, mozwebqa):
-        """ Litmus 9561
-            https://litmus.mozilla.org/show_test.cgi?id=9561 """
-        home_page = Home(mozwebqa)
-        search_page = home_page.header.search_for('fox')
-
-        Assert.false(search_page.is_no_results_present, 'No results where found')
-
-        results_text_sumary = search_page.number_of_results_text
-        Assert.false('0 matching results' in results_text_sumary)
-
-        Assert.true(int(results_text_sumary.split()[0]) > 1)
-
-    @xfail(reason="disabled due to bug 619052")
-    def test_that_blank_search_returns_results(self, mozwebqa):
-        """ Litmus 11759
-            https://litmus.mozilla.org/show_test.cgi?id=11759 """
-        home_page = Home(mozwebqa)
-        search_page = home_page.header.search_for("")
-
-        Assert.false(search_page.is_text_present("Search is currently unavailable"))
-        Assert.false(search_page.is_text_present("No results found."))
-        results_summary = search_page.results_summary
-        Assert.false("0 - 0 of 0" in results_summary)
-
-    def test_that_page_with_search_results_has_correct_title(self, mozwebqa):
-        """ Litmus 17338
-            https://litmus.mozilla.org/show_test.cgi?id=17338 """
-        home_page = Home(mozwebqa)
-        search_keyword = 'Search term'
-        search_page = home_page.header.search_for(search_keyword)
-
-        expected_title = '%s :: Search :: Add-ons for Firefox' % search_keyword
-        Assert.equal(expected_title, search_page.page_title)
-
-    def test_that_searching_for_fire_returns_firebug(self, mozwebqa):
-        """Litmus 15314
-        https://litmus.mozilla.org/show_test.cgi?id=15314"""
-        home_page = Home(mozwebqa)
-        search_page = home_page.header.search_for('fire')
-
-        Assert.equal(search_page.result(0).name, 'Firebug')
-
-    def test_that_searching_for_cool_returns_results_with_cool_in_their_name_description(self, mozwebqa):
-        """Litmus 17353
-        https://litmus.mozilla.org/show_test.cgi?id=17353"""
-        home_page = Home(mozwebqa)
-        search_page = home_page.header.search_for('Cool')
-
-        for i in range(10):
-            Assert.contains('cool', search_page.result(i).text.lower())
-
-    #:TODO To be merged into a layout test
-    def test_the_search_field_placeholder(self, mozwebqa):
-        """Litmus 4826
-        https://litmus.mozilla.org/show_test.cgi?id=4826"""
-        home_page = Home(mozwebqa)
-        Assert.equal(home_page.header.search_field_placeholder, 'search for add-ons')
-
-    def test_that_searching_with_numerals_returns_results(self, mozwebqa):
-        """Litmus 17347
-        https://litmus.mozilla.org/show_test.cgi?id=17347"""
-        home_page = Home(mozwebqa)
-        search_page = home_page.header.search_for('1')
-
-        Assert.greater(search_page.result_count, 0)
-        Assert.true(int(search_page.number_of_results_text.split()[0]) > 0)
-
-    def test_sorting_by_downloads(self, mozwebqa):
-        """ Litmus 17342
-            https://litmus.mozilla.org/show_test.cgi?id=17342 """
-        Home(mozwebqa).header.search_for('firebug')
-        search_page = SearchHome(mozwebqa).sort_by('Weekly Downloads')
-        Assert.true('sort=downloads' in search_page.get_url_current_page())
-        Assert.is_sorted_descending([i.downloads for i in search_page.results()])
-
-    def test_sorting_by_newest(self, mozwebqa):
-        """ Litmus 17343
-            https://litmus.mozilla.org/show_test.cgi?id=17343 """
-        Home(mozwebqa).header.search_for('firebug')
-        search_page = SearchHome(mozwebqa).sort_by('Newest')
-        Assert.true('sort=created' in search_page.get_url_current_page())
-        Assert.is_sorted_descending([i.created_date for i in search_page.results()])
-
-    def test_sorting_by_most_recently_updated(self, mozwebqa):
-        """ Litmus 17345
-            https://litmus.mozilla.org/show_test.cgi?id=17345 """
-        Home(mozwebqa).header.search_for('firebug')
-        search_page = SearchHome(mozwebqa).sort_by('Recently Updated')
-        Assert.true('sort=updated' in search_page.get_url_current_page())
-        Assert.is_sorted_descending([i.updated_date for i in search_page.results()])
-
-    def test_sorting_by_number_of_most_users(self, mozwebqa):
-        """Litmus 24867
-        https://litmus.mozilla.org/show_test.cgi?id=24867"""
-        Home(mozwebqa).header.search_for('firebug')
-        search_page = SearchHome(mozwebqa).sort_by('Most Users')
-        Assert.true('sort=users' in search_page.get_url_current_page())
-        Assert.is_sorted_descending([i.users for i in search_page.results()])
-
-    @xfail(reason="To-do: https://www.pivotaltracker.com/story/show/19639893")
-    def test_that_searching_for_a_tag_returns_results(self, mozwebqa):
-        """Litmus 7848
-        https://litmus.mozilla.org/show_test.cgi?id=7848"""
+    def test(self, mozwebqa):
         home_page = Home(mozwebqa)
         search_page = home_page.header.search_for('development')
+        filter_res = search_page.filter_results
+        print filter_res.title
+        print filter_res.results_count_text
 
-        Assert.true(search_page.result_count > 0)
-        Assert.equal(search_page.refine_results.tag('development').name, 'development')
-        Assert.true(search_page.refine_results.tag_count > 1)
+        category = filter_res.select_area('Category')
+        print category._category_count
+        print category.filter_type_name
+        print '////////////////////////////////////////////////////'
+        for sub_cat in category.sub_categories:
+            print '####################################'
+            print sub_cat.name
+            print sub_cat.is_selected
 
-    def test_that_search_results_return_20_results_per_page(self, mozwebqa):
-        """Litmus 17346
-        https://litmus.mozilla.org/show_test.cgi?id=17346"""
-        home_page = Home(mozwebqa)
-        search_page = home_page.header.search_for('deutsch')
+            for item in sub_cat.items:
+                print item.name
+                print item.is_selected
 
-        first_expected = 1
-        second_expected = 20
 
-        while search_page.is_next_link_enabeld:
-            results_summary = search_page.results_displayed
-            results = re.split('\W+', results_summary)
-            first_count = results[1]
-            second_count = results[2]
+        Assert.fail('ok')
 
-            Assert.equal(str(first_expected), first_count)
-            Assert.equal(str(second_expected), second_count)
-            Assert.equal(search_page.result_count, 20)
-
-            search_page.page_forward()
-            first_expected += 20
-            second_expected += 20
-
-        number = int(re.split('\W+', results_summary)[4]) % 20
-
-        if number == 0:
-            Assert.equal(search_page.result_count, 20)
-        else:
-            Assert.equal(search_page.result_count, number)
-
-    def test_searching_for_collections_returns_results(self, mozwebqa):
-        """Litmus 17352
-        https://litmus.mozilla.org/show_test.cgi?id=17352"""
-        home_page = Home(mozwebqa)
-        amo_collection_page = home_page.click_collections()
-        amo_search_results_page = amo_collection_page.search_for('web')
-
-        Assert.true(amo_search_results_page.result_count > 0)
-
-    def test_searching_for_personas_returns_results(self, mozwebqa):
-        """Litmus 17349
-        https://litmus.mozilla.org/show_test.cgi?id=17349"""
-        amo_home_page = Home(mozwebqa)
-        amo_personas_page = amo_home_page.click_personas()
-        amo_personas_page.header.search_for('fox')
-
-        Assert.true(amo_personas_page.persona_count > 0)
+#    def test_that_search_results_return_20_results_per_page(self, mozwebqa):
+#        """Litmus 17346
+#        https://litmus.mozilla.org/show_test.cgi?id=17346"""
+#        home_page = Home(mozwebqa)
+#        search_page = home_page.header.search_for('deutsch')
+#
+#        first_expected = 1
+#        second_expected = 20
+#
+#        while search_page.is_next_link_enabeld:
+#            results_summary = search_page.results_displayed
+#            results = re.split('\W+', results_summary)
+#            first_count = results[1]
+#            second_count = results[2]
+#
+#            Assert.equal(str(first_expected), first_count)
+#            Assert.equal(str(second_expected), second_count)
+#            Assert.equal(search_page.result_count, 20)
+#
+#            search_page.page_forward()
+#            first_expected += 20
+#            second_expected += 20
+#
+#        number = int(re.split('\W+', results_summary)[4]) % 20
+#
+#        if number == 0:
+#            Assert.equal(search_page.result_count, 20)
+#        else:
+#            Assert.equal(search_page.result_count, number)
+#
+#    def test_searching_for_collections_returns_results(self, mozwebqa):
+#        """Litmus 17352
+#        https://litmus.mozilla.org/show_test.cgi?id=17352"""
+#        home_page = Home(mozwebqa)
+#        amo_collection_page = home_page.click_collections()
+#        amo_search_results_page = amo_collection_page.search_for('web')
+#
+#        Assert.true(amo_search_results_page.result_count > 0)
+#
+#    def test_searching_for_personas_returns_results(self, mozwebqa):
+#        """Litmus 17349
+#        https://litmus.mozilla.org/show_test.cgi?id=17349"""
+#        amo_home_page = Home(mozwebqa)
+#        amo_personas_page = amo_home_page.click_personas()
+#        amo_personas_page.header.search_for('fox')
+#
+#        Assert.true(amo_personas_page.persona_count > 0)
