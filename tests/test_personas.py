@@ -46,6 +46,7 @@ from pages.personas import Personas
 
 xfail = pytest.mark.xfail
 
+
 class TestPersonas:
 
     def test_start_exploring_link_in_the_promo_box(self, mozwebqa):
@@ -151,3 +152,14 @@ class TestPersonas:
         Assert.equal("Add-ons for Firefox", rainbow_personas_detail_page.get_breadcrumb_item_text(1))
         Assert.equal("Personas", rainbow_personas_detail_page.get_breadcrumb_item_text(2))
         Assert.equal("rainbow firefox", rainbow_personas_detail_page.get_breadcrumb_item_text(3))
+
+    def test_personas_breadcrumb_format(self, mozwebqa):
+        """
+        Verify the breadcrumb format in personas page
+        https://litmus.mozilla.org/show_test.cgi?id=12034
+        """
+        home_page = Home(mozwebqa)
+        personas_page = home_page.click_personas()
+        Assert.equal(personas_page.get_breadcrumb_text(0), 'Add-ons for Firefox')
+        Assert.equal(personas_page.get_breadcrumb_text(1), 'Personas')
+        Assert.equal(personas_page.get_breadcrumb_text_all, 'Add-ons for Firefox Personas')

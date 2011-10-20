@@ -60,6 +60,7 @@ class Personas(Base):
     _addons_column_locator = '//div[@class="addons-column"]'
 
     _persona_header_locator = "css=.featured-inner>h2"
+    _personas_breadcrumb_locator = "css=ol.breadcrumbs"
 
     def __init__(self, testsetup):
         Base.__init__(self, testsetup)
@@ -133,6 +134,13 @@ class Personas(Base):
     @property
     def persona_header(self):
         return self.selenium.get_text(self._persona_header_locator)
+
+    def get_breadcrumb_text(self, value):
+        return self.selenium.get_text(self._personas_breadcrumb_locator + "> li:nth(%s)" % value)
+
+    @property
+    def get_breadcrumb_text_all(self):
+        return self.selenium.get_text(self._personas_breadcrumb_locator)
 
 
 class PersonasDetail(Base):
