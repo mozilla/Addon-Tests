@@ -20,8 +20,7 @@
 # Portions created by the Initial Developer are Copyright (C) 2011
 # the Initial Developer. All Rights Reserved.
 #
-# Contributor(s): Dave Hunt <dhunt@mozilla.com>
-#                 Bebe <florin.strugariu@softvision.ro>
+# Contributor(s): Marlena Compton <mcompton@mozilla.com>
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -37,10 +36,17 @@
 #
 # ***** END LICENSE BLOCK *****
 
-import mozwebqa
+from pages.base import Base
 
-def pytest_runtest_setup(item):
-    mozwebqa.TestSetup.site_version = 'impala' in item.keywords and '/i' or ''
 
-def pytest_funcarg__mozwebqa(request):
-    return mozwebqa.TestSetup(request)
+class Category(Base):
+
+    _category_title_locator = "css=div.island > h1"
+
+    @property
+    def category_page_title(self):
+        return self.selenium.get_title()
+
+    @property
+    def category_header_title(self):
+        return self.selenium.get_text(self._category_title_locator)
