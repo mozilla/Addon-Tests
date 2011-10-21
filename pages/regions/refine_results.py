@@ -69,25 +69,26 @@ class FilterResults(FilterBase):
 
     def select_area(self, area):
         self.selenium.click(self._absolute_locator(self._filter_tag % area))
+        self.wait_for_element_visible('%s > ul' % (self._absolute_locator(self._filter_tag % area)))
         if area.lower() == "category":
             return Category(self.testsetup, self._absolute_locator(self._filter_tag % area))
-        elif area.lower() == "Works with":
-            return
-        elif area.lower() == "Tag":
-            return
+        elif area.lower() == "works with":
+            return WorksWith(self.testsetup, self._absolute_locator(self._filter_tag % area))
+        elif area.lower() == "tag":
+            return Tag(self.testsetup, self._absolute_locator(self._filter_tag % area))
 
 
 class Category(FilterBase):
 
     _filter_type_name_tag = '> h3'
-    _categories_tag = '> ul > li'
+    _categories_tag = '> ul.facet-group > li'
 
     def __init__(self, testsetup, locator):
         FilterBase.__init__(self, testsetup)
         self._locator = locator
 
     @property
-    def filter_type_name(self):
+    def name(self):
         return self.selenium.get_text(self._absolute_locator(self._filter_type_name_tag))
 
     @property
@@ -117,6 +118,7 @@ class Category(FilterBase):
 
         def click(self):
             self.selenium.click(self._absolute_locator(self._name_tag))
+            self.selenium.wait_for_page_to_load(self.timeout)
 
         @property
         def is_selected(self):
@@ -132,6 +134,50 @@ class Category(FilterBase):
         @property
         def items(self):
             return [FilterItem(self.testsetup, self._absolute_locator(self._items_tag), i) for i in range(self._item_count)]
+
+
+class WorksWith(FilterBase):
+
+    _filter_type_name_tag = '> h3'
+    _options_tag = '> ul.facet-group:nth(%s) > li'
+
+    def __init__(self, testsetup, locator):
+        FilterBase.__init__(self, testsetup)
+        self._locator = locator
+
+    @property
+    def name(self):
+        return self.selenium.get_text(self._absolute_locator(self._filter_type_name_tag))
+
+
+    @property
+    def firefox_version(self):
+        count = self.selenium.get_css_count(self._absolute_locator(self._options_tag % '0'))
+        return [FilterItem(self.testsetup, self._absolute_locator(self._options_tag % '0'), i) for i in range(count)]
+
+    @property
+    def os(self):
+        count = self.selenium.get_css_count(self._absolute_locator(self._options_tag % '1'))
+        return [FilterItem(self.testsetup, self._absolute_locator(self._options_tag % '1'), i) for i in range(count)]
+
+class Tag(FilterBase):
+
+    _filter_type_name_tag = '> h3'
+    _options_tag = '> ul.facet-group > li'
+
+    def __init__(self, testsetup, locator):
+        FilterBase.__init__(self, testsetup)
+        self._locator = locator
+
+    @property
+    def name(self):
+        return self.selenium.get_text(self._absolute_locator(self._filter_type_name_tag))
+
+    @property
+    def tags(self):
+        count = self.selenium.get_css_count(self._absolute_locator(self._options_tag))
+        return [FilterItem(self.testsetup, self._absolute_locator(self._options_tag), i) for i in range(count)]
+
 
 class FilterItem(FilterBase):
 
@@ -151,6 +197,7 @@ class FilterItem(FilterBase):
 
     def click(self):
         self.selenium.click(self._absolute_locator(self._name_tag))
+        self.selenium.wait_for_page_to_load(self.timeout)
 
     @property
     def is_selected(self):

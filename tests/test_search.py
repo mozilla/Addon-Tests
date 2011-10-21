@@ -232,7 +232,7 @@ class TestSearch:
 
         category = filter_res.select_area('Category')
         print category._category_count
-        print category.filter_type_name
+        print category.name
         print '////////////////////////////////////////////////////'
         for sub_cat in category.sub_categories:
             print '####################################'
@@ -243,7 +243,26 @@ class TestSearch:
                 print item.name
                 print item.is_selected
 
+        tag = filter_res.select_area('Tag')
+        print tag.name
+        print '////////////////////////////////////////////////////'
+        for sub_cat in tag.tags:
+            print '####################################'
+            print sub_cat.name
+            print sub_cat.is_selected
 
+        works_with = filter_res.select_area('Works with')
+        print works_with.name
+        print '////////////////////////////////////////////////////'
+        for sub_cat in works_with.os:
+            print '####################################'
+            print sub_cat.name
+            print sub_cat.is_selected
+
+        for sub_cat in works_with.firefox_version:
+            print '####################################'
+            print sub_cat.name
+            print sub_cat.is_selected
         Assert.fail('ok')
 
 #    def test_that_search_results_return_20_results_per_page(self, mozwebqa):
