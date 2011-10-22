@@ -250,7 +250,6 @@ class TestDetails:
         image_viewer.close()
         Assert.false(image_viewer.is_visible)
 
-    @xfail(reason="Flaky test")
     def test_that_review_usernames_are_clickable(self, mozwebqa):
         """
         Litmus 4842
