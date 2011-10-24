@@ -60,11 +60,20 @@ class ViewProfile(Base):
 
     _page_title = 'User Info for Test :: Add-ons for Firefox'
     _about_locator = 'css=div.island > section.primary > h2'
+    _email_locator = 'css=a.email'
 
     @property
     def about_me(self):
         return self.selenium.get_text(self._about_locator)
 
+    @property
+    def is_email_present(self):
+        return self.selenium.is_element_present(self._email_locator)
+
+    @property
+    def email_value(self):
+        email = self.selenium.get_text(self._email_locator)
+        return email[::-1]
 
 class User(Base):
 
@@ -83,6 +92,10 @@ class EditProfile(Base):
     _details_locator = "css=#profile-detail > legend"
     _notification_locator = "css=#acct-notify > legend"
 
+    _hide_email_checkbox = 'id=id_emailhidden'
+
+    _update_account_locator = 'css=p.footer-submit > button.prominent'
+
     @property
     def is_account_visible(self):
         return self.selenium.get_text(self._account_locator)
@@ -98,3 +111,17 @@ class EditProfile(Base):
     @property
     def is_notification_visible(self):
         return self.selenium.get_text(self._notification_locator)
+
+    @property
+    def is_hide_email_checbox_checked(self):
+        return self.selenium.is_checked(self._hide_email_checkbox)
+
+    def check_hide_email(self):
+        self.selenium.check(self._hide_email_checkbox)
+
+    def uncheck_hide_email(self):
+        self.selenium.uncheck(self._hide_email_checkbox)
+
+    def click_update_account(self):
+        self.selenium.click(self._update_account_locator)
+        self.selenium.wait_for_page_to_load(self.timeout)
