@@ -53,10 +53,8 @@ from pages.base import Base
 class WriteReviewBlock(Base):
 
     _add_review_input_field_locator = "id=id_body"
-    #_add_review_input_rating_locator = "css=.ratingwidget input"
     _add_review_input_rating_locator = "css=span[class='ratingwidget stars stars-0'] > label > input"
     _add_review_submit_button_locator = "css=#review-box input[type=submit]"
-    #_add_review_submit_button_locator = "css=#add-review"
 
     _add_review_box = 'css=#review-box'
 
