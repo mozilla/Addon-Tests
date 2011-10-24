@@ -53,8 +53,10 @@ from pages.base import Base
 class WriteReviewBlock(Base):
 
     _add_review_input_field_locator = "id=id_body"
-    _add_review_input_rating_locator = "css=.ratingwidget input"
+    #_add_review_input_rating_locator = "css=.ratingwidget input"
+    _add_review_input_rating_locator = "css=span[class='ratingwidget stars stars-0'] > label > input"
     _add_review_submit_button_locator = "css=#review-box input[type=submit]"
+    #_add_review_submit_button_locator = "css=#add-review"
 
     _add_review_box = 'css=#review-box'
 
@@ -66,8 +68,9 @@ class WriteReviewBlock(Base):
         self.selenium.click(locator)
 
     def click_to_save_review(self):
+        self.wait_for_element_visible(self._add_review_submit_button_locator)
         self.selenium.click(self._add_review_submit_button_locator)
-        self.selenium.wait_for_page_to_load(self.timeout)
+        #self.selenium.wait_for_page_to_load(self.timeout)
         return ViewReviews(self.testsetup)
 
     @property
@@ -90,11 +93,11 @@ class ViewReviews(Base):
 
     class ReviewSnippet(Base):
 
-        _review_locator = "css=div.primary div.review"
-        _review_text_locator = "p.review-body"
+        _review_locator = "css=#reviews > .review"
+        _review_text_locator = ".description"
         _review_rating_locator = "span[itemprop=rating]"
         _review_author_locator = "a:not(.permalink)"
-        _review_date_locator = "div.reviewed-on"
+        _review_date_locator = ".byline"
 
         def __init__(self, testsetup, index):
             Base.__init__(self, testsetup)
@@ -111,6 +114,7 @@ class ViewReviews(Base):
 
         @property
         def rating(self):
+            #self.wait_for_element_visible(self._review_rating_locator)
             _rating_locator = self.absolute_locator(self._review_rating_locator)
             return int(self.selenium.get_text(_rating_locator))
 
@@ -124,7 +128,7 @@ class ViewReviews(Base):
             date_locator = self.absolute_locator(self._review_date_locator)
             date = self.selenium.get_text(date_locator)
             # we need to parse the string first to get date
-            date = re.match('^(.+on\s)([A-Za-z]+\s[\d]+,\s[\d]+)(.+)$', date)
+            date = re.match('^(.+on\s)([A-Za-z]+\s[\d]+,\s[\d]+)', date)
             return date.group(2)
 
 
