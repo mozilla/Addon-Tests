@@ -68,7 +68,6 @@ class WriteReviewBlock(Base):
     def click_to_save_review(self):
         self.wait_for_element_visible(self._add_review_submit_button_locator)
         self.selenium.click(self._add_review_submit_button_locator)
-        #self.selenium.wait_for_page_to_load(self.timeout)
         return ViewReviews(self.testsetup)
 
     @property
@@ -112,7 +111,6 @@ class ViewReviews(Base):
 
         @property
         def rating(self):
-            #self.wait_for_element_visible(self._review_rating_locator)
             _rating_locator = self.absolute_locator(self._review_rating_locator)
             return int(self.selenium.get_text(_rating_locator))
 
