@@ -67,6 +67,10 @@ class FilterResults(FilterBase):
     def results_count_text(self):
         return self.selenium.get_text(self._absolute_locator(self._results_count_tag))
 
+    @property
+    def results_count_int(self):
+        return int(self.selenium.get_text(self._absolute_locator(self._results_count_tag)).split()[0])
+
     def select_area(self, area):
         self.selenium.click(self._absolute_locator(self._filter_tag % area))
         self.wait_for_element_visible('%s > ul' % (self._absolute_locator(self._filter_tag % area)))
@@ -124,7 +128,7 @@ class Category(FilterBase):
         def is_selected(self):
             try:
                 return "selected" in self.selenium.get_attribute('%s@class' % self._absolute_locator())
-            except :
+            except:
                 return False
 
         @property
@@ -149,7 +153,6 @@ class WorksWith(FilterBase):
     def name(self):
         return self.selenium.get_text(self._absolute_locator(self._filter_type_name_tag))
 
-
     @property
     def firefox_version(self):
         count = self.selenium.get_css_count(self._absolute_locator(self._options_tag % '0'))
@@ -159,6 +162,7 @@ class WorksWith(FilterBase):
     def os(self):
         count = self.selenium.get_css_count(self._absolute_locator(self._options_tag % '1'))
         return [FilterItem(self.testsetup, self._absolute_locator(self._options_tag % '1'), i) for i in range(count)]
+
 
 class Tag(FilterBase):
 
@@ -178,6 +182,9 @@ class Tag(FilterBase):
         count = self.selenium.get_css_count(self._absolute_locator(self._options_tag))
         return [FilterItem(self.testsetup, self._absolute_locator(self._options_tag), i) for i in range(count)]
 
+    def tag(self, lookup):
+        return FilterItem(self.testsetup, self._absolute_locator(self._options_tag), lookup)
+
 
 class FilterItem(FilterBase):
 
@@ -189,7 +196,13 @@ class FilterItem(FilterBase):
         self._lookup = lookup
 
     def _absolute_locator(self, tag=''):
-        return'%s:nth(%s)%s' % (self._locator, self._lookup, tag)
+        if type(self._lookup) == int:
+            # lookup by index
+            return '%s:nth(%s)%s' % (self._locator, self._lookup, tag)
+        else:
+            # lookup by name
+            return '%s:contains(%s)%s' % (self._locator, self._lookup, tag)
+#        return'%s:nth(%s)%s' % (self._locator, self._lookup, tag)
 
     @property
     def name(self):
@@ -203,95 +216,5 @@ class FilterItem(FilterBase):
     def is_selected(self):
         try:
             return "selected" in self.selenium.get_attribute('%s@class' % self._absolute_locator())
-        except :
+        except:
             return False
-
-
-
-
-
-
-
-#from pages.base import Base
-
-
-#class RefineResults(Base):
-#
-#    _platforms_locator = "css=#refine-platform"
-#    _compatible_locator = "css=#refine-compatibility"
-#    _tags_locator = "css=#refine-tags"
-#
-#    _list_locator = " ul li"
-#
-#    #Platform area
-#    @property
-#    def platform_count(self):
-#        return int(self.selenium.get_css_count(self._platforms_locator + self._list_locator))
-#
-#    def platform(self, lookup):
-#        return self.Item(self.testsetup, self._platforms_locator, lookup)
-#
-#    def platforms(self):
-#        return [self.Item(self.testsetup, self._platforms_locator, i) for i in range(self.platform_count)]
-#
-#    #Compatible with  area
-#    @property
-#    def compatible_count(self):
-#        return int(self.selenium.get_css_count(self._compatible_locator + self._list_locator))
-#
-#    def compatible(self, lookup):
-#        return self.Item(self.testsetup, self._compatible_locator, lookup)
-#
-#    def compatibles(self):
-#        return [self.Item(self.testsetup, self._compatible_locator, i) for i in range(self.compatible_count)]
-#
-#    #Tag area
-#    @property
-#    def tag_count(self):
-#        return int(self.selenium.get_css_count(self._tags_locator + self._list_locator))
-#
-#    def tag(self, lookup):
-#        return self.Item(self.testsetup, self._tags_locator, lookup)
-#
-#    def tags(self):
-#        return [self.Item(self.testsetup, self._tags_locator, i) for i in range(self.tag_count)]
-#
-#    #general Item class
-#    class Item(Page):
-#
-#        _name_locator = " a"
-#        _selected_locator = "@class"
-#
-#        def __init__(self, testsetup, locator, lookup):
-#            Page.__init__(self, testsetup)
-#            self.lookup = lookup
-#            self.locator = locator
-#
-#        def _absolute_locator(self, relative_locator):
-#            return self._root_locator + relative_locator
-#
-#        @property
-#        def _root_locator(self):
-#            if type(self.lookup) == int:
-#                # lookup by index
-#                return "{0} ul li:nth({1})".format(self.locator, self.lookup)
-#            else:
-#                # lookup by name
-#                return "{0} ul li:contains({1})".format(self.locator, self.lookup)
-#
-#        def click(self):
-#            self.selenium.click(self._absolute_locator(self._name_locator))
-#            self.selenium.wait_for_page_to_load(self.timeout)
-#
-#        @property
-#        def name(self):
-#            return self.selenium.get_text(self._absolute_locator(self._name_locator))
-#
-#        @property
-#        def is_selected(self):
-#            try:
-#                if self.selenium.get_attribute(self._absolute_locator(self._selected_locator)) == 'selected':
-#                    return True
-#            except:
-#                pass
-#            return False
