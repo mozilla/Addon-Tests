@@ -97,12 +97,8 @@ class TestAccounts:
 
         Assert.equal(view_profile_page.about_me, 'About me')
 
-    def test_user_can_login_and_logout(self, mozwebqa):
-        """ Test for litmus 7857
-            https://litmus.mozilla.org/show_test.cgi?id=7857
-            Test for litmus 4859
-            https://litmus.mozilla.org/show_test.cgi?id=4859
-        """
+    def test_hide_email_checkbox_works(self, mozwebqa):
+
 
         home_page = Home(mozwebqa)
         home_page.login()
