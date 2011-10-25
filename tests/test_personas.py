@@ -160,6 +160,6 @@ class TestPersonas:
         """
         home_page = Home(mozwebqa)
         personas_page = home_page.click_personas()
-        Assert.equal(personas_page.get_breadcrumb_text(0), 'Add-ons for Firefox')
-        Assert.equal(personas_page.get_breadcrumb_text(1), 'Personas')
-        Assert.equal(personas_page.get_breadcrumb_text_all, 'Add-ons for Firefox Personas')
+        Assert.equal(personas_page.breadcrumb_text(0), 'Add-ons for Firefox')
+        Assert.equal(personas_page.breadcrumb_text(1), 'Personas')
+        Assert.equal(personas_page.breadcrumb_text_all, 'Add-ons for Firefox Personas')

@@ -135,11 +135,11 @@ class Personas(Base):
     def persona_header(self):
         return self.selenium.get_text(self._persona_header_locator)
 
-    def get_breadcrumb_text(self, value):
+    def breadcrumb_text(self, value):
         return self.selenium.get_text(self._personas_breadcrumb_locator + "> li:nth(%s)" % value)
 
     @property
-    def get_breadcrumb_text_all(self):
+    def breadcrumb_text_all(self):
         return self.selenium.get_text(self._personas_breadcrumb_locator)
 
 
