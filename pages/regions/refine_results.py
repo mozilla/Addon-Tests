@@ -41,146 +41,132 @@ from pages.page import Page
 
 class FilterBase(Page):
 
+    _results_count_tag = 'css=p.cnt'
 
-    def __init__(self, testsetup):
-        Page.__init__(self, testsetup)
+    def tag(self, lookup):
+        return self.Tag(self.testsetup, lookup)
 
-    def _absolute_locator(self, tag):
-        return'%s %s' % (self._locator, tag)
-
-    @property
-    def name(self):
-        return self.selenium.get_text(self._absolute_locator(self._name_tag))
-
-    def click(self):
-        self.selenium.click(self._absolute_locator(self._name_tag))
-        self.selenium.wait_for_page_to_load(self.timeout)
-
-    @property
-    def is_selected(self):
-        try:
-            return "selected" in self.selenium.get_attribute('%s@class' % self._absolute_locator())
-        except:
-            return False
-
-
-class FilterItem(FilterBase):
-
-    _name_tag = '> a'
-
-    def __init__(self, testsetup, locator, lookup):
-        FilterBase.__init__(self, testsetup)
-        self._locator = locator
-        self._lookup = lookup
-
-    def _absolute_locator(self, tag=''):
-        if type(self._lookup) == int:
-            # lookup by index
-            return '%s:nth(%s)%s' % (self._locator, self._lookup, tag)
-        else:
-            # lookup by name
-            return '%s:contains(%s)%s' % (self._locator, self._lookup, tag)
-
-
-class FilterResults(FilterBase):
-
-    _locator = 'css=#search-facets'
-
-    _name_tag = '> h2'
-    _results_count_tag = '> p'
-    _filter_tag = '> ul.facets >li.facet:contains(%s)'
-
-    def __init__(self, testsetup):
-        FilterBase.__init__(self, testsetup)
-
-    @property
-    def results_count_text(self):
-        return self.selenium.get_text(self._absolute_locator(self._results_count_tag))
+    #
+    #@property
+    #def results_count_text(self):
+    #    return self.selenium.get_text(self._absolute_locator(self._results_count_tag))
 
     @property
     def results_count_int(self):
-        return int(self.selenium.get_text(self._absolute_locator(self._results_count_tag)).split()[0])
-
-    def tag(self, item):
-            return Tag(self.testsetup).item(item)
+        return int(self.selenium.get_text(self._results_count_tag).split()[0])
 
 
-class Tag(FilterBase):
+#
+#class FilterItem(FilterBase):
+#
+#    _name_tag = '> a'
+#
+#    def __init__(self, testsetup, locator, lookup):
+#        FilterBase.__init__(self, testsetup)
+#        self._locator = locator
+#        self._lookup = lookup
+#
+#    def _absolute_locator(self, tag=''):
+#        if type(self._lookup) == int:
+#            # lookup by index
+#            return '%s:nth(%s)%s' % (self._locator, self._lookup, tag)
+#        else:
+#            # lookup by name
+#            return '%s:contains(%s)%s' % (self._locator, self._lookup, tag)
+#
 
-    _name_tag = '> h3'
-    _options_tag = '> ul.facet-group > li'
-    _locator = 'css=#search-facets > ul.facets >li.facet:contains(Tag)'
-
-    def __init__(self, testsetup):
-        FilterBase.__init__(self, testsetup)
-        self.selenium.click(self._locator)
-        self.wait_for_element_visible('%s > ul' % self._locator)
-
-    def item(self, lookup):
-        return FilterItem(self.testsetup, self._absolute_locator(self._options_tag), lookup)
-
-class Category(FilterBase):
-
-    _name_tag = '> h3'
-    _categories_tag = '> ul.facet-group > li'
-
-    def __init__(self, testsetup, locator):
-        FilterBase.__init__(self, testsetup)
-        self._locator = locator
-
-    @property
-    def _category_count(self):
-        return int(self.selenium.get_css_count(self._absolute_locator(self._categories_tag)))
-
-    @property
-    def sub_categories(self):
-        return [self.SubCategories(self.testsetup, self._absolute_locator(self._categories_tag), i) for i in range(self._category_count)]
-
-    class SubCategories(FilterBase):
-
-        _name_tag = '> a'
-        _items_tag = '> ul > li'
-
-        def __init__(self, testsetup, locator, lookup):
-            FilterBase.__init__(self, testsetup)
-            self._lookup = lookup
-            self._locator = locator
-
-        def _absolute_locator(self, tag=""):
-            return'%s:nth(%s)%s' % (self._locator, self._lookup, tag)
+    class FilterResults(Page):
+    
+        _item = " ul.facet-group li:contains(%s)"
+        _item_link = " > a"
+    
+        def __init__(self, testsetup, lookup):
+            Page.__init__(self, testsetup)
+            # expand the thing here to represent the proper user action
+            self.selenium.click(self._base_locator)
+            
+            #ul.facets li.facet:nth(2) li:contains('development')
+            self._root_locator = self._base_locator + self._item % lookup    
 
         @property
-        def _item_count(self):
-            return self.selenium.get_css_count(self._absolute_locator(self._items_tag))
+        def name(self):
+            return self.selenium.get_text(self._root_locator)
 
         @property
-        def items(self):
-            return [FilterItem(self.testsetup, self._absolute_locator(self._items_tag), i) for i in range(self._item_count)]
+        def is_selected(self):
+            return "selected" in self.selenium.get_attribute('%s@class' % self._root_locator)
+    
+        def click(self):
+            self.selenium.click(self._root_locator + self._item_link)
+            self.selenium.wait_for_page_to_load(self.timeout)
+    
+    
+    class Tag(FilterResults):
+        _base_locator = "css=ul.facets > li.facet:nth(2)"
 
-
-class WorksWith(FilterBase):
-
-    _name_tag = '> h3'
-    _options_tag = '> ul.facet-group:nth(%s) > li'
-
-    def __init__(self, testsetup, locator):
-        FilterBase.__init__(self, testsetup)
-        self._locator = locator
-
-    @property
-    def firefox_versions(self):
-        count = self.selenium.get_css_count(self._absolute_locator(self._options_tag % '0'))
-        return [FilterItem(self.testsetup, self._absolute_locator(self._options_tag % '0'), i) for i in range(count)]
-
-    @property
-    def firefox_version(self, lookup):
-        return FilterItem(self.testsetup, self._absolute_locator(self._options_tag % '0'), lookup)
-
-    @property
-    def os_versions(self):
-        count = self.selenium.get_css_count(self._absolute_locator(self._options_tag % '1'))
-        return [FilterItem(self.testsetup, self._absolute_locator(self._options_tag % '1'), i) for i in range(count)]
-
-    @property
-    def os_version(self, lookup):
-        return FilterItem(self.testsetup, self._absolute_locator(self._options_tag % '0'), lookup)
+#
+#class Category(FilterBase):
+#
+#    _name_tag = '> h3'
+#    _categories_tag = '> ul.facet-group > li'
+#
+#    def __init__(self, testsetup, locator):
+#        FilterBase.__init__(self, testsetup)
+#        self._locator = locator
+#
+#    @property
+#    def _category_count(self):
+#        return int(self.selenium.get_css_count(self._absolute_locator(self._categories_tag)))
+#
+#    @property
+#    def sub_categories(self):
+#        return [self.SubCategories(self.testsetup, self._absolute_locator(self._categories_tag), i) for i in range(self._category_count)]
+#
+#    class SubCategories(FilterBase):
+#
+#        _name_tag = '> a'
+#        _items_tag = '> ul > li'
+#
+#        def __init__(self, testsetup, locator, lookup):
+#            FilterBase.__init__(self, testsetup)
+#            self._lookup = lookup
+#            self._locator = locator
+#
+#        def _absolute_locator(self, tag=""):
+#            return'%s:nth(%s)%s' % (self._locator, self._lookup, tag)
+#
+#        @property
+#        def _item_count(self):
+#            return self.selenium.get_css_count(self._absolute_locator(self._items_tag))
+#
+#        @property
+#        def items(self):
+#            return [FilterItem(self.testsetup, self._absolute_locator(self._items_tag), i) for i in range(self._item_count)]
+#
+#
+#class WorksWith(FilterBase):
+#
+#    _name_tag = '> h3'
+#    _options_tag = '> ul.facet-group:nth(%s) > li'
+#
+#    def __init__(self, testsetup, locator):
+#        FilterBase.__init__(self, testsetup)
+#        self._locator = locator
+#
+#    @property
+#    def firefox_versions(self):
+#        count = self.selenium.get_css_count(self._absolute_locator(self._options_tag % '0'))
+#        return [FilterItem(self.testsetup, self._absolute_locator(self._options_tag % '0'), i) for i in range(count)]
+#
+#    @property
+#    def firefox_version(self, lookup):
+#        return FilterItem(self.testsetup, self._absolute_locator(self._options_tag % '0'), lookup)
+#
+#    @property
+#    def os_versions(self):
+#        count = self.selenium.get_css_count(self._absolute_locator(self._options_tag % '1'))
+#        return [FilterItem(self.testsetup, self._absolute_locator(self._options_tag % '1'), i) for i in range(count)]
+#
+#    @property
+#    def os_version(self, lookup):
+#        return FilterItem(self.testsetup, self._absolute_locator(self._options_tag % '0'), lookup)

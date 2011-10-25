@@ -281,6 +281,9 @@ class TestSearch:
         search_page = home_page.header.search_for('development')
 
         print search_page.filter.tag('development').name
+        print search_page.filter.results_count_int
+        search_page.filter.tag('development').click()
+        print search_page.filter.results_count_int
 
 #        filter = search_page.filter
 #        print filter.name
