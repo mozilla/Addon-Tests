@@ -115,6 +115,15 @@ class FilterResults(FilterBase):
     def tag(self):
         return Tag(self.testsetup, self._absolute_locator(self._filter_tag % 'Tag'))
 
+    @property
+    def category(self):
+        return Tag(self.testsetup, self._absolute_locator(self._filter_tag % 'Category'))
+
+    @property
+    def works_with(self):
+        return Tag(self.testsetup, self._absolute_locator(self._filter_tag % 'Works with'))
+
+
 class Category(FilterBase):
 
     _name_tag = '> h3'

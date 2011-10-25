@@ -78,7 +78,7 @@ class SearchHome(Base):
         return self.selenium.get_text(self._search_results_title_locator)
 
     @property
-    def filter_results(self):
+    def filter(self):
         return FilterResults(self.testsetup)
 
     @property

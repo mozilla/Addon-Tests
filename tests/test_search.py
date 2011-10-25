@@ -279,41 +279,44 @@ class TestSearch:
     def test(self, mozwebqa):
         home_page = Home(mozwebqa)
         search_page = home_page.header.search_for('development')
-        filter_res = search_page.filter_results
-        print filter_res.name
-        print filter_res.results_count_text
 
-        category = filter_res.select_area('Category')
-        print category._category_count
-        print category.name
-        print '////////////////////////////////////////////////////'
-        for sub_cat in category.sub_categories:
-            print '####################################'
-            print sub_cat.name
-            print sub_cat.is_selected
-
-            for item in sub_cat.items:
-                print item.name
-                print item.is_selected
-
-        tag = filter_res.select_area('Tag')
-        print tag.name
-        print '////////////////////////////////////////////////////'
-        for sub_cat in tag.items:
-            print '####################################'
-            print sub_cat.name
-            print sub_cat.is_selected
-
-        works_with = filter_res.select_area('Works with')
-        print works_with.name
-        print '////////////////////////////////////////////////////'
-        for sub_cat in works_with.os_verions:
-            print '####################################'
-            print sub_cat.name
-            print sub_cat.is_selected
-
-        for sub_cat in works_with.firefox_version:
-            print '####################################'
-            print sub_cat.name
-            print sub_cat.is_selected
+        print search_page.filter.tag.name
+        print search_page.filter.tag.items[1].name
+#        filter = search_page.filter
+#        print filter.name
+#        print filter.results_count_text
+#
+#        category = filter.select_area('Category')
+#        print category._category_count
+#        print category.name
+#        print '////////////////////////////////////////////////////'
+#        for sub_cat in category.sub_categories:
+#            print '####################################'
+#            print sub_cat.name
+#            print sub_cat.is_selected
+#
+#            for item in sub_cat.items:
+#                print item.name
+#                print item.is_selected
+#
+#        tag = filter.select_area('Tag')
+#        print tag.name
+#        print '////////////////////////////////////////////////////'
+#        for sub_cat in tag.items:
+#            print '####################################'
+#            print sub_cat.name
+#            print sub_cat.is_selected
+#
+#        works_with = filter.select_area('Works with')
+#        print works_with.name
+#        print '////////////////////////////////////////////////////'
+#        for sub_cat in works_with.os_verions:
+#            print '####################################'
+#            print sub_cat.name
+#            print sub_cat.is_selected
+#
+#        for sub_cat in works_with.firefox_version:
+#            print '####################################'
+#            print sub_cat.name
+#            print sub_cat.is_selected
         Assert.fail('ok')
