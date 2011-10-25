@@ -101,28 +101,23 @@ class FilterResults(FilterBase):
     def results_count_int(self):
         return int(self.selenium.get_text(self._absolute_locator(self._results_count_tag)).split()[0])
 
-    def select_area(self, area):
-        self.selenium.click(self._absolute_locator(self._filter_tag % area))
-        self.wait_for_element_visible('%s > ul' % (self._absolute_locator(self._filter_tag % area)))
-        if area.lower() == "category":
-            return Category(self.testsetup, self._absolute_locator(self._filter_tag % area))
-        elif area.lower() == "works with":
-            return WorksWith(self.testsetup, self._absolute_locator(self._filter_tag % area))
-        elif area.lower() == "tag":
-            return Tag(self.testsetup, self._absolute_locator(self._filter_tag % area))
+    def tag(self, item):
+            return Tag(self.testsetup).item(item)
 
-    @property
-    def tag(self):
-        return Tag(self.testsetup, self._absolute_locator(self._filter_tag % 'Tag'))
 
-    @property
-    def category(self):
-        return Tag(self.testsetup, self._absolute_locator(self._filter_tag % 'Category'))
+class Tag(FilterBase):
 
-    @property
-    def works_with(self):
-        return Tag(self.testsetup, self._absolute_locator(self._filter_tag % 'Works with'))
+    _name_tag = '> h3'
+    _options_tag = '> ul.facet-group > li'
+    _locator = 'css=#search-facets > ul.facets >li.facet:contains(Tag)'
 
+    def __init__(self, testsetup):
+        FilterBase.__init__(self, testsetup)
+        self.selenium.click(self._locator)
+        self.wait_for_element_visible('%s > ul' % self._locator)
+
+    def item(self, lookup):
+        return FilterItem(self.testsetup, self._absolute_locator(self._options_tag), lookup)
 
 class Category(FilterBase):
 
@@ -189,21 +184,3 @@ class WorksWith(FilterBase):
     @property
     def os_version(self, lookup):
         return FilterItem(self.testsetup, self._absolute_locator(self._options_tag % '0'), lookup)
-
-
-class Tag(FilterBase):
-
-    _name_tag = '> h3'
-    _options_tag = '> ul.facet-group > li'
-
-    def __init__(self, testsetup, locator):
-        FilterBase.__init__(self, testsetup)
-        self._locator = locator
-
-    @property
-    def items(self):
-        count = self.selenium.get_css_count(self._absolute_locator(self._options_tag))
-        return [FilterItem(self.testsetup, self._absolute_locator(self._options_tag), i) for i in range(count)]
-
-    def item(self, lookup):
-        return FilterItem(self.testsetup, self._absolute_locator(self._options_tag), lookup)

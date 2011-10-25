@@ -280,8 +280,8 @@ class TestSearch:
         home_page = Home(mozwebqa)
         search_page = home_page.header.search_for('development')
 
-        print search_page.filter.tag.name
-        print search_page.filter.tag.items[1].name
+        print search_page.filter.tag('development').name
+
 #        filter = search_page.filter
 #        print filter.name
 #        print filter.results_count_text
