@@ -110,10 +110,10 @@ class TestAccounts:
         Assert.false(view_profile_page.is_email_present, 'expected state of profile incorrect')
 
         edit_profile_page = home_page.header.click_edit_profile()
-        Assert.true(edit_profile_page.is_hide_email_checbox_checked)
+        Assert.true(edit_profile_page.is_hide_email_checkbox_checked)
         edit_profile_page.uncheck_hide_email()
         edit_profile_page.click_update_account()
-        Assert.false(edit_profile_page.is_hide_email_checbox_checked)
+        Assert.false(edit_profile_page.is_hide_email_checkbox_checked)
 
         view_profile_page = home_page.header.click_view_profile()
         Assert.true(view_profile_page.is_email_present)
@@ -121,7 +121,7 @@ class TestAccounts:
         Assert.equal(credentials['email'], view_profile_page.email_value, "values doesn't the expected email")
 
         edit_profile_page = home_page.header.click_edit_profile()
-        Assert.false(edit_profile_page.is_hide_email_checbox_checked)
+        Assert.false(edit_profile_page.is_hide_email_checkbox_checked)
         edit_profile_page.check_hide_email()
         edit_profile_page.click_update_account()
-        Assert.true(edit_profile_page.is_hide_email_checbox_checked, 'could not restore profile to intial state')
+        Assert.true(edit_profile_page.is_hide_email_checkbox_checked, 'could not restore profile to intial state')

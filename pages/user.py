@@ -113,7 +113,7 @@ class EditProfile(Base):
         return self.selenium.get_text(self._notification_locator)
 
     @property
-    def is_hide_email_checbox_checked(self):
+    def is_hide_email_checkbox_checked(self):
         return self.selenium.is_checked(self._hide_email_checkbox)
 
     def check_hide_email(self):
