@@ -46,10 +46,13 @@ class Login(Base):
     _email_locator = 'id=id_username'
     _password_locator = 'id=id_password'
     _login_button_locator = 'id=login-submit'
+    _normal_login_locator = 'id=show-normal-login'
 
     def login_user(self, user):
         credentials = self.testsetup.credentials[user]
-        self.wait_for_element_present(self._email_locator)
+        self.selenium.click(self._normal_login_locator)
+        self.wait_for_element_visible(self._email_locator)
+
         self.selenium.type(self._email_locator, credentials['email'])
         self.selenium.type(self._password_locator, credentials['password'])
         self.selenium.click(self._login_button_locator)
