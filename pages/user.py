@@ -75,6 +75,7 @@ class ViewProfile(Base):
         email = self.selenium.get_text(self._email_locator)
         return email[::-1]
 
+
 class User(Base):
 
         _username_locator = "css=div.vcard h2.fn"
