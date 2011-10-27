@@ -67,7 +67,7 @@ class ViewProfile(Base):
         return self.selenium.get_text(self._about_locator)
 
     @property
-    def is_email_present(self):
+    def is_email_field_present(self):
         return self.selenium.is_element_present(self._email_locator)
 
     @property
