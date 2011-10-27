@@ -217,12 +217,11 @@ class TestSearch:
 
         home_page = Home(mozwebqa)
         search_page = home_page.header.search_for('development')
-        result_count = search_page.filter.results_count_int
+        result_count = search_page.filter.results_count
         Assert.true(result_count > 0)
 
-        Assert.contains('development', search_page.filter.tag('development').name)
         search_page.filter.tag('development').click()
-        Assert.true(result_count > search_page.filter.results_count_int)
+        Assert.true(result_count > search_page.filter.results_count)
 
     def test_that_search_results_return_20_results_per_page(self, mozwebqa):
         """Litmus 17346

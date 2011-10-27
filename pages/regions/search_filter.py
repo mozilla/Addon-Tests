@@ -47,7 +47,7 @@ class FilterBase(Page):
         return self.Tag(self.testsetup, lookup)
 
     @property
-    def results_count_int(self):
+    def results_count(self):
         return int(self.selenium.get_text(self._results_count_tag).split()[0])
 
     class FilterResults(Page):
@@ -58,10 +58,9 @@ class FilterBase(Page):
         def __init__(self, testsetup, lookup):
             Page.__init__(self, testsetup)
             # expand the thing here to represent the proper user action
-            self.selenium.click(self._base_locator)
-
-            #ul.facets li.facet:nth(2) li:contains('development')
             self._root_locator = self._base_locator + self._item % lookup
+            if not self.selenium.is_visible(self._root_locator + self._item_link):
+                self.selenium.click(self._base_locator)
 
         @property
         def name(self):
@@ -74,7 +73,6 @@ class FilterBase(Page):
         def click(self):
             self.selenium.click(self._root_locator + self._item_link)
             self.selenium.wait_for_page_to_load(self.timeout)
-
 
     class Tag(FilterResults):
         _base_locator = "css=ul.facets > li.facet:nth(2)"
