@@ -50,6 +50,7 @@ from pages.home import Home
 
 xfail = pytest.mark.xfail
 
+
 class TestDetails:
 
     def test_that_register_link_is_present_in_addon_details_page(self, mozwebqa):
@@ -166,7 +167,7 @@ class TestDetails:
         Litmus 11926
         https://litmus.mozilla.org/show_test.cgi?id=11926
         """
-        addon_with_one_authors = 'adblock-plus'
+        addon_with_one_authors = 'F1 by Mozilla Labs'
         detail_page = Details(mozwebqa, addon_with_one_authors)
 
         Assert.equal(len(detail_page.authors), 1)
@@ -332,9 +333,9 @@ class TestDetails:
         Assert.true(review_box.is_review_box_visible)
 
     def test_the_developers_comments_section(self, mozwebqa):
-        """ 
+        """
         Test for Litmus 25724
-        https://litmus.mozilla.org/show_test.cgi?id=25724 
+        https://litmus.mozilla.org/show_test.cgi?id=25724
         """
         details_page = Details(mozwebqa, 'Firebug')
         Assert.equal(details_page.devs_comments_title, u"Developer\u2019s Comments")
