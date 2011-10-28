@@ -52,7 +52,7 @@ class TestHome:
                                      "Download Management", "Feeds, News & Blogging", "Games & Entertainment",
                                      "Language Support", "Photos, Music & Videos", "Privacy & Security", "Shopping",
                                      "Social & Communication", "Tabs", "Web Development", "Other"],
-                "Personas":         ["Featured", "Most Popular", "Top Rated", "Abstract", "Causes", "Fashion", "Film and TV",
+                "Personas":         ["Most Popular", "Top Rated", "Newest", "Abstract", "Causes", "Fashion", "Film and TV",
                                      "Firefox", "Foxkeh", "Holiday", "Music", "Nature", "Other", "Scenery", "Seasonal", "Solid", "Sports", "Websites"],
                 "Themes":           ["Most Popular", "Top Rated", "Newest", "Animals", "Compact", "Large", "Miscellaneous", "Modern", "Nature",
                                      "OS Integration", "Retro", "Sports"],
