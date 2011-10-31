@@ -24,6 +24,7 @@
 #                 Dave Hunt <dhunt@mozilla.com>
 #                 Marlena Compton <mcompton@mozilla.com
 #                 Alin Trif <alin.trif@softvision.ro>
+#                 Teodosia Pop <teodosia.pop@softvision.ro>
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -45,6 +46,7 @@ import pytest
 
 from unittestzero import Assert
 from pages.discovery import DiscoveryPane
+from pages.home import Home
 
 xfail = pytest.mark.xfail
 
@@ -110,3 +112,19 @@ class TestDiscoveryPane:
         discovery_pane = DiscoveryPane(mozwebqa, self.basepath)
         Assert.true(discovery_pane.up_and_coming_visible)
         Assert.equal(5, discovery_pane.up_and_coming_item_count)
+
+    def test_the_logout_link_for_logged_in_users(self, mozwebqa):
+        """
+        Litmus 15110
+        https://litmus.mozilla.org/show_test.cgi?id=15110
+        """
+        home_page = Home(mozwebqa)
+        home_page.login()
+        Assert.true(home_page.is_the_current_page)
+        Assert.true(home_page.header.is_user_logged_in)
+
+        discovery_pane = DiscoveryPane(mozwebqa, self.basepath)
+        Assert.true(discovery_pane.is_logout_link_visible)
+        home_page = discovery_pane.click_logout()
+        Assert.true(home_page.is_the_current_page)
+        Assert.false(home_page.header.is_user_logged_in)
