@@ -211,16 +211,17 @@ class TestSearch:
         Assert.true('sort=users' in search_page.get_url_current_page())
         Assert.is_sorted_descending([i.users for i in search_page.results()])
 
-    @xfail(reason="To-do: https://www.pivotaltracker.com/story/show/19639893")
     def test_that_searching_for_a_tag_returns_results(self, mozwebqa):
         """Litmus 7848
         https://litmus.mozilla.org/show_test.cgi?id=7848"""
+
         home_page = Home(mozwebqa)
         search_page = home_page.header.search_for('development')
+        result_count = search_page.filter.results_count
+        Assert.greater(result_count, 0)
 
-        Assert.true(search_page.result_count > 0)
-        Assert.equal(search_page.refine_results.tag('development').name, 'development')
-        Assert.true(search_page.refine_results.tag_count > 1)
+        search_page.filter.tag('development').click()
+        Assert.greater_equal(result_count , search_page.filter.results_count)
 
     def test_that_search_results_return_20_results_per_page(self, mozwebqa):
         """Litmus 17346
