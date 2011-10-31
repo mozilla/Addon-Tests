@@ -111,6 +111,7 @@ class TestSearch:
         Assert.contains(search_str, search_page.search_results_title)
         Assert.false('0 matching results' in search_page.number_of_results_text)
 
+    @xfail(reason="disabled until further investigation")
     def test_that_searching_with_substrings_returns_results(self, mozwebqa):
         """ Litmus 9561
             https://litmus.mozilla.org/show_test.cgi?id=9561 """
@@ -221,7 +222,7 @@ class TestSearch:
         Assert.greater(result_count, 0)
 
         search_page.filter.tag('development').click()
-        Assert.greater_equal(result_count , search_page.filter.results_count)
+        Assert.greater_equal(result_count, search_page.filter.results_count)
 
     def test_that_search_results_return_20_results_per_page(self, mozwebqa):
         """Litmus 17346
