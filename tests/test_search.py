@@ -179,6 +179,7 @@ class TestSearch:
         Assert.greater(search_page.result_count, 0)
         Assert.true(int(search_page.number_of_results_text.split()[0]) > 0)
 
+    @xfail(reason="disabled due to bug 698429")
     def test_sorting_by_downloads(self, mozwebqa):
         """ Litmus 17342
             https://litmus.mozilla.org/show_test.cgi?id=17342 """
