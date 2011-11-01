@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-#
+
 # ***** BEGIN LICENSE BLOCK *****
 # Version: MPL 1.1/GPL 2.0/LGPL 2.1
 #
@@ -20,8 +20,7 @@
 # Portions created by the Initial Developer are Copyright (C) 2011
 # the Initial Developer. All Rights Reserved.
 #
-# Contributor(s): Marlena Compton <mcompton@mozilla.com>
-#                 Teodosia Pop <teodosia.pop@softvision.ro>
+# Contributor(s): Zac
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -37,39 +36,43 @@
 #
 # ***** END LICENSE BLOCK *****
 
-import pytest
-
-from pages.addons_api import AddOnsAPI
-from unittestzero import Assert
-
-#These tests should only call the api.
-#There should be no tests requiring selenium in this class.
+from pages.page import Page
 
 
-@pytest.mark.skip_selenium
-class TestAPIOnlyTests:
+class FilterBase(Page):
 
-    def test_that_firebug_is_listed_first_in_addons_search_for_fire(self, mozwebqa):
-        """TestCase for Litmus 15314"""
-        addons_xml = AddOnsAPI(mozwebqa, 'fire')
-        Assert.equal("Firebug", addons_xml.get_name_of_first_addon())
+    _results_count_tag = 'css=p.cnt'
 
-    def test_that_firebug_is_listed_first_in_addons_search_for_firebug(self, mozwebqa):
-        """TestCase for Litmus 15316"""
-        addons_xml = AddOnsAPI(mozwebqa)
-        Assert.equal("Firebug", addons_xml.get_name_of_first_addon())
+    def tag(self, lookup):
+        return self.Tag(self.testsetup, lookup)
 
-    def test_that_firebug_addon_type_name_is_extension(self, mozwebqa):
-        """Testcase for Litmus 15316"""
-        addons_xml = AddOnsAPI(mozwebqa)
-        Assert.equal("Extension", addons_xml.get_addon_type_name("Firebug"))
+    @property
+    def results_count(self):
+        return int(self.selenium.get_text(self._results_count_tag).split()[0])
 
-    def test_that_firebug_addon_type_id_is_1(self, mozwebqa):
-        """Testcase for Litmus 15316"""
-        addon_xml = AddOnsAPI(mozwebqa)
-        Assert.equal("1", addon_xml.get_addon_type_id("Firebug"))
+    class FilterResults(Page):
 
-    def test_firebug_version_number(self, mozwebqa):
-        """Testcase for Litmus 15317"""
-        addon_xml = AddOnsAPI(mozwebqa)
-        Assert.equal("1.8.3", addon_xml.get_addon_version_number("Firebug"))
+        _item = " ul.facet-group li:contains(%s)"
+        _item_link = " > a"
+
+        def __init__(self, testsetup, lookup):
+            Page.__init__(self, testsetup)
+            # expand the thing here to represent the proper user action
+            self._root_locator = self._base_locator + self._item % lookup
+            if not self.selenium.is_visible(self._root_locator + self._item_link):
+                self.selenium.click(self._base_locator)
+
+        @property
+        def name(self):
+            return self.selenium.get_text(self._root_locator)
+
+        @property
+        def is_selected(self):
+            return "selected" in self.selenium.get_attribute('%s@class' % self._root_locator)
+
+        def click(self):
+            self.selenium.click(self._root_locator + self._item_link)
+            self.selenium.wait_for_page_to_load(self.timeout)
+
+    class Tag(FilterResults):
+        _base_locator = "css=ul.facets > li.facet:nth(2)"

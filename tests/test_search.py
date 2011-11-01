@@ -111,6 +111,7 @@ class TestSearch:
         Assert.contains(search_str, search_page.search_results_title)
         Assert.false('0 matching results' in search_page.number_of_results_text)
 
+    @xfail(reason="disabled until further investigation")
     def test_that_searching_with_substrings_returns_results(self, mozwebqa):
         """ Litmus 9561
             https://litmus.mozilla.org/show_test.cgi?id=9561 """
@@ -179,6 +180,7 @@ class TestSearch:
         Assert.greater(search_page.result_count, 0)
         Assert.true(int(search_page.number_of_results_text.split()[0]) > 0)
 
+    @xfail(reason="disabled due to bug 698429")
     def test_sorting_by_downloads(self, mozwebqa):
         """ Litmus 17342
             https://litmus.mozilla.org/show_test.cgi?id=17342 """
@@ -211,16 +213,17 @@ class TestSearch:
         Assert.true('sort=users' in search_page.get_url_current_page())
         Assert.is_sorted_descending([i.users for i in search_page.results()])
 
-    @xfail(reason="To-do: https://www.pivotaltracker.com/story/show/19639893")
     def test_that_searching_for_a_tag_returns_results(self, mozwebqa):
         """Litmus 7848
         https://litmus.mozilla.org/show_test.cgi?id=7848"""
+
         home_page = Home(mozwebqa)
         search_page = home_page.header.search_for('development')
+        result_count = search_page.filter.results_count
+        Assert.greater(result_count, 0)
 
-        Assert.true(search_page.result_count > 0)
-        Assert.equal(search_page.refine_results.tag('development').name, 'development')
-        Assert.true(search_page.refine_results.tag_count > 1)
+        search_page.filter.tag('development').click()
+        Assert.greater_equal(result_count, search_page.filter.results_count)
 
     def test_that_search_results_return_20_results_per_page(self, mozwebqa):
         """Litmus 17346
