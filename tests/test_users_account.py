@@ -98,7 +98,6 @@ class TestAccounts:
         Assert.equal(view_profile_page.about_me, 'About me')
 
     def test_hide_email_checkbox_works(self, mozwebqa):
-
         home_page = Home(mozwebqa)
         home_page.login()
 
@@ -106,7 +105,6 @@ class TestAccounts:
         Assert.true(home_page.header.is_user_logged_in)
 
         view_profile_page = home_page.header.click_view_profile()
-
         initial_state = view_profile_page.is_email_field_present
 
         edit_profile_page = home_page.header.click_edit_profile()
