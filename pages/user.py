@@ -113,16 +113,9 @@ class EditProfile(Base):
     def is_notification_visible(self):
         return self.selenium.get_text(self._notification_locator)
 
-    @property
-    def is_hide_email_checkbox_checked(self):
-        return self.selenium.is_checked(self._hide_email_checkbox)
-
-    def check_hide_email(self):
-        self.selenium.check(self._hide_email_checkbox)
-
-    def uncheck_hide_email(self):
-        self.selenium.uncheck(self._hide_email_checkbox)
-
     def click_update_account(self):
         self.selenium.click(self._update_account_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
+
+    def change_hide_email_state(self):
+        self.selenium.click(self._hide_email_checkbox)
