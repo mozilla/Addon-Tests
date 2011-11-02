@@ -111,7 +111,6 @@ class TestSearch:
         Assert.contains(search_str, search_page.search_results_title)
         Assert.false('0 matching results' in search_page.number_of_results_text)
 
-    @xfail(reason="disabled until further investigation")
     def test_that_searching_with_substrings_returns_results(self, mozwebqa):
         """ Litmus 9561
             https://litmus.mozilla.org/show_test.cgi?id=9561 """
@@ -120,10 +119,10 @@ class TestSearch:
 
         Assert.false(search_page.is_no_results_present, 'No results where found')
 
-        results_text_sumary = search_page.number_of_results_text
-        Assert.false('0 matching results' in results_text_sumary)
+        results_text_summary = search_page.number_of_results_text
+        Assert.not_equal(u'0 matching results', results_text_summary)
 
-        Assert.true(int(results_text_sumary.split()[0]) > 1)
+        Assert.true(int(results_text_summary.split()[0]) > 1)
 
     @xfail(reason="disabled due to bug 619052")
     def test_that_blank_search_returns_results(self, mozwebqa):
