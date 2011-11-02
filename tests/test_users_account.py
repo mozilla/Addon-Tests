@@ -46,56 +46,56 @@ xfail = pytest.mark.xfail
 
 class TestAccounts:
 
-    def test_user_can_login_and_logout(self, mozwebqa):
-        """ Test for litmus 7857
-            https://litmus.mozilla.org/show_test.cgi?id=7857
-            Test for litmus 4859
-            https://litmus.mozilla.org/show_test.cgi?id=4859
-        """
-
-        home_page = Home(mozwebqa)
-        home_page.login()
-        Assert.true(home_page.is_the_current_page)
-        Assert.true(home_page.header.is_user_logged_in)
-
-        home_page.header.click_logout()
-        Assert.false(home_page.header.is_user_logged_in)
-
-    def test_user_can_access_the_edit_profile_page(self, mozwebqa):
-        """
-            Test for litmus 5039
-            https://litmus.mozilla.org/show_test.cgi?id=5039
-        """
-
-        home_page = Home(mozwebqa)
-        home_page.login()
-        Assert.true(home_page.is_the_current_page)
-        Assert.true(home_page.header.is_user_logged_in)
-
-        amo_user_edit_page = home_page.header.click_edit_profile()
-        Assert.contains("/users/edit", amo_user_edit_page.get_url_current_page())
-        Assert.true(amo_user_edit_page.is_the_current_page)
-
-        Assert.equal("My Account", amo_user_edit_page.is_account_visible)
-        Assert.equal("Profile", amo_user_edit_page.is_profile_visible)
-        Assert.equal("Details", amo_user_edit_page.is_details_visible)
-        Assert.equal("Notifications", amo_user_edit_page.is_notification_visible)
-
-    @xfail(reason="Bugzilla 682801")
-    def test_user_can_access_the_view_profile_page(self, mozwebqa):
-        """
-        Test for litmus 15400
-        https://litmus.mozilla.org/show_test.cgi?id=15400
-        """
-
-        home_page = Home(mozwebqa)
-        home_page.login()
-        Assert.true(home_page.is_the_current_page)
-        Assert.true(home_page.header.is_user_logged_in)
-
-        view_profile_page = home_page.header.click_view_profile()
-
-        Assert.equal(view_profile_page.about_me, 'About me')
+#    def test_user_can_login_and_logout(self, mozwebqa):
+#        """ Test for litmus 7857
+#            https://litmus.mozilla.org/show_test.cgi?id=7857
+#            Test for litmus 4859
+#            https://litmus.mozilla.org/show_test.cgi?id=4859
+#        """
+#
+#        home_page = Home(mozwebqa)
+#        home_page.login()
+#        Assert.true(home_page.is_the_current_page)
+#        Assert.true(home_page.header.is_user_logged_in)
+#
+#        home_page.header.click_logout()
+#        Assert.false(home_page.header.is_user_logged_in)
+#
+#    def test_user_can_access_the_edit_profile_page(self, mozwebqa):
+#        """
+#            Test for litmus 5039
+#            https://litmus.mozilla.org/show_test.cgi?id=5039
+#        """
+#
+#        home_page = Home(mozwebqa)
+#        home_page.login()
+#        Assert.true(home_page.is_the_current_page)
+#        Assert.true(home_page.header.is_user_logged_in)
+#
+#        amo_user_edit_page = home_page.header.click_edit_profile()
+#        Assert.contains("/users/edit", amo_user_edit_page.get_url_current_page())
+#        Assert.true(amo_user_edit_page.is_the_current_page)
+#
+#        Assert.equal("My Account", amo_user_edit_page.is_account_visible)
+#        Assert.equal("Profile", amo_user_edit_page.is_profile_visible)
+#        Assert.equal("Details", amo_user_edit_page.is_details_visible)
+#        Assert.equal("Notifications", amo_user_edit_page.is_notification_visible)
+#
+#    @xfail(reason="Bugzilla 682801")
+#    def test_user_can_access_the_view_profile_page(self, mozwebqa):
+#        """
+#        Test for litmus 15400
+#        https://litmus.mozilla.org/show_test.cgi?id=15400
+#        """
+#
+#        home_page = Home(mozwebqa)
+#        home_page.login()
+#        Assert.true(home_page.is_the_current_page)
+#        Assert.true(home_page.header.is_user_logged_in)
+#
+#        view_profile_page = home_page.header.click_view_profile()
+#
+#        Assert.equal(view_profile_page.about_me, 'About me')
 
     def test_hide_email_checkbox_works(self, mozwebqa):
         home_page = Home(mozwebqa)
@@ -108,17 +108,20 @@ class TestAccounts:
         initial_state = view_profile_page.is_email_field_present
 
         edit_profile_page = home_page.header.click_edit_profile()
-        edit_profile_page.change_hide_email_state()
+#        edit_profile_page.change_hide_email_state()
         edit_profile_page.click_update_account()
 
         view_profile_page = home_page.header.click_view_profile()
         final_state = view_profile_page.is_email_field_present
 
         try:
-            Assert.not_equal(initial_state, final_state)
+            Assert.not_equal(initial_state, final_state, 'the initial state and final state are the same')
             if final_state is True:
                 credentials = mozwebqa.credentials['default']
                 Assert.equal(credentials['email'], view_profile_page.email_value, 'Actual value is not equal with the expected one.')
+
+        except Exception as exception:
+            Assert.fail(exception.msg)
 
         finally:
             edit_profile_page = home_page.header.click_edit_profile()
