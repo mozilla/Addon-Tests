@@ -117,7 +117,7 @@ class TestSearch:
         home_page = Home(mozwebqa)
         search_page = home_page.header.search_for('fox')
 
-        Assert.false(search_page.is_no_results_present, 'No results where found')
+        Assert.false(search_page.is_no_results_present, 'No results were found')
 
         results_text_summary = search_page.number_of_results_text
         Assert.not_equal(u'0 matching results', results_text_summary)
