@@ -65,6 +65,7 @@ class DiscoveryPane(Base):
     _more_ways_personas_locator = "id=more-personas"
     _up_and_coming_section = "id=up-and-coming"
     _up_and_coming_item = "//section[@id='up-and-coming']/ul/li/a[@class='addon-title']"
+    _logout_link_locator = "css=#logout"
 
     def __init__(self, testsetup, path):
         Base.__init__(self, testsetup)
@@ -139,6 +140,16 @@ class DiscoveryPane(Base):
     @property
     def up_and_coming_item_count(self):
         return int(self.selenium.get_xpath_count(self._up_and_coming_item))
+
+    @property
+    def is_logout_link_visible(self):
+        return self.selenium.is_visible(self._logout_link_locator)
+
+    def click_logout(self):
+        self.selenium.click("%s > a" % self._logout_link_locator)
+        self.selenium.wait_for_page_to_load(self.timeout)
+        from pages.home import Home
+        return Home(self.testsetup)
 
 
 class DiscoveryPersonasDetail(Base):
