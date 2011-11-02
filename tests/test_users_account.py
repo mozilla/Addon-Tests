@@ -115,7 +115,7 @@ class TestAccounts:
         final_state = view_profile_page.is_email_field_present
 
         try:
-            Assert.not_equal(initial_state, final_state, 'the initial state and final state are the same the hide email option remained unchanged')
+            Assert.not_equal(initial_state, final_state, 'The initial and final states are the same. The profile change failed.')
             if final_state is True:
                 credentials = mozwebqa.credentials['default']
                 Assert.equal(credentials['email'], view_profile_page.email_value, 'Actual value is not equal with the expected one.')
