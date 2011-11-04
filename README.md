@@ -88,12 +88,15 @@ You will need to make sure that the name of your Firefox application matches one
 Tests are run using the py.test library.  You will find examples here for running all of the tests, tests in one file and running a single test.
 
 An example of running all tests:
+
 	py.test --browser="Firefox 7 on Mac OS X" --credentials=/credentials.yaml
 	
 An example of running all of the tests in one file:
+
 	py.test --browser="Firefox 7 on Mac OS X" --credentials=/credentials.yaml -q tests/test_details_page.py
 	
 An example of running one test in a file:
+
 	py.test  --browser="Firefox 7 on Mac OS X" --credentials=/credentials.yaml -q tests/test_details_page.py -k test_that_external_link_leads_to_addon_website
 
 To run the user accounts tests:
