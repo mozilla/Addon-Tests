@@ -67,9 +67,7 @@ class Details(Base):
     _install_button_locator = "css=p[class='install-button'] > a"
     _contribute_button_locator = "css=a[id='contribute-button']"
     _rating_locator = "css=span[itemprop='rating']"
-    _whats_this_license_locator = "css=.license-faq"
-    _view_the_source_locator = "css=.source-code"
-    _complete_version_history_locator = "css=p.more > a"
+    _whats_this_license_locator = "css=.source > li:nth(1) > a"
     _description_locator = "css=div.prose"
     _register_link_locator = "css=li.account > a"
     _login_link_locator = "css=li.account > a:nth(1)"
@@ -78,9 +76,9 @@ class Details(Base):
 
     _about_addon_locator = "css=section.primary > h2"
     _more_about_addon_locator = "id=more-about"
-    _version_information_locator = "css=#detail-relnotes"
+    _version_information_locator = "id=detail-relnotes"
     _version_information_heading_locator = "css=#detail-relnotes > h2"
-    _release_version_locator = "css=div.info > h3 > a"
+    _release_version_locator = "css=div.version"
     _source_code_license_information_locator = "css=.source > li > a"
     _reviews_title_locator = "css=#reviews > h2"
     _tags_locator = "id=tagbox"
@@ -283,26 +281,6 @@ class Details(Base):
         return ("expanded" in expand_info)
 
     @property
-    def is_version_information_install_button_visible(self):
-        return self.selenium.is_visible("%s p.install-button" % self._version_information_locator)
-
-    @property
-    def is_whats_this_license_visible(self):
-        return self.selenium.is_visible(self._whats_this_license_locator)
-
-    @property
-    def is_source_code_license_information_visible(self):
-        return self.selenium.is_visible(self._source_code_license_information_locator)
-
-    @property
-    def is_view_the_source_link_visible(self):
-        return self.selenium.is_visible(self._view_the_source_locator)
-
-    @property
-    def is_complete_version_history_visible(self):
-        return self.selenium.is_visible(self._complete_version_history_locator)
-
-    @property
     def does_page_scroll_to_version_information_section(self):
         return (self.selenium.get_eval("window.pageYOffset")) > 2000
 
@@ -409,6 +387,10 @@ class Details(Base):
         #production url
         else:
             return support_url
+
+    def click_support_site_link(self):
+        self.selenium.click(self._support_link_locator)
+        self.selenium.wait_for_page_to_load(self.timeout)
 
     def _extract_url_from_link(self, url):
         #parses out extra certificate stuff from urls in staging only
@@ -530,9 +512,6 @@ class Details(Base):
 
     def click_version_info_link(self):
         self.selenium.click(self._info_link_locator)
-
-    def expand_version_information_section(self):
-        self.selenium.click("%s > a" % self._version_information_heading_locator)
 
     def click_devs_comments_title(self):
         self.selenium.click("%s > h2 > a" % self._devs_comments_section_locator)
