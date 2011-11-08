@@ -388,3 +388,19 @@ class TestDetails:
             Assert.equal(name, collection_pg.collection_name, "expected collection name doesn't match the page header")
 
             details_pg = Details(mozwebqa, 'Firebug')
+
+    def test_that_license_link_works(self, mozwebqa):
+        """
+        Litmus 25726
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25726
+        """
+        addon_name = 'Firebug'
+        details_page = Details(mozwebqa, addon_name)
+        Assert.true(details_page.is_license_link_visible)
+        license_link = details_page.license_site
+        Assert.true(license_link != '')
+        # Follow license site link
+        details_page.click_license_link()
+        # Added to follow the same logic as for support_url to compare properly
+        license_site = details_page.get_url_current_page()
+        Assert.true(license_link in license_site)

@@ -68,6 +68,7 @@ class Details(Base):
     _contribute_button_locator = "css=a[id='contribute-button']"
     _rating_locator = "css=span[itemprop='rating']"
     _whats_this_license_locator = "css=.source > li:nth(1) > a"
+    _license_link_locator = "css=.source-license > a"
     _description_locator = "css=div.prose"
     _register_link_locator = "css=li.account > a"
     _login_link_locator = "css=li.account > a:nth(1)"
@@ -185,6 +186,20 @@ class Details(Base):
         self.selenium.wait_for_page_to_load(self.timeout)
         from pages.addons_site import UserFAQ
         return UserFAQ(self.testsetup)
+
+    @property
+    def license_site(self):
+        return self.selenium.get_attribute("%s@href" % self._license_link_locator)
+
+    def click_license_link(self):
+        #self.selenium.click(self._license_link_locator)
+        #Made it selenium.open since it force to open it in new window by selenium.click
+        self.selenium.open(self.license_site)
+        self.selenium.wait_for_page_to_load(self.timeout)
+
+    @property
+    def is_license_link_visible(self):
+        return self.selenium.is_visible(self._license_link_locator)
 
     @property
     def description(self):
