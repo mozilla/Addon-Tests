@@ -76,7 +76,7 @@ class Details(Base):
 
     _about_addon_locator = "css=section.primary > h2"
     _more_about_addon_locator = "id=more-about"
-    _version_information_locator = "id=detail-relnotes"
+    _version_information_locator = "css=#detail-relnotes"
     _version_information_heading_locator = "css=#detail-relnotes > h2"
     _release_version_locator = "css=div.version"
     _source_code_license_information_locator = "css=.source > li > a"
@@ -279,6 +279,10 @@ class Details(Base):
     def is_version_information_section_expanded(self):
         expand_info = self.selenium.get_attribute("%s@class" % self._version_information_locator)
         return ("expanded" in expand_info)
+
+    @property
+    def is_version_information_content_visible(self):
+        return self.selenium.is_visible('%s > div' % self._version_information_locator)
 
     @property
     def does_page_scroll_to_version_information_section(self):
@@ -509,6 +513,9 @@ class Details(Base):
     def click_version_info_link(self):
         self.selenium.click(self._info_link_locator)
 
+    def expand_version_information_section(self):
+        self.selenium.click("%s > a" % self._version_information_heading_locator)
+
     def click_devs_comments_title(self):
         self.selenium.click("%s > h2 > a" % self._devs_comments_section_locator)
 
@@ -603,3 +610,7 @@ class Details(Base):
     @property
     def is_development_channel_content_visible(self):
         return self.selenium.is_visible('%s > div' % self._development_channel_locator)
+
+    @property
+    def is_developers_comments_content_visible(self):
+        return self.selenium.is_visible('%s > div' % self._devs_comments_section_locator)
