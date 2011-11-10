@@ -401,9 +401,9 @@ class TestDetails:
         Assert.equal("Version Information", details_page.version_information_heading)
 
         Assert.false(details_page.is_version_information_content_visible)
-        details_page.expand_version_information_section()
+        details_page.click_version_information_header()
         Assert.true(details_page.is_version_information_content_visible)
-        details_page.expand_version_information_section()
+        details_page.click_version_information_header()
         Assert.false(details_page.is_version_information_content_visible)
 
     def test_click_on_other_collections(self, mozwebqa):
