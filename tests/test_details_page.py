@@ -99,15 +99,13 @@ class TestDetails:
         details_page = Details(mozwebqa, "Firebug")
         Assert.true(details_page.is_version_information_heading_visible)
         Assert.equal(details_page.version_information_heading, "Version Information")
-        Assert.not_none(re.search('\w+', details_page.release_version))
-        Assert.not_none(re.search('\w+', details_page.source_code_license_information))
         # check that the release number matches the version number at the top of the page
         Assert.equal('Version %s' % details_page.version_number, details_page.release_version)
         """
         Updated for Litmus 25721
         https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25721
         """
-        details_page.expand_version_information_section()
+        details_page.click_version_information_header()
         Assert.true(details_page.is_version_information_section_expanded)
         Assert.true(details_page.is_source_code_license_information_visible)
         Assert.true(details_page.is_whats_this_license_visible)
