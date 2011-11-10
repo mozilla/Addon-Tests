@@ -401,6 +401,5 @@ class TestDetails:
         Assert.true(license_link != '')
         # Follow license site link
         details_page.click_license_link()
-        # Added to follow the same logic as for support_url to compare properly
         license_site = details_page.get_url_current_page()
         Assert.true(license_link in license_site)

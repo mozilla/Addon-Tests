@@ -46,6 +46,7 @@
 # ***** END LICENSE BLOCK *****
 
 import re
+import time
 
 from pages.page import Page
 from pages.base import Base
@@ -69,6 +70,7 @@ class Details(Base):
     _rating_locator = "css=span[itemprop='rating']"
     _whats_this_license_locator = "css=.source > li:nth(1) > a"
     _license_link_locator = "css=.source-license > a"
+    _license_site_title = "Open Source Initiative OSI - The BSD License:Licensing | Open Source Initiative"
     _description_locator = "css=div.prose"
     _register_link_locator = "css=li.account > a"
     _login_link_locator = "css=li.account > a:nth(1)"
@@ -192,10 +194,9 @@ class Details(Base):
         return self.selenium.get_attribute("%s@href" % self._license_link_locator)
 
     def click_license_link(self):
-        #self.selenium.click(self._license_link_locator)
-        #Made it selenium.open since it force to open it in new window by selenium.click
-        self.selenium.open(self.license_site)
-        self.selenium.wait_for_page_to_load(self.timeout)
+        test = self.selenium.click(self._license_link_locator)
+        time.sleep(2)
+        self.selenium.select_window("title=%s" % self._license_site_title)
 
     @property
     def is_license_link_visible(self):
