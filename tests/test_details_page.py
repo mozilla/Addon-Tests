@@ -405,8 +405,5 @@ class TestDetails:
         match = re.findall("http", support_site)
         #staging url
         if len(match) > 1:
-            return details_page._extract_url_from_link(support_site)
-        #production url
-        else:
-            return support_site
+            support_site = details_page._extract_url_from_link(support_site)
         Assert.true(support_link in support_site)
