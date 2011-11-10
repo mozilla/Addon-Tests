@@ -382,7 +382,7 @@ class TestDetails:
 
         Assert.true(details_page.is_devs_comments_section_visible)
         print details_page.devs_comments_title
-        Assert.equal("Developer’s Comments", details_page.devs_comments_title.encode('utf-8'))
+        Assert.equal(u"Developer\u2019s Comments", details_page.devs_comments_title)
 
         Assert.false(details_page.is_developers_comments_content_visible)
         details_page.click_devs_comments_title()
