@@ -140,9 +140,6 @@ class TestDetails:
         details_page = Details(mozwebqa, 'Adblock Plus')
         website_link = details_page.website
         Assert.true(website_link != '')
-        # Step 3 - Follow external website link
-        details_page.click_website_link()
-        Assert.true(website_link in details_page.get_url_current_page())
 
     def test_that_whats_this_link_for_source_license_links_to_an_answer_in_faq(self, mozwebqa):
         """ Test for Litmus 11530"""
@@ -398,12 +395,3 @@ class TestDetails:
         details_page = Details(mozwebqa, addon_name)
         support_link = details_page.support_url
         Assert.true(support_link != '')
-        # Follow addon support site link
-        details_page.click_support_site_link()
-        # Added to follow the same logic as for support_url to compare properly
-        support_site = details_page.get_url_current_page()
-        match = re.findall("http", support_site)
-        #staging url
-        if len(match) > 1:
-            support_site = details_page._extract_url_from_link(support_site)
-        Assert.true(support_link in support_site)

@@ -373,10 +373,6 @@ class Details(Base):
     def website(self):
         return self.selenium.get_attribute("%s@href" % self._website_locator)
 
-    def click_website_link(self):
-        self.selenium.click(self._website_locator)
-        self.selenium.wait_for_page_to_load(self.timeout)
-
     @property
     def support_url(self):
         support_url = self.selenium.get_attribute(self._support_link_locator + "%s" % "@href")
@@ -387,10 +383,6 @@ class Details(Base):
         #production url
         else:
             return support_url
-
-    def click_support_site_link(self):
-        self.selenium.click(self._support_link_locator)
-        self.selenium.wait_for_page_to_load(self.timeout)
 
     def _extract_url_from_link(self, url):
         #parses out extra certificate stuff from urls in staging only
