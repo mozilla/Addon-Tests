@@ -381,7 +381,6 @@ class TestDetails:
         details_page = Details(mozwebqa, 'Firebug')
 
         Assert.true(details_page.is_devs_comments_section_visible)
-        print details_page.devs_comments_title
         Assert.equal(u"Developer\u2019s Comments", details_page.devs_comments_title)
 
         Assert.false(details_page.is_developers_comments_content_visible)
