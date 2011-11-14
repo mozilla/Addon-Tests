@@ -102,8 +102,19 @@ class TestDetails:
         Assert.equal(details_page.version_information_heading, "Version Information")
         Assert.not_none(re.search('\w+', details_page.release_version))
         Assert.not_none(re.search('\w+', details_page.source_code_license_information))
-        # check that the release number matches the the version number at the top of the page
-        Assert.not_none(re.search(details_page.version_number, details_page.release_version))
+        # check that the release number matches the version number at the top of the page
+        Assert.equal('Version %s' % details_page.version_number, details_page.release_version)
+        """
+        Updated for Litmus 25721
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25721
+        """
+        details_page.click_version_information_header()
+        Assert.true(details_page.is_version_information_section_expanded)
+        Assert.true(details_page.is_source_code_license_information_visible)
+        Assert.true(details_page.is_whats_this_license_visible)
+        Assert.true(details_page.is_view_the_source_link_visible)
+        Assert.true(details_page.is_complete_version_history_visible)
+        Assert.true(details_page.is_version_information_install_button_visible)
 
     def test_that_reviews_are_displayed(self, mozwebqa):
         """ Test for Litmus 9890"""

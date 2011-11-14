@@ -505,6 +505,9 @@ class Details(Base):
     def click_version_info_link(self):
         self.selenium.click(self._info_link_locator)
 
+    def click_version_information_header(self):
+        self.selenium.click("%s > a" % self._version_information_heading_locator)
+
     def click_devs_comments_title(self):
         self.selenium.click("%s > h2 > a" % self._devs_comments_section_locator)
 
