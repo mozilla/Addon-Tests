@@ -81,7 +81,7 @@ class ViewProfile(Base):
 
 class User(Base):
 
-        _username_locator = "css=div.vcard h2.fn"
+        _username_locator = "css=div.vcard td.fn"
 
         @property
         def username(self):
