@@ -8,11 +8,11 @@ Skills needed for contributing effectively
 
 We love working with contributors to fill out the Selenium test coverage for addons, but it does require a few skills.   If you want to contribute automated tests to AMO, you will need to know some Python, some Selenium and you will need some basic familiarity with Github.
 
-If you know some Python, it's worth having a look at the Selenium framework to understand the basic concepts of browser based testing and especially page objects. We've got a branch which uses [Selenium RC][SeRC] and a branch which uses [Selenium Webdriver][webdriver]
+If you know some Python, it's worth having a look at the Selenium framework to understand the basic concepts of browser based testing and especially page objects. We've got a branch which uses [Selenium RC][SeRC] and a branch which uses [Selenium Webdriver][webdriver].
 
 If you need to brush up on programming but are eager to start contributing immediately, please consider helping us find bugs in Mozilla [Firefox][firefox] or find bugs in the Mozilla web-sites tested by the [WebQA][webqa] team.
 
-To brush up on  Python skills before engaging with us, [Dive Into Python][dive] is an excellent resource.  MIT also has [lecture notes on Python][mit] available through their open courseware.The programming concepts you will need to know include functions, working with classes, and some object oriented programming basics. 
+To brush up on Python skills before engaging with us, [Dive Into Python][dive] is an excellent resource.  MIT also has [lecture notes on Python][mit] available through their open courseware.The programming concepts you will need to know include functions, working with classes, and some object oriented programming basics. 
 
 [mit]: http://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-189-a-gentle-introduction-to-programming-using-python-january-iap-2011/
 [dive]: http://diveintopython.nfshost.com/toc/index.html
