@@ -119,7 +119,12 @@ class TestDetails:
         Assert.true(details_page.is_review_title_visible)
         Assert.equal(details_page.review_title, "Reviews")
         Assert.true(details_page.has_reviews)
-        Assert.not_none(re.search('(\w+\s*){1,}', details_page.review_details))
+        """ Updated for Litmus 25718"""
+        for review in details_page.reviews():
+            Assert.true(review.is_user_rating_visible)
+            Assert.not_none(re.search('(\w+\s*){1,}', review.details))
+            Assert.not_none(re.search('by \w.* on \w* \d*, 20\d*', review.review_by_info))
+        Assert.true(details_page.is_all_reviews_link_visible)
 
     def test_that_in_often_used_with_addons_are_displayed(self, mozwebqa):
         """ Test for Litmus 9890"""

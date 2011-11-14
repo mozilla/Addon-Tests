@@ -105,7 +105,7 @@ class Details(Base):
     _website_locator = "css=.links a.home"
     #other_addons
     _other_addons_by_author_locator = 'css=#author-addons'
-    _reviews_locator = "id=reviews"
+    _reviews_locator = "css=#reviews"
     _add_review_link_locator = "id=add-review"
 
     _add_to_collection_locator = "css=.collection-add.widget.collection"
@@ -136,6 +136,10 @@ class Details(Base):
     @property
     def has_reviews(self):
         return self.selenium.get_css_count(self._review_details_locator) > 0
+
+    @property
+    def is_all_reviews_link_visible(self):
+        return self.selenium.is_visible(self._all_reviews_link_locator)
 
     def click_all_reviews_link(self):
         self.selenium.click(self._all_reviews_link_locator)
@@ -223,10 +227,6 @@ class Details(Base):
     @property
     def review_title(self):
         return self.selenium.get_text(self._reviews_title_locator)
-
-    @property
-    def review_details(self):
-        return self.selenium.get_text(self._review_details_locator)
 
     @property
     def often_used_with_header(self):
@@ -518,7 +518,7 @@ class Details(Base):
     @property
     def reviews_count(self):
         self.wait_for_element_visible(self._reviews_locator)
-        return int(self.selenium.get_css_count(self._reviews_locator))
+        return int(self.selenium.get_css_count("%s div" % self._reviews_locator))
 
     @property
     def version_info_link(self):
@@ -576,6 +576,9 @@ class Details(Base):
 
         _reviews_locator = "css=#reviews div"  # Base locator
         _username_locator = "p.byline a"
+        _user_rating_locator = "span"
+        _by_line = ".byline"
+        _details = ".description"
 
         def __init__(self, testsetup, lookup):
             Page.__init__(self, testsetup)
@@ -603,6 +606,18 @@ class Details(Base):
             self.selenium.wait_for_page_to_load(self.timeout)
             from pages.user import User
             return User(self.testsetup)
+
+        @property
+        def details(self):
+            return self.selenium.get_text(self.absolute_locator(self._details))
+
+        @property
+        def review_by_info(self):
+            return self.selenium.get_text(self.absolute_locator(self._by_line))
+
+        @property
+        def is_user_rating_visible(self):
+            return self.selenium.is_visible(self.absolute_locator(self._user_rating_locator))
 
     def click_to_write_review(self):
         self.selenium.click(self._add_review_link_locator)
