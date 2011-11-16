@@ -113,6 +113,11 @@ class Details(Base):
     _add_to_collection_widget_button_locator = "css=.register-button .button"
     _add_to_collection_widget_login_link_locator = 'css=.collection-add-login a:nth(1)'
 
+    _share_this_addon_locator = "css=.share.widget"
+    _share_this_addon_widget_locator = "id=sharing-popup"
+    _share_link_locator = "css=.share-link a"
+    _share_count_locator = "css=.share-count"
+
     _development_channel_locator = "css=#beta-channel"
 
     def __init__(self, testsetup, addon_name=None):
@@ -470,6 +475,24 @@ class Details(Base):
     @property
     def collection_widget_login_link(self):
         return self.selenium.get_text(self._add_to_collection_widget_login_link_locator)
+
+    @property
+    def share_this_addon_widget_link(self):
+        return self.selenium.get_text(self._share_this_addon_locator)
+
+    def click_share_this_addon_widget(self):
+        self.selenium.click(self._share_this_addon_locator)
+        self.wait_for_element_visible(self._share_this_addon_widget_locator)
+
+    @property
+    def share_links_count(self):
+        return self.selenium.get_css_count(self._share_link_locator)
+
+    def share_link(self, link_no):
+        return self.selenium.get_text("%s:nth(%s)" % (self._share_link_locator, link_no))
+
+    def share_count(self, link_no):
+        return self.selenium.get_text("%s:nth(%s)" % (self._share_count_locator, link_no))
 
     class ImagePreviewer(Page):
 
