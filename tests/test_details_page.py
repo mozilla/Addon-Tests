@@ -298,7 +298,6 @@ class TestDetails:
         Assert.equal(details_page.breadcrumbs[1].name, 'Extensions')
         Assert.equal(details_page.breadcrumbs[2].name, addon_name)
         Assert.equal(details_page.breadcrumbs[3].name, 'Versions')
-        
 
     def test_that_clicking_info_link_slides_down_page_to_version_info(self, mozwebqa):
         """ Test for Litmus 25725
