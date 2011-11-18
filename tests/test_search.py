@@ -117,12 +117,12 @@ class TestSearch:
         home_page = Home(mozwebqa)
         search_page = home_page.header.search_for('fox')
 
-        Assert.false(search_page.is_no_results_present, 'No results where found')
+        Assert.false(search_page.is_no_results_present, 'No results were found')
 
-        results_text_sumary = search_page.number_of_results_text
-        Assert.false('0 matching results' in results_text_sumary)
+        results_text_summary = search_page.number_of_results_text
+        Assert.not_equal(u'0 matching results', results_text_summary)
 
-        Assert.true(int(results_text_sumary.split()[0]) > 1)
+        Assert.true(int(results_text_summary.split()[0]) > 1)
 
     @xfail(reason="disabled due to bug 619052")
     def test_that_blank_search_returns_results(self, mozwebqa):
@@ -179,6 +179,7 @@ class TestSearch:
         Assert.greater(search_page.result_count, 0)
         Assert.true(int(search_page.number_of_results_text.split()[0]) > 0)
 
+    @xfail(reason="disabled due to bug 698429")
     def test_sorting_by_downloads(self, mozwebqa):
         """ Litmus 17342
             https://litmus.mozilla.org/show_test.cgi?id=17342 """
@@ -195,6 +196,7 @@ class TestSearch:
         Assert.true('sort=created' in search_page.get_url_current_page())
         Assert.is_sorted_descending([i.created_date for i in search_page.results()])
 
+    @xfail(reason="See bug 698646")
     def test_sorting_by_most_recently_updated(self, mozwebqa):
         """ Litmus 17345
             https://litmus.mozilla.org/show_test.cgi?id=17345 """
@@ -211,16 +213,17 @@ class TestSearch:
         Assert.true('sort=users' in search_page.get_url_current_page())
         Assert.is_sorted_descending([i.users for i in search_page.results()])
 
-    @xfail(reason="To-do: https://www.pivotaltracker.com/story/show/19639893")
     def test_that_searching_for_a_tag_returns_results(self, mozwebqa):
         """Litmus 7848
         https://litmus.mozilla.org/show_test.cgi?id=7848"""
+
         home_page = Home(mozwebqa)
         search_page = home_page.header.search_for('development')
+        result_count = search_page.filter.results_count
+        Assert.greater(result_count, 0)
 
-        Assert.true(search_page.result_count > 0)
-        Assert.equal(search_page.refine_results.tag('development').name, 'development')
-        Assert.true(search_page.refine_results.tag_count > 1)
+        search_page.filter.tag('development').click()
+        Assert.greater_equal(result_count, search_page.filter.results_count)
 
     def test_that_search_results_return_20_results_per_page(self, mozwebqa):
         """Litmus 17346
