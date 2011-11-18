@@ -282,6 +282,23 @@ class TestDetails:
 
         Assert.equal(detail_page.breadcrumb, 'Add-ons for Firefox Extensions Firebug')
 
+    def test_that_version_page_has_breadcrumb(self, mozwebqa):
+        """
+        Litmus 12038
+        https://litmus.mozilla.org/show_test.cgi?id=12038
+        """
+        addon_name = 'Firebug'
+        details_page = Details(mozwebqa, addon_name)
+
+        details_page.click_version_information_header()
+        details_page.click_complete_version_history()
+        Assert.true(details_page.is_breadcrumb_menu_visible)
+
+        Assert.equal(details_page.breadcrumbs[0].name, 'Add-ons for Firefox')
+        Assert.equal(details_page.breadcrumbs[1].name, 'Extensions')
+        Assert.equal(details_page.breadcrumbs[2].name, addon_name)
+        Assert.equal(details_page.breadcrumbs[3].name, 'Versions')
+
     def test_that_clicking_info_link_slides_down_page_to_version_info(self, mozwebqa):
         """ Test for Litmus 25725
             https://litmus.mozilla.org/show_test.cgi?id=25725 """

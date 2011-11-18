@@ -321,6 +321,10 @@ class Details(Base):
     def is_complete_version_history_visible(self):
         return self.selenium.is_visible(self._complete_version_history_locator)
 
+    def click_complete_version_history(self):
+        self.selenium.click(self._complete_version_history_locator)
+        self.selenium.wait_for_page_to_load(self.timeout)
+
     @property
     def does_page_scroll_to_version_information_section(self):
         return (self.selenium.get_eval("window.pageYOffset")) > 2000
