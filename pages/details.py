@@ -110,9 +110,10 @@ class Details(Base):
     _add_review_link_locator = "id=add-review"
 
     _add_to_collection_locator = "css=.collection-add.widget.collection"
-    _add_to_collection_widget_locator = "css=.collection-add-login"
+    _add_to_collection_widget_locator = "id=add-to-collection"
     _add_to_collection_widget_button_locator = "css=.register-button .button"
     _add_to_collection_widget_login_link_locator = 'css=.collection-add-login a:nth(1)'
+    _add_to_collection_widget_create_new_locator = 'css=#ajax_new_collection a'
 
     _share_this_addon_locator = "css=.share.widget"
     _share_this_addon_widget_locator = "id=sharing-popup"
@@ -480,6 +481,10 @@ class Details(Base):
     @property
     def is_collection_widget_login_link_visible(self):
         return self.selenium.is_visible(self._add_to_collection_widget_login_link_locator)
+
+    @property
+    def is_collection_widget_create_new_visible(self):
+        return self.selenium.is_visible(self._add_to_collection_widget_create_new_locator)
 
     @property
     def collection_widget_login_link(self):

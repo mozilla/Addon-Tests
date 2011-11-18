@@ -365,6 +365,20 @@ class TestDetails:
         Assert.true(details_page.is_collection_widget_login_link_visible)
         Assert.equal(details_page.collection_widget_login_link, 'log in to your current account')
 
+    def test_that_add_to_collection_flyout_for_logged_users(self, mozwebqa):
+        """
+        Litmus 25712
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25712
+        """
+        home_page = Home(mozwebqa)
+        home_page.login()
+        Assert.true(home_page.header.is_user_logged_in)
+
+        details_page = Details(mozwebqa, 'Firebug')
+        details_page.click_add_to_collection_widget()
+        Assert.true(details_page.is_collection_widget_visible)
+        Assert.true(details_page.is_collection_widget_create_new_visible)
+
     def test_that_the_development_channel_expands(self, mozwebqa):
         """
         Litmus 25711
