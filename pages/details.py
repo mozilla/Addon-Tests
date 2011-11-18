@@ -67,6 +67,7 @@ class Details(Base):
     _install_button_locator = "css=p[class='install-button'] > a"
     _contribute_button_locator = "css=a[id='contribute-button']"
     _rating_locator = "css=span[itemprop='rating']"
+    _license_link_locator = "css=.source-license > a"
     _whats_this_license_locator = "css=.license-faq"
     _view_the_source_locator = "css=.source-code"
     _complete_version_history_locator = "css=p.more > a"
@@ -187,6 +188,14 @@ class Details(Base):
         self.selenium.wait_for_page_to_load(self.timeout)
         from pages.addons_site import UserFAQ
         return UserFAQ(self.testsetup)
+
+    @property
+    def license_site(self):
+        return self.selenium.get_attribute("%s@href" % self._license_link_locator)
+
+    @property
+    def is_license_link_visible(self):
+        return self.selenium.is_visible(self._license_link_locator)
 
     @property
     def description(self):

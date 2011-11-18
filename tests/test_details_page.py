@@ -438,3 +438,14 @@ class TestDetails:
         details_page = Details(mozwebqa, addon_name)
         support_link = details_page.support_url
         Assert.true(support_link != '')
+
+    def test_that_license_link_works(self, mozwebqa):
+        """
+        Litmus 25726
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25726
+        """
+        addon_name = 'Firebug'
+        details_page = Details(mozwebqa, addon_name)
+        Assert.true(details_page.is_license_link_visible)
+        license_link = details_page.license_site
+        Assert.true(license_link != '')
