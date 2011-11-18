@@ -381,6 +381,38 @@ class TestDetails:
         details_page.click_development_channel()
         Assert.false(details_page.is_development_channel_content_visible)
 
+    def test_that_the_developers_comments_expands(self, mozwebqa):
+        """
+        Litmus 25719
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25719
+        """
+        details_page = Details(mozwebqa, 'Firebug')
+
+        Assert.true(details_page.is_devs_comments_section_visible)
+        Assert.equal(u"Developer\u2019s Comments", details_page.devs_comments_title)
+
+        Assert.false(details_page.is_developers_comments_content_visible)
+        details_page.click_devs_comments_title()
+        Assert.true(details_page.is_developers_comments_content_visible)
+        details_page.click_devs_comments_title()
+        Assert.false(details_page.is_developers_comments_content_visible)
+
+    def test_that_the_version_information_expands(self, mozwebqa):
+        """
+        Litmus 25720
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25720
+        """
+        details_page = Details(mozwebqa, 'Firebug')
+
+        Assert.true(details_page.is_version_information_heading_visible)
+        Assert.equal("Version Information", details_page.version_information_heading)
+
+        Assert.false(details_page.is_version_information_content_visible)
+        details_page.click_version_information_header()
+        Assert.true(details_page.is_version_information_content_visible)
+        details_page.click_version_information_header()
+        Assert.false(details_page.is_version_information_content_visible)
+
     def test_click_on_other_collections(self, mozwebqa):
         """
         Litmus 25722

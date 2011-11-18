@@ -283,6 +283,10 @@ class Details(Base):
         return ("expanded" in expand_info)
 
     @property
+    def is_version_information_content_visible(self):
+        return self.selenium.is_visible('%s > div' % self._version_information_locator)
+
+    @property
     def is_version_information_install_button_visible(self):
         return self.selenium.is_visible("%s p.install-button" % self._version_information_locator)
 
@@ -624,3 +628,7 @@ class Details(Base):
     @property
     def is_development_channel_content_visible(self):
         return self.selenium.is_visible('%s > div' % self._development_channel_locator)
+
+    @property
+    def is_developers_comments_content_visible(self):
+        return self.selenium.is_visible('%s > div' % self._devs_comments_section_locator)
