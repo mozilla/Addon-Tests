@@ -449,3 +449,16 @@ class TestDetails:
         Assert.true(details_page.is_license_link_visible)
         license_link = details_page.license_site
         Assert.true(license_link != '')
+
+    def test_that_share_this_addon_works(self, mozwebqa):
+        """
+        Litmus 25713
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25713
+        """
+        details_page = Details(mozwebqa, 'Firebug')
+        share_links = ["Digg this!", "Post to Facebook", "Add to Delicious", "Post to MySpace", "Share on FriendFeed", "Post to Twitter"]
+        Assert.equal(details_page.share_this_addon_widget_link, "Share this Add-on")
+        details_page.click_share_this_addon_widget()
+        for i in range(details_page.share_links_count):
+            Assert.equal(share_links[i], details_page.share_link(i))
+            Assert.not_none(re.match('([0-9]* \w+)', details_page.share_count(i)))
