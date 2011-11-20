@@ -67,6 +67,7 @@ class Details(Base):
     _install_button_locator = "css=p[class='install-button'] > a"
     _contribute_button_locator = "css=a[id='contribute-button']"
     _rating_locator = "css=span[itemprop='rating']"
+    _license_link_locator = "css=.source-license > a"
     _whats_this_license_locator = "css=.license-faq"
     _view_the_source_locator = "css=.source-code"
     _complete_version_history_locator = "css=p.more > a"
@@ -109,9 +110,15 @@ class Details(Base):
     _add_review_link_locator = "id=add-review"
 
     _add_to_collection_locator = "css=.collection-add.widget.collection"
-    _add_to_collection_widget_locator = "css=.collection-add-login"
+    _add_to_collection_widget_locator = "id=add-to-collection"
     _add_to_collection_widget_button_locator = "css=.register-button .button"
     _add_to_collection_widget_login_link_locator = 'css=.collection-add-login a:nth(1)'
+    _add_to_collection_widget_create_new_locator = 'css=#ajax_new_collection a'
+
+    _share_this_addon_locator = "css=.share.widget"
+    _share_this_addon_widget_locator = "id=sharing-popup"
+    _share_link_locator = "css=.share-link a"
+    _share_count_locator = "css=.share-count"
 
     _development_channel_locator = "css=#beta-channel"
 
@@ -191,6 +198,14 @@ class Details(Base):
         self.selenium.wait_for_page_to_load(self.timeout)
         from pages.addons_site import UserFAQ
         return UserFAQ(self.testsetup)
+
+    @property
+    def license_site(self):
+        return self.selenium.get_attribute("%s@href" % self._license_link_locator)
+
+    @property
+    def is_license_link_visible(self):
+        return self.selenium.is_visible(self._license_link_locator)
 
     @property
     def description(self):
@@ -283,6 +298,10 @@ class Details(Base):
         return ("expanded" in expand_info)
 
     @property
+    def is_version_information_content_visible(self):
+        return self.selenium.is_visible('%s > div' % self._version_information_locator)
+
+    @property
     def is_version_information_install_button_visible(self):
         return self.selenium.is_visible("%s p.install-button" % self._version_information_locator)
 
@@ -301,6 +320,10 @@ class Details(Base):
     @property
     def is_complete_version_history_visible(self):
         return self.selenium.is_visible(self._complete_version_history_locator)
+
+    def click_complete_version_history(self):
+        self.selenium.click(self._complete_version_history_locator)
+        self.selenium.wait_for_page_to_load(self.timeout)
 
     @property
     def does_page_scroll_to_version_information_section(self):
@@ -395,10 +418,6 @@ class Details(Base):
     def website(self):
         return self.selenium.get_attribute("%s@href" % self._website_locator)
 
-    def click_website_link(self):
-        self.selenium.click(self._website_locator)
-        self.selenium.wait_for_page_to_load(self.timeout)
-
     @property
     def support_url(self):
         support_url = self.selenium.get_attribute(self._support_link_locator + "%s" % "@href")
@@ -468,8 +487,30 @@ class Details(Base):
         return self.selenium.is_visible(self._add_to_collection_widget_login_link_locator)
 
     @property
+    def is_collection_widget_create_new_visible(self):
+        return self.selenium.is_visible(self._add_to_collection_widget_create_new_locator)
+
+    @property
     def collection_widget_login_link(self):
         return self.selenium.get_text(self._add_to_collection_widget_login_link_locator)
+
+    @property
+    def share_this_addon_widget_link(self):
+        return self.selenium.get_text(self._share_this_addon_locator)
+
+    def click_share_this_addon_widget(self):
+        self.selenium.click(self._share_this_addon_locator)
+        self.wait_for_element_visible(self._share_this_addon_widget_locator)
+
+    @property
+    def share_links_count(self):
+        return self.selenium.get_css_count(self._share_link_locator)
+
+    def share_link(self, link_no):
+        return self.selenium.get_text("%s:nth(%s)" % (self._share_link_locator, link_no))
+
+    def share_count(self, link_no):
+        return self.selenium.get_text("%s:nth(%s)" % (self._share_count_locator, link_no))
 
     class ImagePreviewer(Page):
 
@@ -643,3 +684,7 @@ class Details(Base):
     @property
     def is_development_channel_content_visible(self):
         return self.selenium.is_visible('%s > div' % self._development_channel_locator)
+
+    @property
+    def is_developers_comments_content_visible(self):
+        return self.selenium.is_visible('%s > div' % self._devs_comments_section_locator)

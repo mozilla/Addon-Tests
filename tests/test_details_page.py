@@ -94,11 +94,14 @@ class TestDetails:
         Assert.equal(details_page.about_addon, "About this Add-on")
         Assert.not_none(re.match('(\w+\s*){3,}', details_page.description))
 
+    # TODO expand the Version Information section and check that the required details are present/visible/correct
     def test_that_version_information_is_displayed(self, mozwebqa):
         """ Test for Litmus 9890"""
         details_page = Details(mozwebqa, "Firebug")
         Assert.true(details_page.is_version_information_heading_visible)
         Assert.equal(details_page.version_information_heading, "Version Information")
+        Assert.not_none(re.search('\w+', details_page.release_version))
+        Assert.not_none(re.search('\w+', details_page.source_code_license_information))
         # check that the release number matches the version number at the top of the page
         Assert.equal('Version %s' % details_page.version_number, details_page.release_version)
         """
@@ -153,9 +156,6 @@ class TestDetails:
         details_page = Details(mozwebqa, 'Adblock Plus')
         website_link = details_page.website
         Assert.true(website_link != '')
-        # Step 3 - Follow external website link
-        details_page.click_website_link()
-        Assert.true(website_link in details_page.get_url_current_page())
 
     def test_that_whats_this_link_for_source_license_links_to_an_answer_in_faq(self, mozwebqa):
         """ Test for Litmus 11530"""
@@ -287,6 +287,23 @@ class TestDetails:
 
         Assert.equal(detail_page.breadcrumb, 'Add-ons for Firefox Extensions Firebug')
 
+    def test_that_version_page_has_breadcrumb(self, mozwebqa):
+        """
+        Litmus 12038
+        https://litmus.mozilla.org/show_test.cgi?id=12038
+        """
+        addon_name = 'Firebug'
+        details_page = Details(mozwebqa, addon_name)
+
+        details_page.click_version_information_header()
+        details_page.click_complete_version_history()
+        Assert.true(details_page.is_breadcrumb_menu_visible)
+
+        Assert.equal(details_page.breadcrumbs[0].name, 'Add-ons for Firefox')
+        Assert.equal(details_page.breadcrumbs[1].name, 'Extensions')
+        Assert.equal(details_page.breadcrumbs[2].name, addon_name)
+        Assert.equal(details_page.breadcrumbs[3].name, 'Versions')
+
     def test_that_clicking_info_link_slides_down_page_to_version_info(self, mozwebqa):
         """ Test for Litmus 25725
             https://litmus.mozilla.org/show_test.cgi?id=25725 """
@@ -370,6 +387,20 @@ class TestDetails:
         Assert.true(details_page.is_collection_widget_login_link_visible)
         Assert.equal(details_page.collection_widget_login_link, 'log in to your current account')
 
+    def test_that_add_to_collection_flyout_for_logged_users(self, mozwebqa):
+        """
+        Litmus 25712
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25712
+        """
+        home_page = Home(mozwebqa)
+        home_page.login()
+        Assert.true(home_page.header.is_user_logged_in)
+
+        details_page = Details(mozwebqa, 'Firebug')
+        details_page.click_add_to_collection_widget()
+        Assert.true(details_page.is_collection_widget_visible)
+        Assert.true(details_page.is_collection_widget_create_new_visible)
+
     def test_that_the_development_channel_expands(self, mozwebqa):
         """
         Litmus 25711
@@ -386,6 +417,38 @@ class TestDetails:
         details_page.click_development_channel()
         Assert.false(details_page.is_development_channel_content_visible)
 
+    def test_that_the_developers_comments_expands(self, mozwebqa):
+        """
+        Litmus 25719
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25719
+        """
+        details_page = Details(mozwebqa, 'Firebug')
+
+        Assert.true(details_page.is_devs_comments_section_visible)
+        Assert.equal(u"Developer\u2019s Comments", details_page.devs_comments_title)
+
+        Assert.false(details_page.is_developers_comments_content_visible)
+        details_page.click_devs_comments_title()
+        Assert.true(details_page.is_developers_comments_content_visible)
+        details_page.click_devs_comments_title()
+        Assert.false(details_page.is_developers_comments_content_visible)
+
+    def test_that_the_version_information_expands(self, mozwebqa):
+        """
+        Litmus 25720
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25720
+        """
+        details_page = Details(mozwebqa, 'Firebug')
+
+        Assert.true(details_page.is_version_information_heading_visible)
+        Assert.equal("Version Information", details_page.version_information_heading)
+
+        Assert.false(details_page.is_version_information_content_visible)
+        details_page.click_version_information_header()
+        Assert.true(details_page.is_version_information_content_visible)
+        details_page.click_version_information_header()
+        Assert.false(details_page.is_version_information_content_visible)
+
     def test_click_on_other_collections(self, mozwebqa):
         """
         Litmus 25722
@@ -401,3 +464,37 @@ class TestDetails:
             Assert.equal(name, collection_pg.collection_name, "expected collection name doesn't match the page header")
 
             details_pg = Details(mozwebqa, 'Firebug')
+
+    def test_that_support_site_link_works(self, mozwebqa):
+        """
+        Litmus 25728
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25728
+        """
+        addon_name = 'Firebug'
+        details_page = Details(mozwebqa, addon_name)
+        support_link = details_page.support_url
+        Assert.true(support_link != '')
+
+    def test_that_license_link_works(self, mozwebqa):
+        """
+        Litmus 25726
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25726
+        """
+        addon_name = 'Firebug'
+        details_page = Details(mozwebqa, addon_name)
+        Assert.true(details_page.is_license_link_visible)
+        license_link = details_page.license_site
+        Assert.true(license_link != '')
+
+    def test_that_share_this_addon_works(self, mozwebqa):
+        """
+        Litmus 25713
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25713
+        """
+        details_page = Details(mozwebqa, 'Firebug')
+        share_links = ["Digg this!", "Post to Facebook", "Add to Delicious", "Post to MySpace", "Share on FriendFeed", "Post to Twitter"]
+        Assert.equal(details_page.share_this_addon_widget_link, "Share this Add-on")
+        details_page.click_share_this_addon_widget()
+        for i in range(details_page.share_links_count):
+            Assert.equal(share_links[i], details_page.share_link(i))
+            Assert.not_none(re.match('([0-9]* \w+)', details_page.share_count(i)))
