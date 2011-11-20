@@ -123,7 +123,7 @@ class TestDetails:
         for review in details_page.reviews():
             Assert.true(review.is_user_rating_visible)
             Assert.not_none(re.search('(\w+\s*){1,}', review.details))
-            Assert.not_none(re.search('by \w.* on \w* \d*, 20\d*', review.review_by_info))
+            Assert.not_none(re.search('by \w.* on \w* \d*, 20\d*', review.byline))
         Assert.true(details_page.is_all_reviews_link_visible)
 
     def test_that_in_often_used_with_addons_are_displayed(self, mozwebqa):

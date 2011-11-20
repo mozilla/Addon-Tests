@@ -577,7 +577,7 @@ class Details(Base):
         _reviews_locator = "css=#reviews div"  # Base locator
         _username_locator = "p.byline a"
         _user_rating_locator = "span"
-        _by_line = ".byline"
+        _byline = ".byline"
         _details = ".description"
 
         def __init__(self, testsetup, lookup):
@@ -612,8 +612,8 @@ class Details(Base):
             return self.selenium.get_text(self.absolute_locator(self._details))
 
         @property
-        def review_by_info(self):
-            return self.selenium.get_text(self.absolute_locator(self._by_line))
+        def byline(self):
+            return self.selenium.get_text(self.absolute_locator(self._byline))
 
         @property
         def is_user_rating_visible(self):
