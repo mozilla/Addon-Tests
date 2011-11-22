@@ -86,7 +86,7 @@ class TestHome:
         home_page = Home(mozwebqa)
 
         Assert.true(home_page.is_featured_personas_visible, "Featured Personas region is not visible")
-        Assert.equal(home_page.fetaured_personas_title, u"Featured Personas See all \xbb", "Featured Personas region title doesn't match")
+        Assert.equal(home_page.featured_personas_title, u"Featured Personas See all \xbb", "Featured Personas region title doesn't match")
 
         Assert.equal(home_page.featured_personas_count, 6)
 
@@ -100,6 +100,25 @@ class TestHome:
 
         Assert.true(featured_persona_page.is_the_current_page)
         Assert.equal(featured_persona_page.persona_header, 'Personas')
+
+    def test_that_featured_collections_exist_on_the_Home(self, mozwebqa):
+        """
+        Litmus 25805
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25805
+        """
+        home_page = Home(mozwebqa)
+        Assert.equal(home_page.featured_collections_title, u"Featured Collections See all \xbb", "Featured Collection region title doesn't match")
+        Assert.equal(home_page.featured_collections_visible_count, 4)
+
+    def test_that_clicking_see_all_collections_link_works(self, mozwebqa):
+        """
+        Litmus 25806
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25806
+        """
+        home_page = Home(mozwebqa)
+        featured_collection_page = home_page.click_featured_collections_see_all_link()
+        Assert.true(featured_collection_page.is_the_current_page)
+        Assert.true(featured_collection_page.get_url_current_page().endswith('/collections/?sort=featured'))
 
     def test_that_extensions_link_loads_extensions_page(self, mozwebqa):
         """
