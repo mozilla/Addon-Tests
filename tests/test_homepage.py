@@ -85,8 +85,8 @@ class TestHome:
         """
         home_page = Home(mozwebqa)
 
-        Assert.true(home_page.is_featured_personas_visible, "Featured Personas region is not visible")
-        Assert.equal(home_page.featured_personas_title, u"Featured Personas See all \xbb", "Featured Personas region title doesn't match")
+        Assert.true(home_page.is_featured_personas_visible, 'Featured Personas region is not visible')
+        Assert.equal(home_page.featured_personas_title, u'Featured Personas See all \xbb', 'Featured Personas region title doesn\'t match')
 
         Assert.equal(home_page.featured_personas_count, 6)
 
@@ -107,7 +107,7 @@ class TestHome:
         https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25805
         """
         home_page = Home(mozwebqa)
-        Assert.equal(home_page.featured_collections_title, u"Featured Collections See all \xbb", "Featured Collection region title doesn't match")
+        Assert.equal(home_page.featured_collections_title, u'Featured Collections See all \xbb', 'Featured Collection region title doesn\'t match')
         Assert.equal(home_page.featured_collections_visible_count, 4)
 
     def test_that_clicking_see_all_collections_link_works(self, mozwebqa):
@@ -156,7 +156,7 @@ class TestHome:
             for i in range(len(card_items_list)):
                 Assert.equal(card_items_list[i], card_items[i].name)
 
-                if i < 3 and menu_nav.name != u"More\u2026":
-                    Assert.true(card_items[i].is_featured, "%s is not highlighted" % card_items[i].name)
+                if i < 3 and menu_nav.name != u'More\u2026':
+                    Assert.true(card_items[i].is_featured, '%s is not highlighted' % card_items[i].name)
                 else:
-                    Assert.false(card_items[i].is_featured, "%s is highlighted" % card_items[i].name)
+                    Assert.false(card_items[i].is_featured, '%s is highlighted' % card_items[i].name)

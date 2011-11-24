@@ -56,7 +56,7 @@ class Home(Base):
     _themes_link_locator = "css=#themes > a"
     _personas_link_locator = "css=#personas > a"
     _collections_link_locator = "css=#collections > a"
-    _first_addon_locator = "css=div.summary > a > h3"
+    _first_addon_locator = "css=div.summary > h3"
     _other_applications_link_locator = "id=other-apps"
 
     #Most Popular List
