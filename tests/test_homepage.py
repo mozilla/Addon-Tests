@@ -78,7 +78,7 @@ class TestHome:
         details_page = home_page.click_on_first_addon()
         Assert.true(details_page.is_the_current_page)
 
-    def test_that_featured_personas_exist_on_the_Home(self, mozwebqa):
+    def test_that_featured_personas_exist_on_the_home(self, mozwebqa):
         """
         Litmus29698
         https://litmus.mozilla.org/show_test.cgi?id=29698
@@ -101,7 +101,7 @@ class TestHome:
         Assert.true(featured_persona_page.is_the_current_page)
         Assert.equal(featured_persona_page.persona_header, 'Personas')
 
-    def test_that_featured_collections_exist_on_the_Home(self, mozwebqa):
+    def test_that_featured_collections_exist_on_the_home(self, mozwebqa):
         """
         Litmus 25805
         https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25805
