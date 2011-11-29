@@ -56,7 +56,7 @@ class Home(Base):
     _themes_link_locator = "css=#themes > a"
     _personas_link_locator = "css=#personas > a"
     _collections_link_locator = "css=#collections > a"
-    _first_addon_locator = "css=div.summary > a > h3"
+    _first_addon_locator = "css=div.summary > h3"
     _other_applications_link_locator = "id=other-apps"
 
     #Most Popular List
@@ -72,6 +72,8 @@ class Home(Base):
     _featured_personas_locator = "id=featured-personas"
     _featured_personas_title_locator = "css=#featured-personas h2"
     _featured_personas_items_locator = "css=#featured-personas li"
+
+    _featured_collections_locator = "css=#featured-collections"
 
     _category_list_locator = "css=ul#side-categories"
 
@@ -104,6 +106,12 @@ class Home(Base):
 
     def click_collections(self):
         self.selenium.click(self._collections_link_locator)
+        self.selenium.wait_for_page_to_load(self.timeout)
+        from pages.collection import Collections
+        return Collections(self.testsetup)
+
+    def click_featured_collections_see_all_link(self):
+        self.selenium.click('%s h2 a' % self._featured_collections_locator)
         self.selenium.wait_for_page_to_load(self.timeout)
         from pages.collection import Collections
         return Collections(self.testsetup)
@@ -142,8 +150,20 @@ class Home(Base):
         return self.selenium.get_css_count(self._featured_personas_items_locator)
 
     @property
-    def fetaured_personas_title(self):
+    def featured_personas_title(self):
         return self.selenium.get_text(self._featured_personas_title_locator)
+
+    @property
+    def featured_collections_title(self):
+        return self.selenium.get_text('%s h2' % self._featured_collections_locator)
+
+    @property
+    def featured_collections_visible_count(self):
+        counter = 0
+        for i in range(self.selenium.get_css_count('%s li' % self._featured_collections_locator)):
+            if self.selenium.is_visible('%s li:nth(%s)' % (self._featured_collections_locator, i)):
+                counter += 1
+        return counter
 
     def click_on_first_addon(self):
         self.selenium.click(self._first_addon_locator)
