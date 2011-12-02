@@ -13,14 +13,14 @@
 # for the specific language governing rights and limitations under the
 # License.
 #
-# The Original Code is Mozilla WebQA Selenium Tests.
+# The Original Code is Mozilla WebQA Tests.
 #
-# The Initial Developer of the Original Code is
-# Mozilla.
+# The Initial Developer of the Original Code is Mozilla.
+#
 # Portions created by the Initial Developer are Copyright (C) 2011
 # the Initial Developer. All Rights Reserved.
 #
-# Contributor(s): Dave Hunt <dhunt@mozilla.com>
+# Contributor(s):
 #                 Bebe <florin.strugariu@softvision.ro>
 #
 # Alternatively, the contents of this file may be used under the terms of
@@ -36,11 +36,3 @@
 # the terms of any one of the MPL, the GPL or the LGPL.
 #
 # ***** END LICENSE BLOCK *****
-
-import mozwebqa
-
-def pytest_runtest_setup(item):
-    mozwebqa.TestSetup.site_version = 'impala' in item.keywords and '/i' or ''
-
-def pytest_funcarg__mozwebqa(request):
-    return mozwebqa.TestSetup(request)

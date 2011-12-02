@@ -36,56 +36,40 @@
 #
 # ***** END LICENSE BLOCK *****
 
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.action_chains import ActionChains
+
 from pages.page import Page
 
 
 class HeaderMenu(Page):
-#This class access the header area from the top of the AMO impala pages
-#to access it just use:
-#    HeaderMenu(self.testsetup, lookup)
-#Where lookup is:
-#    -the menu name you want to access;
-#    -the menu item number you want to access;
-#Ex:
-#    HeaderMenu(self.testsetup, 'Extensions') returns the Extension menu
-#    HeaderMenu(self.testsetup, 1) returns the Personas menu
+    #This class access the header area from the top of the AMO impala pages
+    #to access it just use:
+    #    HeaderMenu(self.testsetup, lookup)
+    #Where lookup is:
+    #    -the menu name you want to access;
+    #    -the menu item number you want to access;
+    #Ex:
+    #    HeaderMenu(self.testsetup, 'Extensions') returns the Extension menu
+    #    HeaderMenu(self.testsetup, 1) returns the Personas menu
 
-    _header_menu_locator = 'css=#site-nav > ul > li'
-    _link_locator = '> a'
-    _menu_count_locator = '>ul > li'
+    _header_menu_locator = (By.XPATH, '//nav[@id=\'site-nav\']/ul/li')
+    _link_locator = (By.CSS_SELECTOR, 'a')
+    _header_submenu_list_locator = (By.CSS_SELECTOR, 'ul > li')
 
     def __init__(self, testsetup, lookup):
         Page.__init__(self, testsetup)
-        self.lookup = lookup
-
-    def absolute_locator(self, relative_locator):
-        return self._root_locator + relative_locator
-
-    @property
-    def _root_locator(self):
-        if type(self.lookup) == int:
-            # lookup by index
-            return "%s:nth(%s) " % (self._header_menu_locator, self.lookup)
+        if type(lookup) == int:
+            self._root_element = self.selenium.find_elements(*self._header_menu_locator)[lookup]
         else:
-            # lookup by name
-            return "%s:contains(%s) " % (self._header_menu_locator, self.lookup)
-
-    @property
-    def _menu_count(self):
-        return self.selenium.get_css_count(self.absolute_locator(self._menu_count_locator))
-
-    @property
-    def menu(self):
-        #TODO: hover
-        return [self.Menu(self.testsetup, i, self.absolute_locator(self._menu_count_locator)) for i in range(self._menu_count)]
+            self._root_element = self.selenium.find_element(self._header_menu_locator[0], '%s[a[text()=\'%s\']]' % (self._header_menu_locator[1], lookup))
 
     @property
     def name(self):
-        return self.selenium.get_text(self.absolute_locator(self._link_locator))
+        return self._root_element.find_element(*self._link_locator).text
 
     def click(self):
-        self.selenium.click(self.absolute_locator(self._link_locator))
-        self.selenium.wait_for_page_to_load(self.timeout)
+        self._root_element.find_element(*self._link_locator).click()
 
         if "Extensions" in self.name:
             from pages.extensions import ExtensionsHome
@@ -100,50 +84,50 @@ class HeaderMenu(Page):
             from pages.collection import Collections
             return Collections(self.testsetup)
 
-    class Menu(Page):
+    @property
+    def menu_items(self):
+        submenu_list = self._root_element.find_elements(*self._header_submenu_list_locator)
+        return [self.SubMenu(self.testsetup, i, self._root_element) for i in range(len(submenu_list))]
 
-        _link_tag = "a"
-        _featured_tag = "> em"
+    class SubMenu(Page):
 
-        def __init__(self, testsetup, lookup, locator):
+        _header_submenu_list_locator = (By.CSS_SELECTOR, 'ul > li')
+        _link_tag = (By.CSS_SELECTOR, 'a')
+
+        def __init__(self, testsetup, lookup, root_element):
             Page.__init__(self, testsetup)
+            self._root_element = root_element
             self.lookup = lookup
-            self.locator = locator
-
-        def absolute_locator(self, relative_locator):
-            return self._root_locator + relative_locator
-
-        @property
-        def _root_locator(self):
             if type(self.lookup) == int:
-                # lookup by index
-                return "%s:nth(%s) " % (self.locator, self.lookup)
-            else:
-                # lookup by name
-                return "%s:contains(%s) " % (self.locator, self.lookup)
+                self._submenu_root_element = self._root_element.find_elements(*self._header_submenu_list_locator)[self.lookup]
 
         @property
         def name(self):
-            return self.selenium.get_text(self.absolute_locator(self._link_tag))
-
-        def click(self):
-            self.selenium.click(self.absolute_locator(self._link_locator))
-            self.selenium.wait_for_page_to_load(self.timeout)
-
-            if "Extensions" in self.absolute_locator(self._link_locator):
-                from pages.extensions import ExtensionsHome
-                return ExtensionsHome(self.testsetup)
-            elif "Personas" in self.absolute_locator(self._link_locator):
-                from pages.personas import Personas
-                return Personas(self.testsetup)
-            elif "Themes" in self.absolute_locator(self._link_locator):
-                from pages.themes import Themes
-                return Themes(self.testsetup)
-            elif "Collections" in self.absolute_locator(self._link_locator):
-                from pages.collection import Collections
-                return Collections(self.testsetup)
+            submenu_link = self._submenu_root_element.find_element(*self._link_tag)
+            ActionChains(self.selenium).move_to_element(self._root_element).perform()
+            return submenu_link.text
 
         @property
         def is_featured(self):
-            #Todo: transform in visible after hover
-            return self.selenium.is_element_present(self.absolute_locator(self._featured_tag))
+            return self._submenu_root_element.find_element(By.CSS_SELECTOR, '*').tag_name == 'em'
+
+        def click(self):
+            submenu_link = self._submenu_root_element.find_element(*self._link_tag)
+            parent_menu_name = self._root_element.find_element(*self._link_locator).text
+
+            ActionChains(self.selenium).move_to_element(self._root_element).\
+                move_to_element(submenu_link).\
+                click().perform()
+
+            if "Extensions" in parent_menu_name:
+                from pages.extensions import ExtensionsHome
+                return ExtensionsHome(self.testsetup)
+            elif "Personas" in parent_menu_name:
+                from pages.personas import Personas
+                return Personas(self.testsetup)
+            elif "Themes" in parent_menu_name:
+                from pages.themes import Themes
+                return Themes(self.testsetup)
+            elif "Collections" in parent_menu_name:
+                from pages.collection import Collections
+                return Collections(self.testsetup)

@@ -23,6 +23,7 @@
 # Contributor(s): Marlena Compton <mcompton@mozilla.com>
 #                 Bebe
 #                 Geo Mealer <gmealer@mozilla.com>
+#                 Teodosia Pop <teodosia.pop@softvision.ro>
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -38,25 +39,32 @@
 #
 # ***** END LICENSE BLOCK *****
 
+import pytest
 
 from unittestzero import Assert
+
 from pages.home import Home
+
+
+nondestructive = pytest.mark.nondestructive
 
 
 class TestCategory:
 
+    @nondestructive
     def test_that_all_category_links_work(self, mozwebqa):
         "Test for Litmus 25796"
         home_page = Home(mozwebqa)
-        categories = home_page.categories()
 
-        for category in categories:
+        for i in range(len(home_page.categories)):
+            category = home_page.categories[i]
             category_name = category.name
             category_page = category.click_link()
-            Assert.contains(category_name, category_page.category_page_title)
+            Assert.contains(category_name, category_page.page_title)
             Assert.equal(category_name, category_page.category_header_title)
             home_page = Home(mozwebqa)
 
+    @nondestructive
     def test_that_category_names_are_correct(self, mozwebqa):
         """Test for Litmus 25795"""
 
@@ -78,7 +86,7 @@ class TestCategory:
 
         # Get actual categories
         home_page = Home(mozwebqa)
-        categories = home_page.categories()
+        categories = home_page.categories
 
         # Catch extra/missing categories with a simple count check
         Assert.equal(len(categories), len(expected_categories))

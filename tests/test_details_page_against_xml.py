@@ -42,24 +42,29 @@ import re
 import pytest
 
 from unittestzero import Assert
+
 from pages.details import Details
 from pages.addons_api import AddOnsAPI
 
 xfail = pytest.mark.xfail
+nondestructive = pytest.mark.nondestructive
 
 
 class TestDetailsAgainstXML:
 
     firebug = "Firebug"
 
+    @nondestructive
     def test_that_firebug_page_title_is_correct(self, mozwebqa):
         firebug_page = Details(mozwebqa, self.firebug)
         Assert.true(re.search(self.firebug, firebug_page.page_title) is not None)
 
+    @nondestructive
     def test_that_firebug_version_number_is_correct(self, mozwebqa):
         firebug_page = Details(mozwebqa, self.firebug)
         Assert.true(len(str(firebug_page.version_number)) > 0)
 
+    @nondestructive
     def test_that_firebug_authors_is_correct(self, mozwebqa):
         """litmus 15319"""
 
@@ -78,6 +83,7 @@ class TestDetailsAgainstXML:
         for i in range(len(xml_authors)):
             Assert.equal(xml_authors[i], browser_authors[i])
 
+    @nondestructive
     def test_that_firebug_summary_is_correct(self, mozwebqa):
         """litmus 15320"""
 
@@ -91,10 +97,12 @@ class TestDetailsAgainstXML:
 
         Assert.equal(xml_summary, browser_summary)
 
+    @nondestructive
     def test_that_firebug_rating_is_correct(self, mozwebqa):
         firebug_page = Details(mozwebqa, self.firebug)
         Assert.equal("5", firebug_page.rating)
 
+    @nondestructive
     def test_that_description_text_is_correct(self, mozwebqa):
         """litmus 15321"""
         #browser
@@ -107,7 +115,7 @@ class TestDetailsAgainstXML:
 
         Assert.equal(browser_description.replace('\n', ''), xml_description.replace('\n', ''))
 
-    @xfail(reason="needs to be updated for impala")
+    @xfail(reason="https://www.pivotaltracker.com/story/show/17471931")
     def test_that_icon_is_correct(self, mozwebqa):
         """litmus 15322"""
 
@@ -122,6 +130,7 @@ class TestDetailsAgainstXML:
 
         Assert.equal(browser_icon, xml_icon)
 
+    @nondestructive
     def test_that_support_url_is_correct(self, mozwebqa):
         """litmus 15337"""
 
@@ -135,6 +144,7 @@ class TestDetailsAgainstXML:
 
         Assert.equal(browser_support_url, xml_support_url)
 
+    @nondestructive
     def test_that_rating_in_api_equals_rating_in_details_page(self, mozwebqa):
         """litmus 15325"""
 

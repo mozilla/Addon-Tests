@@ -23,6 +23,7 @@
 # Contributor(s): Vishal
 #                 Dave Hunt <dhunt@mozilla.com>
 #                 David Burns
+#                 Bebe
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -41,8 +42,10 @@
 Created on Jun 21, 2010
 
 '''
-import re
-import time
+from unittestzero import Assert
+
+from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import ElementNotVisibleException
 
 
 class Page(object):
@@ -58,77 +61,32 @@ class Page(object):
         self.base_url = testsetup.base_url
         self.selenium = testsetup.selenium
         self.timeout = testsetup.timeout
-        self.site_version = testsetup.site_version
 
     @property
     def is_the_current_page(self):
-        page_title = self.selenium.get_title()
-        if not page_title == self._page_title:
-            try:
-                raise Exception("Expected page title to be: '"
-                    + self._page_title + "' but it was: '" + page_title + "'")
-            except Exception:
-                raise Exception('Expected page title does not match actual page title.')
-        else:
-            return True
+        Assert.equal(self.selenium.title, self._page_title,
+            "Expected page title: %s. Actual page title: %s" % (self._page_title, self.selenium.title))
+        return True
 
     def get_url_current_page(self):
-        return(self.selenium.get_location())
+        return(self.selenium.current_url)
 
-    def get_text(self, text):
-        return(self.selenium.get_text(text))
+    def is_element_present(self, *locator):
+        self.selenium.implicitly_wait(0)
+        try:
+            self.selenium.find_element(*locator)
+            return True
+        except NoSuchElementException:
+            return False
+        finally:
+            # set back to where you once belonged
+            self.selenium.implicitly_wait(self.testsetup.default_implicit_wait)
 
-    def is_text_present(self, text):
-        return self.selenium.is_text_present(text)
-
-    def is_element_present(self, locator):
-        return self.selenium.is_element_present(locator)
+    def is_element_visible(self, *locator):
+        try:
+            return self.selenium.find_element(*locator).is_displayed()
+        except NoSuchElementException, ElementNotVisibleException:
+            return False
 
     def return_to_previous_page(self):
-        self.selenium.go_back()
-        self.selenium.wait_for_page_to_load(self.timeout)
-
-    def refresh(self):
-        self.selenium.refresh()
-        self.selenium.wait_for_page_to_load(self.timeout)
-
-    def wait_for_element_present(self, element):
-        count = 0
-        while not self.selenium.is_element_present(element):
-            time.sleep(1)
-            count += 1
-            if count == self.timeout / 1000:
-                raise Exception(element + ' has not loaded')
-
-    def wait_for_element_not_present(self, element):
-        count = 0
-        while  self.selenium.is_element_present(element):
-            time.sleep(1)
-            count += 1
-            if count == self.timeout / 1000:
-                raise Exception(element + ' is still loaded')
-
-    def wait_for_element_visible(self, element):
-        self.wait_for_element_present(element)
-        count = 0
-        while not self.selenium.is_visible(element):
-            time.sleep(1)
-            count += 1
-            if count == self.timeout / 1000:
-                raise Exception(element + " is not visible")
-
-    def wait_for_element_not_visible(self, element):
-        count = 0
-        while self.selenium.is_visible(element):
-            time.sleep(1)
-            count += 1
-            if count == self.timeout / 1000:
-                raise Exception(element + " is still visible")
-
-    def wait_for_page(self, url_regex):
-        count = 0
-        while (re.search(url_regex, self.selenium.get_location(), re.IGNORECASE)) is None:
-            time.sleep(1)
-            count += 1
-            if count == self.timeout / 1000:
-                raise Exception("Sites Page has not loaded")
+        self.selenium.back()

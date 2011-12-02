@@ -45,117 +45,97 @@
 #
 # ***** END LICENSE BLOCK *****
 
+from selenium.webdriver.common.by import By
+
 from pages.base import Base
 
 
 class DiscoveryPane(Base):
 
-    _what_are_addons_section_locator = 'id=intro'
-    _what_are_addons_text_locator = 'css=#intro p'
-    _mission_section_locator = 'id=mission'
-    _mission_section_text_locator = 'css=#mission > p'
-    _learn_more_locator = 'id=learn-more'
-    _mozilla_org_link_locator = "css=#mission a"
-    _download_count_text_locator = "id=download-count"
-    _personas_section_locator = "id=featured-personas"
-    _personas_see_all_link = "css=.all[href='/en-US/firefox/personas/']"
-    _personas_locator = "//span[@class='addon-title']/b"
-    _more_ways_section_locator = "id=more-ways"
-    _more_ways_addons_locator = "id=more-addons"
-    _more_ways_personas_locator = "id=more-personas"
-    _up_and_coming_section = "id=up-and-coming"
-    _up_and_coming_item = "//section[@id='up-and-coming']/ul/li/a[@class='addon-title']"
-    _logout_link_locator = "css=#logout"
+    _what_are_addons_text_locator = (By.CSS_SELECTOR, '#intro p')
+    _mission_section_text_locator = (By.CSS_SELECTOR, '#mission > p')
+    _learn_more_locator = (By.ID, 'learn-more')
+    _mozilla_org_link_locator = (By.CSS_SELECTOR, "#mission a")
+    _download_count_text_locator = (By.ID, "download-count")
+    _personas_section_locator = (By.ID, "featured-personas")
+    _personas_see_all_link = (By.CSS_SELECTOR, ".all[href='/en-US/firefox/personas/']")
+    _personas_locator = (By.XPATH, "//span[@class='addon-title']/b")
+    _more_ways_section_locator = (By.ID, "more-ways")
+    _more_ways_addons_locator = (By.ID, "more-addons")
+    _more_ways_personas_locator = (By.ID, "more-personas")
+    _up_and_coming_item = (By.XPATH, "//section[@id='up-and-coming']/ul/li/a[@class='addon-title']")
+    _logout_link_locator = (By.CSS_SELECTOR, "#logout > a")
 
     def __init__(self, testsetup, path):
         Base.__init__(self, testsetup)
-        self.selenium.open("%s/%s" % (self.site_version, path))
+        self.selenium.get("%s/%s" % (self.base_url, path))
         #resizing this page for elements that disappear when the window is < 1000
-        self.selenium.get_eval("window.resizeTo(10000,10000); window.moveTo(0,0)")
+        #self.selenium.set_window_size(1000, 1000) Commented because this selenium call is still in beta
 
     @property
     def what_are_addons_text(self):
-        return self.selenium.get_text(self._what_are_addons_text_locator)
+        return self.selenium.find_element(*self._what_are_addons_text_locator).text
 
     def click_learn_more(self):
-        self.selenium.click(self._learn_more_locator)
-        self.selenium.wait_for_page_to_load(self.timeout)
-
-    @property
-    def is_mission_section_visible(self):
-        return self.selenium.is_visible(self._mission_section_locator)
-
-    def wait_for_mission_visible(self):
-            self.wait_for_element_visible(self._mission_section_locator)
+        self.selenium.find_element(*self._learn_more_locator).click()
 
     @property
     def mission_section(self):
-        return self.selenium.get_text(self._mission_section_text_locator)
+        return self.selenium.find_element(*self._mission_section_text_locator).text
 
     def mozilla_org_link_visible(self):
-        return self.selenium.is_visible(self._mozilla_org_link_locator)
+        return self.is_element_visible(*self._mozilla_org_link_locator)
 
     @property
     def download_count(self):
-        self.wait_for_element_visible(self._download_count_text_locator)
-        return self.selenium.get_text(self._download_count_text_locator)
+        return self.selenium.find_element(*self._download_count_text_locator).text
 
     @property
     def is_personas_section_visible(self):
-        return self.selenium.is_visible(self._personas_section_locator)
+        return self.is_element_visible(*self._personas_section_locator)
 
     @property
     def personas_count(self):
-        return int(self.selenium.get_xpath_count(self._personas_locator))
+        return len(self.selenium.find_elements(*self._personas_locator))
 
     @property
     def is_personas_see_all_link_visible(self):
-        return self.selenium.is_visible(self._personas_see_all_link)
+        return self.is_element_visible(*self._personas_see_all_link)
 
     @property
     def first_persona(self):
-        return self.selenium.get_text(self._personas_locator)
+        return self.selenium.find_elements(*self._personas_locator)[0].text
 
     def click_on_first_persona(self):
-        self.selenium.click(self._personas_locator)
-        self.selenium.wait_for_page_to_load(self.timeout)
+        self.selenium.find_elements(*self._personas_locator)[0].click()
         return DiscoveryPersonasDetail(self.testsetup)
 
     @property
     def more_ways_section_visible(self):
-        return self.selenium.is_visible(self._more_ways_section_locator)
+        return self.is_element_visible(*self._more_ways_section_locator)
 
     @property
     def more_ways_addons(self):
-        return self.selenium.get_text(self._more_ways_addons_locator)
+        return self.selenium.find_element(*self._more_ways_addons_locator).text
 
     @property
     def more_ways_personas(self):
-        return self.selenium.get_text(self._more_ways_personas_locator)
-
-    @property
-    def up_and_coming_visible(self):
-        return self.selenium.is_visible(self._up_and_coming_section)
+        return self.selenium.find_element(*self._more_ways_personas_locator).text
 
     @property
     def up_and_coming_item_count(self):
-        return int(self.selenium.get_xpath_count(self._up_and_coming_item))
-
-    @property
-    def is_logout_link_visible(self):
-        return self.selenium.is_visible(self._logout_link_locator)
+        return len(self.selenium.find_elements(*self._up_and_coming_item))
 
     def click_logout(self):
-        self.selenium.click("%s > a" % self._logout_link_locator)
-        self.selenium.wait_for_page_to_load(self.timeout)
+        self.selenium.find_element(*self._logout_link_locator).click()
         from pages.home import Home
-        return Home(self.testsetup)
+        return Home(self.testsetup, open_url=False)
 
 
 class DiscoveryPersonasDetail(Base):
 
-    _persona_title = 'css=h1.addon'
+    _persona_title = (By.CSS_SELECTOR, 'h1.addon')
 
     @property
     def persona_title(self):
-        return self.selenium.get_text(self._persona_title)
+        return self.selenium.find_element(*self._persona_title).text

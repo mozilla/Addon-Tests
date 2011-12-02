@@ -46,6 +46,9 @@
 # ***** END LICENSE BLOCK *****
 
 import re
+from unittestzero import Assert
+
+from selenium.webdriver.common.by import By
 
 from pages.base import Base
 
@@ -53,175 +56,131 @@ from pages.base import Base
 class Personas(Base):
 
     _page_title = "Personas :: Add-ons for Firefox"
-    _personas_locator = "//div[@class='persona persona-small']"
-    _start_exploring_locator = "css=#featured-addons.personas-home a.more-info"
-    _featured_addons_locator = "css=#featured-addons.personas-home"
-    _featured_personas_locator = "css=.personas-featured .persona.persona-small"
-    _addons_column_locator = '//div[@class="addons-column"]'
+    _personas_locator = (By.CSS_SELECTOR, 'div.persona.persona-small a')
+    _start_exploring_locator = (By.CSS_SELECTOR, "#featured-addons.personas-home a.more-info")
+    _featured_addons_locator = (By.CSS_SELECTOR, "#featured-addons.personas-home")
 
-    _persona_header_locator = "css=.featured-inner>h2"
-    _personas_breadcrumb_locator = "css=ol.breadcrumbs"
+    _featured_personas_locator = (By.CSS_SELECTOR, ".personas-featured .persona.persona-small")
+    _recently_added_locator = (By.XPATH, "//div[@class='addons-column'][1]//div[@class='persona persona-small']")
+    _most_popular_locator = (By.XPATH, "//div[@class='addons-column'][2]//div[@class='persona persona-small']")
+    _top_rated_locator = (By.XPATH, "//div[@class='addons-column'][3]//div[@class='persona persona-small']")
 
-    def __init__(self, testsetup):
-        Base.__init__(self, testsetup)
+    _persona_header_locator = (By.CSS_SELECTOR, ".featured-inner > h2")
+    _personas_breadcrumb_locator = (By.CSS_SELECTOR, "ol.breadcrumbs")
 
     @property
     def persona_count(self):
         """ Returns the total number of persona links in the page. """
-        return self.selenium.get_xpath_count(self._personas_locator)
+        return len(self.selenium.find_elements(*self._personas_locator))
 
     def click_persona(self, index):
         """ Clicks on the persona with the given index in the page. """
-        self.selenium.click("xpath=(%s)[%d]//a" % (self._personas_locator, index))
-        self.selenium.wait_for_page_to_load(self.timeout)
+        self.selenium.find_elements(*self._personas_locator)[index].click()
         return PersonasDetail(self.testsetup)
 
     def open_persona_detail_page(self, persona_key):
-        self.selenium.open("%s/addon/%s" % (self.site_version, persona_key))
-        self.selenium.wait_for_page_to_load(self.timeout)
+        self.selenium.get(self.base_url + "/addon/%s" % persona_key)
         return PersonasDetail(self.testsetup)
 
-    @property
-    def is_featured_addons_present(self):
-        return self.selenium.get_css_count(self._featured_addons_locator) > 0
-
     def click_start_exploring(self):
-        self.selenium.click(self._start_exploring_locator)
-        self.selenium.wait_for_page_to_load(self.timeout)
+        self.selenium.find_element(*self._start_exploring_locator).click()
         return PersonasBrowse(self.testsetup)
 
     @property
-    def featured_personas_count(self):
-        return self.selenium.get_css_count(self._featured_personas_locator)
+    def is_featured_addons_present(self):
+        return len(self.selenium.find_elements(*self._featured_addons_locator)) > 0
 
-    def _persona_in_column_locator(self, column_index):
-        """ Returns a locator for personas in the column with the given index. """
-        return "%s[%d]%s" % (self._addons_column_locator, column_index, self._personas_locator)
+    @property
+    def featured_personas_count(self):
+        return len(self.selenium.find_elements(*self._featured_personas_locator))
 
     @property
     def recently_added_count(self):
-        locator = self._persona_in_column_locator(1)
-        return self.selenium.get_xpath_count(locator)
+        return len(self.selenium.find_elements(*self._recently_added_locator))
 
     @property
     def recently_added_dates(self):
-        locator = self._persona_in_column_locator(1)
-        iso_dates = self._extract_iso_dates(locator, "Added %B %d, %Y", self.recently_added_count)
+        iso_dates = self._extract_iso_dates("Added %B %d, %Y", *self._recently_added_locator)
         return iso_dates
 
     @property
     def most_popular_count(self):
-        locator = self._persona_in_column_locator(2)
-        return self.selenium.get_xpath_count(locator)
+        return len(self.selenium.find_elements(*self._most_popular_locator))
 
     @property
     def most_popular_downloads(self):
-        locator = self._persona_in_column_locator(2)
         pattern = "(\d+(?:[,]\d+)*)\s+users"
-        return self._extract_integers(locator, pattern, self.most_popular_count)
+        return self._extract_integers(pattern, *self._most_popular_locator)
 
     @property
     def top_rated_count(self):
-        locator = self._persona_in_column_locator(3)
-        return self.selenium.get_xpath_count(locator)
+        return len(self.selenium.find_elements(*self._top_rated_locator))
 
     @property
     def top_rated_ratings(self):
-        locator = self._persona_in_column_locator(3)
         pattern = "Rated\s+(\d)\s+.*"
-        return self._extract_integers(locator, pattern, self.top_rated_count)
+        return self._extract_integers(pattern, *self._top_rated_locator)
 
     @property
     def persona_header(self):
-        return self.selenium.get_text(self._persona_header_locator)
+        return self.selenium.find_element(*self._persona_header_locator).text
 
     def breadcrumb_text(self, value):
-        return self.selenium.get_text(self._personas_breadcrumb_locator + "> li:nth(%s)" % value)
+        return self.selenium.find_element(self._personas_breadcrumb_locator[0],
+                                          self._personas_breadcrumb_locator[1] + "> li:nth-child(%s)" % (value + 1)).text
 
     @property
     def breadcrumb_text_all(self):
-        return self.selenium.get_text(self._personas_breadcrumb_locator)
+        return self.selenium.find_element(*self._personas_breadcrumb_locator).text
 
 
 class PersonasDetail(Base):
 
     _page_title_regex = '.+ :: Add-ons for Firefox'
-    _personas_title_locator = 'css=h2.addon'
-    _breadcrumb_locator = '//ol[@class="breadcrumbs"]'
-    _breadcrumb_item_index_locator = '/li[%s]//'
-    _breadcrumb_item_text_locator = '/li//*[text()="%s"]'
 
-    def __init__(self, testsetup):
-        Base.__init__(self, testsetup)
+    _personas_title_locator = (By.CSS_SELECTOR, 'h2.addon')
+    _breadcrumb_locator = (By.CSS_SELECTOR, 'ol.breadcrumbs')
 
     @property
     def is_the_current_page(self):
         # This overrides the method in the Page super class.
-        if not (re.match(self._page_title_regex, self.selenium.get_title())):
-            self.record_error()
-            raise Exception('Expected the current page to be the personas detail page.')
+        Assert.not_none(re.match(self._page_title_regex, self.selenium.title), 'Expected the current page to be the personas detail page.')
         return True
 
     @property
-    def personas_title(self):
-        """ Returns the title of the currently displayed persona. """
-        return self.selenium.get_text(self._personas_title_locator)
+    def title(self):
+        return self.selenium.find_element(*self._personas_title_locator).text
 
-    def get_breadcrumb_item_locator(self, item):
-        """ Returns an xpath locator for the given item.
-            If item is an int, the item with the given index (1..N) will be located.
-            If item is a str, the item with the given link text will be located.
-        """
-        if isinstance(item, int):
-            return (self._breadcrumb_locator + self._breadcrumb_item_index_locator) % str(item)
-        elif isinstance(item, str):
-            return (self._breadcrumb_locator + self._breadcrumb_item_text_locator) % str(item)
-
-    def get_breadcrumb_item_text(self, item):
+    def get_breadcrumb_item_text(self, lookup):
         """ Returns the label of the given item in the breadcrumb menu. """
-        locator = self.get_breadcrumb_item_locator(item) + 'text()'
-        return self.selenium.get_text(locator)
+        breadcrumb = self.selenium.find_element(*self._breadcrumb_locator)
+        return breadcrumb.find_element(By.CSS_SELECTOR, 'li:nth-child(%s)' % lookup).text
 
-    def get_breadcrumb_item_href(self, item):
-        """ Returns the value of the href attribute for the given item in the breadcrumb menu. """
-        locator = self.get_breadcrumb_item_locator(item) + '@href'
-        return self.selenium.get_attribute(locator)
-
-    def click_breadcrumb_item(self, item):
+    def click_breadcrumb_item(self, lookup):
         """ Clicks on the given item in the breadcrumb menu. """
-        locator = self.get_breadcrumb_item_locator(item)
-        self.selenium.click(locator)
-        self.selenium.wait_for_page_to_load(self.timeout)
+        breadcrumb = self.selenium.find_element(*self._breadcrumb_locator)
+        breadcrumb.find_element(By.LINK_TEXT, lookup).click()
 
 
 class PersonasBrowse(Base):
-    """
-    The personas browse page allows browsing the personas according to
-    some sort criteria (eg. top rated or most downloaded).
 
-    """
+    _selected_sort_by_locator = (By.CSS_SELECTOR, '#addon-list-options li.selected a')
+    _personas_grid_locator = (By.CSS_SELECTOR, '.featured.listing ul.personas-grid')
 
-    _selected_sort_by_locator = "css=#addon-list-options li.selected a"
-    _personas_grid_locator = "css=.featured.listing ul.personas-grid"
-
-    def __init__(self, testsetup):
-        Base.__init__(self, testsetup)
+    @property
+    def is_the_current_page(self):
+        # This overrides the method in the Page super class.
+        Assert.true(self.is_element_present(*self._personas_grid_locator),
+            'Expected the current page to be the personas browse page.')
+        return True
 
     @property
     def sort_key(self):
         """ Returns the current value of the sort request parameter. """
-        url = self.get_url_current_page()
+        url = self.selenium.current_url
         return re.search("[/][?]sort=(.+)[&]?", url).group(1)
 
     @property
     def sort_by(self):
         """ Returns the label of the currently selected sort option. """
-        return self.selenium.get_text(self._selected_sort_by_locator)
-
-    @property
-    def is_the_current_page(self):
-        # This overrides the method in the Page super class.
-        if not (self.is_element_present(self._personas_grid_locator)):
-            self.record_error()
-            raise Exception('Expected the current page to be the personas browse page.')
-        return True
+        return self.selenium.find_element(*self._selected_sort_by_locator).text

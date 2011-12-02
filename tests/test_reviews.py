@@ -41,14 +41,18 @@ import pytest
 
 from datetime import datetime
 from unittestzero import Assert
+
 from pages.home import Home
 from pages.details import Details
 
 xfail = pytest.mark.xfail
+nondestructive = pytest.mark.nondestructive
+destructive = pytest.mark.destructive
 
 
 class TestReviews:
 
+    @nondestructive
     def test_that_all_reviews_hyperlink_works(self, mozwebqa):
         """ Test for litmus 4843
             https://litmus.mozilla.org/show_test.cgi?id=4843
@@ -62,7 +66,7 @@ class TestReviews:
 
         #Go to the last page and check that the next button is not present
         details_page.go_to_last_page()
-        Assert.false(details_page.is_next_link_enabeld)
+        Assert.false(details_page.is_next_link_enabled)
 
         #Go one page back, check that it has 20 reviews
         #that the page number decreases and that the next link is visible
@@ -84,6 +88,7 @@ class TestReviews:
         Assert.equal(details_page.review_count, 20)
         Assert.equal(details_page.current_page, page_number + 1)
 
+    @destructive
     def test_that_new_review_is_saved(self, mozwebqa):
         """ Litmus 22921
             https://litmus.mozilla.org/show_test.cgi?id=22921 """
@@ -100,13 +105,13 @@ class TestReviews:
         write_review_block = details_page.click_to_write_review()
 
         # Step 4 - Write a review
-        body = 'Automatic addon review by Selenium tests'
+        body = 'Automatic addon review by Selenium tests %s' % datetime.now()
         write_review_block.enter_review_with_text(body)
         write_review_block.set_review_rating(1)
         review_page = write_review_block.click_to_save_review()
 
         # Step 5 - Assert review
-        review = review_page.review()
+        review = review_page.reviews[0]
         Assert.equal(review.rating, 1)
         Assert.equal(review.author, mozwebqa.credentials['default']['name'])
         date = datetime.now().strftime("%B %d, %Y")
@@ -115,9 +120,7 @@ class TestReviews:
         Assert.equal(review.date, date)
         Assert.equal(review.text, body)
 
-    @xfail(reason="there are 2 bugs in AddonsDetails \
-                    https://www.pivotaltracker.com/story/show/19150339 \
-                    https://www.pivotaltracker.com/story/show/19150295")
+    @destructive
     def test_that_one_star_rating_increments(self, mozwebqa):
         """ Litmus 22916
             https://litmus.mozilla.org/show_test.cgi?id=22916 """
@@ -132,8 +135,7 @@ class TestReviews:
         # Step 3 - Pick an addon with no reviews
         extensions_home_page.go_to_last_page()
         addon = extensions_home_page.extensions[-1]  # the last one is without rating
-        addon_name = addon.name
-        details_page = Details(mozwebqa, addon_name)
+        details_page = addon.click()
 
         # Step 4 - Click on the "Write review" button
         write_review_block = details_page.click_to_write_review()
@@ -142,16 +144,15 @@ class TestReviews:
         body = 'Automatic addon review by Selenium tests'
         write_review_block.enter_review_with_text(body)
         write_review_block.set_review_rating(1)
-        write_review_block.click_to_save_review()
+        view_reviews = write_review_block.click_to_save_review()
 
         # Step 6 - Ensure rating increased by one
-        details_page = Details(mozwebqa, addon_name)
+        view_reviews.breadcrumbs[2].click_breadcrumb()
+        details_page = Details(mozwebqa)
         new_rating_counter = details_page.get_rating_counter(1)
         Assert.equal(new_rating_counter, 1)
 
-    @xfail(reason="there are 2 bugs in AddonsDetails \
-                    https://www.pivotaltracker.com/story/show/19150339 \
-                    https://www.pivotaltracker.com/story/show/19150295")
+    @destructive
     def test_that_two_star_rating_increments(self, mozwebqa):
         """ Litmus 22917
             https://litmus.mozilla.org/show_test.cgi?id=22917 """
@@ -166,8 +167,7 @@ class TestReviews:
         # Step 3 - Pick an addon with no reviews
         extensions_home_page.go_to_last_page()
         addon = extensions_home_page.extensions[-1]  # the last one is without rating
-        addon_name = addon.name
-        details_page = Details(mozwebqa, addon_name)
+        details_page = addon.click()
 
         # Step 4 - Click on the "Write review" button
         write_review_block = details_page.click_to_write_review()
@@ -176,16 +176,15 @@ class TestReviews:
         body = 'Automatic addon review by Selenium tests'
         write_review_block.enter_review_with_text(body)
         write_review_block.set_review_rating(2)
-        write_review_block.click_to_save_review()
+        view_reviews = write_review_block.click_to_save_review()
 
         # Step 6 - Ensure rating increased by one
-        details_page = Details(mozwebqa, addon_name)
+        view_reviews.breadcrumbs[2].click_breadcrumb()
+        details_page = Details(mozwebqa)
         new_rating_counter = details_page.get_rating_counter(2)
         Assert.equal(new_rating_counter, 1)
 
-    @xfail(reason="there are 2 bugs in AddonsDetails \
-                    https://www.pivotaltracker.com/story/show/19150339 \
-                    https://www.pivotaltracker.com/story/show/19150295")
+    @destructive
     def test_that_three_star_rating_increments(self, mozwebqa):
         """ Litmus 22918
             https://litmus.mozilla.org/show_test.cgi?id=22918 """
@@ -200,8 +199,7 @@ class TestReviews:
         # Step 3 - Pick an addon with no reviews
         extensions_home_page.go_to_last_page()
         addon = extensions_home_page.extensions[-1]  # the last one is without rating
-        addon_name = addon.name
-        details_page = Details(mozwebqa, addon_name)
+        details_page = addon.click()
 
         # Step 4 - Click on the "Write review" button
         write_review_block = details_page.click_to_write_review()
@@ -210,16 +208,15 @@ class TestReviews:
         body = 'Automatic addon review by Selenium tests'
         write_review_block.enter_review_with_text(body)
         write_review_block.set_review_rating(3)
-        write_review_block.click_to_save_review()
+        view_reviews = write_review_block.click_to_save_review()
 
         # Step 6 - Ensure rating increased by one
-        details_page = Details(mozwebqa, addon_name)
+        view_reviews.breadcrumbs[2].click_breadcrumb()
+        details_page = Details(mozwebqa)
         new_rating_counter = details_page.get_rating_counter(3)
         Assert.equal(new_rating_counter, 1)
 
-    @xfail(reason="there are 2 bugs in AddonsDetails \
-                    https://www.pivotaltracker.com/story/show/19150339 \
-                    https://www.pivotaltracker.com/story/show/19150295")
+    @destructive
     def test_that_four_star_rating_increments(self, mozwebqa):
         """ Litmus 22919
             https://litmus.mozilla.org/show_test.cgi?id=22918 """
@@ -234,8 +231,7 @@ class TestReviews:
         # Step 3 - Pick an addon with no reviews
         extensions_home_page.go_to_last_page()
         addon = extensions_home_page.extensions[-1]  # the last one is without rating
-        addon_name = addon.name
-        details_page = Details(mozwebqa, addon_name)
+        details_page = addon.click()
 
         # Step 4 - Click on the "Write review" button
         write_review_block = details_page.click_to_write_review()
@@ -244,16 +240,15 @@ class TestReviews:
         body = 'Automatic addon review by Selenium tests'
         write_review_block.enter_review_with_text(body)
         write_review_block.set_review_rating(4)
-        write_review_block.click_to_save_review()
+        view_reviews = write_review_block.click_to_save_review()
 
         # Step 6 - Ensure rating increased by one
-        details_page = Details(mozwebqa, addon_name)
+        view_reviews.breadcrumbs[2].click_breadcrumb()
+        details_page = Details(mozwebqa)
         new_rating_counter = details_page.get_rating_counter(4)
         Assert.equal(new_rating_counter, 1)
 
-    @xfail(reason="there are 2 bugs in AddonsDetails \
-                    https://www.pivotaltracker.com/story/show/19150339 \
-                    https://www.pivotaltracker.com/story/show/19150295")
+    @destructive
     def test_that_five_star_rating_increments(self, mozwebqa):
         """ Litmus 22920
             https://litmus.mozilla.org/show_test.cgi?id=22920 """
@@ -268,8 +263,7 @@ class TestReviews:
         # Step 3 - Pick an addon with no reviews
         extensions_home_page.go_to_last_page()
         addon = extensions_home_page.extensions[-1]  # the last one is without rating
-        addon_name = addon.name
-        details_page = Details(mozwebqa, addon_name)
+        details_page = addon.click()
 
         # Step 4 - Click on the "Write review" button
         write_review_block = details_page.click_to_write_review()
@@ -278,9 +272,10 @@ class TestReviews:
         body = 'Automatic addon review by Selenium tests'
         write_review_block.enter_review_with_text(body)
         write_review_block.set_review_rating(5)
-        write_review_block.click_to_save_review()
+        view_reviews = write_review_block.click_to_save_review()
 
         # Step 6 - Ensure rating increased by one
-        details_page = Details(mozwebqa, addon_name)
+        view_reviews.breadcrumbs[2].click_breadcrumb()
+        details_page = Details(mozwebqa)
         new_rating_counter = details_page.get_rating_counter(5)
         Assert.equal(new_rating_counter, 1)
