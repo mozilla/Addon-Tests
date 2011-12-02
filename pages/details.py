@@ -478,8 +478,8 @@ class Details(Base):
 
     class DetailsReviewSnippet(Page):
 
-       _reviews_locator = (By.CSS_SELECTOR, '#reviews div')  # Base locator
-       _username_locator = (By.CSS_SELECTOR, 'p.byline a')
+        _reviews_locator = (By.CSS_SELECTOR, '#reviews div')  # Base locator
+        _username_locator = (By.CSS_SELECTOR, 'p.byline a')
 
         def __init__(self, testsetup, element):
             Page.__init__(self, testsetup)
@@ -494,23 +494,23 @@ class Details(Base):
             from pages.user import User
             return User(self.testsetup)
 
-    def click_to_write_review(self):
-        self.selenium.find_element(*self._add_review_link_locator).click()
-        from pages.addons_site import WriteReviewBlock
-        return WriteReviewBlock(self.testsetup)
+        def click_to_write_review(self):
+            self.selenium.find_element(*self._add_review_link_locator).click()
+            from pages.addons_site import WriteReviewBlock
+            return WriteReviewBlock(self.testsetup)
 
-    @property
-    def development_channel_text(self):
-        return self.selenium.find_element(*self._development_channel_title_locator).text
+        @property
+        def development_channel_text(self):
+            return self.selenium.find_element(*self._development_channel_title_locator).text
 
-    def click_development_channel(self):
-        self.selenium.find_element(*self._development_channel_title_locator).click()
+        def click_development_channel(self):
+            self.selenium.find_element(*self._development_channel_title_locator).click()
 
-    @property
-    def is_development_channel_expanded(self):
-        is_expanded = self.selenium.find_element(*self._development_channel_locator).get_attribute('class')
-        return "expanded" in is_expanded
+        @property
+        def is_development_channel_expanded(self):
+            is_expanded = self.selenium.find_element(*self._development_channel_locator).get_attribute('class')
+            return "expanded" in is_expanded
 
-    @property
-    def is_development_channel_content_visible(self):
-        return self.is_element_visible(*self._development_channel_content_locator)
+        @property
+        def is_development_channel_content_visible(self):
+            return self.is_element_visible(*self._development_channel_content_locator)
