@@ -21,6 +21,7 @@
 # the Initial Developer. All Rights Reserved.
 #
 # Contributor(s): Bebe <florin.strugariu@softvision.ro>
+#                 Alin Trif <alin.trif@softvision.ro>
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -36,6 +37,8 @@
 #
 # ***** END LICENSE BLOCK *****
 
+from selenium.webdriver.common.by import By
+
 from pages.page import Page
 from pages.base import Base
 
@@ -43,35 +46,34 @@ from pages.base import Base
 class ExtensionsHome(Base):
 
     _page_title = 'Featured Extensions :: Add-ons for Firefox'
-    _extensions_locator = "css=div.items div.item"
-
-    @property
-    def extension_count(self):
-        return int(self.selenium.get_css_count(self._extensions_locator))
+    _extensions_locator = (By.CSS_SELECTOR, "div.items div.item")
+    _last_page_link_locator = (By.CSS_SELECTOR, ".paginator .rel > a:nth-child(4)")
+    _first_page_link_locator = (By.CSS_SELECTOR, ".paginator .rel > a:nth-child(1)")
 
     @property
     def extensions(self):
-        return [self.Extension(self.testsetup, i) for i in range(self.extension_count)]
+        return [Extension(self.testsetup, element)
+                for element in self.selenium.find_elements(*self._extensions_locator)]
 
-    class Extension(Page):
-        _name_locator = " h3 a"
+    def go_to_last_page(self):
+        self.selenium.find_element(*self._last_page_link_locator).click()
 
-        def __init__(self, testsetup, lookup):
+    def go_to_first_page(self):
+        self.selenium.find_element(*self._first_page_link_locator).click()
+
+
+class Extension(Page):
+        _name_locator = (By.CSS_SELECTOR, "h3 a")
+
+        def __init__(self, testsetup, element):
             Page.__init__(self, testsetup)
-            self.lookup = lookup
-
-        def absolute_locator(self, relative_locator):
-            return self.root_locator + relative_locator
-
-        @property
-        def root_locator(self):
-            if type(self.lookup) == int:
-                # lookup by index
-                return "css=div.items div.item:nth(%s)" % self.lookup
-            else:
-                # lookup by name
-                return "css=div.items div.item:contains(%s)" % self.lookup
+            self._root_element = element
 
         @property
         def name(self):
-            return self.selenium.get_text(self.absolute_locator(self._name_locator))
+            return self._root_element.find_element(*self._name_locator).text
+
+        def click(self):
+            self._root_element.find_element(*self._name_locator).click()
+            from pages.details import Details
+            return Details(self.testsetup)

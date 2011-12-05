@@ -37,45 +37,61 @@
 #
 # ***** END LICENSE BLOCK *****
 
-from pages.page import Page
+
 from time import strptime, mktime
+
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.common.action_chains import ActionChains
+
+from pages.page import Page
 from pages.base import Base
 from pages.regions.search_filter import FilterBase
 
 
 class SearchHome(Base):
 
-    _number_of_results_found = 'css=#search-facets > p'
+    _number_of_results_found = (By.CSS_SELECTOR, "#search-facets > p")
 
-    _no_results_locator = 'css=p.no-results'
-    _search_results_title_locator = 'css=section.primary>h1'
-    _results_locator = 'css=div.items div.item.addon'
+    _no_results_locator = (By.CSS_SELECTOR, "p.no-results")
+    _search_results_title_locator = (By.CSS_SELECTOR, "section.primary>h1")
+    _results_locator = (By.CSS_SELECTOR, "div.items div.item.addon")
 
-    _sort_by_relevance_locator = "css=#sorter > ul > li > a:contains('Relevance')"
-    _sort_by_most_users_locator = "css=#sorter > ul > li > a:contains('Most Users')"
-    _sort_by_top_reated_locator = "css=#sorter > ul > li > a:contains('Top Rated')"
-    _sort_by_newest_locator = "css=#sorter > ul > li > a:contains('Newest')"
+    _sort_by_relevance_locator = (By.CSS_SELECTOR, "div#sorter > ul > li:nth-child(1) > a")
+    _sort_by_most_users_locator = (By.CSS_SELECTOR, "div#sorter > ul > li:nth-child(2) > a")
+    _sort_by_top_rated_locator = (By.CSS_SELECTOR, "div#sorter > ul > li:nth-child(3) > a")
+    _sort_by_newest_locator = (By.CSS_SELECTOR, "div#sorter > ul > li:nth-child(4) > a")
 
-    _sort_by_name_locator = "css=#sorter >ul > li > ul > li > a:contains('Name')"
-    _sort_by_weekly_downloads_locator = "css=#sorter >ul > li > ul > li > a:contains('Weekly Downloads')"
-    _sort_by_recently_updated_locator = "css=#sorter >ul > li > ul > li > a:contains('Recently Updated')"
-    _sort_by_up_and_coming_locator = "css=#sorter >ul > li > ul > li > a:contains('Up & Coming')"
+    _sort_by_name_locator = (By.CSS_SELECTOR, "li.extras > ul > li:nth-child(1) > a")
+    _sort_by_weekly_downloads_locator = (By.CSS_SELECTOR, "li.extras > ul > li:nth-child(2) > a")
+    _sort_by_recently_updated_locator = (By.CSS_SELECTOR, "li.extras > ul > li:nth-child(3) > a")
+    _sort_by_up_and_coming_locator = (By.CSS_SELECTOR, "li.extras > ul > li:nth-child(4) > a")
+
+    _hover_more_locator = (By.CSS_SELECTOR, "li.extras > a")
+
+    _next_link_locator = (By.CSS_SELECTOR, ".paginator .rel > a:nth-child(3)")
+    _previous_link_locator = (By.CSS_SELECTOR, ".paginator .rel > a:nth-child(2)")
+    _updating_locator = (By.CSS_SELECTOR, "div.updating")
+    _results_displayed_text_locator = (By.CSS_SELECTOR, ".paginator .pos")
+
+    def _wait_for_results_refresh(self):
+        WebDriverWait(self.selenium, 10).until(lambda s: not self.is_element_present(*self._updating_locator))
 
     @property
     def is_no_results_present(self):
-        return self.is_element_present(self._no_results_locator)
+        return self.is_element_present(*self._no_results_locator)
 
     @property
     def no_results_text(self):
-        return self.selenium.get_text(self._no_results_locator)
+        return self.selenium.find_element(*self._no_results_locator).text
 
     @property
     def number_of_results_text(self):
-        return self.selenium.get_text(self._number_of_results_found)
+        return self.selenium.find_element(*self._number_of_results_found).text
 
     @property
     def search_results_title(self):
-        return self.selenium.get_text(self._search_results_title_locator)
+        return self.selenium.find_element(*self._search_results_title_locator).text
 
     @property
     def filter(self):
@@ -83,62 +99,73 @@ class SearchHome(Base):
 
     @property
     def result_count(self):
-        return int(self.selenium.get_css_count(self._results_locator))
+        return len(self.selenium.find_elements(*self._results_locator))
 
     def sort_by(self, type):
-        self.selenium.click(getattr(self, '_sort_by_%s_locator' % type.replace(' ', '_').lower()))
-        self.selenium.wait_for_page_to_load(self.timeout)
-        return self
+        hover_element = self.selenium.find_element(*self._hover_more_locator)
+        click_element = self.selenium.find_element(*getattr(self, '_sort_by_%s_locator' % type.replace(' ', '_').lower()))
+        ActionChains(self.selenium).move_to_element(hover_element).\
+            move_to_element(click_element).\
+            click().perform()
+        self._wait_for_results_refresh()
+        return SearchHome(self.testsetup)
 
     def result(self, lookup):
-        return self.SearchResult(self.testsetup, lookup)
+        elements = self.selenium.find_elements(*self._results_locator)
+        return self.SearchResult(self.testsetup, elements[lookup])
 
     def results(self):
-        return [self.SearchResult(self.testsetup, i) for i in range(self.result_count)]
+        return [self.SearchResult(self.testsetup, element)
+                for element in self.selenium.find_elements(*self._results_locator)]
+
+    def page_forward(self):
+        self.selenium.find_element(*self._next_link_locator).click()
+        self._wait_for_results_refresh()
+
+    def page_back(self):
+        self.selenium.find_element(*self._previous_link_locator).click()
+        self._wait_for_results_refresh()
+
+    @property
+    def is_next_link_enabled(self):
+        button = self.selenium.find_element(*self._next_link_locator).get_attribute('class')
+        return not("disabled" in button)
+
+    @property
+    def results_displayed(self):
+        return self.selenium.find_element(*self._results_displayed_text_locator).text
 
     class SearchResult(Page):
-        _name_locator = '> div.info > h3 > a'
-        _created_date = '> div.info > div.vitals > div.updated'
-        _sort_criteria = '> div.info > div.vitals > div.adu'
+        _name_locator = (By.CSS_SELECTOR, 'div.info > h3 > a')
+        _created_date = (By.CSS_SELECTOR, 'div.info > div.vitals > div.updated')
+        _sort_criteria = (By.CSS_SELECTOR, 'div.info > div.vitals > div.adu')
 
-        def __init__(self, testsetup, lookup):
+        def __init__(self, testsetup, element):
             Page.__init__(self, testsetup)
-            self.lookup = lookup
-
-        def absolute_locator(self, relative_locator):
-            return self.root_locator + relative_locator
-
-        @property
-        def root_locator(self):
-            if type(self.lookup) == int:
-                # lookup by index
-                return 'css=div.items > div.item.addon:nth(%s) ' % self.lookup
-            else:
-                # lookup by name
-                return 'css=div.items > div.item.addon:contains(%s) ' % self.lookup
+            self._root_element = element
 
         @property
         def name(self):
-            return self.selenium.get_text(self.absolute_locator(self._name_locator))
+            return self._root_element.find_element(*self._name_locator).text
 
         @property
         def text(self):
-            return self.selenium.get_text(self.root_locator)
+            return self._root_element.text
 
         @property
         def downloads(self):
-            number = self.selenium.get_text(self.absolute_locator(self._sort_criteria))
+            number = self._root_element.find_element(*self._sort_criteria).text
             return int(number.split()[0].replace(',', ''))
 
         @property
         def users(self):
-            number = self.selenium.get_text(self.absolute_locator(self._sort_criteria))
+            number = self._root_element.find_element(*self._sort_criteria).text
             return int(number.split()[0].replace(',', ''))
 
         @property
         def created_date(self):
             """ Returns created date of result in POSIX format """
-            date = self.selenium.get_text(self.absolute_locator(self._created_date)).strip().replace('Added ', '')
+            date = self._root_element.find_element(*self._created_date).text.strip().replace('Added ', '')
             # convert to POSIX format
             date = strptime(date, '%B %d, %Y')
             return mktime(date)
@@ -146,7 +173,7 @@ class SearchHome(Base):
         @property
         def updated_date(self):
             """ Returns updated date of result in POSIX format """
-            date = self.selenium.get_text(self.absolute_locator(self._created_date)).replace('Updated ', '')
+            date = self._root_element.find_element(*self._created_date).text.replace('Updated ', '')
             # convert to POSIX format
             date = strptime(date, '%B %d, %Y')
             return mktime(date)

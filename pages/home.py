@@ -45,6 +45,8 @@
 #
 # ***** END LICENSE BLOCK *****
 
+from selenium.webdriver.common.by import By
+
 from pages.page import Page
 from pages.base import Base
 
@@ -52,189 +54,133 @@ from pages.base import Base
 class Home(Base):
 
     _page_title = "Add-ons for Firefox"
-
-    _themes_link_locator = "css=#themes > a"
-    _personas_link_locator = "css=#personas > a"
-    _collections_link_locator = "css=#collections > a"
-    _first_addon_locator = "css=div.summary > a > h3"
-    _other_applications_link_locator = "id=other-apps"
+    _themes_link_locator = (By.CSS_SELECTOR, "#themes > a")
+    _personas_link_locator = (By.CSS_SELECTOR, "#personas > a")
+    _collections_link_locator = (By.CSS_SELECTOR, "#collections > a")
+    _first_addon_locator = (By.CSS_SELECTOR, "div.summary > a > h3")
+    _other_applications_link_locator = (By.ID, "other-apps")
 
     #Most Popular List
-    _most_popular_list_locator = "css=#homepage > .secondary"
-    _most_popular_item_locator = "css=ol.toplist li"
-    _most_popular_list_heading_locator = _most_popular_list_locator + " h2"
+    _most_popular_item_locator = (By.CSS_SELECTOR, "ol.toplist li")
+    _most_popular_list_heading_locator = (By.CSS_SELECTOR, "#homepage > .secondary h2")
 
-    _explore_featured_link_locator = "css=#side-nav .s-featured a"
-    _explore_most_popular_link_locator = "css=#side-nav .s-users a"
-    _explore_most_top_rated_link_locator = "css=#side-nav .s-rating a"
+    _explore_featured_link_locator = (By.CSS_SELECTOR, "#side-nav .s-featured a")
+    _explore_most_popular_link_locator = (By.CSS_SELECTOR, "#side-nav .s-users a")
+    _explore_most_top_rated_link_locator = (By.CSS_SELECTOR, "#side-nav .s-rating a")
 
-    _featured_personas_see_all_link = "css=#featured-personas h2 a"
-    _featured_personas_locator = "id=featured-personas"
-    _featured_personas_title_locator = "css=#featured-personas h2"
-    _featured_personas_items_locator = "css=#featured-personas li"
+    _featured_personas_see_all_link = (By.CSS_SELECTOR, "#featured-personas h2 a")
+    _featured_personas_title_locator = (By.CSS_SELECTOR, "#featured-personas h2")
+    _featured_personas_items_locator = (By.CSS_SELECTOR, "#featured-personas li")
 
-    _category_list_locator = "css=ul#side-categories"
+    _category_list_locator = (By.CSS_SELECTOR, "ul#side-categories li")
 
-    _extensions_menu_link = "css=#extensions > a"
+    _extensions_menu_link = (By.CSS_SELECTOR, "#extensions > a")
 
-    def __init__(self, testsetup):
+    def __init__(self, testsetup, open_url=True):
         ''' Creates a new instance of the class and gets the page ready for testing '''
         Base.__init__(self, testsetup)
-        self.selenium.open("%s/" % self.site_version)
-        self.selenium.window_maximize()
+        if open_url:
+            self.selenium.get(self.base_url)
 
     def click_featured_personas_see_all_link(self):
-        self.selenium.click(self._featured_personas_see_all_link)
-        self.selenium.wait_for_page_to_load(self.timeout)
+        self.selenium.find_element(*self._featured_personas_see_all_link).click()
         from pages.personas import Personas
         return Personas(self.testsetup)
 
     def click_personas(self):
-        self.selenium.click(self._personas_link_locator)
-        self.selenium.wait_for_page_to_load(self.timeout)
+        self.selenium.find_element(*self._personas_link_locator).click()
         from pages.personas import Personas
         return Personas(self.testsetup)
 
     def click_themes(self):
-        self.wait_for_element_visible(self._themes_link_locator)
-        self.selenium.click(self._themes_link_locator)
-        self.selenium.wait_for_page_to_load(self.timeout)
+        self.selenium.find_element(*self._themes_link_locator).click()
         from pages.themes import Themes
         return Themes(self.testsetup)
 
     def click_collections(self):
-        self.selenium.click(self._collections_link_locator)
-        self.selenium.wait_for_page_to_load(self.timeout)
+        self.selenium.find_element(*self._collections_link_locator).click()
         from pages.collection import Collections
         return Collections(self.testsetup)
 
     def click_extensions(self):
-        self.selenium.click(self._extensions_menu_link)
-        self.selenium.wait_for_page_to_load(self.timeout)
+        self.selenium.find_element(*self._extensions_menu_link).click()
         from pages.extensions import ExtensionsHome
         return ExtensionsHome(self.testsetup)
 
     def click_to_explore(self, what):
         what = what.replace(' ', '_').lower()
-        self.selenium.click(getattr(self, "_explore_most_%s_link_locator" % what))
-        self.selenium.wait_for_page_to_load(self.timeout)
+        self.selenium.find_element(*getattr(self, "_explore_most_%s_link_locator" % what)).click()
         from pages.extensions import ExtensionsHome
         return ExtensionsHome(self.testsetup)
 
     @property
     def most_popular_count(self):
-        return self.selenium.get_css_count(self._most_popular_item_locator)
-
-    @property
-    def is_most_popular_list_visible(self):
-        return self.selenium.is_visible(self._most_popular_list_locator)
+        return len(self.selenium.find_elements(*self._most_popular_item_locator))
 
     @property
     def most_popular_list_heading(self):
-        return self.selenium.get_text(self._most_popular_list_heading_locator)
-
-    @property
-    def is_featured_personas_visible(self):
-        return self.selenium.is_visible(self._featured_personas_locator)
+        return self.selenium.find_element(*self._most_popular_list_heading_locator).text
 
     @property
     def featured_personas_count(self):
-        return self.selenium.get_css_count(self._featured_personas_items_locator)
+        return len(self.selenium.find_elements(*self._featured_personas_items_locator))
 
     @property
-    def fetaured_personas_title(self):
-        return self.selenium.get_text(self._featured_personas_title_locator)
+    def featured_personas_title(self):
+        return self.selenium.find_element(*self._featured_personas_title_locator).text
 
     def click_on_first_addon(self):
-        self.selenium.click(self._first_addon_locator)
-        self.selenium.wait_for_page_to_load(self.timeout)
+        self.selenium.find_element(*self._first_addon_locator).click()
         from pages.details import Details
         return Details(self.testsetup)
 
     def get_title_of_link(self, name):
         name = name.lower().replace(" ", "_")
         locator = getattr(self, "_%s_link_locator" % name)
-        return self.selenium.get_attribute("%s@title" % locator)
+        return self.selenium.find_element(*locator).get_attribute('title')
 
     @property
-    def categories_count(self):
-        return self.selenium.get_css_count("%s li" % self._category_list_locator)
-
     def categories(self):
-        return [self.Categories(self.testsetup, i) for i in range(self.categories_count)]
+        return [self.Categories(self.testsetup, element)
+                for element in self.selenium.find_elements(*self._category_list_locator)]
 
-    def category(self, lookup):
-        return self.Categories(self.testsetup, lookup)
-
-    def most_popular_item(self, lookup):
-        return self.MostPopularRegion(self.testsetup, lookup)
+    def category(self, element):
+        return self.Categories(self.testsetup, element)
 
     @property
     def most_popular_items(self):
-        return [self.MostPopularRegion(self.testsetup, i) for i in range(self.most_popular_count)]
+        return [self.MostPopularRegion(self.testsetup, element)
+                for element in self.selenium.find_elements(*self._most_popular_item_locator)]
 
     class Categories(Page):
-        _categories_locator = 'css=#side-categories li'
-        _link_locator = 'a'
+        _link_locator = (By.CSS_SELECTOR, 'a')
 
-        def __init__(self, testsetup, lookup):
+        def __init__(self, testsetup, element):
             Page.__init__(self, testsetup)
-            self.lookup = lookup
-
-        def absolute_locator(self, relative_locator=""):
-            return self._root_locator + relative_locator
-
-        @property
-        def _root_locator(self):
-            if type(self.lookup) == int:
-                # lookup by index
-                return "%s:nth(%s) " % (self._categories_locator, self.lookup)
-            else:
-                # lookup by name
-                return "%s:contains(%s) " % (self._categories_locator, self.lookup)
+            self._root_element = element
 
         @property
         def name(self):
-            return self.selenium.get_text(self.absolute_locator())
+            return self._root_element.text
 
         def click_link(self):
-            self.selenium.click(self.absolute_locator(self._link_locator))
-            self.selenium.wait_for_page_to_load(self.timeout)
+            self._root_element.find_element(*self._link_locator).click()
             from pages.category import Category
             return Category(self.testsetup)
 
     class MostPopularRegion(Page):
-        _name_locator = " > span"
-        _users_locator = " > small"
+        _name_locator = (By.TAG_NAME, "span")
+        _users_locator = (By.CSS_SELECTOR, "small")
 
-        def __init__(self, testsetup, lookup):
+        def __init__(self, testsetup, element):
             Page.__init__(self, testsetup)
-            self.lookup = lookup
-
-        def absolute_locator(self, relative_locator):
-            return self.root_locator + relative_locator
-
-        @property
-        def root_locator(self):
-            if type(self.lookup) == int:
-                # lookup by index
-                return "css=.toplist > li:nth(%s) > a" % self.lookup
-            else:
-                # lookup by name
-                return "css=.toplist > li:contains(%s) > a" % self.lookup
+            self._root_element = element
 
         @property
         def name(self):
-            return self.selenium.get_text(self.absolute_locator(self._name_locator))
-
-        @property
-        def users_text(self):
-            return self.selenium.get_text(self.absolute_locator(self._users_locator))
+            self._root_element.find_element(*self._name_locator).text
 
         @property
         def users_number(self):
-            number_str = self.users_text.split(' ')[0]
-            number_str = number_str.replace(",", "")
-            return int(number_str)
-            from pages.category import Category
-            return Category(self.testsetup)
+            users_text = self._root_element.find_element(*self._users_locator).text
+            return int(users_text.split(' ')[0].replace(',', ''))

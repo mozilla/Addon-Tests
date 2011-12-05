@@ -47,82 +47,73 @@
 
 import re
 
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.action_chains import ActionChains
+
 from pages.base import Base
 
 
 class WriteReviewBlock(Base):
 
-    _add_review_input_field_locator = "id=id_body"
-    _add_review_input_rating_locator = "css=span[class='ratingwidget stars stars-0'] > label > input"
-    _add_review_submit_button_locator = "css=#review-box input[type=submit]"
+    _add_review_input_field_locator = (By.ID, "id_body")
+    _add_review_input_rating_locator = (By.CSS_SELECTOR, "span[class='ratingwidget stars stars-0'] > label")
+    _add_review_submit_button_locator = (By.CSS_SELECTOR, "#review-box input[type=submit]")
 
-    _add_review_box = 'css=#review-box'
+    _add_review_box = (By.CSS_SELECTOR, '#review-box')
 
     def enter_review_with_text(self, text):
-        self.selenium.type(self._add_review_input_field_locator, text)
+        self.selenium.find_element(*self._add_review_input_field_locator).send_keys(text)
 
     def set_review_rating(self, rating):
-        locator = "%s[value=%s]" % (self._add_review_input_rating_locator, rating)
-        self.selenium.click(locator)
+        locator = self.selenium.find_element(self._add_review_input_rating_locator[0],
+                                             '%s[data-stars="%s"]' % (self._add_review_input_rating_locator[1], rating))
+        ActionChains(self.selenium).move_to_element(locator).\
+            click().perform()
 
     def click_to_save_review(self):
-        self.wait_for_element_visible(self._add_review_submit_button_locator)
-        self.selenium.click(self._add_review_submit_button_locator)
+        self.selenium.find_element(*self._add_review_submit_button_locator).click()
         return ViewReviews(self.testsetup)
 
     @property
     def is_review_box_visible(self):
-        return self.selenium.is_visible(self._add_review_box)
+        return self.is_element_visible(*self._add_review_box)
 
 
 class ViewReviews(Base):
 
-    _review_locator = "css=div.primary div.review"
+    _review_locator = (By.CSS_SELECTOR, "div.primary div.review")
 
-    def review(self, index=0):
-        """ Returns review object with index. """
-        return self.ReviewSnippet(self.testsetup, index)
-
+    @property
     def reviews(self):
-        """ Returns all reviews on the page. """
-        return [self.ReviewSnippet(self.testsetup, i) for i in
-                range(self.selenium.get_css_count(self._review_locator))]
+        """ Returns review object with index. """
+        return [self.ReviewSnippet(self.testsetup, element) for element in self.selenium.find_elements(*self._review_locator)]
 
     class ReviewSnippet(Base):
 
-        _review_locator = "css=#reviews > .review"
-        _review_text_locator = ".description"
-        _review_rating_locator = "span[itemprop=rating]"
-        _review_author_locator = "a:not(.permalink)"
-        _review_date_locator = ".byline"
+        _review_text_locator = (By.CSS_SELECTOR, ".description")
+        _review_rating_locator = (By.CSS_SELECTOR, "span[itemprop=rating]")
+        _review_author_locator = (By.CSS_SELECTOR, "a:not(.permalink)")
+        _review_date_locator = (By.CSS_SELECTOR, ".byline")
 
-        def __init__(self, testsetup, index):
+        def __init__(self, testsetup, element):
             Base.__init__(self, testsetup)
-            self.index = index
-
-        def absolute_locator(self, relative_locator):
-            return "%s:nth(%s) %s" % (self._review_locator,
-                                      self.index, relative_locator)
+            self._root_element = element
 
         @property
         def text(self):
-            text_locator = self.absolute_locator(self._review_text_locator)
-            return self.selenium.get_text(text_locator)
+            return self._root_element.find_element(*self._review_text_locator).text
 
         @property
         def rating(self):
-            _rating_locator = self.absolute_locator(self._review_rating_locator)
-            return int(self.selenium.get_text(_rating_locator))
+            return int(self._root_element.find_element(*self._review_rating_locator).text)
 
         @property
         def author(self):
-            author_locator = self.absolute_locator(self._review_author_locator)
-            return self.selenium.get_text(author_locator)
+            return self._root_element.find_element(*self._review_author_locator).text
 
         @property
         def date(self):
-            date_locator = self.absolute_locator(self._review_date_locator)
-            date = self.selenium.get_text(date_locator)
+            date = self._root_element.find_element(*self._review_date_locator).text
             # we need to parse the string first to get date
             date = re.match('^(.+on\s)([A-Za-z]+\s[\d]+,\s[\d]+)', date)
             return date.group(2)
@@ -130,13 +121,13 @@ class ViewReviews(Base):
 
 class UserFAQ(Base):
 
-    _license_question_locator = "css=#license"
-    _license_answer_locator = "css=#license + dd"
+    _license_question_locator = (By.CSS_SELECTOR, '#license')
+    _license_answer_locator = (By.CSS_SELECTOR, '#license + dd')
 
     @property
     def license_question(self):
-        return self.selenium.get_text(self._license_question_locator)
+        return self.selenium.find_element(*self._license_question_locator).text
 
     @property
     def license_answer(self):
-        return self.selenium.get_text(self._license_answer_locator)
+        return self.selenium.find_element(*self._license_answer_locator).text
