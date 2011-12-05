@@ -103,7 +103,7 @@ class TestDetails:
        Updated for Litmus 25721
         https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25721
         """
-        
+
         Assert.true(details_page.is_source_code_license_information_visible)
         Assert.true(details_page.is_whats_this_license_visible)
         Assert.true(details_page.is_view_the_source_link_visible)
@@ -399,7 +399,7 @@ class TestDetails:
             collection_pg = details_pg.part_of_collections[i].click_collection()
             Assert.equal(name, collection_pg.collection_name, "Expected collection name does not match the page header")
             details_pg = Details(mozwebqa, 'Firebug')
-            
+
     def test_the_development_channel_section(self, mozwebqa):
         """
         Test for Litmus 25732
