@@ -258,6 +258,10 @@ class Details(Base):
         return self.is_element_visible(*self._complete_version_history_locator)
 
     @property
+    def is_version_information_heading_visible(self):
+        return self.is_element_visible(*self._version_information_heading_locator)
+
+    @property
     def is_version_information_section_in_view(self):
         """ Check if the information section is in view.
 
