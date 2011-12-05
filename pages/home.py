@@ -57,7 +57,7 @@ class Home(Base):
     _themes_link_locator = (By.CSS_SELECTOR, "#themes > a")
     _personas_link_locator = (By.CSS_SELECTOR, "#personas > a")
     _collections_link_locator = (By.CSS_SELECTOR, "#collections > a")
-    _first_addon_locator = (By.CSS_SELECTOR, "div.summary > a > h3")
+    _first_addon_locator = (By.CSS_SELECTOR, "div.summary > h3")
     _other_applications_link_locator = (By.ID, "other-apps")
 
     #Most Popular List
@@ -71,6 +71,8 @@ class Home(Base):
     _featured_personas_see_all_link = (By.CSS_SELECTOR, "#featured-personas h2 a")
     _featured_personas_title_locator = (By.CSS_SELECTOR, "#featured-personas h2")
     _featured_personas_items_locator = (By.CSS_SELECTOR, "#featured-personas li")
+
+    _featured_collections_locator = (By.CSS_SELECTOR, "#featured-collections")
 
     _category_list_locator = (By.CSS_SELECTOR, "ul#side-categories li")
 
@@ -107,6 +109,12 @@ class Home(Base):
         from pages.extensions import ExtensionsHome
         return ExtensionsHome(self.testsetup)
 
+    def click_featured_collections_see_all_link(self):
+        self.selenium.find_element(self._featured_collections_locator[0],
+                                   "%s h2 a" % self._featured_collections_locator[1]).click()
+        from pages.collection import Collections
+        return Collections(self.testsetup)
+
     def click_to_explore(self, what):
         what = what.replace(' ', '_').lower()
         self.selenium.find_element(*getattr(self, "_explore_most_%s_link_locator" % what)).click()
@@ -128,6 +136,18 @@ class Home(Base):
     @property
     def featured_personas_title(self):
         return self.selenium.find_element(*self._featured_personas_title_locator).text
+
+    @property
+    def featured_collections_title(self):
+        return self.selenium.find_element(self._featured_collections_locator[0],
+                                          "%s h2" % self._featured_collections_locator[1]).text
+
+    @property
+    def featured_collections_visible_count(self):
+        counter = 0
+        for i in range(len(self.selenium.find_elements(self._featured_collections_locator[0], "%s section:nth-child(1) li" % self._featured_collections_locator[1]))):
+            counter += 1
+        return counter
 
     def click_on_first_addon(self):
         self.selenium.find_element(*self._first_addon_locator).click()
