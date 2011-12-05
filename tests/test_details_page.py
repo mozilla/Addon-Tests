@@ -103,7 +103,7 @@ class TestDetails:
        Updated for Litmus 25721
         https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25721
         """
-        
+
         Assert.true(details_page.is_source_code_license_information_visible)
         Assert.true(details_page.is_whats_this_license_visible)
         Assert.true(details_page.is_view_the_source_link_visible)
@@ -399,3 +399,15 @@ class TestDetails:
             collection_pg = details_pg.part_of_collections[i].click_collection()
             Assert.equal(name, collection_pg.collection_name, "Expected collection name does not match the page header")
             details_pg = Details(mozwebqa, 'Firebug')
+
+    @nondestructive
+    def test_that_license_link_works(self, mozwebqa):
+        """
+        Litmus 25726
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25726
+        """
+        addon_name = 'Firebug'
+        details_page = Details(mozwebqa, addon_name)
+        Assert.equal(details_page.license_link_text, 'BSD License')
+        license_link = details_page.license_site
+        Assert.true(license_link != '')
