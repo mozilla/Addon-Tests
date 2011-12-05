@@ -61,15 +61,15 @@ class Base(Page):
     _breadcrumbs_locator = (By.CSS_SELECTOR, "#breadcrumbs > ol  li")
     _footer_locator = (By.CSS_SELECTOR, "#footer")
 
-    def login(self, user="default"):
-        #login = self.header.click_login()
-
-        #this get is a temporary fix before migrating in browserid compatibility
-        from pages.user import Login
-        login = Login(self.testsetup)
-        login.selenium.get(self.base_url + '/en-US/firefox/users/login')
-
-        login.login_user(user)
+    def login(self, type="normal", user="default"):
+        if type == "normal":
+            self.selenium.open("/en-US/firefox/users/login")
+            from pages.user import Login
+            login = Login(self.testsetup)
+            login.login_user_normal(user)
+        elif type == "browserID":
+            login = self.header.click_login_browser_id()
+            login.login_user_browser_id(user)
 
     @property
     def page_title(self):
@@ -155,7 +155,7 @@ class Base(Page):
         _search_textbox_locator = (By.NAME, "q")
 
         #Not LoggedIn
-        _login_locator = (By.CSS_SELECTOR, "#aux-nav li.account a:nth-child(2)")
+        _login_browser_id_locator = (By.CSS_SELECTOR, "a.browserid-login")
         _register_locator = (By.CSS_SELECTOR, "#aux-nav li.account a:nth-child(1)")
 
         #LoggedIn
@@ -192,8 +192,8 @@ class Base(Page):
         def search_field_placeholder(self):
             return self.selenium.find_element(*self._search_textbox_locator).get_attribute('placeholder')
 
-        def click_login(self):
-            self.selenium.find_element(*self._login_locator).click()
+        def click_login_browser_id(self):
+            self.selenium.find_element(*self._login_browser_id_locator).click()
             from pages.user import Login
             return Login(self.testsetup)
 

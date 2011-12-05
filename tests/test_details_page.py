@@ -103,7 +103,7 @@ class TestDetails:
        Updated for Litmus 25721
         https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25721
         """
-        
+
         Assert.true(details_page.is_source_code_license_information_visible)
         Assert.true(details_page.is_whats_this_license_visible)
         Assert.true(details_page.is_view_the_source_link_visible)
@@ -340,7 +340,7 @@ class TestDetails:
         home_page = Home(mozwebqa)
 
         #Step 2:user logs in to submit a review
-        home_page.login()
+        home_page.login("browserID")
         Assert.true(home_page.header.is_user_logged_in)
 
         #Step 3: user loads an addon details page and clicks write a review button

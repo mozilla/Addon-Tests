@@ -51,8 +51,11 @@ class Login(Base):
     _password_locator = (By.ID, 'id_password')
     _login_button_locator = (By.ID, 'login-submit')
     _normal_login_locator = (By.ID, 'show-normal-login')
+    _browser_id_locator = (By.CSS_SELECTOR, 'button.browserid-login')
 
-    def login_user(self, user):
+    _pop_up_id = '_mozid_signin'
+
+    def normal_login_user(self, user):
         credentials = self.testsetup.credentials[user]
         self.selenium.find_element(*self._normal_login_locator).click()
 
@@ -64,6 +67,11 @@ class Login(Base):
 
         password.send_keys(Keys.RETURN)
 
+    def login_user_browser_id(self, user):
+        from pages.browser_id import BrowserID
+        pop_up = BrowserID(self.testsetup)
+        pop_up.login_browser_id(user)
+        pop_up.sign_in()
 
 class ViewProfile(Base):
 

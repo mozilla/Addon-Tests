@@ -94,7 +94,7 @@ class TestReviews:
             https://litmus.mozilla.org/show_test.cgi?id=22921 """
         # Step 1 - Login into AMO
         home_page = Home(mozwebqa)
-        home_page.login()
+        home_page.login("browserID")
         Assert.true(home_page.is_the_current_page)
         Assert.true(home_page.header.is_user_logged_in)
 
@@ -126,7 +126,7 @@ class TestReviews:
             https://litmus.mozilla.org/show_test.cgi?id=22916 """
         # Step 1 - Login into AMO
         home_page = Home(mozwebqa)
-        home_page.login()
+        home_page.login("browserID")
         Assert.true(home_page.header.is_user_logged_in)
 
         # Step 2 - Go to add-ons listing page sorted by rating
@@ -158,7 +158,7 @@ class TestReviews:
             https://litmus.mozilla.org/show_test.cgi?id=22917 """
         # Step 1 - Login into AMO
         home_page = Home(mozwebqa)
-        home_page.login()
+        home_page.login("browserID")
         Assert.true(home_page.header.is_user_logged_in)
 
         # Step 2 - Go to add-ons listing page sorted by rating
@@ -190,7 +190,7 @@ class TestReviews:
             https://litmus.mozilla.org/show_test.cgi?id=22918 """
         # Step 1 - Login into AMO
         home_page = Home(mozwebqa)
-        home_page.login()
+        home_page.login("browserID")
         Assert.true(home_page.header.is_user_logged_in)
 
         # Step 2 - Go to add-ons listing page sorted by rating
@@ -222,7 +222,7 @@ class TestReviews:
             https://litmus.mozilla.org/show_test.cgi?id=22918 """
         # Step 1 - Login into AMO
         home_page = Home(mozwebqa)
-        home_page.login()
+        home_page.login("browserID")
         Assert.true(home_page.header.is_user_logged_in)
 
         # Step 2 - Go to add-ons listing page sorted by rating
@@ -254,7 +254,7 @@ class TestReviews:
             https://litmus.mozilla.org/show_test.cgi?id=22920 """
         # Step 1 - Login into AMO
         home_page = Home(mozwebqa)
-        home_page.login()
+        home_page.login("browserID")
         Assert.true(home_page.header.is_user_logged_in)
 
         # Step 2 - Go to add-ons listing page sorted by rating

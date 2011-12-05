@@ -57,7 +57,23 @@ class TestAccounts:
         """
 
         home_page = Home(mozwebqa)
-        home_page.login()
+        home_page.login("browserID")
+        Assert.true(home_page.is_the_current_page)
+        Assert.true(home_page.header.is_user_logged_in)
+
+        home_page.header.click_logout()
+        Assert.false(home_page.header.is_user_logged_in)
+
+    @nondestructive
+    def test_user_can_login_and_logout_using_browser_id(self, mozwebqa):
+        """ Test for litmus 7857
+        https://litmus.mozilla.org/show_test.cgi?id=7857
+        Test for litmus 4859
+        https://litmus.mozilla.org/show_test.cgi?id=4859
+        """
+
+        home_page = Home(mozwebqa)
+        home_page.login("browserID")
         Assert.true(home_page.is_the_current_page)
         Assert.true(home_page.header.is_user_logged_in)
 
@@ -72,7 +88,7 @@ class TestAccounts:
         """
 
         home_page = Home(mozwebqa)
-        home_page.login()
+        home_page.login("browserID")
         Assert.true(home_page.is_the_current_page)
         Assert.true(home_page.header.is_user_logged_in)
 
@@ -93,7 +109,7 @@ class TestAccounts:
         """
 
         home_page = Home(mozwebqa)
-        home_page.login()
+        home_page.login("browserID")
         Assert.true(home_page.is_the_current_page)
         Assert.true(home_page.header.is_user_logged_in)
 
@@ -104,7 +120,7 @@ class TestAccounts:
     @destructive
     def test_hide_email_checkbox_works(self, mozwebqa):
         home_page = Home(mozwebqa)
-        home_page.login()
+        home_page.login("browserID")
 
         Assert.true(home_page.is_the_current_page)
         Assert.true(home_page.header.is_user_logged_in)
