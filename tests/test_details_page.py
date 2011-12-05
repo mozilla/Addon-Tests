@@ -400,6 +400,7 @@ class TestDetails:
             Assert.equal(name, collection_pg.collection_name, "Expected collection name does not match the page header")
             details_pg = Details(mozwebqa, 'Firebug')
 
+    @nondestructive
     def test_the_development_channel_section(self, mozwebqa):
         """
         Test for Litmus 25732
