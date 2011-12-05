@@ -73,6 +73,7 @@ class Home(Base):
     _featured_personas_items_locator = (By.CSS_SELECTOR, "#featured-personas li")
 
     _featured_collections_locator = (By.CSS_SELECTOR, "#featured-collections")
+    _featured_collections_elements_locator = (By.CSS_SELECTOR, "#featured-collections section:nth-child(1) li")
 
     _category_list_locator = (By.CSS_SELECTOR, "ul#side-categories li")
 
@@ -145,7 +146,7 @@ class Home(Base):
     @property
     def featured_collections_visible_count(self):
         counter = 0
-        for i in range(len(self.selenium.find_elements(self._featured_collections_locator[0], "%s section:nth-child(1) li" % self._featured_collections_locator[1]))):
+        for i in range(len(self.selenium.find_elements(*self._featured_collections_elements_locator))):
             counter += 1
         return counter
 
