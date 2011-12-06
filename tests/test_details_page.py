@@ -93,7 +93,6 @@ class TestDetails:
     def test_that_version_information_is_displayed(self, mozwebqa):
         """ Test for Litmus 9890"""
         details_page = Details(mozwebqa, 'Firebug')
-        Assert.true(details_page.is_version_information_heading_visible)
         Assert.equal(details_page.version_information_heading, 'Version Information')
         """
         Updated for Litmus 25721
