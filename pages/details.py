@@ -515,10 +515,6 @@ class Details(Base):
         return "expanded" in is_expanded
 
     @property
-    def is_development_channel_content_visible(self):
-        return self.is_element_visible(*self._development_channel_content_locator)
-
-    @property
     def is_development_channel_install_button_visible(self):
         return self.is_element_visible(*self._development_channel_install_button_locator)
 

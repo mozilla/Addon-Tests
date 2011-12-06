@@ -410,7 +410,6 @@ class TestDetails:
 
         Assert.equal('Development Channel', details_page.development_channel_text)
         details_page.click_development_channel()
-        Assert.true(details_page.is_development_channel_content_visible)
 
         # Verify if description present
         Assert.not_none(details_page.development_channel_content)
