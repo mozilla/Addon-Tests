@@ -57,7 +57,7 @@ class Home(Base):
     _themes_link_locator = (By.CSS_SELECTOR, "#themes > a")
     _personas_link_locator = (By.CSS_SELECTOR, "#personas > a")
     _collections_link_locator = (By.CSS_SELECTOR, "#collections > a")
-    _first_addon_locator = (By.CSS_SELECTOR, "div.summary > h3")
+    _first_addon_locator = (By.CSS_SELECTOR, "div.summary > a > h3")
     _other_applications_link_locator = (By.ID, "other-apps")
 
     #Most Popular List
