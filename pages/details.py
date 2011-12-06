@@ -111,8 +111,9 @@ class Details(Base):
     _add_to_collection_widget_login_link_locator = (By.CSS_SELECTOR, "div.collection-add-login p:nth-child(3) > a")
 
     _development_channel_locator = (By.CSS_SELECTOR, "#beta-channel")
+    _development_channel_toggle = (By.CSS_SELECTOR, '#beta-channel a.toggle')
+    _development_channel_install_button_locator = (By.CSS_SELECTOR, '#beta-channel p.install-button a.button')
     _development_channel_title_locator = (By.CSS_SELECTOR, "#beta-channel h2")
-    _development_channel_toggle_locator = (By.CSS_SELECTOR, "#beta-channel h2 a")
     _development_channel_content_locator = (By.CSS_SELECTOR, "#beta-channel > div.content")
 
     _next_link_locator = (By.CSS_SELECTOR, ".paginator .rel > a:nth-child(3)")
@@ -505,7 +506,7 @@ class Details(Base):
         return self.selenium.find_element(*self._development_channel_title_locator).text
 
     def click_development_channel(self):
-        self.selenium.find_element(*self._development_channel_toggle_locator).click()
+        self.selenium.find_element(*self._development_channel_toggle).click()
 
     @property
     def is_development_channel_expanded(self):
