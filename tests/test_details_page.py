@@ -410,4 +410,4 @@ class TestDetails:
         details_page = Details(mozwebqa, addon_name)
         Assert.equal(details_page.license_link_text, 'BSD License')
         license_link = details_page.license_site
-        Assert.true(license_link != '')
+        Assert.not_none(license_link)
