@@ -84,15 +84,14 @@ class TestHome:
         Assert.true(details_page.is_the_current_page)
 
     @nondestructive
-    def test_that_featured_personas_exist_on_the_Home(self, mozwebqa):
+    def test_that_featured_personas_exist_on_the_home(self, mozwebqa):
         """
         Litmus29698
         https://litmus.mozilla.org/show_test.cgi?id=29698
         """
         home_page = Home(mozwebqa)
-        details_page = home_page.click_on_first_addon()
-
-        Assert.true(details_page.is_the_current_page)
+        Assert.equal(home_page.featured_personas_title, u'Featured Personas See all \xbb', 'Featured Personas region title doesn\'t match')
+        Assert.equal(home_page.featured_personas_count, 6)
 
     @nondestructive
     def test_that_clicking_see_all_personas_link_works(self, mozwebqa):
@@ -149,3 +148,24 @@ class TestHome:
                     Assert.true(card_items[i].is_featured, '%s is not highlighted' % card_items[i].name)
                 else:
                     Assert.false(card_items[i].is_featured, '%s is highlighted' % card_items[i].name)
+
+    @nondestructive
+    def test_that_featured_collections_exist_on_the_home(self, mozwebqa):
+        """
+        Litmus 25805
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25805
+        """
+        home_page = Home(mozwebqa)
+        Assert.equal(home_page.featured_collections_title, u'Featured Collections See all \xbb', 'Featured Collection region title doesn\'t match')
+        Assert.equal(home_page.featured_collections_count, 4)
+
+    @nondestructive
+    def test_that_clicking_see_all_collections_link_works(self, mozwebqa):
+        """
+        Litmus 25806
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25806
+        """
+        home_page = Home(mozwebqa)
+        featured_collection_page = home_page.click_featured_collections_see_all_link()
+        Assert.true(featured_collection_page.is_the_current_page)
+        Assert.true(featured_collection_page.get_url_current_page().endswith('/collections/?sort=featured'))
