@@ -142,11 +142,8 @@ class Home(Base):
         return self.selenium.find_element(*self._featured_collections_locator).text
 
     @property
-    def featured_collections_visible_count(self):
-        counter = 0
-        for i in range(len(self.selenium.find_elements(*self._featured_collections_elements_locator))):
-            counter += 1
-        return counter
+    def featured_collections_count(self):
+        return len(self.selenium.find_elements(*self._featured_collections_elements_locator))
 
     def click_on_first_addon(self):
         self.selenium.find_element(*self._first_addon_locator).click()
