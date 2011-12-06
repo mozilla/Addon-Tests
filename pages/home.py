@@ -111,8 +111,7 @@ class Home(Base):
         return ExtensionsHome(self.testsetup)
 
     def click_featured_collections_see_all_link(self):
-        self.selenium.find_element(self._featured_collections_locator[0],
-                                   "%s h2 a" % self._featured_collections_locator[1]).click()
+        self.selenium.find_element(*self._featured_collections_locator).find_element(By.CSS_SELECTOR, " h2 a").click()
         from pages.collection import Collections
         return Collections(self.testsetup)
 
