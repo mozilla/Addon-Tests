@@ -72,7 +72,7 @@ class Home(Base):
     _featured_personas_title_locator = (By.CSS_SELECTOR, "#featured-personas h2")
     _featured_personas_items_locator = (By.CSS_SELECTOR, "#featured-personas li")
 
-    _featured_collections_locator = (By.CSS_SELECTOR, "#featured-collections")
+    _featured_collections_locator = (By.CSS_SELECTOR, "#featured-collections h2")
     _featured_collections_elements_locator = (By.CSS_SELECTOR, "#featured-collections section:nth-child(1) li")
 
     _category_list_locator = (By.CSS_SELECTOR, "ul#side-categories li")
@@ -111,7 +111,7 @@ class Home(Base):
         return ExtensionsHome(self.testsetup)
 
     def click_featured_collections_see_all_link(self):
-        self.selenium.find_element(*self._featured_collections_locator).find_element(By.CSS_SELECTOR, " h2 a").click()
+        self.selenium.find_element(*self._featured_collections_locator).find_element(By.CSS_SELECTOR, " a").click()
         from pages.collection import Collections
         return Collections(self.testsetup)
 
@@ -139,7 +139,7 @@ class Home(Base):
 
     @property
     def featured_collections_title(self):
-        return self.selenium.find_element(*self._featured_collections_locator).find_element(By.CSS_SELECTOR, " h2").text
+        return self.selenium.find_element(*self._featured_collections_locator).text
 
     @property
     def featured_collections_visible_count(self):
