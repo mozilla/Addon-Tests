@@ -103,7 +103,7 @@ class TestDetails:
        Updated for Litmus 25721
         https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25721
         """
-        
+
         Assert.true(details_page.is_source_code_license_information_visible)
         Assert.true(details_page.is_whats_this_license_visible)
         Assert.true(details_page.is_view_the_source_link_visible)
@@ -356,7 +356,7 @@ class TestDetails:
         """
         details_page = Details(mozwebqa, 'Firebug')
         Assert.equal(details_page.devs_comments_title, u"Developer\u2019s Comments")
-        details_page.click_devs_comments_title()
+        details_page.click_devs_comments()
         Assert.true(details_page.is_devs_comments_section_expanded())
         Assert.not_none(re.match('(\w+\s*){3,}', details_page.devs_comments_message))
 
