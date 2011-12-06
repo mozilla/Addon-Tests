@@ -139,8 +139,7 @@ class Home(Base):
 
     @property
     def featured_collections_title(self):
-        return self.selenium.find_element(self._featured_collections_locator[0],
-                                          "%s h2" % self._featured_collections_locator[1]).text
+        return self.selenium.find_element(*self._featured_collections_locator).find_element(By.CSS_SELECTOR, " h2").text
 
     @property
     def featured_collections_visible_count(self):
