@@ -380,11 +380,11 @@ class TestDetails:
         details_page = Details(mozwebqa, 'Firebug')
         Assert.equal("Development Channel", details_page.development_channel_text)
 
-        Assert.false(details_page.is_development_channel_content_visible)
+        Assert.equal('', details_page.development_channel_content)
         details_page.click_development_channel()
-        Assert.true(details_page.is_development_channel_content_visible)
+        Assert.not_none(details_page.development_channel_content)
         details_page.click_development_channel()
-        Assert.false(details_page.is_development_channel_content_visible)
+        Assert.equal('', details_page.development_channel_content)
 
     @nondestructive
     def test_click_on_other_collections(self, mozwebqa):
