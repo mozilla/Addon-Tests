@@ -92,23 +92,22 @@ class TestDetails:
     @nondestructive
     def test_that_version_information_is_displayed(self, mozwebqa):
         """ Test for Litmus 9890"""
-        details_page = Details(mozwebqa, "Firebug")
-        Assert.equal(details_page.version_information_heading, "Version Information")
-
-        details_page.click_version_information_header()
-        Assert.true(details_page.is_version_information_section_expanded)
-        # check that the release number matches the version number at the top of the page
-        Assert.equal('Version %s' % details_page.version_number, details_page.release_version)
+        details_page = Details(mozwebqa, 'Firebug')
+        Assert.equal(details_page.version_information_heading, 'Version Information')
         """
-       Updated for Litmus 25721
+        Updated for Litmus 25721
         https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25721
         """
 
+        details_page.click_version_information_header()
+        Assert.true(details_page.is_version_information_section_expanded)
         Assert.true(details_page.is_source_code_license_information_visible)
         Assert.true(details_page.is_whats_this_license_visible)
         Assert.true(details_page.is_view_the_source_link_visible)
         Assert.true(details_page.is_complete_version_history_visible)
         Assert.true(details_page.is_version_information_install_button_visible)
+        # check that the release number matches the version number at the top of the page
+        Assert.equal('Version %s' % details_page.version_number, details_page.release_version)
 
     @nondestructive
     def test_that_reviews_are_displayed(self, mozwebqa):
@@ -399,3 +398,32 @@ class TestDetails:
             collection_pg = details_pg.part_of_collections[i].click_collection()
             Assert.equal(name, collection_pg.collection_name, "Expected collection name does not match the page header")
             details_pg = Details(mozwebqa, 'Firebug')
+
+    @nondestructive
+    def test_the_development_channel_section(self, mozwebqa):
+        """
+        Test for Litmus 25732
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25732
+        """
+        details_page = Details(mozwebqa, 'Firebug')
+
+        Assert.equal('Development Channel', details_page.development_channel_text)
+        details_page.click_development_channel()
+
+        # Verify if description present
+        Assert.not_none(details_page.development_channel_content)
+        Assert.true(details_page.is_development_channel_install_button_visible)
+
+        # Verify experimental version (beta or pre)
+        Assert.not_none(re.match('Version %s(b|a|rc)[0-9]:' % details_page.version_number, details_page.beta_version))
+
+    def test_that_license_link_works(self, mozwebqa):
+        """
+        Litmus 25726
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25726
+        """
+        addon_name = 'Firebug'
+        details_page = Details(mozwebqa, addon_name)
+        Assert.equal(details_page.license_link_text, 'BSD License')
+        license_link = details_page.license_site
+        Assert.not_none(license_link)

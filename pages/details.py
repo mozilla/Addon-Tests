@@ -65,6 +65,7 @@ class Details(Base):
     _summary_locator = (By.ID, "addon-summary")
     _install_button_locator = (By.CSS_SELECTOR, "p[class='install-button'] > a")
     _rating_locator = (By.CSS_SELECTOR, "span[itemprop='rating']")
+    _license_link_locator = (By.CSS_SELECTOR, ".source-license > a")
     _whats_this_license_locator = (By.CSS_SELECTOR, ".license-faq")
     _view_the_source_locator = (By.CSS_SELECTOR, ".source-code")
     _complete_version_history_locator = (By.CSS_SELECTOR, "p.more > a")
@@ -110,8 +111,11 @@ class Details(Base):
     _add_to_collection_widget_login_link_locator = (By.CSS_SELECTOR, "div.collection-add-login p:nth-child(3) > a")
 
     _development_channel_locator = (By.CSS_SELECTOR, "#beta-channel")
+    _development_channel_toggle = (By.CSS_SELECTOR, '#beta-channel a.toggle')
+    _development_channel_install_button_locator = (By.CSS_SELECTOR, '#beta-channel p.install-button a.button')
     _development_channel_title_locator = (By.CSS_SELECTOR, "#beta-channel h2")
     _development_channel_content_locator = (By.CSS_SELECTOR, "#beta-channel > div.content")
+    _development_version_locator = (By.CSS_SELECTOR, '.beta-version')
 
     _next_link_locator = (By.CSS_SELECTOR, ".paginator .rel > a:nth-child(3)")
     _previous_link_locator = (By.CSS_SELECTOR, ".paginator .rel > a:nth-child(2)")
@@ -176,6 +180,14 @@ class Details(Base):
         self.selenium.find_element(*self._whats_this_license_locator).click()
         from pages.addons_site import UserFAQ
         return UserFAQ(self.testsetup)
+
+    @property
+    def license_site(self):
+        return self.selenium.find_element(*self._license_link_locator).get_attribute('href')
+
+    @property
+    def license_link_text(self):
+        return self.selenium.find_element(*self._license_link_locator).text
 
     @property
     def description(self):
@@ -504,7 +516,7 @@ class Details(Base):
         return self.selenium.find_element(*self._development_channel_title_locator).text
 
     def click_development_channel(self):
-        self.selenium.find_element(*self._development_channel_title_locator).click()
+        self.selenium.find_element(*self._development_channel_toggle).click()
 
     @property
     def is_development_channel_expanded(self):
@@ -512,5 +524,13 @@ class Details(Base):
         return "expanded" in is_expanded
 
     @property
-    def is_development_channel_content_visible(self):
-        return self.is_element_visible(*self._development_channel_content_locator)
+    def is_development_channel_install_button_visible(self):
+        return self.is_element_visible(*self._development_channel_install_button_locator)
+
+    @property
+    def development_channel_content(self):
+        return self.selenium.find_element(*self._development_channel_content_locator).text
+
+    @property
+    def beta_version(self):
+        return self.selenium.find_element(*self._development_version_locator).text
