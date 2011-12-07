@@ -401,6 +401,23 @@ class TestDetails:
             details_pg = Details(mozwebqa, 'Firebug')
 
     @nondestructive
+    def test_the_development_channel_section(self, mozwebqa):
+        """
+        Test for Litmus 25732
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25732
+        """
+        details_page = Details(mozwebqa, 'Firebug')
+
+        Assert.equal('Development Channel', details_page.development_channel_text)
+        details_page.click_development_channel()
+
+        # Verify if description present
+        Assert.not_none(details_page.development_channel_content)
+        Assert.true(details_page.is_development_channel_install_button_visible)
+
+        # Verify experimental version (beta or pre)
+        Assert.not_none(re.match('Version %s(b|a|rc)[0-9]:' % details_page.version_number, details_page.beta_version))
+
     def test_that_license_link_works(self, mozwebqa):
         """
         Litmus 25726
