@@ -55,7 +55,7 @@ class Login(Base):
 
     _pop_up_id = '_mozid_signin'
 
-    def normal_login_user(self, user):
+    def login_user_normal(self, user):
         credentials = self.testsetup.credentials[user]
         self.selenium.find_element(*self._normal_login_locator).click()
 

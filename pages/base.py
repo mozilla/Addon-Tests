@@ -224,10 +224,8 @@ class Base(Page):
 
         @property
         def is_user_logged_in(self):
-            try:
-                return self.is_element_visible(*self._account_controller_locator)
-            except:
-                return False
+            WebDriverWait(self.selenium, 10).until(lambda s: self.is_element_visible(*self._account_controller_locator))
+            return self.is_element_present(*self._account_controller_locator)
 
     class BreadcrumbsRegion(Page):
 
