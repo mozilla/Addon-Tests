@@ -63,7 +63,7 @@ class Base(Page):
 
     def login(self, type="normal", user="default"):
         if type == "normal":
-            self.selenium.open("/en-US/firefox/users/login")
+            self.selenium.get(self.base_url + "/en-US/firefox/users/login")
             from pages.user import Login
             login = Login(self.testsetup)
             login.login_user_normal(user)
@@ -224,8 +224,7 @@ class Base(Page):
 
         @property
         def is_user_logged_in(self):
-            WebDriverWait(self.selenium, 10).until(lambda s: self.is_element_visible(*self._account_controller_locator))
-            return self.is_element_present(*self._account_controller_locator)
+            return self.is_element_visible(*self._account_controller_locator)
 
     class BreadcrumbsRegion(Page):
 
