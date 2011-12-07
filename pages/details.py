@@ -96,6 +96,7 @@ class Details(Base):
 
     _devs_comments_section_locator = (By.CSS_SELECTOR, "#developer-comments")
     _devs_comments_title_locator = (By.CSS_SELECTOR, "#developer-comments h2")
+    _devs_comments_toggle_locator = (By.CSS_SELECTOR, "#developer-comments h2 a")
     _devs_comments_message_locator = (By.CSS_SELECTOR, "#developer-comments div.content")
 
     #more about this addon
@@ -341,7 +342,7 @@ class Details(Base):
             self._root_element = element
 
         def click_collection(self):
-            self._root_element.click()
+            self._root_element.find_element(*self._name_locator).click()
             from pages.collection import Collections
             return Collections(self.testsetup)
 
@@ -468,13 +469,12 @@ class Details(Base):
     def click_version_information_header(self):
         self.selenium.find_element(*self._version_information_heading_link_locator).click()
 
-    def click_devs_comments_title(self):
-        self.selenium.find_element(*self._devs_comments_title_locator).click()
+    def click_devs_comments(self):
+        self.selenium.find_element(*self._devs_comments_toggle_locator).click()
 
     class OtherAddons(Page):
 
         _name_locator = (By.CSS_SELECTOR, 'div.summary h3')
-        _addon_link_locator = (By.CSS_SELECTOR, ' div.addon')
 
         def __init__(self, testsetup, element):
             Page.__init__(self, testsetup)
@@ -485,7 +485,7 @@ class Details(Base):
             return self._root_element.find_element(*self._name_locator).text
 
         def click_addon_link(self):
-            self._root_element.find_element(*self._addon_link_locator).click()
+            self._root_element.find_element(*self._name_locator).click()
             #return Details(self.testsetup)
 
     class DetailsReviewSnippet(Page):
