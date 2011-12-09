@@ -104,8 +104,7 @@ class HeaderMenu(Page):
         @property
         def name(self):
             submenu_link = self._submenu_root_element.find_element(*self._link_tag)
-
-            ActionChains(self.selenium).move_to_element(self._root_element).move_to_element(self._submenu_root_element).perform()
+            ActionChains(self.selenium).move_to_element(self._root_element).perform()
             return submenu_link.text
 
         @property
