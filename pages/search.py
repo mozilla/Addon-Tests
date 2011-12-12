@@ -64,8 +64,8 @@ class SearchHome(Base):
 
     _sort_by_name_locator = (By.CSS_SELECTOR, "li.extras > ul > li:nth-child(1) > a")
     _sort_by_weekly_downloads_locator = (By.CSS_SELECTOR, "li.extras > ul > li:nth-child(2) > a")
-    _sort_by_recently_updated_locator = (By.CSS_SELECTOR, "li.extras > ul > li:nth-child(3) > a")
-    _sort_by_up_and_coming_locator = (By.CSS_SELECTOR, "li.extras > ul > li:nth-child(4) > a")
+    _sort_by_recently_updated_locator = (By.CSS_SELECTOR, "li.extras > ul > li:nth-child(4) > a")
+    _sort_by_up_and_coming_locator = (By.CSS_SELECTOR, "li.extras > ul > li:nth-child(5) > a")
 
     _hover_more_locator = (By.CSS_SELECTOR, "li.extras > a")
 
