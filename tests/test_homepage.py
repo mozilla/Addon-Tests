@@ -140,11 +140,10 @@ class TestHome:
             menu_nav = home_page.header.site_nav(menu)
             Assert.equal(menu.upper(), menu_nav.name)
             card_items = menu_nav.menu_items
-
             for i in range(len(card_items_list)):
-                Assert.equal(card_items_list[i], card_items[i].name)
+                Assert.equal(card_items_list[i], card_items[i].name, "Item '%s' is not in the %s menu" % (card_items_list[i], menu_nav.name))
 
-                if i < 3 and menu_nav.name != u'More\u2026':
+                if i < 3 and menu_nav.name != u'MORE\u2026':
                     Assert.true(card_items[i].is_featured, '%s is not highlighted' % card_items[i].name)
                 else:
                     Assert.false(card_items[i].is_featured, '%s is highlighted' % card_items[i].name)
