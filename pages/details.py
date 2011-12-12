@@ -417,7 +417,7 @@ class Details(Base):
         _prev_locator = (By.CSS_SELECTOR, 'section.previews.carousel > a.prev')
 
         _image_locator = (By.CSS_SELECTOR, '#preview li')
-        _link_locator = (By.CSS_SELECTOR, 'a')
+        _link_locator = (By.TAG_NAME, 'a')
 
         def next_set(self):
             self.selenium.find_element(*self._next_locator).click()
