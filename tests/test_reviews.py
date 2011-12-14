@@ -109,18 +109,17 @@ class TestReviews:
         body = 'Automatic addon review by Selenium tests %s' % datetime.now()
         write_review_block.enter_review_with_text(body)
         write_review_block.set_review_rating(1)
-        #Uncomment after bug is fixed
-#        review_page = write_review_block.click_to_save_review()
-#
-#        # Step 5 - Assert review
-#        review = review_page.reviews[0]
-#        Assert.equal(review.rating, 1)
-#        Assert.equal(review.author, mozwebqa.credentials['default']['name'])
-#        date = datetime.now().strftime("%B %d, %Y")
-#        # there are no leading zero-signs on day so we need to remove them too
-#        date = date.replace(' 0', ' ')
-#        Assert.equal(review.date, date)
-#        Assert.equal(review.text, body)
+        review_page = write_review_block.click_to_save_review()
+
+        # Step 5 - Assert review
+        review = review_page.reviews[0]
+        Assert.equal(review.rating, 1)
+        Assert.equal(review.author, mozwebqa.credentials['default']['name'])
+        date = datetime.now().strftime("%B %d, %Y")
+        # there are no leading zero-signs on day so we need to remove them too
+        date = date.replace(' 0', ' ')
+        Assert.equal(review.date, date)
+        Assert.equal(review.text, body)
 
     @xfail(reason="refactoring to compensate for purchased addons http://bit.ly/ucH6Ow")
     @destructive
