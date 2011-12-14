@@ -417,6 +417,7 @@ class Details(Base):
         _prev_locator = (By.CSS_SELECTOR, 'section.previews.carousel > a.prev')
 
         _image_locator = (By.CSS_SELECTOR, '#preview li')
+        _link_locator = (By.TAG_NAME, 'a')
 
         def next_set(self):
             self.selenium.find_element(*self._next_locator).click()
@@ -424,9 +425,9 @@ class Details(Base):
         def prev_set(self):
             self.selenium.find_element(*self._prev_locator).click()
 
-        def click_image(self, image_no=1):
-            self.selenium.find_element(self._image_locator[0],
-                        '%s:nth-child(%s) a' % (self._image_locator[1], image_no)).click()
+        def click_image(self, image_no=0):
+            images = self.selenium.find_elements(*self._image_locator)
+            images[image_no].find_element(*self._link_locator).click()
             from pages.regions.image_viewer import ImageViewer
             image_viewer = ImageViewer(self.testsetup)
             image_viewer.wait_for_image_viewer_to_finish_animating()

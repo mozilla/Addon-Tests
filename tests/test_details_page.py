@@ -415,7 +415,7 @@ class TestDetails:
         Assert.true(details_page.is_development_channel_install_button_visible)
 
         # Verify experimental version (beta or pre)
-        Assert.not_none(re.match('Version %s(b|a|rc)[0-9]:' % details_page.version_number, details_page.beta_version))
+        Assert.not_none(re.match('Version \d\.\d.\d(b|a|rc)[0-9]:', details_page.beta_version))
 
     def test_that_license_link_works(self, mozwebqa):
         """

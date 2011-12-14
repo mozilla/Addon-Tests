@@ -73,7 +73,10 @@ class Themes(Base):
     def click_sort_by(self, type_):
         click_target = self.selenium.find_element(*getattr(self, "_sort_by_%s_locator" % type_))
         hover_element = self.selenium.find_element(*self._hover_more_locator)
-        ActionChains(self.selenium).move_to_element(hover_element).\
+        footer = self.selenium.find_element(*self._footer_locator)
+        ActionChains(self.selenium).\
+            move_to_element(footer).\
+            move_to_element(hover_element).\
             move_to_element(click_target).\
             click().perform()
 
