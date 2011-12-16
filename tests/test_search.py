@@ -208,6 +208,7 @@ class TestSearch:
         Assert.true('sort=created' in search_page.get_url_current_page())
         Assert.is_sorted_descending([i.created_date for i in search_page.results()])
 
+    @xfail(reason="Bugzilla 698165")
     @nondestructive
     def test_sorting_by_most_recently_updated(self, mozwebqa):
         """ Litmus 17345
