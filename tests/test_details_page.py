@@ -417,6 +417,7 @@ class TestDetails:
         # Verify experimental version (beta or pre)
         Assert.not_none(re.match('Version \d\.\d.\d(b|a|rc)[0-9]:', details_page.beta_version))
 
+    @nondestructive
     def test_that_license_link_works(self, mozwebqa):
         """
         Litmus 25726

@@ -88,6 +88,7 @@ class TestReviews:
         Assert.equal(details_page.review_count, 20)
         Assert.equal(details_page.current_page, page_number + 1)
 
+    @xfail(reason="bug 708970")
     @destructive
     def test_that_new_review_is_saved(self, mozwebqa):
         """ Litmus 22921
