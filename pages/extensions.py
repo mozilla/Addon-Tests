@@ -49,6 +49,7 @@ class ExtensionsHome(Base):
     _extensions_locator = (By.CSS_SELECTOR, "div.items div.item")
     _last_page_link_locator = (By.CSS_SELECTOR, ".paginator .rel > a:nth-child(4)")
     _first_page_link_locator = (By.CSS_SELECTOR, ".paginator .rel > a:nth-child(1)")
+    _default_selected_tab_locator = (By.CSS_SELECTOR, ".island ul li.selected")
 
     @property
     def extensions(self):
@@ -60,6 +61,11 @@ class ExtensionsHome(Base):
 
     def go_to_first_page(self):
         self.selenium.find_element(*self._first_page_link_locator).click()
+
+    @property
+    def default_selected_tab(self):
+        return self.selenium.find_element(*self._default_selected_tab_locator).text
+
 
 
 class Extension(Page):
