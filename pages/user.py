@@ -22,6 +22,7 @@
 #
 # Contributor(s): Bebe <florin.strugariu@softvision.ro>
 #                 Stephen Donner
+#                 Teodosia Pop <teodosia.pop@softvision.ro>
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -113,6 +114,8 @@ class EditProfile(Base):
     _notification_locator = (By.CSS_SELECTOR, "#acct-notify > legend")
     _hide_email_checkbox = (By.ID, 'id_emailhidden')
     _update_account_locator = (By.CSS_SELECTOR, 'p.footer-submit > button.prominent')
+    _profile_fields_locator = (By.CSS_SELECTOR, '#profile-personal > ol.formfields li')
+    _update_message_locator = (By.CSS_SELECTOR, 'div.notification-box > h2')
 
     @property
     def account_header_text(self):
@@ -135,3 +138,47 @@ class EditProfile(Base):
 
     def change_hide_email_state(self):
         self.selenium.find_element(*self._hide_email_checkbox).click()
+
+    @property
+    def profile_fields(self):
+        return [self.ProfileSection(self.testsetup, element) for element in
+                self.selenium.find_elements(*self._profile_fields_locator)]
+
+    @property
+    def update_message(self):
+        return self.selenium.find_element(*self._update_message_locator).text
+
+    class ProfileSection(Base):
+
+        _input_field_locator = (By.CSS_SELECTOR, ' input')
+        _field_name = (By.CSS_SELECTOR, ' label')
+
+        def __init__(self, testsetup, element):
+            Base.__init__(self, testsetup)
+            self._root_element = element
+
+        @property
+        def field_input(self):
+            try:
+                return self._root_element.find_element(*self._input_field_locator).get_attribute('value')
+            except Exception as msg:
+                if ("ERROR: Could not find element attribute" in msg.message):
+                    return " "
+                else:
+                    return msg
+
+        @property
+        def field_name(self):
+            return self._root_element.find_element(*self._field_name).text
+
+        def type_new_value(self, value):
+            if (self.field_name == 'Homepage'):
+                if ('http://' in self.field_input):
+                    self._root_element.find_element(*self._input_field_locator).send_keys(value)
+                else:
+                    self._root_element.find_element(*self._input_field_locator).send_keys('http://example.com/' + value)
+            else:
+                self._root_element.find_element(*self._input_field_locator).send_keys(value)
+
+        def clear_field(self):
+            self._root_element.find_element(*self._input_field_locator).clear()

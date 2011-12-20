@@ -21,6 +21,7 @@
 # the Initial Developer. All Rights Reserved.
 #
 # Contributor(s): Bebe <florin.strugariu@softvision.ro>
+#                 Teodosia Pop <teodosia.pop@softvision.ro>
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -37,6 +38,8 @@
 # ***** END LICENSE BLOCK *****
 
 import pytest
+import random
+from copy import deepcopy
 
 from unittestzero import Assert
 
@@ -152,3 +155,41 @@ class TestAccounts:
                 view_profile_page = home_page.header.click_view_profile()
 
             Assert.equal(view_profile_page.is_email_field_present, initial_state, 'Could not restore profile to initial state.')
+
+    @destructive
+    def test_user_can_update_profile_information_in_account_settings_page(self, mozwebqa):
+        """
+        Test for Litmus 11563
+        https://litmus.mozilla.org/show_test.cgi?id=11563
+        """
+        home_page = Home(mozwebqa)
+        home_page.login("browserID")
+
+        Assert.true(home_page.is_the_current_page)
+        Assert.true(home_page.header.is_user_logged_in)
+
+        user_edit_page = home_page.header.click_edit_profile()
+        # save initial values to restore them after the test is finished
+        fields_no = len(user_edit_page.profile_fields) - 1
+        initial_value = [None] * fields_no
+        random_name = "test%s" % random.randrange(1, 100)
+
+        # enter new values
+        for i in range(0, fields_no):
+            initial_value[i] = deepcopy(user_edit_page.profile_fields[i].field_input)
+            user_edit_page.profile_fields[i].clear_field()
+            user_edit_page.profile_fields[i].type_new_value(random_name)
+
+        user_edit_page.click_update_account()
+        Assert.equal(user_edit_page.update_message, "Profile Updated")
+
+        # using try finally to ensure that the initial values are restore even if the Asserts fail.
+        try:
+            for i in range(0, fields_no):
+                Assert.contains(random_name, user_edit_page.profile_fields[i].field_input)
+        finally:
+            # restore initial values
+            for i in range(0, fields_no):
+                user_edit_page.profile_fields[i].clear_field()
+                user_edit_page.profile_fields[i].type_new_value(initial_value[i])
+            user_edit_page.click_update_account()
