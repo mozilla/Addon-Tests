@@ -64,7 +64,7 @@ class Details(Base):
     _authors_locator = (By.XPATH, "//h4[@class='author']/a")
     _summary_locator = (By.ID, "addon-summary")
     _install_button_locator = (By.CSS_SELECTOR, "p[class='install-button'] > a")
-    _rating_locator = (By.CSS_SELECTOR, "span[itemprop='rating']")
+    _rating_locator = (By.CSS_SELECTOR, "span[itemprop='ratingValue']")
     _license_link_locator = (By.CSS_SELECTOR, ".source-license > a")
     _whats_this_license_locator = (By.CSS_SELECTOR, ".license-faq")
     _view_the_source_locator = (By.CSS_SELECTOR, ".source-code")
