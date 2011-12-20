@@ -47,7 +47,7 @@ nondestructive = pytest.mark.nondestructive
 class TestExtensions:
 
     @nondestructive
-    def test_featured_tab_is_selected_by_default(self, mozwebqa):
+    def test_featured_tab_is_highlighted_by_default(self, mozwebqa):
         """
         Litmus 29706
         https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=29706

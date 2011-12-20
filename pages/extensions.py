@@ -49,7 +49,7 @@ class ExtensionsHome(Base):
     _extensions_locator = (By.CSS_SELECTOR, "div.items div.item")
     _last_page_link_locator = (By.CSS_SELECTOR, ".paginator .rel > a:nth-child(4)")
     _first_page_link_locator = (By.CSS_SELECTOR, ".paginator .rel > a:nth-child(1)")
-    _default_selected_tab_locator = (By.CSS_SELECTOR, ".island ul li.selected")
+    _default_selected_tab_locator = (By.CSS_SELECTOR, "#sorter li.selected")
 
     @property
     def extensions(self):
