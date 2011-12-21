@@ -152,3 +152,20 @@ class TestAccounts:
                 view_profile_page = home_page.header.click_view_profile()
 
             Assert.equal(view_profile_page.is_email_field_present, initial_state, 'Could not restore profile to initial state.')
+
+    @nondestructive
+    def test_user_my_collections_page(self, mozwebqa):
+        """
+        Test for litmus 15401
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=15401
+        """
+
+        home_page = Home(mozwebqa)
+        home_page.login("browserID")
+        Assert.true(home_page.is_the_current_page)
+        Assert.true(home_page.header.is_user_logged_in)
+
+        username = mozwebqa.credentials['default']['name']
+        my_col_page = home_page.header.click_my_collections()
+        Assert.equal('Collections by %s :: Add-ons for Firefox' % username, home_page.page_title)
+        Assert.equal('Collections by %s' % username, my_col_page.my_collections_header_text)

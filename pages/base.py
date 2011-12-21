@@ -222,6 +222,17 @@ class Base(Page):
             from pages.user import ViewProfile
             return ViewProfile(self.testsetup)
 
+        def click_my_collections(self):
+            hover_element = self.selenium.find_element(*self._account_controller_locator)
+            click_element = self.selenium.find_element(self._account_dropdown_locator[0],
+                                                       '%s > li:nth-child(3) a' % self._account_dropdown_locator[1])
+            ActionChains(self.selenium).move_to_element(hover_element).\
+                move_to_element(click_element).\
+                click().perform()
+
+            from pages.user import MyCollections
+            return MyCollections(self.testsetup)
+
         @property
         def is_user_logged_in(self):
             return self.is_element_visible(*self._account_controller_locator)
