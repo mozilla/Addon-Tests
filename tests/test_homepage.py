@@ -62,7 +62,7 @@ class TestHome:
                                      "OS Integration", "Retro", "Sports"],
                 "Collections":      ["Featured", "Most Followers", "Newest", "Collections I've Made", "Collections I'm Following",
                                      "My Favorite Add-ons"],
-                u"More\u2026":      ["Add-ons for Mobile", "Dictionaries & Language Packs", "Plugins", "Search Tools", "Developer Hub"]
+                u"More\u2026":      ["Add-ons for Mobile", "Dictionaries & Language Packs", "Search Tools", "Developer Hub"]
                 }
 
     @nondestructive
