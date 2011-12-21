@@ -162,11 +162,8 @@ class EditProfile(Base):
         def field_value(self):
             try:
                 return self._root_element.find_element(*self._input_field_locator).get_attribute('value')
-            except Exception as msg:
-                if ("ERROR: Could not find element attribute" in msg.message):
-                    return " "
-                else:
-                    return msg
+            except Exception.NoSuchElementException as msg:
+                return " "
 
         @property
         def field_name(self):
