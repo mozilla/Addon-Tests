@@ -176,9 +176,9 @@ class TestAccounts:
 
         # enter new values
         for i in range(0, fields_no):
-            initial_value[i] = deepcopy(user_edit_page.profile_fields[i].field_input)
+            initial_value[i] = deepcopy(user_edit_page.profile_fields[i].field_value)
             user_edit_page.profile_fields[i].clear_field()
-            user_edit_page.profile_fields[i].type_new_value(random_name)
+            user_edit_page.profile_fields[i].type_value(random_name)
 
         user_edit_page.click_update_account()
         Assert.equal(user_edit_page.update_message, "Profile Updated")
@@ -186,10 +186,11 @@ class TestAccounts:
         # using try finally to ensure that the initial values are restore even if the Asserts fail.
         try:
             for i in range(0, fields_no):
-                Assert.contains(random_name, user_edit_page.profile_fields[i].field_input)
+                Assert.contains(random_name, user_edit_page.profile_fields[i].field_value)
         finally:
             # restore initial values
             for i in range(0, fields_no):
                 user_edit_page.profile_fields[i].clear_field()
-                user_edit_page.profile_fields[i].type_new_value(initial_value[i])
+                user_edit_page.profile_fields[i].type_value(initial_value[i])
+
             user_edit_page.click_update_account()

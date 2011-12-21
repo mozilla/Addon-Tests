@@ -158,7 +158,7 @@ class EditProfile(Base):
             self._root_element = element
 
         @property
-        def field_input(self):
+        def field_value(self):
             try:
                 return self._root_element.find_element(*self._input_field_locator).get_attribute('value')
             except Exception as msg:
@@ -171,12 +171,9 @@ class EditProfile(Base):
         def field_name(self):
             return self._root_element.find_element(*self._field_name).text
 
-        def type_new_value(self, value):
+        def type_value(self, value):
             if (self.field_name == 'Homepage'):
-                if ('http://' in self.field_input):
-                    self._root_element.find_element(*self._input_field_locator).send_keys(value)
-                else:
-                    self._root_element.find_element(*self._input_field_locator).send_keys('http://example.com/' + value)
+                self._root_element.find_element(*self._input_field_locator).send_keys('http://example.com/' + value)
             else:
                 self._root_element.find_element(*self._input_field_locator).send_keys(value)
 
