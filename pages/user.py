@@ -74,6 +74,7 @@ class Login(Base):
         pop_up.login_browser_id(user)
         pop_up.sign_in()
 
+
 class ViewProfile(Base):
 
     _page_title = 'User Info for Test :: Add-ons for Firefox'
@@ -141,8 +142,8 @@ class EditProfile(Base):
 
     @property
     def profile_fields(self):
-        return [self.ProfileSection(self.testsetup, element) for element in
-                self.selenium.find_elements(*self._profile_fields_locator)]
+        return [self.ProfileSection(self.testsetup, element)
+                        for element in self.selenium.find_elements(*self._profile_fields_locator)]
 
     @property
     def update_message(self):
