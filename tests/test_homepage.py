@@ -46,6 +46,7 @@ from unittestzero import Assert
 
 from pages.home import Home
 
+xfail = pytest.mark.xfail
 nondestructive = pytest.mark.nondestructive
 
 
@@ -62,7 +63,7 @@ class TestHome:
                                      "OS Integration", "Retro", "Sports"],
                 "Collections":      ["Featured", "Most Followers", "Newest", "Collections I've Made", "Collections I'm Following",
                                      "My Favorite Add-ons"],
-                u"More\u2026":      ["Add-ons for Mobile", "Dictionaries & Language Packs", "Plugins", "Search Tools", "Developer Hub"]
+                u"More\u2026":      ["Add-ons for Mobile", "Dictionaries & Language Packs", "Search Tools", "Developer Hub"]
                 }
 
     @nondestructive
@@ -126,6 +127,7 @@ class TestHome:
         most_popular_items = home_page.most_popular_items
         Assert.is_sorted_descending([i.users_number for i in most_popular_items])
 
+    @xfail(reason="pivotal tracker task to refactor this test: http://bit.ly/rXtwZk")
     @nondestructive
     def test_that_verifies_upper_menu_navigation_items(self, mozwebqa):
         """
