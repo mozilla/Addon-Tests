@@ -157,3 +157,17 @@ class TestDetailsAgainstXML:
         xml_rating = addons_xml.get_rating("firebug")
 
         Assert.equal(browser_rating, xml_rating)
+
+    @nondestructive
+    def test_that_reviews_in_api_equals_reviews_in_details_page(self, mozwebqa):
+        """litmus 15330"""
+
+        #browser
+        firebug_page = Details(mozwebqa, self.firebug)
+        browser_reviews = firebug_page.reviews_number
+
+        #api
+        addons_xml = AddOnsAPI(mozwebqa)
+        xml_reviews = addons_xml.get_reviews("firebug")
+
+        Assert.equal(browser_reviews, xml_reviews)

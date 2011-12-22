@@ -73,6 +73,7 @@ class Details(Base):
     _register_link_locator = (By.CSS_SELECTOR, "li.account > a")
     _login_link_locator = (By.CSS_SELECTOR, "li.account > a:nth-child(2)")
     _other_applications_locator = (By.ID, "other-apps")
+    _review_link_locator = (By.ID, "reviews-link")
 
     _about_addon_locator = (By.CSS_SELECTOR, "section.primary > h2")
     _version_information_locator = (By.CSS_SELECTOR, "#detail-relnotes")
@@ -152,6 +153,10 @@ class Details(Base):
     @property
     def review_count(self):
         return len(self.selenium.find_elements(*self._review_locator))
+
+    @property
+    def reviews_number(self):
+        return ''.join(re.findall("[0-9]", self.selenium.find_element(*self._review_link_locator).text))
 
     @property
     def breadcrumb(self):
