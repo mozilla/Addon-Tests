@@ -42,6 +42,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
 from pages.base import Base
+from pages.page import Page
 
 
 class Login(Base):
@@ -149,20 +150,20 @@ class EditProfile(Base):
     def update_message(self):
         return self.selenium.find_element(*self._update_message_locator).text
 
-    class ProfileSection(Base):
+    class ProfileSection(Page):
 
         _input_field_locator = (By.CSS_SELECTOR, ' input')
         _field_name = (By.CSS_SELECTOR, ' label')
 
         def __init__(self, testsetup, element):
-            Base.__init__(self, testsetup)
+            Page.__init__(self, testsetup)
             self._root_element = element
 
         @property
         def field_value(self):
             try:
                 return self._root_element.find_element(*self._input_field_locator).get_attribute('value')
-            except Exception.NoSuchElementException as msg:
+            except Exception.NoSuchAttributeException:
                 return " "
 
         @property

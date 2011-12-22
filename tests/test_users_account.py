@@ -169,6 +169,8 @@ class TestAccounts:
         Assert.true(home_page.header.is_user_logged_in)
 
         user_edit_page = home_page.header.click_edit_profile()
+        Assert.true(user_edit_page.is_the_current_page)
+
         # save initial values to restore them after the test is finished
         fields_no = len(user_edit_page.profile_fields) - 1
         initial_value = [None] * fields_no
