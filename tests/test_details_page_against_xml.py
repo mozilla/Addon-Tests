@@ -159,7 +159,7 @@ class TestDetailsAgainstXML:
         Assert.equal(browser_rating, xml_rating)
 
     @nondestructive
-    def test_that_learnmore_link_is_correct(self, mozwebqa):
+    def test_that_learn_more_link_is_correct(self, mozwebqa):
         """litmus 15326"""
 
         #browser
@@ -167,7 +167,7 @@ class TestDetailsAgainstXML:
 
         #api
         addons_xml = AddOnsAPI(mozwebqa)
-        learnmore_url = addons_xml.get_learnmore_url(self.firebug)
-        initial_page.selenium.get(learnmore_url)
+        learn_more_url = addons_xml.get_learnmore_url(self.firebug)
+        addons_xml.goto_url_from_xml(learn_more_url)
 
-        Assert.true(re.search(self.firebug, initial_page.page_title) is not None)
+        Assert.not_none(re.search(self.firebug, initial_page.page_title))
