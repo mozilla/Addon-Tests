@@ -44,6 +44,7 @@ import pytest
 from unittestzero import Assert
 
 from pages.details import Details
+from pages.statistics import Statistics
 from pages.addons_api import AddOnsAPI
 
 xfail = pytest.mark.xfail
@@ -157,3 +158,17 @@ class TestDetailsAgainstXML:
         xml_rating = addons_xml.get_rating("firebug")
 
         Assert.equal(browser_rating, xml_rating)
+
+    @nondestructive
+    def test_that_total_downloads_equals(self, mozwebqa):
+        """litmus 15331"""
+
+        #browser
+        statistics_page = Statistics(mozwebqa, self.firebug)
+        browser_downloads = statistics_page.total_downloads_number
+
+        #api
+        addons_xml = AddOnsAPI(mozwebqa)
+        xml_downloads = addons_xml.get_total_downloads("firebug")
+
+        Assert.equal(browser_downloads, xml_downloads)
