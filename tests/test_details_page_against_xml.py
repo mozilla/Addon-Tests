@@ -167,7 +167,7 @@ class TestDetailsAgainstXML:
 
         #api
         addons_xml = AddOnsAPI(mozwebqa)
-        learn_more_url = addons_xml.get_learnmore_url(self.firebug)
+        learn_more_url = addons_xml.get_learn_more_url(self.firebug)
         addons_xml.goto_url_from_xml(learn_more_url)
 
         Assert.not_none(re.search(self.firebug, initial_page.page_title))
