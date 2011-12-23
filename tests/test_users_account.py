@@ -166,6 +166,6 @@ class TestAccounts:
         Assert.true(home_page.header.is_user_logged_in)
 
         username = mozwebqa.credentials['default']['name']
-        my_col_page = home_page.header.click_my_collections()
+        my_collections_page = home_page.header.click_my_collections()
         Assert.equal('Collections by %s :: Add-ons for Firefox' % username, home_page.page_title)
-        Assert.equal('Collections by %s' % username, my_col_page.my_collections_header_text)
+        Assert.equal('Collections by %s' % username, my_collections_page.my_collections_header_text)
