@@ -125,6 +125,13 @@ class AddOnsAPI(object):
         except:
             self._print_search_error()
 
+    def get_learnmore_url(self, addon_name):
+        try:
+            addon_xml = self.get_xml_for_single_addon(addon_name)
+            return addon_xml.learnmore.string
+        except:
+            self._print_search_error()
+
     def get_rating(self, addon_name):
         try:
             addon_xml = self.get_xml_for_single_addon(addon_name)

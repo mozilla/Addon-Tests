@@ -157,3 +157,17 @@ class TestDetailsAgainstXML:
         xml_rating = addons_xml.get_rating("firebug")
 
         Assert.equal(browser_rating, xml_rating)
+
+    @nondestructive
+    def test_that_learnmore_link_is_correct(self, mozwebqa):
+        """litmus 15326"""
+
+        #browser
+        initial_page = Details(mozwebqa, 'Adblock Plus')
+
+        #api
+        addons_xml = AddOnsAPI(mozwebqa)
+        learnmore_url = addons_xml.get_learnmore_url(self.firebug)
+        initial_page.selenium.get(learnmore_url)
+
+        Assert.true(re.search(self.firebug, initial_page.page_title) is not None)
