@@ -157,3 +157,19 @@ class TestDetailsAgainstXML:
         xml_rating = addons_xml.get_rating("firebug")
 
         Assert.equal(browser_rating, xml_rating)
+
+    @nondestructive
+    def test_that_firebug_devs_comments_is_correct(self, mozwebqa):
+        """litmus 15329"""
+
+        #browser
+        firebug_page = Details(mozwebqa, self.firebug)
+        firebug_page.click_devs_comments()
+        browser_devs_comments = firebug_page.devs_comments_message
+
+        #api
+        addons_xml = AddOnsAPI(mozwebqa)
+        xml_devs_comments = addons_xml.get_devs_comments(self.firebug)
+#        print xml_devs_comments
+        print browser_devs_comments
+        Assert.equal(xml_devs_comments, browser_devs_comments)
