@@ -73,6 +73,7 @@ class Details(Base):
     _register_link_locator = (By.CSS_SELECTOR, "li.account > a")
     _login_link_locator = (By.CSS_SELECTOR, "li.account > a:nth-child(2)")
     _other_applications_locator = (By.ID, "other-apps")
+    _compatibility_locator = (By.CSS_SELECTOR, '.meta.compat')
 
     _about_addon_locator = (By.CSS_SELECTOR, "section.primary > h2")
     _version_information_locator = (By.CSS_SELECTOR, "#detail-relnotes")
@@ -241,6 +242,10 @@ class Details(Base):
     @property
     def devs_comments_message(self):
         return self.selenium.find_element(*self._devs_comments_message_locator).text
+
+    @property
+    def compatible_applications(self):
+        return self.selenium.find_element(*self._compatibility_locator).text
 
     def click_version_information_heading(self):
         return self.selenium.find_element(*self._version_information_heading_link_locator).click()
