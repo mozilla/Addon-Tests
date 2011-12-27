@@ -59,11 +59,11 @@ class Themes(Base):
     _sort_by_popular_locator = (By.CSS_SELECTOR, "li.extras > ul > li:nth-child(3) > a")
     _sort_by_rating_locator = (By.CSS_SELECTOR, "div#sorter > ul > li:nth-child(2) > a")
     _hover_more_locator = (By.CSS_SELECTOR, "li.extras > a")
-    _addons_root_locator = (By.XPATH, "// div[@class = 'hovercard addon theme']")
-    _addon_name_locator = (By.XPATH, _addons_root_locator[1] + " / a / div[@class='summary'] / h3")
-    _addons_metadata_locator = (By.XPATH, _addons_root_locator[1] + " // div[@class = 'vital']/span[@class='updated']")
-    _addons_download_locator = (By.XPATH, _addons_root_locator[1] + " / div[@class = 'vital']/span[@class='adu']")
-    _addons_rating_locator = (By.XPATH, _addons_metadata_locator[1] + " / span / span")
+    _addons_root_locator = (By.CSS_SELECTOR, ".listing-grid li")
+    _addon_name_locator = (By.CSS_SELECTOR, _addons_root_locator[1] + " h3")
+    _addons_metadata_locator = (By.CSS_SELECTOR, _addons_root_locator[1] + " .vital .updated")
+    _addons_download_locator = (By.CSS_SELECTOR, _addons_root_locator[1] + " .downloads.adu")
+    _addons_rating_locator = (By.CSS_SELECTOR, _addons_metadata_locator[1] + " span span")
     _category_locator = (By.CSS_SELECTOR, "#c-30 > a")
     _categories_locator = (By.CSS_SELECTOR, "#side-categories li")
     _category_link_locator = (By.CSS_SELECTOR, _categories_locator[1] + ":nth-of-type(%s) a")
@@ -109,8 +109,8 @@ class Themes(Base):
         return addon_name
 
     def addon_name(self, lookup):
-        return self.selenium.find_element(By.XPATH,
-                                          "//li[%s] %s" % (lookup, self._addon_name_locator[1])).text
+        return self.selenium.find_element(By.CSS_SELECTOR,
+                                          "%s:nth-of-type(%s) h3" % (self._addons_root_locator[1], lookup)).text
 
     @property
     def addon_count(self):
