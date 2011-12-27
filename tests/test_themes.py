@@ -182,3 +182,16 @@ class TestThemes:
             count += 1
             current_category = themes_page.get_category(count)
             Assert.equal(category, current_category)
+
+    @nondestructive
+    def test_that_themes_categories_are_not_extensions_categories(self, mozwebqa):
+        """ test for litmus 15343"""
+        home_page = Home(mozwebqa)
+        themes_page = home_page.click_themes()
+        themes_categories = themes_page.get_all_categories
+
+        home_page.click_extensions()
+        extensions_categories = themes_page.get_all_categories
+
+        Assert.not_equal(len(themes_categories), len(extensions_categories))
+        Assert.equal(list(set(themes_categories) & set(extensions_categories)), [])
