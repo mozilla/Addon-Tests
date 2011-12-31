@@ -132,7 +132,7 @@ class AddOnsAPI(object):
         except:
             self._print_search_error()
 
-    def get_reviews(self, addon_name):
+    def get_reviews_count(self, addon_name):
         try:
             addon_xml = self.get_xml_for_single_addon(addon_name)
             return addon_xml.reviews['num']

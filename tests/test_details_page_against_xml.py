@@ -164,10 +164,10 @@ class TestDetailsAgainstXML:
 
         #browser
         firebug_page = Details(mozwebqa, self.firebug)
-        browser_reviews = firebug_page.reviews_number
+        browser_reviews = firebug_page.total_reviews_count
 
         #api
         addons_xml = AddOnsAPI(mozwebqa)
-        xml_reviews = addons_xml.get_reviews("firebug")
+        xml_reviews = addons_xml.get_reviews_count("firebug")
 
         Assert.equal(browser_reviews, xml_reviews)

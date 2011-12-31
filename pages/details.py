@@ -155,7 +155,7 @@ class Details(Base):
         return len(self.selenium.find_elements(*self._review_locator))
 
     @property
-    def reviews_number(self):
+    def total_reviews_count(self):
         return ''.join(re.findall("[0-9]", self.selenium.find_element(*self._review_link_locator).text))
 
     @property
