@@ -170,6 +170,5 @@ class TestDetailsAgainstXML:
         #api
         addons_xml = AddOnsAPI(mozwebqa)
         xml_devs_comments = addons_xml.get_devs_comments(self.firebug)
-#        print xml_devs_comments
-        print browser_devs_comments
+
         Assert.equal(xml_devs_comments, browser_devs_comments)
