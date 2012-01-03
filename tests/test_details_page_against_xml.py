@@ -42,6 +42,7 @@ import re
 import pytest
 
 from unittestzero import Assert
+from urllib2 import urlparse
 
 from pages.details import Details
 from pages.addons_api import AddOnsAPI
@@ -164,10 +165,10 @@ class TestDetailsAgainstXML:
 
         #browser
         firebug_page = Details(mozwebqa, self.firebug)
-        browser_home_page = firebug_page.website
+        browser_home_page = urlparse.unquote(firebug_page.website)
 
         #api
         addons_xml = AddOnsAPI(mozwebqa)
         xml_home_page = addons_xml.get_home_page("firebug")
 
-        Assert.equal(browser_home_page, xml_home_page)
+        Assert.contains(xml_home_page, browser_home_page)
