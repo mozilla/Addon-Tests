@@ -20,7 +20,7 @@
 # Portions created by the Initial Developer are Copyright (C) 2011
 # the Initial Developer. All Rights Reserved.
 #
-# Contributor(s):
+# Contributor(s): Sergey Tupchiy(tupchii.sergii@gmail.com)
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -46,31 +46,26 @@ from pages.base import Base
 class Statistics(Base):
 
     _title_locator = (By.CSS_SELECTOR, '.addon')
-    _breadcrumb_locator = (By.ID, 'breadcrumbs')
     _total_downloads_locator = (By.CSS_SELECTOR, '.island.two-up div:nth-child(1) a')
     _usage_locator = (By.CSS_SELECTOR, '.island.two-up div:nth-child(2) a')
 
-    def __init__(self, testsetup, addon_name=None):
+    def __init__(self, testsetup, addon=None):
         #formats name for url
         Base.__init__(self, testsetup)
-        if (addon_name != None):
-            self.addon_name = addon_name.replace(" ", "-")
-            self.addon_name = re.sub(r'[^A-Za-z0-9\-]', '', self.addon_name).lower()
-            self.addon_name = self.addon_name[:27]
-            self.selenium.get("%s/addon/%s/statistics" % (self.base_url, self.addon_name))
+        if (addon != None):
+            self.addon = addon.replace(" ", "-")
+            self.addon = re.sub(r'[^A-Za-z0-9\-]', '', self.addon).lower()
+            self.addon = self.addon[:27]
+            self.selenium.get("%s/addon/%s/statistics" % (self.base_url, self.addon))
 
     @property
     def _page_title(self):
-        return "%s :: Statistics Dashboard :: Add-ons for Firefox" % self.title
+        return "%s :: Statistics Dashboard :: Add-ons for Firefox" % self.addon_name
 
     @property
-    def title(self):
+    def addon_name(self):
         base = self.selenium.find_element(*self._title_locator).text
         return base.replace('Statistics for', '').strip()
-
-    @property
-    def breadcrumb(self):
-        return self.selenium.find_element(*self._breadcrumb_locator).text
 
     @property
     def total_downloads_number(self):
