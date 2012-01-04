@@ -77,6 +77,13 @@ class AddOnsAPI(object):
         except AttributeError:
             self._print_search_error()
 
+    def get_addon_status(self, addon_name):
+        try:
+            addon_xml = self.get_xml_for_single_addon(addon_name)
+            return addon_xml.status['id'], addon_xml.status.string
+        except AttributeError:
+            self._print_search_error()
+
     def get_addon_version_number(self, addon_name):
         try:
             addon_xml = self.get_xml_for_single_addon(addon_name)
