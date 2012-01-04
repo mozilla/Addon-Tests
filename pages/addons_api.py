@@ -135,7 +135,7 @@ class AddOnsAPI(object):
     def get_reviews_count(self, addon_name):
         try:
             addon_xml = self.get_xml_for_single_addon(addon_name)
-            return addon_xml.reviews['num']
+            return int(addon_xml.reviews['num'])
         except:
             self._print_search_error()
 
