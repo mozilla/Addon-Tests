@@ -171,3 +171,17 @@ class TestDetailsAgainstXML:
         xml_reviews = addons_xml.get_reviews_count("firebug")
 
         Assert.equal(browser_reviews, xml_reviews)
+
+    @nondestructive
+    def test_that_daily_users_in_api_equals_daily_users_in_details_page(self, mozwebqa):
+        """litmus 15333"""
+
+        #browser
+        firebug_page = Details(mozwebqa, self.firebug)
+        browser_daily_users = firebug_page.daily_users_number
+
+        #api
+        addons_xml = AddOnsAPI(mozwebqa)
+        xml_daily_users = addons_xml.get_daily_users("firebug")
+
+        Assert.equal(browser_daily_users, xml_daily_users)
