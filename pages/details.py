@@ -156,7 +156,8 @@ class Details(Base):
 
     @property
     def daily_users_number(self):
-        return ''.join(re.findall("[0-9]", self.selenium.find_element(*self._daily_users_link_locator).text))
+        text = self.selenium.find_element(*self._daily_users_link_locator).text
+        return int(text.split()[0].replace(',', ''))
 
     @property
     def breadcrumb(self):

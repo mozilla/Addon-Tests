@@ -135,7 +135,7 @@ class AddOnsAPI(object):
     def get_daily_users(self, addon_name):
         try:
             addon_xml = self.get_xml_for_single_addon(addon_name)
-            return addon_xml.daily_users.string
+            return int(addon_xml.daily_users.string)
         except:
             self._print_search_error()
 
