@@ -42,6 +42,7 @@ import re
 import pytest
 
 from unittestzero import Assert
+from urllib2 import urlparse
 
 from pages.details import Details
 from pages.addons_api import AddOnsAPI
@@ -157,6 +158,20 @@ class TestDetailsAgainstXML:
         xml_rating = addons_xml.get_rating("firebug")
 
         Assert.equal(browser_rating, xml_rating)
+
+    @nondestructive
+    def test_that_home_page_in_api_equals_home_page_in_details_page(self, mozwebqa):
+        """litmus 15336"""
+
+        #browser
+        firebug_page = Details(mozwebqa, self.firebug)
+        browser_home_page = urlparse.unquote(firebug_page.website)
+
+        #api
+        addons_xml = AddOnsAPI(mozwebqa)
+        xml_home_page = addons_xml.get_home_page("firebug")
+
+        Assert.contains(xml_home_page, browser_home_page)
 
     @nondestructive
     def test_that_reviews_in_api_equals_reviews_in_details_page(self, mozwebqa):

@@ -132,6 +132,13 @@ class AddOnsAPI(object):
         except:
             self._print_search_error()
 
+    def get_home_page(self, addon_name):
+        try:
+            addon_xml = self.get_xml_for_single_addon(addon_name)
+            return addon_xml.homepage.string
+        except:
+            self._print_search_error()
+
     def get_reviews_count(self, addon_name):
         try:
             addon_xml = self.get_xml_for_single_addon(addon_name)
