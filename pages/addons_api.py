@@ -142,7 +142,7 @@ class AddOnsAPI(object):
     def get_devs_comments(self, addon_name):
         try:
             addon_xml = self.get_xml_for_single_addon(addon_name)
-            developer_comments = addon_xml.developer_comments.string
+            developer_comments = addon_xml.developer_comments.string.rstrip("\n")
             return self._strip_links_from_text(developer_comments)
         except AttributeError:
             self._print_search_error()
