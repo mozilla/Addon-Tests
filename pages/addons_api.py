@@ -77,6 +77,13 @@ class AddOnsAPI(object):
         except AttributeError:
             self._print_search_error()
 
+    def get_addon_status(self, addon_name):
+        try:
+            addon_xml = self.get_xml_for_single_addon(addon_name)
+            return addon_xml.status['id'], addon_xml.status.string
+        except AttributeError:
+            self._print_search_error()
+
     def get_addon_version_number(self, addon_name):
         try:
             addon_xml = self.get_xml_for_single_addon(addon_name)
@@ -129,6 +136,35 @@ class AddOnsAPI(object):
         try:
             addon_xml = self.get_xml_for_single_addon(addon_name)
             return addon_xml.rating.string
+        except:
+            self._print_search_error()
+
+    def get_devs_comments(self, addon_name):
+        try:
+            addon_xml = self.get_xml_for_single_addon(addon_name)
+            developer_comments = addon_xml.developer_comments.string.rstrip("\n")
+            return self._strip_links_from_text(developer_comments)
+        except AttributeError:
+            self._print_search_error()
+
+    def get_home_page(self, addon_name):
+        try:
+            addon_xml = self.get_xml_for_single_addon(addon_name)
+            return addon_xml.homepage.string
+        except:
+            self._print_search_error()
+
+    def get_reviews_count(self, addon_name):
+        try:
+            addon_xml = self.get_xml_for_single_addon(addon_name)
+            return int(addon_xml.reviews['num'])
+        except:
+            self._print_search_error()
+
+    def get_daily_users(self, addon_name):
+        try:
+            addon_xml = self.get_xml_for_single_addon(addon_name)
+            return int(addon_xml.daily_users.string)
         except:
             self._print_search_error()
 

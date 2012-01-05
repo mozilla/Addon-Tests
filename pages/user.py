@@ -73,6 +73,7 @@ class Login(Base):
         pop_up.login_browser_id(user)
         pop_up.sign_in()
 
+
 class ViewProfile(Base):
 
     _page_title = 'User Info for Test :: Add-ons for Firefox'
@@ -96,7 +97,7 @@ class ViewProfile(Base):
 
 class User(Base):
 
-        _username_locator = (By.CSS_SELECTOR, "div#page > h1")
+        _username_locator = (By.CSS_SELECTOR, ".user")
 
         @property
         def username(self):
@@ -135,3 +136,12 @@ class EditProfile(Base):
 
     def change_hide_email_state(self):
         self.selenium.find_element(*self._hide_email_checkbox).click()
+
+
+class MyCollections(Base):
+
+    _header_locator = (By.CSS_SELECTOR, "h2")
+
+    @property
+    def my_collections_header_text(self):
+        return self.selenium.find_element(*self._header_locator).text
