@@ -160,6 +160,20 @@ class TestDetailsAgainstXML:
         Assert.equal(browser_rating, xml_rating)
 
     @nondestructive
+    def test_that_learn_more_link_is_correct(self, mozwebqa):
+        """litmus 15326"""
+
+        #browser
+        initial_page = Details(mozwebqa, 'Adblock Plus')
+
+        #api
+        addons_xml = AddOnsAPI(mozwebqa)
+        learn_more_url = addons_xml.get_learn_more_url(self.firebug)
+        addons_xml.goto_url_from_xml(learn_more_url)
+
+        Assert.not_none(re.search(self.firebug, initial_page.page_title))
+
+    @nondestructive
     def test_that_firebug_devs_comments_is_correct(self, mozwebqa):
         """litmus 15329"""
 
