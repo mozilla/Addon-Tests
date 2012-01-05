@@ -161,7 +161,7 @@ class TestDetailsAgainstXML:
         Assert.equal(browser_rating, xml_rating)
 
     @nondestructive
-    def test_that_total_downloads_equals(self, mozwebqa):
+    def test_that_addon_number_of_total_downloads_is_correct(self, mozwebqa):
         """litmus 15331"""
 
         #browser
