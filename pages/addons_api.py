@@ -142,7 +142,7 @@ class AddOnsAPI(object):
     def get_total_downloads(self, addon_name):
         try:
             addon_xml = self.get_xml_for_single_addon(addon_name)
-            return addon_xml.total_downloads.string
+            return int(addon_xml.total_downloads.string)
         except AttributeError:
             self._print_search_error()
 

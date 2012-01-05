@@ -60,4 +60,5 @@ class Statistics(Base):
 
     @property
     def total_downloads_number(self):
-        return ''.join(re.findall("[0-9]", self.selenium.find_element(*self._total_downloads_locator).text))
+        text = self.selenium.find_element(*self._total_downloads_locator).text
+        return int(text.split()[0].replace(',', ''))
