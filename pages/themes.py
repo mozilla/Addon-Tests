@@ -101,6 +101,10 @@ class Themes(Base):
         return len(self.selenium.find_elements(*self._categories_locator))
 
     @property
+    def get_all_categories(self):
+        return [element.text for element in self.selenium.find_elements(*self._categories_locator)]
+
+    @property
     def addon_names(self):
         addon_name = []
         for addon in self.selenium.find_elements(*self._addon_name_locator):
