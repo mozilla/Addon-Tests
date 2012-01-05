@@ -49,14 +49,14 @@ class Statistics(Base):
     _total_downloads_locator = (By.CSS_SELECTOR, '.island.two-up div:nth-child(1) a')
     _usage_locator = (By.CSS_SELECTOR, '.island.two-up div:nth-child(2) a')
 
-    def __init__(self, testsetup, addon=None):
-        #formats name for url
-        Base.__init__(self, testsetup)
-        if (addon != None):
-            self.addon = addon.replace(" ", "-")
-            self.addon = re.sub(r'[^A-Za-z0-9\-]', '', self.addon).lower()
-            self.addon = self.addon[:27]
-            self.selenium.get("%s/addon/%s/statistics" % (self.base_url, self.addon))
+#    def __init__(self, testsetup, addon=None):
+#        #formats name for url
+#        Base.__init__(self, testsetup)
+#        if (addon != None):
+#            self.addon = addon.replace(" ", "-")
+#            self.addon = re.sub(r'[^A-Za-z0-9\-]', '', self.addon).lower()
+#            self.addon = self.addon[:27]
+#            self.selenium.get("%s/addon/%s/statistics" % (self.base_url, self.addon))
 
     @property
     def _page_title(self):
