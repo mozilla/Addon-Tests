@@ -99,7 +99,7 @@ class ViewProfile(Base):
 
 class User(Base):
 
-        _username_locator = (By.CSS_SELECTOR, "div#page > h1")
+        _username_locator = (By.CSS_SELECTOR, ".user")
 
         @property
         def username(self):
@@ -178,3 +178,12 @@ class EditProfile(Base):
 
         def clear_field(self):
             self._root_element.find_element(*self._input_field_locator).clear()
+
+
+class MyCollections(Base):
+
+    _header_locator = (By.CSS_SELECTOR, "h2")
+
+    @property
+    def my_collections_header_text(self):
+        return self.selenium.find_element(*self._header_locator).text

@@ -64,7 +64,7 @@ class Details(Base):
     _authors_locator = (By.XPATH, "//h4[@class='author']/a")
     _summary_locator = (By.ID, "addon-summary")
     _install_button_locator = (By.CSS_SELECTOR, "p[class='install-button'] > a")
-    _rating_locator = (By.CSS_SELECTOR, "span[itemprop='rating']")
+    _rating_locator = (By.CSS_SELECTOR, "span[itemprop='ratingValue']")
     _license_link_locator = (By.CSS_SELECTOR, ".source-license > a")
     _whats_this_license_locator = (By.CSS_SELECTOR, ".license-faq")
     _view_the_source_locator = (By.CSS_SELECTOR, ".source-code")
@@ -73,6 +73,8 @@ class Details(Base):
     _register_link_locator = (By.CSS_SELECTOR, "li.account > a")
     _login_link_locator = (By.CSS_SELECTOR, "li.account > a:nth-child(2)")
     _other_applications_locator = (By.ID, "other-apps")
+    _review_link_locator = (By.ID, "reviews-link")
+    _daily_users_link_locator = (By.ID, 'daily-users')
 
     _about_addon_locator = (By.CSS_SELECTOR, "section.primary > h2")
     _version_information_locator = (By.CSS_SELECTOR, "#detail-relnotes")
@@ -152,6 +154,16 @@ class Details(Base):
     @property
     def review_count(self):
         return len(self.selenium.find_elements(*self._review_locator))
+
+    @property
+    def total_reviews_count(self):
+        text = self.selenium.find_element(*self._review_link_locator).text
+        return int(text.split()[0].replace(',', ''))
+
+    @property
+    def daily_users_number(self):
+        text = self.selenium.find_element(*self._daily_users_link_locator).text
+        return int(text.split()[0].replace(',', ''))
 
     @property
     def breadcrumb(self):

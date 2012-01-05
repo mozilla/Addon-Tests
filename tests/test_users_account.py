@@ -196,3 +196,20 @@ class TestAccounts:
                 user_edit_page.profile_fields[i].type_value(initial_value[i])
 
             user_edit_page.click_update_account()
+
+    @nondestructive
+    def test_user_my_collections_page(self, mozwebqa):
+        """
+        Test for litmus 15401
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=15401
+        """
+
+        home_page = Home(mozwebqa)
+        home_page.login("browserID")
+        Assert.true(home_page.is_the_current_page)
+        Assert.true(home_page.header.is_user_logged_in)
+
+        username = mozwebqa.credentials['default']['name']
+        my_collections_page = home_page.header.click_my_collections()
+        Assert.equal('Collections by %s :: Add-ons for Firefox' % username, home_page.page_title)
+        Assert.equal('Collections by %s' % username, my_collections_page.my_collections_header_text)
