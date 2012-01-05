@@ -53,22 +53,26 @@ from pages.base import Base
 
 class Themes(Base):
 
-    _sort_by_name_locator = (By.CSS_SELECTOR, "li.extras > ul > li:nth-child(1) > a")
-    _sort_by_updated_locator = (By.CSS_SELECTOR, "li.extras > ul > li:nth-child(4) > a")
-    _sort_by_created_locator = (By.CSS_SELECTOR, "div#sorter > ul > li:nth-child(3) > a")
-    _sort_by_popular_locator = (By.CSS_SELECTOR, "li.extras > ul > li:nth-child(3) > a")
-    _sort_by_rating_locator = (By.CSS_SELECTOR, "div#sorter > ul > li:nth-child(2) > a")
-    _hover_more_locator = (By.CSS_SELECTOR, "li.extras > a")
-    _addons_root_locator = (By.XPATH, "// div[@class = 'hovercard addon theme']")
-    _addon_name_locator = (By.XPATH, _addons_root_locator[1] + " / a / div[@class='summary'] / h3")
-    _addons_metadata_locator = (By.XPATH, _addons_root_locator[1] + " // div[@class = 'vital']/span[@class='updated']")
-    _addons_download_locator = (By.XPATH, _addons_root_locator[1] + " / div[@class = 'vital']/span[@class='adu']")
-    _addons_rating_locator = (By.XPATH, _addons_metadata_locator[1] + " / span / span")
-    _category_locator = (By.CSS_SELECTOR, "#c-30 > a")
-    _categories_locator = (By.CSS_SELECTOR, "#side-categories li")
-    _category_link_locator = (By.CSS_SELECTOR, _categories_locator[1] + ":nth-of-type(%s) a")
-    _next_link_locator = (By.CSS_SELECTOR, ".paginator .rel > a:nth-child(3)")
-    _previous_link_locator = (By.CSS_SELECTOR, ".paginator .rel > a:nth-child(2)")
+    _sort_by_name_locator = (By.CSS_SELECTOR, 'li.extras > ul > li:nth-child(1) > a')
+    _sort_by_updated_locator = (By.CSS_SELECTOR, 'li.extras > ul > li:nth-child(4) > a')
+    _sort_by_created_locator = (By.CSS_SELECTOR, 'div#sorter > ul > li:nth-child(3) > a')
+    _sort_by_popular_locator = (By.CSS_SELECTOR, 'li.extras > ul > li:nth-child(3) > a')
+    _sort_by_rating_locator = (By.CSS_SELECTOR, 'div#sorter > ul > li:nth-child(2) > a')
+    _hover_more_locator = (By.CSS_SELECTOR, 'li.extras > a')
+    _addons_root_locator = (By.CSS_SELECTOR, '.listing-grid li')
+    _addon_name_locator = (By.CSS_SELECTOR, 'h3')
+    _addons_metadata_locator = (By.CSS_SELECTOR, '.vital .updated')
+    _addons_download_locator = (By.CSS_SELECTOR, '.downloads.adu')
+    _addons_rating_locator = (By.CSS_SELECTOR, 'span span')
+    _category_locator = (By.CSS_SELECTOR, '#c-30 > a')
+    _categories_locator = (By.CSS_SELECTOR, '#side-categories li')
+    _category_link_locator = (By.CSS_SELECTOR, _categories_locator[1] + ':nth-of-type(%s) a')
+    _next_link_locator = (By.CSS_SELECTOR, '.paginator .rel > a:nth-child(3)')
+    _previous_link_locator = (By.CSS_SELECTOR, '.paginator .rel > a:nth-child(2)')
+
+    @property
+    def _addons_root_element(self):
+        return self.selenium.find_element(*self._addons_root_locator)
 
     def click_sort_by(self, type_):
         click_target = self.selenium.find_element(*getattr(self, "_sort_by_%s_locator" % type_))
@@ -81,7 +85,7 @@ class Themes(Base):
             click().perform()
 
     def click_on_first_addon(self):
-        self.selenium.find_element(*self._addon_name_locator).click()
+        self._addons_root_element.find_element(*self._addon_name_locator).click()
         return Theme(self.testsetup)
 
     def click_on_first_category(self):
@@ -107,18 +111,18 @@ class Themes(Base):
     @property
     def addon_names(self):
         addon_name = []
-        for addon in self.selenium.find_elements(*self._addon_name_locator):
+        for addon in self._addons_root_element.find_elements(*self._addon_name_locator):
             ActionChains(self.selenium).move_to_element(addon).perform()
             addon_name.append(addon.text)
         return addon_name
 
     def addon_name(self, lookup):
-        return self.selenium.find_element(By.XPATH,
-                                          "//li[%s] %s" % (lookup, self._addon_name_locator[1])).text
+        return self.selenium.find_element(By.CSS_SELECTOR,
+                                          "%s:nth-of-type(%s) h3" % (self._addons_root_locator[1], lookup)).text
 
     @property
     def addon_count(self):
-        return len(self.selenium.find_elements(*self._addon_name_locator))
+        return len(self._addons_root_element.find_elements(*self._addon_name_locator))
 
     @property
     def addon_updated_dates(self):
