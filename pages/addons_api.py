@@ -120,6 +120,17 @@ class AddOnsAPI(Base):
         except AttributeError:
             self._print_search_error()
 
+    def get_list_of_addon_images_links(self, addon_name):
+        try:
+            addon_xml = self.get_xml_for_single_addon(addon_name)
+            name_tags = addon_xml.previews.findAll('thumbnail')
+
+            return [BeautifulStoneSoup(str(name_tags[i])).find('thumbnail').string.strip('\n ')
+                for i in range(len(name_tags))]
+
+        except AttributeError:
+            self._print_search_error()
+
     def get_icon_url(self, addon_name):
         try:
             addon_xml = self.get_xml_for_single_addon(addon_name)
@@ -153,7 +164,14 @@ class AddOnsAPI(Base):
             addon_xml = self.get_xml_for_single_addon(addon_name)
             return (addon_xml.application.find('name').string,
                     addon_xml.min_version.string, addon_xml.max_version.string)
-        except:
+        except AttributeError:
+            self._print_search_error()
+
+    def get_total_downloads(self, addon_name):
+        try:
+            addon_xml = self.get_xml_for_single_addon(addon_name)
+            return int(addon_xml.total_downloads.string)
+        except AttributeError:
             self._print_search_error()
 
     def get_devs_comments(self, addon_name):

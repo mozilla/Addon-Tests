@@ -161,6 +161,11 @@ class Details(Base):
         text = self.selenium.find_element(*self._review_link_locator).text
         return int(text.split()[0].replace(',', ''))
 
+    def click_view_statistics(self):
+        self.selenium.find_element(*self._daily_users_link_locator).click()
+        from pages.statistics import Statistics
+        return Statistics(self.testsetup)
+
     @property
     def daily_users_number(self):
         text = self.selenium.find_element(*self._daily_users_link_locator).text
