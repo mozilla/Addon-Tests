@@ -183,6 +183,23 @@ class TestDetailsAgainstXML:
         Assert.equal(browser_rating, xml_rating)
 
     @nondestructive
+    def test_that_compatible_applications_equal(self, mozwebqa):
+        """litmus 15323"""
+
+        #browser
+        firebug_page = Details(mozwebqa, self.firebug)
+        firebug_page.click_version_information_header()
+        browser_compatible_applications = firebug_page.compatible_applications
+
+        #api
+        addons_xml = AddOnsAPI(mozwebqa)
+        xml_compatible_applications = addons_xml.get_compatible_applications("firebug")
+        name = xml_compatible_applications[0]
+        min_version = xml_compatible_applications[1]
+        max_version = xml_compatible_applications[2]
+        Assert.equal(browser_compatible_applications, 'Works with %s %s - %s' % (name, min_version, max_version))
+
+    @nondestructive
     def test_that_addon_number_of_total_downloads_is_correct(self, mozwebqa):
         """litmus 15331"""
 
