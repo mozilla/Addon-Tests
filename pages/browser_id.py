@@ -22,6 +22,7 @@
 #
 # Contributor(s): Bebe <florin.strugariu@softvision.ro>
 #                 Teodosia Pop <teodosia.pop@softvision.ro>
+#                 Sergey Tupchiy <tupchii.sergii@gmail.com>
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -43,7 +44,6 @@ from selenium.webdriver.common.by import By
 
 class BrowserID(Page):
 
-    _pop_up_id = '_mozid_signin'
     _email_locator = (By.ID, 'email')
     _password_locator = (By.ID, 'password')
 
@@ -53,7 +53,11 @@ class BrowserID(Page):
 
     def __init__(self, testsetup):
         Page.__init__(self, testsetup)
-        self.selenium.switch_to_window(self._pop_up_id)
+        all_window_handles = self.selenium.window_handles
+        for handle in all_window_handles:
+            self.selenium.switch_to_window(handle)
+            if self.selenium.title == "BrowserID":
+                break
 
     def login_browser_id(self, user):
         credentials = self.testsetup.credentials[user]
