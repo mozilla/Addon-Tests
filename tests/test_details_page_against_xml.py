@@ -86,6 +86,28 @@ class TestDetailsAgainstXML:
             Assert.equal(xml_authors[i], browser_authors[i])
 
     @nondestructive
+    def test_that_firebug_images_is_correct(self, mozwebqa):
+        """litmus 15324"""
+
+        #get images links from browser
+        firebug_page = Details(mozwebqa, self.firebug)
+        images_count = firebug_page.previewer.image_count
+        browser_images = []
+        for i in range(images_count):
+            browser_images.append(firebug_page.previewer.image_link(i))
+
+        #get images links from xml
+        addons_xml = AddOnsAPI(mozwebqa)
+        xml_images = addons_xml.get_list_of_addon_images_links(self.firebug)
+
+        #check that both lists have the same number of images
+        Assert.equal(len(browser_images), len(xml_images))
+
+        #cross check both lists with each other
+        for i in range(len(xml_images)):
+            Assert.equal(xml_images[i].replace('src=api&amp;', ''), browser_images[i])
+
+    @nondestructive
     def test_that_firebug_summary_is_correct(self, mozwebqa):
         """litmus 15320"""
 
