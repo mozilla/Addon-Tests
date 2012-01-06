@@ -74,3 +74,9 @@ class TestAPIOnlyTests:
         """Testcase for Litmus 15317"""
         addon_xml = AddOnsAPI(mozwebqa)
         Assert.equal("1.8.3", addon_xml.get_addon_version_number("Firebug"))
+
+    def test_that_firebug_status_id_is_4_and_fully_reviewed(self, mozwebqa):
+        """Testcase for Litmus 15318"""
+        addon_xml = AddOnsAPI(mozwebqa)
+        Assert.equal("4", addon_xml.get_addon_status("Firebug")[0])
+        Assert.equal("Fully Reviewed", addon_xml.get_addon_status("Firebug")[1])
