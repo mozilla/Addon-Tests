@@ -97,7 +97,7 @@ class ViewProfile(Base):
 
 class User(Base):
 
-        _username_locator = (By.CSS_SELECTOR, ".user")
+        _username_locator = (By.CSS_SELECTOR, ".fn.n")
 
         @property
         def username(self):
