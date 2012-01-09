@@ -189,6 +189,10 @@ class TestAccounts:
         try:
             for i in range(0, fields_no):
                 Assert.contains(random_name, user_edit_page.profile_fields[i].field_value)
+
+        except Exception as exception:
+            Assert.fail(exception.msg)
+
         finally:
             # restore initial values
             for i in range(0, fields_no):

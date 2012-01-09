@@ -171,7 +171,7 @@ class EditProfile(Base):
             return self._root_element.find_element(*self._field_name).text
 
         def type_value(self, value):
-            if (self.field_name == 'Homepage'):
+            if self.field_name == 'Homepage' and value != '':
                 self._root_element.find_element(*self._input_field_locator).send_keys('http://example.com/' + value)
             else:
                 self._root_element.find_element(*self._input_field_locator).send_keys(value)
