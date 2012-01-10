@@ -66,10 +66,7 @@ class ExtensionsHome(Base):
     @property
     def is_next_button_disabled(self):
         next_button = self.selenium.find_element(*self._next_page_locator)
-        if 'disabled' in next_button.get_attribute('class'):
-            return True
-        else:
-            return False
+        return 'disabled' in next_button.get_attribute('class')
 
     def go_to_last_page(self):
         self.selenium.find_element(*self._last_page_link_locator).click()
