@@ -49,6 +49,7 @@ from selenium.webdriver.common.by import By
 
 from pages.page import Page
 from pages.base import Base
+from selenium.webdriver.common.action_chains import ActionChains
 
 
 class Home(Base):
@@ -154,6 +155,14 @@ class Home(Base):
         name = name.lower().replace(" ", "_")
         locator = getattr(self, "_%s_link_locator" % name)
         return self.selenium.find_element(*locator).get_attribute('title')
+
+    def hover_over_first_extension_and_get_csstext_property(self):
+        hover_element = self.selenium.find_element(*self._first_addon_locator)
+        ActionChains(self.selenium).\
+            move_to_element(hover_element).\
+            perform()
+        cssText = hover_element.value_of_css_property('text-decoration')
+        return cssText
 
     @property
     def categories(self):
