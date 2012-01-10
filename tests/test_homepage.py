@@ -161,6 +161,17 @@ class TestHome:
         Assert.equal(home_page.featured_collections_count, 4)
 
     @nondestructive
+    def test_that_featured_extensions_exist_on_the_home(self, mozwebqa):
+        """
+        Litmus 25800
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25800
+        """
+        home_page = Home(mozwebqa)
+        Assert.equal(home_page.featured_extensions_title, 'Featured Extensions', 'Featured Extensions region title doesn\'t match')
+        Assert.equal(home_page.featured_extensions_see_all, u'See all \xbb', 'Featured Extensions region see all link is not correct')
+        Assert.equal(home_page.featured_extensions_count, 6)
+
+    @nondestructive
     def test_that_clicking_see_all_collections_link_works(self, mozwebqa):
         """
         Litmus 25806
