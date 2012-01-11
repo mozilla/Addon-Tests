@@ -194,3 +194,15 @@ class TestHome:
 
         Assert.contains('sort=users', extensions_page.get_url_current_page())
         Assert.equal('Most Users', extensions_page.default_selected_tab)
+
+    @nondestructive
+    def test_that_clicking_featured_shows_addons_sorted_by_featured(self, mozwebqa):
+        """
+        Litmus 25790
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25790
+        """
+        home_page = Home(mozwebqa)
+        extensions_page = home_page.click_to_explore('featured')
+
+        Assert.contains('sort=featured', extensions_page.get_url_current_page())
+        Assert.equal('Featured', extensions_page.default_selected_tab)
