@@ -89,7 +89,6 @@ class ExtensionsHome(Base):
             move_to_element(click_element).\
             click().perform()
         self._wait_for_results_refresh()
-        return ExtensionsHome(self.testsetup)
 
 
 class Extension(Page):
