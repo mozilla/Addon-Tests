@@ -67,7 +67,6 @@ class ExtensionsHome(Base):
         return self.selenium.find_element(*self._default_selected_tab_locator).text
 
 
-
 class Extension(Page):
         _name_locator = (By.CSS_SELECTOR, "h3 a")
 

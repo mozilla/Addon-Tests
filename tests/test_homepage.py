@@ -170,3 +170,15 @@ class TestHome:
         featured_collection_page = home_page.click_featured_collections_see_all_link()
         Assert.true(featured_collection_page.is_the_current_page)
         Assert.true(featured_collection_page.get_url_current_page().endswith('/collections/?sort=featured'))
+
+    @nondestructive
+    def test_that_clicking_top_rated_shows_addons_sorted_by_rating(self, mozwebqa):
+        """
+        Litmus 25791
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25791
+        """
+        home_page = Home(mozwebqa)
+        extensions_page = home_page.click_to_explore('top_rated')
+
+        Assert.contains('sort=rating', extensions_page.get_url_current_page())
+        Assert.equal('Top Rated', extensions_page.default_selected_tab)
