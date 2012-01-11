@@ -126,6 +126,16 @@ class Details(Base):
     _last_page_link_locator = (By.CSS_SELECTOR, ".paginator .rel > a:nth-child(4)")
     _first_page_link_locator = (By.CSS_SELECTOR, ".paginator .rel > a:nth-child(1)")
 
+    # purchase addon
+    _purchase_button_locator = (By.CSS_SELECTOR, 'p.install-button a.button')
+    _purchase_addon_dialog_locator = (By.CSS_SELECTOR, 'div.paypal-modal')
+    _pay_with_paypal_button_locator = (By.CSS_SELECTOR, 'form > button.paypal')
+    _connection_untrusted_dialog_locator = (By.ID, 'errorPageContainer')
+    _technical_details_locator = (By.ID, 'technicalContent')
+    _paypal_launcher_form_locator = (By.ID, 'launcherForm')
+    _paypal_login_button = (By.CSS_SELECTOR, 'div.logincnt > p > a.button')
+    _finish_purchase_locator = (By.ID, 'addon_info')
+
     def __init__(self, testsetup, addon_name=None):
         #formats name for url
         Base.__init__(self, testsetup)
@@ -557,3 +567,37 @@ class Details(Base):
     @property
     def beta_version(self):
         return self.selenium.find_element(*self._development_version_locator).text
+
+    def open_frame_in_new_tab(self):
+        self.selenium.find_element(*self._purchase_button_locator).click()
+
+    @property
+    def is_purchase_addon_dialog_visible(self):
+        return self.is_element_visible(*self._purchase_addon_dialog_locator)
+
+    @property
+    def is_pay_with_paypal_button_visible(self):
+        return self.is_element_visible(*self._pay_with_paypal_button_locator)
+
+    def click_purchase_button(self):
+        self.selenium.find_element(*self._purchase_button_locator).click()
+
+    def click_pay_with_paypal(self):
+        self.selenium.find_element(*self._pay_with_paypal_button_locator).click()
+
+    @property
+    def is_paypal_launcher_form_visible(self):
+        self.is_element_visible(*self._paypal_launcher_form_locator)
+
+    @property
+    def is_purchase_successful(self):
+        purchase_message = self.selenium.find_element(*self._finish_purchase_locator).text
+        return ('Your purchase of Adhaadhoora is complete.' in purchase_message)
+
+    def login_to_paypal(self, user="paypal"):
+        login = self.selenium.find_element(*self._paypal_login_button).click()
+        login.login_user_browser_id(user)
+        from pages.paypal import PayPal
+        pop_up = PayPal(self.testsetup)
+        pop_up.login_paypal(user)
+
