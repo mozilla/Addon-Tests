@@ -163,7 +163,7 @@ class TestAccounts:
         https://litmus.mozilla.org/show_test.cgi?id=11563
         """
         home_page = Home(mozwebqa)
-        home_page.login("browserID")
+        home_page.login(type="browserID", user="user.edit")
 
         Assert.true(home_page.is_the_current_page)
         Assert.true(home_page.header.is_user_logged_in)
@@ -189,6 +189,10 @@ class TestAccounts:
         try:
             for i in range(0, fields_no):
                 Assert.contains(random_name, user_edit_page.profile_fields[i].field_value)
+
+        except Exception as exception:
+            Assert.fail(exception.msg)
+
         finally:
             # restore initial values
             for i in range(0, fields_no):
