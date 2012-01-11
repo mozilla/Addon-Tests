@@ -170,14 +170,3 @@ class TestHome:
         featured_collection_page = home_page.click_featured_collections_see_all_link()
         Assert.true(featured_collection_page.is_the_current_page)
         Assert.true(featured_collection_page.get_url_current_page().endswith('/collections/?sort=featured'))
-
-    @nondestructive
-    def test_that_extension_is_underlined_while_hover(self, mozwebqa):
-        """
-        Litmus 15118
-        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=15118
-        """
-        home_page = Home(mozwebqa)
-        css_text = home_page.hover_over_first_extension_and_get_csstext_property()
-
-        Assert.equal(css_text, "underline")
