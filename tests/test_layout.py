@@ -127,8 +127,9 @@ class TestAmoLayout:
 
     @nondestructive
     def test_the_search_field_placeholder_and_serch_button(self, mozwebqa):
-        """Litmus 4826
-        https://litmus.mozilla.org/show_test.cgi?id=4826"""
+        """Litmus 4826, 25767
+        https://litmus.mozilla.org/show_test.cgi?id=4826
+        https://litmus.mozilla.org/show_test.cgi?id=25767 """
         home_page = Home(mozwebqa)
         Assert.equal(home_page.header.search_field_placeholder, 'search for add-ons')
         Assert.true(home_page.header.is_search_button_visible)
