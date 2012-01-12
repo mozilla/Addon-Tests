@@ -53,6 +53,7 @@ class Base(Page):
 
     _current_page_locator = (By.CSS_SELECTOR, ".paginator .num > a:nth-child(1)")
 
+    _amo_logo_locator = ((By.CSS_SELECTOR, ".site-title"))
     _amo_logo_link_locator = (By.CSS_SELECTOR, ".site-title a")
     _amo_logo_image_locator = (By.CSS_SELECTOR, ".site-title img")
 
@@ -77,8 +78,21 @@ class Base(Page):
         return self.selenium.title
 
     @property
+    def is_amo_logo_visible(self):
+        return self.is_element_visible(*self._amo_logo_locator)
+
+    def click_amo_logo(self):
+        self.selenium.find_element(*self._amo_logo_locator).click()
+        from pages.home import Home
+        return Home(self.testsetup)
+
+    @property
     def amo_logo_title(self):
         return self.selenium.find_element(*self._amo_logo_link_locator).get_attribute('title')
+
+    @property
+    def amo_logo_text(self):
+        return self.selenium.find_element(*self._amo_logo_link_locator).text
 
     @property
     def amo_logo_image_source(self):
@@ -191,6 +205,14 @@ class Base(Page):
         @property
         def search_field_placeholder(self):
             return self.selenium.find_element(*self._search_textbox_locator).get_attribute('placeholder')
+
+        @property
+        def is_search_button_visible(self):
+            return self.is_element_visible(*self._search_button_locator)
+
+        @property
+        def search_button_title(self):
+            return self.selenium.find_element(*self._search_button_locator).get_attribute('title')
 
         def click_login_browser_id(self):
             self.selenium.find_element(*self._login_browser_id_locator).click()
