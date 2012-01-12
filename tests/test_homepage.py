@@ -170,3 +170,19 @@ class TestHome:
         featured_collection_page = home_page.click_featured_collections_see_all_link()
         Assert.true(featured_collection_page.is_the_current_page)
         Assert.true(featured_collection_page.get_url_current_page().endswith('/collections/?sort=featured'))
+
+    @nondestructive
+    def test_that_open_close_for_menu_itemes_while_hovering(self, mozwebqa):
+        """
+        Litmus 25754
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25754
+        """
+        #I've adapted the test to check open/closed for all menu items
+        home_page = Home(mozwebqa)
+
+        for menu in self.header_menu_values_list:
+            menu_item = home_page.header.site_nav(menu)
+            menu_item.hoover_over_menu_item()
+            Assert.true(menu_item.is_menu_dropdown_visible)
+            home_page.hover_over_addons_home_title()
+            Assert.false(menu_item.is_menu_dropdown_visible)

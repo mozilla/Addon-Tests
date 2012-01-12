@@ -46,6 +46,7 @@
 # ***** END LICENSE BLOCK *****
 
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.action_chains import ActionChains
 
 from pages.page import Page
 from pages.base import Base
@@ -78,12 +79,19 @@ class Home(Base):
     _category_list_locator = (By.CSS_SELECTOR, "ul#side-categories li")
 
     _extensions_menu_link = (By.CSS_SELECTOR, "#extensions > a")
+    _home_title_locator = (By.CSS_SELECTOR, ".site-title > a")
 
     def __init__(self, testsetup, open_url=True):
         ''' Creates a new instance of the class and gets the page ready for testing '''
         Base.__init__(self, testsetup)
         if open_url:
             self.selenium.get(self.base_url)
+
+    def hover_over_addons_home_title(self):
+        home_item = self.selenium.find_element(*self._home_title_locator)
+        ActionChains(self.selenium).\
+            move_to_element(home_item).\
+            perform()
 
     def click_featured_personas_see_all_link(self):
         self.selenium.find_element(*self._featured_personas_see_all_link).click()

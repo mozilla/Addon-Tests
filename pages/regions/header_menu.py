@@ -84,6 +84,16 @@ class HeaderMenu(Page):
             from pages.collection import Collections
             return Collections(self.testsetup)
 
+    def hoover_over_menu_item(self):
+        ActionChains(self.selenium).\
+            move_to_element(self._root_element).\
+            perform()
+
+    @property
+    def is_menu_dropdown_visible(self):
+        dropdown_menu = self._root_element.find_element(*self._header_submenu_list_locator)
+        return dropdown_menu.is_displayed()
+
     @property
     def menu_items(self):
         submenu_list = self._root_element.find_elements(*self._header_submenu_list_locator)
