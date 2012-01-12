@@ -84,7 +84,7 @@ class HeaderMenu(Page):
             from pages.collection import Collections
             return Collections(self.testsetup)
 
-    def hoover_over_menu_item(self):
+    def hover_over_menu_item(self):
         ActionChains(self.selenium).\
             move_to_element(self._root_element).\
             perform()

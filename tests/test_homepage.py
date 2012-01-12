@@ -172,7 +172,7 @@ class TestHome:
         Assert.true(featured_collection_page.get_url_current_page().endswith('/collections/?sort=featured'))
 
     @nondestructive
-    def test_that_open_close_for_menu_itemes_while_hovering(self, mozwebqa):
+    def test_that_open_close_for_menu_items_while_hovering(self, mozwebqa):
         """
         Litmus 25754
         https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25754
@@ -182,7 +182,7 @@ class TestHome:
 
         for menu in self.header_menu_values_list:
             menu_item = home_page.header.site_nav(menu)
-            menu_item.hoover_over_menu_item()
+            menu_item.hover_over_menu_item()
             Assert.true(menu_item.is_menu_dropdown_visible)
             home_page.hover_over_addons_home_title()
             Assert.false(menu_item.is_menu_dropdown_visible)
