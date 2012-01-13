@@ -66,8 +66,8 @@ class Home(Base):
     _most_popular_list_heading_locator = (By.CSS_SELECTOR, "#homepage > .secondary h2")
 
     _explore_featured_link_locator = (By.CSS_SELECTOR, "#side-nav .s-featured a")
-    _explore_most_popular_link_locator = (By.CSS_SELECTOR, "#side-nav .s-users a")
-    _explore_most_top_rated_link_locator = (By.CSS_SELECTOR, "#side-nav .s-rating a")
+    _explore_popular_link_locator = (By.CSS_SELECTOR, "#side-nav .s-users a")
+    _explore_top_rated_link_locator = (By.CSS_SELECTOR, "#side-nav .s-rating a")
 
     _featured_personas_see_all_link = (By.CSS_SELECTOR, "#featured-personas h2 a")
     _featured_personas_title_locator = (By.CSS_SELECTOR, "#featured-personas h2")
@@ -125,7 +125,7 @@ class Home(Base):
 
     def click_to_explore(self, what):
         what = what.replace(' ', '_').lower()
-        self.selenium.find_element(*getattr(self, "_explore_most_%s_link_locator" % what)).click()
+        self.selenium.find_element(*getattr(self, "_explore_%s_link_locator" % what)).click()
         from pages.extensions import ExtensionsHome
         return ExtensionsHome(self.testsetup)
 
