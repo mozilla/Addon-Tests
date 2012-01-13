@@ -48,6 +48,7 @@
 from selenium.webdriver.common.by import By
 
 from pages.base import Base
+from selenium.webdriver.common.action_chains import ActionChains
 
 
 class DiscoveryPane(Base):
@@ -65,6 +66,7 @@ class DiscoveryPane(Base):
     _more_ways_personas_locator = (By.ID, "more-personas")
     _up_and_coming_item = (By.XPATH, "//section[@id='up-and-coming']/ul/li/a[@class='addon-title']")
     _logout_link_locator = (By.CSS_SELECTOR, "#logout > a")
+    _featured_addons_base_locator = (By.CSS_SELECTOR, "#featured-addons .addon-title ")
 
     def __init__(self, testsetup, path):
         Base.__init__(self, testsetup)
@@ -130,6 +132,22 @@ class DiscoveryPane(Base):
         self.selenium.find_element(*self._logout_link_locator).click()
         from pages.home import Home
         return Home(self.testsetup, open_url=False)
+
+    @property
+    def hover_over_extension_and_get_css_property_for_title(self):
+        hover_element = self.selenium.find_element(*self._featured_addons_base_locator)
+        ActionChains(self.selenium).\
+            move_to_element(hover_element).\
+            perform()
+        return hover_element.find_element(By.CSS_SELECTOR, "h3").value_of_css_property('text-decoration')
+
+    @property
+    def hover_over_extension_and_get_css_property_for_text(self):
+        hover_element = self.selenium.find_element(*self._featured_addons_base_locator)
+        ActionChains(self.selenium).\
+            move_to_element(hover_element).\
+            perform()
+        return hover_element.find_element(By.CSS_SELECTOR, "p").value_of_css_property('text-decoration')
 
 
 class DiscoveryPersonasDetail(Base):
