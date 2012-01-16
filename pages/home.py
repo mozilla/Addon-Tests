@@ -79,7 +79,6 @@ class Home(Base):
     _category_list_locator = (By.CSS_SELECTOR, "ul#side-categories li")
 
     _extensions_menu_link = (By.CSS_SELECTOR, "#extensions > a")
-    _home_title_locator = (By.CSS_SELECTOR, ".site-title > a")
 
     def __init__(self, testsetup, open_url=True):
         ''' Creates a new instance of the class and gets the page ready for testing '''
@@ -88,7 +87,7 @@ class Home(Base):
             self.selenium.get(self.base_url)
 
     def hover_over_addons_home_title(self):
-        home_item = self.selenium.find_element(*self._home_title_locator)
+        home_item = self.selenium.find_element(*self._amo_logo_link_locator)
         ActionChains(self.selenium).\
             move_to_element(home_item).\
             perform()

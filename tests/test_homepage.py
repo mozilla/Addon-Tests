@@ -172,7 +172,7 @@ class TestHome:
         Assert.true(featured_collection_page.get_url_current_page().endswith('/collections/?sort=featured'))
 
     @nondestructive
-    def test_that_open_close_for_menu_items_while_hovering(self, mozwebqa):
+    def test_that_items_menu_fly_out_while_hovering(self, mozwebqa):
         """
         Litmus 25754
         https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25754
