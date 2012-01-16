@@ -124,3 +124,13 @@ class TestAmoLayout:
 
         for app in expected_apps:
             Assert.true(home_page.header.is_other_application_visible(app), "%s link not found in Other Applications menu" % app)
+
+    @nondestructive
+    def test_the_search_field_placeholder_and_serch_button(self, mozwebqa):
+        """Litmus 4826, 25767
+        https://litmus.mozilla.org/show_test.cgi?id=4826
+        https://litmus.mozilla.org/show_test.cgi?id=25767 """
+        home_page = Home(mozwebqa)
+        Assert.equal(home_page.header.search_field_placeholder, 'search for add-ons')
+        Assert.true(home_page.header.is_search_button_visible)
+        Assert.equal(home_page.header.search_button_title, 'Search')

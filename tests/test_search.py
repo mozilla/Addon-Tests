@@ -169,14 +169,6 @@ class TestSearch:
         for i in range(10):
             Assert.contains('cool', search_page.result(i).text.lower())
 
-    #:TODO To be merged into a layout test
-    @nondestructive
-    def test_the_search_field_placeholder(self, mozwebqa):
-        """Litmus 4826
-        https://litmus.mozilla.org/show_test.cgi?id=4826"""
-        home_page = Home(mozwebqa)
-        Assert.equal(home_page.header.search_field_placeholder, 'search for add-ons')
-
     @nondestructive
     def test_that_searching_with_numerals_returns_results(self, mozwebqa):
         """Litmus 17347

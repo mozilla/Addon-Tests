@@ -206,6 +206,14 @@ class Base(Page):
         def search_field_placeholder(self):
             return self.selenium.find_element(*self._search_textbox_locator).get_attribute('placeholder')
 
+        @property
+        def is_search_button_visible(self):
+            return self.is_element_visible(*self._search_button_locator)
+
+        @property
+        def search_button_title(self):
+            return self.selenium.find_element(*self._search_button_locator).get_attribute('title')
+
         def click_login_browser_id(self):
             self.selenium.find_element(*self._login_browser_id_locator).click()
             from pages.user import Login
