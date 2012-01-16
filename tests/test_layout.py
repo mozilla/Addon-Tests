@@ -64,22 +64,31 @@ class TestAmoLayout:
         Assert.false(home_page.header.is_other_application_visible(app_under_test))
 
     @nondestructive
-    def test_that_checks_the_tooltip_for_amo_logo(self, mozwebqa):
+    def test_that_checks_amo_logo_text_layout_and_title(self, mozwebqa):
         """
-        Litmus 22924
+        Litmus 22924, 25742
         https://litmus.mozilla.org/show_test.cgi?id=22924
+        https://litmus.mozilla.org/show_test.cgi?id=25742
+
         """
         home_page = Home(mozwebqa)
+        Assert.equal(home_page.amo_logo_text, "ADD-ONS")
         Assert.equal(home_page.amo_logo_title, "Return to the Firefox Add-ons homepage")
+        Assert.contains("-cdn.allizom.org/media/img/app-icons/med/firefox.png", home_page.amo_logo_image_source)
 
     @nondestructive
-    def test_that_checks_the_image_for_amo_logo(self, mozwebqa):
+    def test_that_clicking_the_amo_logo_loads_home_page(self, mozwebqa):
         """
-        Litmus 25742
-        https://litmus.mozilla.org/show_test.cgi?id=25742
+        Litmus 25743
+        https://litmus.mozilla.org/show_test.cgi?id=25743
         """
         home_page = Home(mozwebqa)
-        Assert.contains("-cdn.allizom.org/media/img/app-icons/med/firefox.png", home_page.amo_logo_image_source)
+
+        Assert.true(home_page.is_amo_logo_visible)
+        home_page = home_page.click_amo_logo()
+        Assert.true(home_page.is_the_current_page)
+        Assert.true(home_page.is_amo_logo_visible)
+        Assert.equal(home_page.get_url_current_page(), '%s/en-US/firefox/' % home_page.base_url)
 
     @nondestructive
     def test_that_clicking_mozilla_logo_loads_mozilla_dot_org(self, mozwebqa):
@@ -115,3 +124,13 @@ class TestAmoLayout:
 
         for app in expected_apps:
             Assert.true(home_page.header.is_other_application_visible(app), "%s link not found in Other Applications menu" % app)
+
+    @nondestructive
+    def test_the_search_field_placeholder_and_serch_button(self, mozwebqa):
+        """Litmus 4826, 25767
+        https://litmus.mozilla.org/show_test.cgi?id=4826
+        https://litmus.mozilla.org/show_test.cgi?id=25767 """
+        home_page = Home(mozwebqa)
+        Assert.equal(home_page.header.search_field_placeholder, 'search for add-ons')
+        Assert.true(home_page.header.is_search_button_visible)
+        Assert.equal(home_page.header.search_button_title, 'Search')
