@@ -130,6 +130,7 @@ class TestDiscoveryPane:
         Assert.true(home_page.is_the_current_page)
         Assert.false(home_page.header.is_user_logged_in)
 
+    @nondestructive
     def test_that_carousel_works(self, mozwebqa):
         """
         Litmus 15071
@@ -154,6 +155,7 @@ class TestDiscoveryPane:
             discovery_pane.sliders[i].click_previous()
             slider2 = slider1
 
+    @nondestructive
     def test_that_extension_is_underlined_while_hover_and_text_not(self, mozwebqa):
         """
         Litmus 15118
