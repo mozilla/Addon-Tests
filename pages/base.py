@@ -177,9 +177,15 @@ class Base(Page):
         _account_dropdown_locator = (By.CSS_SELECTOR, "#aux-nav .account ul")
         _logout_locator = (By.CSS_SELECTOR, "li.nomenu.logout > a")
 
-        def site_nav(self, lookup):
+        _site_nav_locator = (By.CSS_SELECTOR , "#site-nav > ul > li")
+
+        @property
+        def site_nav(self):
             from pages.regions.header_menu import HeaderMenu
-            return HeaderMenu(self.testsetup, lookup)
+            return [HeaderMenu(self.testsetup, element)
+                    for element in self.selenium.find_elements(*self._site_nav_locator)]
+#            from pages.regions.header_menu import HeaderMenu
+#            return HeaderMenu(self.testsetup, lookup)
 
         def click_other_application(self, other_app):
             hover_locator = self.selenium.find_element(*self._other_applications_locator)
