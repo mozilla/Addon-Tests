@@ -164,7 +164,7 @@ class HeaderMenu(Page):
 
     @property
     def items(self):
-        return [self.Item(self.testsetup, element, self._root_element)
+        return [self.Item(self.testsetup, element, self._root_element.find_element(*self._name_tag))
                 for element in self._root_element.find_elements(*self._elemnts_tag)]
 
     class Item(Page):

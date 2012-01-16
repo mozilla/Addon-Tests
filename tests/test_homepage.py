@@ -61,7 +61,7 @@ class TestHome:
                                      "Firefox", "Foxkeh", "Holiday", "Music", "Nature", "Other", "Scenery", "Seasonal", "Solid", "Sports", "Websites"],
                 "THEMES":           ["Most Popular", "Top Rated", "Newest", "Animals", "Compact", "Large", "Miscellaneous", "Modern", "Nature",
                                      "OS Integration", "Retro", "Sports"],
-                "COLLESTIONS":      ["Featured", "Most Followers", "Newest", "Collections I've Made", "Collections I'm Following",
+                "COLLECTIONS":      ["Featured", "Most Followers", "Newest", "Collections I've Made", "Collections I'm Following",
                                      "My Favorite Add-ons"],
                 u"MORE\u2026":      ["Add-ons for Mobile", "Dictionaries & Language Packs", "Search Tools", "Developer Hub"]
                 }
@@ -213,4 +213,4 @@ class TestHome:
         Assert.equal(sorted(self.header_menu_values_list.keys()), sorted([menu.name for menu in menus]))
 
         for menu in menus:
-            Assert.equal(sorted(self.header_menu_values_list[menu.name]), sorted([item.name for item in menu.items]))
+            Assert.equal(self.header_menu_values_list[menu.name], [item.name for item in menu.items])
