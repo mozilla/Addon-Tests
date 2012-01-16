@@ -46,7 +46,9 @@
 # ***** END LICENSE BLOCK *****
 
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.action_chains import ActionChains
 
+from pages.page import Page
 from pages.base import Base
 
 
@@ -65,6 +67,9 @@ class DiscoveryPane(Base):
     _more_ways_personas_locator = (By.ID, "more-personas")
     _up_and_coming_item = (By.XPATH, "//section[@id='up-and-coming']/ul/li/a[@class='addon-title']")
     _logout_link_locator = (By.CSS_SELECTOR, "#logout > a")
+    _carousel_locator = (By.CSS_SELECTOR, ".slider h2")
+    _previous_button_carousel_locator = (By.CSS_SELECTOR, "#nav-features .nav-prev a")
+    _next_button_carousel_locator = (By.CSS_SELECTOR, "#nav-features .nav-next a")
 
     def __init__(self, testsetup, path):
         Base.__init__(self, testsetup)
@@ -130,6 +135,44 @@ class DiscoveryPane(Base):
         self.selenium.find_element(*self._logout_link_locator).click()
         from pages.home import Home
         return Home(self.testsetup, open_url=False)
+
+    def hover_over_next(self):
+        next_element = self.selenium.find_element(*self._next_button_carousel_locator)
+        ActionChains(self.selenium).\
+            move_to_element(next_element).\
+            click().\
+            perform()
+
+    @property
+    def panel_text(self):
+        return self.selenium.find_element(*self._carousel_locator).text
+
+    class SliderRegion(Page):
+        _header_text_locator = (By.TAG_NAME, "h2")
+        _next_locator = (By.CSS_SELECTOR, " .nav-next a")
+        _previous_locator = (By.CSS_SELECTOR, " .nav-prev a")
+
+        def __init__(self, testsetup, element):
+            Page.__init__(self, testsetup)
+            self._root_element = element
+
+        @property
+        def header_name(self):
+            return self._root_element.find_element(*self._header_text_locator)
+
+        def click_next(self):
+            next_element = self.selenium.find_element(*self._next_locator)
+            ActionChains(self.selenium).\
+                move_to_element(next_element).\
+                click().\
+                perform()
+
+        def click_previous(self):
+            previous_element = self.selenium.find_element(*self._next_locator)
+            ActionChains(self.selenium).\
+                move_to_element(previous_element).\
+                click().\
+                perform()
 
 
 class DiscoveryPersonasDetail(Base):
