@@ -69,18 +69,19 @@ class HeaderMenu(Page):
         return self._root_element.find_element(*self._link_locator).text
 
     def click(self):
+        menu_item_name = self.name
         self._root_element.find_element(*self._link_locator).click()
 
-        if "Extensions" in self.name:
+        if "EXTENSIONS" in menu_item_name:
             from pages.extensions import ExtensionsHome
             return ExtensionsHome(self.testsetup)
-        elif "Personas" in self.name:
+        elif "PERSONAS" in menu_item_name:
             from pages.personas import Personas
             return Personas(self.testsetup)
-        elif "Themes" in self.name:
+        elif "THEMES" in menu_item_name:
             from pages.themes import Themes
             return Themes(self.testsetup)
-        elif "Collections" in self.name:
+        elif "COLLECTIONS" in menu_item_name:
             from pages.collection import Collections
             return Collections(self.testsetup)
 

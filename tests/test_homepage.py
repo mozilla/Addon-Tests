@@ -113,7 +113,7 @@ class TestHome:
         https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25746
         """
         home_page = Home(mozwebqa)
-        extensions_page = home_page.click_extensions()
+        extensions_page = home_page.header.site_nav("Extensions").click()
         Assert.true(extensions_page.is_the_current_page)
 
     @nondestructive
