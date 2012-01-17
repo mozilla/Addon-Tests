@@ -95,3 +95,23 @@ class HeaderMenu(Page):
         @property
         def is_featured(self):
             return self._root_element.find_element(*self._featured_tag).tag_name == 'em'
+
+        def click(self):
+            ActionChains(self.selenium).\
+                move_to_element(self._hover_element).\
+                move_to_element(self.root_element).\
+                click().\
+                perform()
+
+            if "EXTENSIONS" in self._hover_element.text:
+                from pages.extensions import ExtensionsHome
+                return ExtensionsHome(self.testsetup)
+            elif "PERSONAS" in self._hover_element.text:
+                from pages.personas import Personas
+                return Personas(self.testsetup)
+            elif "THEMES" in self._hover_element.text:
+                from pages.themes import Themes
+                return Themes(self.testsetup)
+            elif "COLLECTIONS" in self._hover_element.text:
+                from pages.collection import Collections
+                return Collections(self.testsetup)
