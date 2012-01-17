@@ -65,6 +65,6 @@ class TestExtensions:
         home_page = Home(mozwebqa)
         featured_extensions_page = home_page.click_extensions()
         featured_extensions_page.sort_by('most_users')
-        featured_extensions_page.go_to_last_page()
+        featured_extensions_page.paginator.go_to_last_page()
 
-        Assert.true(featured_extensions_page.is_next_button_disabled, 'Next button is available')
+        Assert.true(featured_extensions_page.paginator.is_next_page_disabled, 'Next button is available')

@@ -65,28 +65,28 @@ class TestReviews:
         Assert.equal(details_page.review_count, 20)
 
         #Go to the last page and check that the next button is not present
-        details_page.go_to_last_page()
-        Assert.false(details_page.is_next_link_enabled)
+        details_page.paginator.go_to_last_page()
+        Assert.true(details_page.paginator.is_next_page_disabled)
 
         #Go one page back, check that it has 20 reviews
         #that the page number decreases and that the next link is visible
-        page_number = details_page.current_page
-        details_page.page_back()
-        Assert.true(details_page.is_next_link_visible)
+        page_number = details_page.paginator.page_number
+        details_page.paginator.prev_page()
+        Assert.false(details_page.paginator.is_next_page_disabled)
         Assert.equal(details_page.review_count, 20)
-        Assert.equal(details_page.current_page, page_number - 1)
+        Assert.equal(details_page.paginator.page_number, page_number - 1)
 
         #Go to the first page and check that the prev button is not present
-        details_page.go_to_first_page()
-        Assert.false(details_page.is_prev_link_enabled)
+        details_page.paginator.go_to_first_page()
+        Assert.true(details_page.paginator.is_prev_page_disabled)
 
         #Go one page forward, check that it has 20 reviews,
         #that the page number increases and that the prev link is visible
-        page_number = details_page.current_page
-        details_page.page_forward()
-        Assert.true(details_page.is_prev_link_visible)
+        page_number = details_page.paginator.page_number
+        details_page.paginator.next_page()
+        Assert.false(details_page.paginator.is_prev_page_disabled)
         Assert.equal(details_page.review_count, 20)
-        Assert.equal(details_page.current_page, page_number + 1)
+        Assert.equal(details_page.paginator.page_number, page_number + 1)
 
     @xfail(reason="bug 708970")
     @destructive
@@ -135,7 +135,7 @@ class TestReviews:
         extensions_home_page = home_page.click_to_explore('Top Rated')
 
         # Step 3 - Pick an addon with no reviews
-        extensions_home_page.go_to_last_page()
+        extensions_home_page.paginator.go_to_last_page()
         addon = extensions_home_page.extensions[-1]  # the last one is without rating
         details_page = addon.click()
 
@@ -168,7 +168,7 @@ class TestReviews:
         extensions_home_page = home_page.click_to_explore('Top Rated')
 
         # Step 3 - Pick an addon with no reviews
-        extensions_home_page.go_to_last_page()
+        extensions_home_page.paginator.go_to_last_page()
         addon = extensions_home_page.extensions[-1]  # the last one is without rating
         details_page = addon.click()
 
@@ -201,7 +201,7 @@ class TestReviews:
         extensions_home_page = home_page.click_to_explore('Top Rated')
 
         # Step 3 - Pick an addon with no reviews
-        extensions_home_page.go_to_last_page()
+        extensions_home_page.paginator.go_to_last_page()
         addon = extensions_home_page.extensions[-1]  # the last one is without rating
         details_page = addon.click()
 
@@ -234,7 +234,7 @@ class TestReviews:
         extensions_home_page = home_page.click_to_explore('Top Rated')
 
         # Step 3 - Pick an addon with no reviews
-        extensions_home_page.go_to_last_page()
+        extensions_home_page.paginator.go_to_last_page()
         addon = extensions_home_page.extensions[-1]  # the last one is without rating
         details_page = addon.click()
 
@@ -267,7 +267,7 @@ class TestReviews:
         extensions_home_page = home_page.click_to_explore('Top Rated')
 
         # Step 3 - Pick an addon with no reviews
-        extensions_home_page.go_to_last_page()
+        extensions_home_page.paginator.go_to_last_page()
         addon = extensions_home_page.extensions[-1]  # the last one is without rating
         details_page = addon.click()
 

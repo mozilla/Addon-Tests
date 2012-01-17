@@ -36,7 +36,6 @@
 #
 # ***** END LICENSE BLOCK *****
 
-import re
 
 from selenium.webdriver.common.by import By
 
