@@ -75,6 +75,10 @@ class Home(Base):
     _featured_collections_locator = (By.CSS_SELECTOR, "#featured-collections h2")
     _featured_collections_elements_locator = (By.CSS_SELECTOR, "#featured-collections section:nth-child(1) li")
 
+    _featured_extensions_title_locator = (By.CSS_SELECTOR, '#featured-extensions > h2')
+    _featured_extensions_see_all_locator = (By.CSS_SELECTOR, '#featured-extensions > h2 > a')
+    _featured_extensions_elements_locator = (By.CSS_SELECTOR, '#featured-extensions section:nth-child(1) li')
+
     _category_list_locator = (By.CSS_SELECTOR, "ul#side-categories li")
 
     _extensions_menu_link = (By.CSS_SELECTOR, "#extensions > a")
@@ -144,6 +148,19 @@ class Home(Base):
     @property
     def featured_collections_count(self):
         return len(self.selenium.find_elements(*self._featured_collections_elements_locator))
+
+    @property
+    def featured_extensions_see_all(self):
+        return self.selenium.find_element(*self._featured_extensions_see_all_locator).text
+
+    @property
+    def featured_extensions_title(self):
+        title = self.selenium.find_element(*self._featured_extensions_title_locator).text
+        return title.replace(self.featured_extensions_see_all, '').strip()
+
+    @property
+    def featured_extensions_count(self):
+        return len(self.selenium.find_elements(*self._featured_extensions_elements_locator))
 
     def click_on_first_addon(self):
         self.selenium.find_element(*self._first_addon_locator).click()
