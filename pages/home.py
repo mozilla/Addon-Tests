@@ -46,6 +46,7 @@
 # ***** END LICENSE BLOCK *****
 
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.action_chains import ActionChains
 
 from pages.page import Page
 from pages.base import Base
@@ -88,6 +89,12 @@ class Home(Base):
         Base.__init__(self, testsetup)
         if open_url:
             self.selenium.get(self.base_url)
+
+    def hover_over_addons_home_title(self):
+        home_item = self.selenium.find_element(*self._amo_logo_link_locator)
+        ActionChains(self.selenium).\
+            move_to_element(home_item).\
+            perform()
 
     def click_featured_personas_see_all_link(self):
         self.selenium.find_element(*self._featured_personas_see_all_link).click()
