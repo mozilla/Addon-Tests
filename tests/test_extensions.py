@@ -55,3 +55,16 @@ class TestExtensions:
         home_page = Home(mozwebqa)
         featured_extensions_page = home_page.click_extensions()
         Assert.equal(featured_extensions_page.default_selected_tab, "Featured")
+
+    @nondestructive
+    def test_next_button_is_disabled_on_the_last_page(self, mozwebqa):
+        """
+        Litmus 29710
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=29710
+        """
+        home_page = Home(mozwebqa)
+        featured_extensions_page = home_page.click_extensions()
+        featured_extensions_page.sort_by('most_users')
+        featured_extensions_page.go_to_last_page()
+
+        Assert.true(featured_extensions_page.is_next_button_disabled, 'Next button is available')
