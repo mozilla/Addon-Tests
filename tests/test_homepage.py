@@ -76,7 +76,6 @@ class TestHome:
         Assert.contains('MOST POPULAR', home_page.most_popular_list_heading)
         Assert.equal(home_page.most_popular_count, 10)
 
-    @xfail(reason="disabled until Selenium issue http://bit.ly/ySru5z is fixed")
     @nondestructive
     def test_that_clicking_on_addon_name_loads_details_page(self, mozwebqa):
         """ Litmus 25812

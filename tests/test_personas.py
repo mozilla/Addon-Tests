@@ -51,6 +51,7 @@ nondestructive = pytest.mark.nondestructive
 
 class TestPersonas:
 
+    @xfail(reason="disabled until Selenium issue http://bit.ly/ySru5z is fixed")
     @nondestructive
     def test_start_exploring_link_in_the_promo_box(self, mozwebqa):
         """ Test for Litmus 12037
