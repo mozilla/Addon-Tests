@@ -69,7 +69,7 @@ class Themes(Base):
     _category_link_locator = (By.CSS_SELECTOR, _categories_locator[1] + ':nth-of-type(%s) a')
     _next_link_locator = (By.CSS_SELECTOR, '.paginator .rel > a:nth-child(3)')
     _previous_link_locator = (By.CSS_SELECTOR, '.paginator .rel > a:nth-child(2)')
-    _last_page_link_locator = (By.CSS_SELECTOR, '.rel>a:nth-child(4)')
+    _last_page_link_locator = (By.CSS_SELECTOR, '.rel > a:nth-child(4)')
 
     @property
     def _addons_root_element(self):
