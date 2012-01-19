@@ -44,8 +44,8 @@ from pages.page import Page
 
 class HeaderMenu(Page):
 
-    _elemnts_tag = (By.CSS_SELECTOR, 'ul > li')
-    _name_tag = (By.CSS_SELECTOR, 'a')
+    _menu_items_locator = (By.CSS_SELECTOR, 'ul > li')
+    _name_locator = (By.CSS_SELECTOR, 'a')
 
     def __init__(self, testsetup, element):
         Page.__init__(self, testsetup)
@@ -53,10 +53,10 @@ class HeaderMenu(Page):
 
     @property
     def name(self):
-        return self._root_element.find_element(*self._name_tag).text
+        return self._root_element.find_element(*self._name_locator).text
 
     def click(self):
-        self._root_element.find_element(*self._name_tag).click()
+        self._root_element.find_element(*self._name_locator).click()
 
         if "Extensions" in self.name:
             from pages.extensions import ExtensionsHome
@@ -73,13 +73,12 @@ class HeaderMenu(Page):
 
     @property
     def items(self):
-        return [self.Item(self.testsetup, element, self._root_element.find_element(*self._name_tag))
-                for element in self._root_element.find_elements(*self._elemnts_tag)]
+        return [self.HeaderMenuItem(self.testsetup, element, self._root_element.find_element(*self._name_locator))
+                for element in self._root_element.find_elements(*self._menu_items_locator)]
 
-    class Item(Page):
+    class HeaderMenuItem (Page):
 
-        _name_tag = (By.CSS_SELECTOR, 'a')
-        _featured_tag = (By.CSS_SELECTOR, '*')
+        _name_locator = (By.CSS_SELECTOR, 'a')
 
         def __init__(self, testsetup, element, hover):
             Page.__init__(self, testsetup)
@@ -88,13 +87,13 @@ class HeaderMenu(Page):
 
         @property
         def name(self):
-            element = self._root_element.find_element(*self._name_tag)
+            element = self._root_element.find_element(*self._name_locator)
             ActionChains(self.selenium).move_to_element(self._hover_element).perform()
             return element.text
 
         @property
         def is_featured(self):
-            return self._root_element.find_element(*self._featured_tag).tag_name == 'em'
+            return self._root_element.find_element(By.CSS_SELECTOR, '*').tag_name == 'em'
 
         def click(self):
             ActionChains(self.selenium).\

@@ -52,7 +52,7 @@ nondestructive = pytest.mark.nondestructive
 
 class TestHome:
 
-    header_menu_values_list = {
+    expected_header_menus = {
                 "EXTENSIONS":       ["Featured", "Most Popular", "Top Rated", "Alerts & Updates", "Appearance", "Bookmarks",
                                      "Download Management", "Feeds, News & Blogging", "Games & Entertainment",
                                      "Language Support", "Photos, Music & Videos", "Privacy & Security", "Shopping",
@@ -191,11 +191,11 @@ class TestHome:
         http://bit.ly/pfDkXq
         """
         home_page = Home(mozwebqa)
-        menus = home_page.header.site_nav
-        Assert.equal(sorted(self.header_menu_values_list.keys()), sorted([menu.name for menu in menus]))
+        actual_header_menus = home_page.header.site_nav
+        Assert.equal(sorted(self.expected_header_menus.keys()), sorted([menu.name for menu in actual_header_menus]))
 
-        for menu in menus:
-            Assert.equal(self.header_menu_values_list[menu.name], [item.name for item in menu.items])
+        for menu in actual_header_menus:
+            Assert.equal(self.expected_header_menus[menu.name], [item.name for item in menu.items])
 
     @nondestructive
     def test_top_three_menu_items_are_featured(self, mozwebqa):
@@ -204,8 +204,8 @@ class TestHome:
         http://bit.ly/pfDkXq
         """
         home_page = Home(mozwebqa)
-        menus = home_page.header.site_nav
-        for menu in menus:
+        actual_header_menus = home_page.header.site_nav
+        for menu in actual_header_menus:
             if menu.name == u"MORE\u2026":
                 [Assert.false(item.is_featured, 'Item %s from menu %s is fetured' % (item.name, menu.name)) for item in menu.items]
             else:
