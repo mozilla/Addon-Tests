@@ -195,3 +195,14 @@ class TestThemes:
 
         Assert.not_equal(len(themes_categories), len(extensions_categories))
         Assert.equal(list(set(themes_categories) & set(extensions_categories)), [])
+
+    @nondestructive
+    def test_that_last_themes_page_is_not_empty(self, mozwebqa):
+        """
+        Litmus 15359
+        https://litmus.mozilla.org/show_test.cgi?id=15359
+        """
+        home_page = Home(mozwebqa)
+        themes_page = home_page.click_themes()
+        themes_page.last_page()
+        Assert.greater_equal(themes_page.addon_count, 1)
