@@ -203,6 +203,6 @@ class TestThemes:
         https://litmus.mozilla.org/show_test.cgi?id=15359
         """
         home_page = Home(mozwebqa)
-        themes_page = home_page.click_themes()
+        themes_page = home_page.header.site_nav("Themes").click()
         themes_page.last_page()
         Assert.greater_equal(themes_page.addon_count, 1)
