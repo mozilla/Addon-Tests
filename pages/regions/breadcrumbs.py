@@ -47,18 +47,29 @@ class BreadcrumbsRegion(Page):
     _breadcrumbs_locator = (By.CSS_SELECTOR, " li") #breadcrumbs elements locator
     _link_locator = (By.CSS_SELECTOR, ' a')
 
-    def __init__(self, testsetup, element):
+    def __init__(self, testsetup):
         Page.__init__(self, testsetup)
-        self._root_element = element
 
-    def click_breadcrumb(self):
-        self._root_element.find_element(*self._link_locator).click()
+    def click_breadcrumb(self, lookup=None):
+        if lookup == None:
+            self.selenium.find_element(*self._link_locator).click()
+        else:
+            breadcrumb = self.selenium.find_element(*self._breadcrumb_locator)
+            breadcrumb.find_element(By.LINK_TEXT, lookup).click()
+
+    def get_breadcrumb_item_text(self, lookup):
+        """ Returns the label of the given item in the breadcrumb menu. """
+        breadcrumb = self.selenium.find_element(*self._breadcrumb_locator)
+        return breadcrumb.find_element(By.CSS_SELECTOR, 'li:nth-child(%s)' % lookup).text
 
     @property
-    def name(self):
-        return self._root_element.text
+    def get_breadcrumb_item_text_all(self):
+        """ Returns the label of all the items in the breadcrumb menu. """
+        return self.selenium.find_element(*self._breadcrumb_locator).text
 
-    @property
-    def link_value(self):
-        return self._root_element.find_element(*self._link_locator).get_attribute('href')
+    def click_breadcrumb_item(self, lookup):
+        """ Clicks on the given item in the breadcrumb menu. """
+        breadcrumb = self.selenium.find_element(*self._breadcrumb_locator)
+        breadcrumb.find_element(By.LINK_TEXT, lookup).click()
+
 

@@ -170,10 +170,6 @@ class Details(Base):
         return int(text.split()[0].replace(',', ''))
 
     @property
-    def breadcrumb(self):
-        return self.selenium.find_element(*self._breadcrumb_base_locator).text
-
-    @property
     def version_number(self):
         return self.selenium.find_element(*self._version_number_locator).text
 

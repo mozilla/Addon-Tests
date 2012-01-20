@@ -149,7 +149,7 @@ class TestReviews:
         view_reviews = write_review_block.click_to_save_review()
 
         # Step 6 - Ensure rating increased by one
-        view_reviews.breadcrumbs[2].click_breadcrumb()
+        view_reviews.breadcrumb_region.breadcrumbs[2].click_breadcrumb()
         details_page = Details(mozwebqa)
         new_rating_counter = details_page.get_rating_counter(1)
         Assert.equal(new_rating_counter, 1)
@@ -182,7 +182,7 @@ class TestReviews:
         view_reviews = write_review_block.click_to_save_review()
 
         # Step 6 - Ensure rating increased by one
-        view_reviews.breadcrumbs[2].click_breadcrumb()
+        view_reviews.breadcrumb_region.breadcrumbs[2].click_breadcrumb()
         details_page = Details(mozwebqa)
         new_rating_counter = details_page.get_rating_counter(2)
         Assert.equal(new_rating_counter, 1)
@@ -215,7 +215,7 @@ class TestReviews:
         view_reviews = write_review_block.click_to_save_review()
 
         # Step 6 - Ensure rating increased by one
-        view_reviews.breadcrumbs[2].click_breadcrumb()
+        view_reviews.breadcrumb_region.breadcrumbs[2].click_breadcrumb()
         details_page = Details(mozwebqa)
         new_rating_counter = details_page.get_rating_counter(3)
         Assert.equal(new_rating_counter, 1)
@@ -248,7 +248,7 @@ class TestReviews:
         view_reviews = write_review_block.click_to_save_review()
 
         # Step 6 - Ensure rating increased by one
-        view_reviews.breadcrumbs[2].click_breadcrumb()
+        view_reviews.breadcrumb_region.breadcrumbs[2].click_breadcrumb()
         details_page = Details(mozwebqa)
         new_rating_counter = details_page.get_rating_counter(4)
         Assert.equal(new_rating_counter, 1)
@@ -281,7 +281,7 @@ class TestReviews:
         view_reviews = write_review_block.click_to_save_review()
 
         # Step 6 - Ensure rating increased by one
-        view_reviews.breadcrumbs[2].click_breadcrumb()
+        view_reviews.breadcrumb_region.breadcrumbs[2].click_breadcrumb()
         details_page = Details(mozwebqa)
         new_rating_counter = details_page.get_rating_counter(5)
         Assert.equal(new_rating_counter, 1)

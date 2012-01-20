@@ -148,7 +148,7 @@ class TestThemes:
         home_page = Home(mozwebqa)
         themes_page = home_page.click_themes()
         expected_breadcrumb = "Themes"
-        Assert.equal(expected_breadcrumb, themes_page.breadcrumbs[1].name)
+        Assert.equal(expected_breadcrumb, themes_page.breadcrumb_region.get_breadcrumb_item_text(2))
 
     @nondestructive
     def test_that_clicking_on_a_subcategory_loads_expected_page(self, mozwebqa):
@@ -166,7 +166,7 @@ class TestThemes:
         selected_category = themes_page.themes_category
         amo_category_page = themes_page.click_on_first_category()
         expected_breadcrumb = "Add-ons for Firefox Themes %s" % selected_category
-        Assert.equal(expected_breadcrumb, amo_category_page.breadcrumb)
+        Assert.equal(expected_breadcrumb, amo_category_page.breadcrumb_region.get_breadcrumb_item_text_all.replace('\n', ' '))
 
     @nondestructive
     def test_that_themes_categories_are_listed_on_left_hand_side(self, mozwebqa):

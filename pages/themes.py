@@ -178,7 +178,3 @@ class ThemesCategory(Base):
     @property
     def title(self):
         return self.selenium.find_element(*self._title_locator).text
-
-    @property
-    def breadcrumb(self):
-        return self.selenium.find_element(*self._breadcrumb_locator).text.replace('\n', ' ')

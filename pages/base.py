@@ -116,7 +116,12 @@ class Base(Page):
         return Base.HeaderRegion(self.testsetup)
 
     @property
-    def breadcrumbs(self):
+    def breadcrumb_region(self):
+        from pages.regions.breadcrumbs import BreadcrumbsRegion
+        return BreadcrumbsRegion(self.testsetup)
+
+    @property
+    def breadcrumbs_list(self):
         return [self.BreadcrumbsRegion(self.testsetup, element)
                 for element in self.selenium.find_elements(*self._breadcrumbs_locator)]
 
