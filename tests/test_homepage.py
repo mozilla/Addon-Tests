@@ -161,6 +161,17 @@ class TestHome:
         Assert.equal(home_page.featured_collections_count, 4)
 
     @nondestructive
+    def test_that_featured_extensions_exist_on_the_home(self, mozwebqa):
+        """
+        Litmus 25800
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25800
+        """
+        home_page = Home(mozwebqa)
+        Assert.equal(home_page.featured_extensions_title, 'Featured Extensions', 'Featured Extensions region title doesn\'t match')
+        Assert.equal(home_page.featured_extensions_see_all, u'See all \xbb', 'Featured Extensions region see all link is not correct')
+        Assert.equal(home_page.featured_extensions_count, 6)
+
+    @nondestructive
     def test_that_clicking_see_all_collections_link_works(self, mozwebqa):
         """
         Litmus 25806
@@ -172,6 +183,21 @@ class TestHome:
         Assert.true(featured_collection_page.get_url_current_page().endswith('/collections/?sort=featured'))
 
     @nondestructive
+    def test_that_items_menu_fly_out_while_hovering(self, mozwebqa):
+        """
+        Litmus 25754
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25754
+        """
+        #I've adapted the test to check open/closed for all menu items
+        home_page = Home(mozwebqa)
+
+        for menu in self.header_menu_values_list:
+            menu_item = home_page.header.site_nav(menu)
+            menu_item.hover_over_menu_item()
+            Assert.true(menu_item.is_menu_dropdown_visible)
+            home_page.hover_over_addons_home_title()
+            Assert.false(menu_item.is_menu_dropdown_visible)
+
     def test_that_clicking_top_rated_shows_addons_sorted_by_rating(self, mozwebqa):
         """
         Litmus 25791
