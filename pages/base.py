@@ -51,7 +51,6 @@ from pages.page import Page
 
 class Base(Page):
 
-
     _amo_logo_locator = (By.CSS_SELECTOR, ".site-title")
     _amo_logo_link_locator = (By.CSS_SELECTOR, ".site-title a")
     _amo_logo_image_locator = (By.CSS_SELECTOR, ".site-title img")

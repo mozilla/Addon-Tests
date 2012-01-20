@@ -65,7 +65,7 @@ class TestSearch:
 
         # Go Forward 10 times
         for i in range(10):
-            search_page.paginator.next_page()
+            search_page.paginator.click_next_page()
             search_page.wait_for_results_refresh()
 
             first_count = search_page.paginator.start_item
@@ -78,7 +78,7 @@ class TestSearch:
 
         # Go Back 10 Times
         for i in range(10):
-            search_page.paginator.prev_page()
+            search_page.paginator.click_prev_page()
             search_page.wait_for_results_refresh()
 
             first_count = search_page.paginator.start_item
@@ -184,7 +184,7 @@ class TestSearch:
         Assert.true('sort=downloads' in search_page.get_url_current_page())
         downloads = [i.downloads for i in search_page.results()]
         Assert.is_sorted_descending(downloads)
-        search_page.paginator.next_page()
+        search_page.paginator.click_next_page()
         search_page.wait_for_results_refresh()
 
         downloads.extend([i.downloads for i in search_page.results()])
@@ -209,7 +209,7 @@ class TestSearch:
         Assert.true('sort=updated' in search_page.get_url_current_page())
         results = [i.updated_date for i in search_page.results()]
         Assert.is_sorted_descending(results)
-        search_page.paginator.next_page()
+        search_page.paginator.click_next_page()
         results.extend([i.updated_date for i in search_page.results()])
         Assert.is_sorted_descending(results)
 
@@ -253,7 +253,7 @@ class TestSearch:
             Assert.equal(second_expected, second_count)
             Assert.equal(search_page.result_count, 20)
 
-            search_page.paginator.next_page()
+            search_page.paginator.click_next_page()
             search_page.wait_for_results_refresh()
 
             first_expected += 20
