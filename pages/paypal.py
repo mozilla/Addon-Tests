@@ -42,10 +42,11 @@ from selenium.webdriver.common.by import By
 
 class PayPal(Page):
 
-    _pop_up_id = '_popupFlow'
+    _pop_up_id = '_wrapper'
     _email_locator = (By.ID, 'email')
     _password_locator = (By.ID, 'password')
 
+    _paypal_login_button = (By.CSS_SELECTOR, 'div.logincnt > p > a.button')
     _log_in_button_locator = (By.ID, 'login')
     _next_button_locator = (By.CSS_SELECTOR, 'button.start')
     _sign_in_locator = (By.ID, 'signInButton')
@@ -55,7 +56,13 @@ class PayPal(Page):
 
     def __init__(self, testsetup):
         Page.__init__(self, testsetup)
-        self.selenium.switch_to_window(self._pop_up_id)
+        #self.selenium.switch_to_frame(self._pop_up_id)
+
+    def login_to_paypal(self, user="paypal"):
+        self.selenium.find_element(*self._paypal_login_button).click()
+        #from pages.paypal import PayPal
+        #pop_up = PayPal(self.testsetup)
+        self.login_paypal(user)
 
     def login_paypal(self, user):
         credentials = self.testsetup.credentials[user]

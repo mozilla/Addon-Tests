@@ -58,7 +58,7 @@ class TestPaypal:
         addon_page.click_purchase_button()
         Assert.true(addon_page.is_purchase_addon_dialog_visible)
         Assert.true(addon_page.is_pay_with_paypal_button_visible)
-        addon_page.click_pay_with_paypal()
-        Assert.true(addon_page.is_paypal_launcher_form_visible)
-        addon_page.login_to_paypal()
+        paypal_page = addon_page.click_pay_with_paypal()
+        #Assert.true(addon_page.is_paypal_launcher_form_visible)
+        paypal_page.login_to_paypal(user="paypal")
 

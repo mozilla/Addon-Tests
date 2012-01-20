@@ -127,11 +127,10 @@ class Details(Base):
     _first_page_link_locator = (By.CSS_SELECTOR, ".paginator .rel > a:nth-child(1)")
 
     # purchase addon
-    _purchase_button_locator = (By.CSS_SELECTOR, 'p.install-button a.button')
+    _purchase_button_locator = (By.CSS_SELECTOR, 'div.install > a.button')
     _purchase_addon_dialog_locator = (By.CSS_SELECTOR, 'div.paypal-modal')
-    _pay_with_paypal_button_locator = (By.CSS_SELECTOR, 'form > button.paypal')
+    _pay_with_paypal_button_locator = (By.CSS_SELECTOR, '.paypal-parent > form > button.paypal')
     _connection_untrusted_dialog_locator = (By.ID, 'errorPageContainer')
-    _technical_details_locator = (By.ID, 'technicalContent')
     _paypal_launcher_form_locator = (By.ID, 'launcherForm')
     _paypal_login_button = (By.CSS_SELECTOR, 'div.logincnt > p > a.button')
     _finish_purchase_locator = (By.ID, 'addon_info')
@@ -584,6 +583,10 @@ class Details(Base):
 
     def click_pay_with_paypal(self):
         self.selenium.find_element(*self._pay_with_paypal_button_locator).click()
+        iframe_src = self.selenium.find_element_by_xpath('//iframe').get_attribute('src')
+        self.selenium.get(iframe_src.replace('sandbox', 'www.sandbox'))
+        from pages.paypal import PayPal
+        return PayPal(self.testsetup)
 
     @property
     def is_paypal_launcher_form_visible(self):
@@ -593,11 +596,3 @@ class Details(Base):
     def is_purchase_successful(self):
         purchase_message = self.selenium.find_element(*self._finish_purchase_locator).text
         return ('Your purchase of Adhaadhoora is complete.' in purchase_message)
-
-    def login_to_paypal(self, user="paypal"):
-        login = self.selenium.find_element(*self._paypal_login_button).click()
-        login.login_user_browser_id(user)
-        from pages.paypal import PayPal
-        pop_up = PayPal(self.testsetup)
-        pop_up.login_paypal(user)
-
