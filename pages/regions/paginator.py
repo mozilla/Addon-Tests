@@ -50,13 +50,13 @@ class Paginator(Page):
     #Navigation
     _first_page_locator = (By.CSS_SELECTOR, 'nav.paginator .rel a:nth-child(1)')
     _prev_locator = (By.CSS_SELECTOR, 'nav.paginator .rel a.prev')
-    _next_loactor = (By.CSS_SELECTOR, 'nav.paginator .rel a.next')
-    _last_page_loactor = (By.CSS_SELECTOR, 'nav.paginator .rel a:nth-child(4)')
+    _next_locator = (By.CSS_SELECTOR, 'nav.paginator .rel a.next')
+    _last_page_locator = (By.CSS_SELECTOR, 'nav.paginator .rel a:nth-child(4)')
 
     #Position
     _start_item_number_locator = (By.CSS_SELECTOR, 'nav.paginator .pos b:nth-child(1)')
     _end_item_number_locator = (By.CSS_SELECTOR, 'nav.paginator .pos b:nth-child(2)')
-    _toatal_item_number = (By.CSS_SELECTOR, 'nav.paginator .pos b:nth-child(3)')
+    _total_item_number = (By.CSS_SELECTOR, 'nav.paginator .pos b:nth-child(3)')
 
     @property
     def page_number(self):
@@ -73,14 +73,14 @@ class Paginator(Page):
         return 'disabled' in self.selenium.find_element(*self._prev_locator).get_attribute('class')
 
     def click_next_page(self):
-        self.selenium.find_element(*self._next_loactor).click()
+        self.selenium.find_element(*self._next_locator).click()
 
     @property
     def is_next_page_disabled(self):
-        return 'disabled' in self.selenium.find_element(*self._next_loactor).get_attribute('class')
+        return 'disabled' in self.selenium.find_element(*self._next_locator).get_attribute('class')
 
     def click_last_page(self):
-        self.selenium.find_element(*self._last_page_loactor).click()
+        self.selenium.find_element(*self._last_page_locator).click()
 
     @property
     def start_item(self):
@@ -92,4 +92,4 @@ class Paginator(Page):
 
     @property
     def total_items(self):
-        return int(self.selenium.find_element(*self._toatal_item_number).text)
+        return int(self.selenium.find_element(*self._total_item_number).text)
