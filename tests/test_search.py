@@ -40,7 +40,6 @@
 # ***** END LICENSE BLOCK *****
 
 
-import re
 import pytest
 
 from unittestzero import Assert
@@ -66,31 +65,29 @@ class TestSearch:
 
         # Go Forward 10 times
         for i in range(10):
-            search_page.page_forward()
-            results_summary = search_page.results_displayed
+            search_page.paginator.click_next_page()
+            search_page.wait_for_results_refresh()
 
-            results = re.split('\W+', results_summary)
-            first_count = results[1]
-            second_count = results[2]
+            first_count = search_page.paginator.start_item
+            second_count = search_page.paginator.end_item
 
             first_expected += 20
             second_expected += 20
-            Assert.equal(str(first_expected), first_count)
-            Assert.equal(str(second_expected), second_count)
+            Assert.equal(first_expected, first_count)
+            Assert.equal(second_expected, second_count)
 
         # Go Back 10 Times
         for i in range(10):
-            search_page.page_back()
-            results_summary = search_page.results_displayed
+            search_page.paginator.click_prev_page()
+            search_page.wait_for_results_refresh()
 
-            results = re.split('\W+', results_summary)
-            first_count = results[1]
-            second_count = results[2]
+            first_count = search_page.paginator.start_item
+            second_count = search_page.paginator.end_item
 
             first_expected -= 20
             second_expected -= 20
-            Assert.equal(str(first_expected), first_count)
-            Assert.equal(str(second_expected), second_count)
+            Assert.equal(first_expected, first_count)
+            Assert.equal(second_expected, second_count)
 
     @nondestructive
     def test_that_entering_a_long_string_returns_no_results(self, mozwebqa):
@@ -187,7 +184,9 @@ class TestSearch:
         Assert.true('sort=downloads' in search_page.get_url_current_page())
         downloads = [i.downloads for i in search_page.results()]
         Assert.is_sorted_descending(downloads)
-        search_page.page_forward()
+        search_page.paginator.click_next_page()
+        search_page.wait_for_results_refresh()
+
         downloads.extend([i.downloads for i in search_page.results()])
         Assert.is_sorted_descending(downloads)
 
@@ -210,7 +209,7 @@ class TestSearch:
         Assert.true('sort=updated' in search_page.get_url_current_page())
         results = [i.updated_date for i in search_page.results()]
         Assert.is_sorted_descending(results)
-        search_page.page_forward()
+        search_page.paginator.click_next_page()
         results.extend([i.updated_date for i in search_page.results()])
         Assert.is_sorted_descending(results)
 
@@ -246,21 +245,21 @@ class TestSearch:
         first_expected = 1
         second_expected = 20
 
-        while search_page.is_next_link_enabled:
-            results_summary = search_page.results_displayed
-            results = re.split('\W+', results_summary)
-            first_count = results[1]
-            second_count = results[2]
+        while not search_page.paginator.is_next_page_disabled:
+            first_count = search_page.paginator.start_item
+            second_count = search_page.paginator.end_item
 
-            Assert.equal(str(first_expected), first_count)
-            Assert.equal(str(second_expected), second_count)
+            Assert.equal(first_expected, first_count)
+            Assert.equal(second_expected, second_count)
             Assert.equal(search_page.result_count, 20)
 
-            search_page.page_forward()
+            search_page.paginator.click_next_page()
+            search_page.wait_for_results_refresh()
+
             first_expected += 20
             second_expected += 20
 
-        number = int(re.split('\W+', results_summary)[4]) % 20
+        number = search_page.paginator.total_items % 20
 
         if number == 0:
             Assert.equal(search_page.result_count, 20)
