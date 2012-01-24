@@ -204,5 +204,5 @@ class TestThemes:
         """
         home_page = Home(mozwebqa)
         themes_page = home_page.click_themes()
-        themes_page.last_page()
+        themes_page.paginator.click_last_page()
         Assert.greater_equal(themes_page.addon_count, 1)
