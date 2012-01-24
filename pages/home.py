@@ -55,9 +55,6 @@ from pages.base import Base
 class Home(Base):
 
     _page_title = "Add-ons for Firefox"
-    _themes_link_locator = (By.CSS_SELECTOR, "#themes > a")
-    _personas_link_locator = (By.CSS_SELECTOR, "#personas > a")
-    _collections_link_locator = (By.CSS_SELECTOR, "#collections > a")
     _first_addon_locator = (By.CSS_SELECTOR, "div.summary > a > h3")
     _other_applications_link_locator = (By.ID, "other-apps")
 
@@ -100,26 +97,6 @@ class Home(Base):
         self.selenium.find_element(*self._featured_personas_see_all_link).click()
         from pages.personas import Personas
         return Personas(self.testsetup)
-
-    def click_personas(self):
-        self.selenium.find_element(*self._personas_link_locator).click()
-        from pages.personas import Personas
-        return Personas(self.testsetup)
-
-    def click_themes(self):
-        self.selenium.find_element(*self._themes_link_locator).click()
-        from pages.themes import Themes
-        return Themes(self.testsetup)
-
-    def click_collections(self):
-        self.selenium.find_element(*self._collections_link_locator).click()
-        from pages.collection import Collections
-        return Collections(self.testsetup)
-
-    def click_extensions(self):
-        self.selenium.find_element(*self._extensions_menu_link).click()
-        from pages.extensions import ExtensionsHome
-        return ExtensionsHome(self.testsetup)
 
     def click_featured_collections_see_all_link(self):
         self.selenium.find_element(*self._featured_collections_locator).find_element(By.CSS_SELECTOR, " a").click()
