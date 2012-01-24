@@ -56,7 +56,7 @@ class TestThemes:
     def test_that_themes_can_be_sorted_by_name(self, mozwebqa):
         """ Test for Litmus 11727, 4839 """
         home_page = Home(mozwebqa)
-        themes_page = home_page.header.site_nav("Themes").click()
+        themes_page = home_page.header.application_masthead("Themes").click()
         themes_page.click_sort_by("name")
         addons = themes_page.addon_names
         addons_set = set(addons)
@@ -76,7 +76,7 @@ class TestThemes:
     def test_that_themes_can_be_sorted_by_updated_date(self, mozwebqa):
         """ test for litmus 11638 """
         home_page = Home(mozwebqa)
-        themes_page = home_page.header.site_nav("Themes").click()
+        themes_page = home_page.header.application_masthead("Themes").click()
         themes_page.click_sort_by("updated")
         addons = themes_page.addon_names
         addons_set = set(addons)
@@ -91,7 +91,7 @@ class TestThemes:
     def test_that_themes_can_be_sorted_by_created_date(self, mozwebqa):
         """ test for litmus 11638 """
         home_page = Home(mozwebqa)
-        themes_page = home_page.header.site_nav("Themes").click()
+        themes_page = home_page.header.application_masthead("Themes").click()
         themes_page.click_sort_by("created")
         addons = themes_page.addon_names
         addons_set = set(addons)
@@ -106,7 +106,7 @@ class TestThemes:
     def test_that_themes_can_be_sorted_by_popularity(self, mozwebqa):
         """ test for litmus 11638 """
         home_page = Home(mozwebqa)
-        themes_page = home_page.header.site_nav("Themes").click()
+        themes_page = home_page.header.application_masthead("Themes").click()
         themes_page.click_sort_by("popular")
         addons = themes_page.addon_names
         addons_set = set(addons)
@@ -121,7 +121,7 @@ class TestThemes:
     def test_that_themes_loads_themes_landing_page(self, mozwebqa):
         """test for litmus 15339"""
         home_page = Home(mozwebqa)
-        themes_page = home_page.header.site_nav("Themes").click()
+        themes_page = home_page.header.application_masthead("Themes").click()
         url_current_page = themes_page.get_url_current_page()
         Assert.true(url_current_page.endswith("/themes/"))
 
@@ -129,7 +129,7 @@ class TestThemes:
     def test_that_clicking_on_theme_name_loads_its_detail_page(self, mozwebqa):
         """test for litmus 15363"""
         home_page = Home(mozwebqa)
-        themes_page = home_page.header.site_nav("Themes").click()
+        themes_page = home_page.header.application_masthead("Themes").click()
         theme_name = themes_page.addon_name(1)
         theme_page = themes_page.click_on_first_addon()
         Assert.contains(theme_name, theme_page.addon_title)
@@ -138,7 +138,7 @@ class TestThemes:
     def test_that_themes_page_has_correct_title(self, mozwebqa):
         """test for litmus 15340"""
         home_page = Home(mozwebqa)
-        themes_page = home_page.header.site_nav("Themes").click()
+        themes_page = home_page.header.application_masthead("Themes").click()
         expected_title = "Most Popular Themes :: Add-ons for Firefox"
         Assert.equal(expected_title, themes_page.page_title)
 
@@ -146,7 +146,7 @@ class TestThemes:
     def test_themes_page_breadcrumb(self, mozwebqa):
         """test for litmus 15344"""
         home_page = Home(mozwebqa)
-        themes_page = home_page.header.site_nav("Themes").click()
+        themes_page = home_page.header.application_masthead("Themes").click()
         expected_breadcrumb = "Themes"
         Assert.equal(expected_breadcrumb, themes_page.breadcrumbs[1].name)
 
@@ -154,7 +154,7 @@ class TestThemes:
     def test_that_clicking_on_a_subcategory_loads_expected_page(self, mozwebqa):
         """test for litmus 15949"""
         home_page = Home(mozwebqa)
-        themes_page = home_page.header.site_nav("Themes").click()
+        themes_page = home_page.header.application_masthead("Themes").click()
         selected_category = themes_page.themes_category
         amo_category_page = themes_page.click_on_first_category()
         Assert.equal(selected_category, amo_category_page.title)
@@ -162,7 +162,7 @@ class TestThemes:
     @nondestructive
     def test_themes_subcategory_page_breadcrumb(self, mozwebqa):
         home_page = Home(mozwebqa)
-        themes_page = home_page.header.site_nav("Themes").click()
+        themes_page = home_page.header.application_masthead("Themes").click()
         selected_category = themes_page.themes_category
         amo_category_page = themes_page.click_on_first_category()
         expected_breadcrumb = "Add-ons for Firefox Themes %s" % selected_category
@@ -172,7 +172,7 @@ class TestThemes:
     def test_that_themes_categories_are_listed_on_left_hand_side(self, mozwebqa):
         """ test for litmus 15342"""
         home_page = Home(mozwebqa)
-        themes_page = home_page.header.site_nav("Themes").click()
+        themes_page = home_page.header.application_masthead("Themes").click()
         current_page_url = home_page.get_url_current_page()
         Assert.true(current_page_url.endswith("/themes/"))
         default_categories = ["Animals", "Compact", "Large", "Miscellaneous", "Modern", "Nature", "OS Integration", "Retro", "Sports"]
@@ -187,10 +187,10 @@ class TestThemes:
     def test_that_themes_categories_are_not_extensions_categories(self, mozwebqa):
         """ test for litmus 15343"""
         home_page = Home(mozwebqa)
-        themes_page = home_page.header.site_nav("Themes").click()
+        themes_page = home_page.header.application_masthead("Themes").click()
         themes_categories = themes_page.get_all_categories
 
-        home_page.header.site_nav("Extensions").click()
+        home_page.header.application_masthead("Extensions").click()
         extensions_categories = themes_page.get_all_categories
 
         Assert.not_equal(len(themes_categories), len(extensions_categories))
@@ -203,6 +203,6 @@ class TestThemes:
         https://litmus.mozilla.org/show_test.cgi?id=15359
         """
         home_page = Home(mozwebqa)
-        themes_page = home_page.header.site_nav("Themes").click()
+        themes_page = home_page.header.application_masthead("Themes").click()
         themes_page.last_page()
         Assert.greater_equal(themes_page.addon_count, 1)

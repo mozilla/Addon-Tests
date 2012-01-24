@@ -53,7 +53,7 @@ class TestExtensions:
         https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=29706
         """
         home_page = Home(mozwebqa)
-        featured_extensions_page = home_page.header.site_nav("Extensions").click()
+        featured_extensions_page = home_page.header.application_masthead("Extensions").click()
         Assert.equal(featured_extensions_page.default_selected_tab, "Featured")
 
     @nondestructive
@@ -63,7 +63,7 @@ class TestExtensions:
         https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=29710
         """
         home_page = Home(mozwebqa)
-        featured_extensions_page = home_page.header.site_nav("Extensions").click()
+        featured_extensions_page = home_page.header.application_masthead("Extensions").click()
         featured_extensions_page.sort_by('most_users')
         featured_extensions_page.go_to_last_page()
 
