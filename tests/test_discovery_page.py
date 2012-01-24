@@ -131,6 +131,31 @@ class TestDiscoveryPane:
         Assert.false(home_page.header.is_user_logged_in)
 
     @nondestructive
+    def test_that_carousel_works(self, mozwebqa):
+        """
+        Litmus 15071
+        https://litmus.mozilla.org/show_test.cgi?id=15071
+        """
+        discovery_pane = DiscoveryPane(mozwebqa, self.basepath)
+        slider2 = ''
+
+        #checking > button works and slides change
+        for i in range(0, len(discovery_pane.sliders)):
+            slider1 = discovery_pane.sliders[i].header_name
+            Assert.not_equal(slider1, slider2)
+            Assert.greater(discovery_pane.sliders[i].opacity_value_for_next, 0.3)
+            discovery_pane.sliders[i].click_next()
+            slider2 = slider1
+
+        #checking < button works and slides change
+        for i in range(0, len(discovery_pane.sliders)):
+            slider1 = discovery_pane.sliders[i].header_name
+            Assert.not_equal(slider1, slider2)
+            Assert.greater(discovery_pane.sliders[i].opacity_value_for_previous, 0.3)
+            discovery_pane.sliders[i].click_previous()
+            slider2 = slider1
+
+    @nondestructive
     def test_that_extension_is_underlined_while_hover_and_text_not(self, mozwebqa):
         """
         Litmus 15118
