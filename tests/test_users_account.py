@@ -53,10 +53,10 @@ class TestAccounts:
 
     @nondestructive
     def test_user_can_login_and_logout(self, mozwebqa):
-        """ Test for litmus 7857
-            https://litmus.mozilla.org/show_test.cgi?id=7857
-            Test for litmus 4859
-            https://litmus.mozilla.org/show_test.cgi?id=4859
+        """ 
+        Test for Litmus 7857 and 4859.
+        https://litmus.mozilla.org/show_test.cgi?id=7857
+        https://litmus.mozilla.org/show_test.cgi?id=4859
         """
 
         home_page = Home(mozwebqa)
@@ -69,9 +69,9 @@ class TestAccounts:
 
     @nondestructive
     def test_user_can_login_and_logout_using_browser_id(self, mozwebqa):
-        """ Test for litmus 7857
+        """ 
+        Test for Litmus 7857 and 4859.
         https://litmus.mozilla.org/show_test.cgi?id=7857
-        Test for litmus 4859
         https://litmus.mozilla.org/show_test.cgi?id=4859
         """
 
@@ -86,8 +86,8 @@ class TestAccounts:
     @nondestructive
     def test_user_can_access_the_edit_profile_page(self, mozwebqa):
         """
-            Test for litmus 5039
-            https://litmus.mozilla.org/show_test.cgi?id=5039
+        Test for Litmus 5039.
+        https://litmus.mozilla.org/show_test.cgi?id=5039
         """
 
         home_page = Home(mozwebqa)
@@ -107,7 +107,7 @@ class TestAccounts:
     @nondestructive
     def test_user_can_access_the_view_profile_page(self, mozwebqa):
         """
-        Test for litmus 15400
+        Test for litmus 15400.
         https://litmus.mozilla.org/show_test.cgi?id=15400
         """
 
@@ -159,7 +159,7 @@ class TestAccounts:
     @destructive
     def test_user_can_update_profile_information_in_account_settings_page(self, mozwebqa):
         """
-        Test for Litmus 11563
+        Test for Litmus 11563.
         https://litmus.mozilla.org/show_test.cgi?id=11563
         """
         home_page = Home(mozwebqa)
@@ -204,7 +204,7 @@ class TestAccounts:
     @nondestructive
     def test_user_my_collections_page(self, mozwebqa):
         """
-        Test for litmus 15401
+        Test for litmus 15401.
         https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=15401
         """
 

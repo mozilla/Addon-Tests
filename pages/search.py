@@ -164,7 +164,7 @@ class SearchHome(Base):
 
         @property
         def created_date(self):
-            """ Returns created date of result in POSIX format """
+            """Returns created date of result in POSIX format."""
             date = self._root_element.find_element(*self._created_date).text.strip().replace('Added ', '')
             # convert to POSIX format
             date = strptime(date, '%B %d, %Y')
@@ -172,7 +172,7 @@ class SearchHome(Base):
 
         @property
         def updated_date(self):
-            """ Returns updated date of result in POSIX format """
+            """Returns updated date of result in POSIX format."""
             date = self._root_element.find_element(*self._created_date).text.replace('Updated ', '')
             # convert to POSIX format
             date = strptime(date, '%B %d, %Y')

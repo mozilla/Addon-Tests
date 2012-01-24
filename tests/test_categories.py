@@ -53,7 +53,7 @@ class TestCategory:
 
     @nondestructive
     def test_that_all_category_links_work(self, mozwebqa):
-        "Test for Litmus 25796"
+        """Test for Litmus 25796."""
         home_page = Home(mozwebqa)
 
         for i in range(len(home_page.categories)):
@@ -66,7 +66,7 @@ class TestCategory:
 
     @nondestructive
     def test_that_category_names_are_correct(self, mozwebqa):
-        """Test for Litmus 25795"""
+        """Test for Litmus 25795."""
 
         expected_categories = [
             "Alerts & Updates",

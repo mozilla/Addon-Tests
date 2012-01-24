@@ -54,7 +54,7 @@ class TestThemes:
 
     @nondestructive
     def test_that_themes_can_be_sorted_by_name(self, mozwebqa):
-        """ Test for Litmus 11727, 4839 """
+        """Test for Litmus 11727 and 4839."""
         home_page = Home(mozwebqa)
         themes_page = home_page.click_themes()
         themes_page.click_sort_by("name")
@@ -74,7 +74,7 @@ class TestThemes:
 
     @nondestructive
     def test_that_themes_can_be_sorted_by_updated_date(self, mozwebqa):
-        """ test for litmus 11638 """
+        """Test for Litmus 11638."""
         home_page = Home(mozwebqa)
         themes_page = home_page.click_themes()
         themes_page.click_sort_by("updated")
@@ -89,7 +89,7 @@ class TestThemes:
 
     @nondestructive
     def test_that_themes_can_be_sorted_by_created_date(self, mozwebqa):
-        """ test for litmus 11638 """
+        """Test for Litmus 11638."""
         home_page = Home(mozwebqa)
         themes_page = home_page.click_themes()
         themes_page.click_sort_by("created")
@@ -104,7 +104,7 @@ class TestThemes:
 
     @nondestructive
     def test_that_themes_can_be_sorted_by_popularity(self, mozwebqa):
-        """ test for litmus 11638 """
+        """Test for Litmus 11638."""
         home_page = Home(mozwebqa)
         themes_page = home_page.click_themes()
         themes_page.click_sort_by("popular")
@@ -119,7 +119,7 @@ class TestThemes:
 
     @nondestructive
     def test_that_themes_loads_themes_landing_page(self, mozwebqa):
-        """test for litmus 15339"""
+        """Test for Litmus 15339."""
         home_page = Home(mozwebqa)
         themes_page = home_page.click_themes()
         url_current_page = themes_page.get_url_current_page()
@@ -127,7 +127,7 @@ class TestThemes:
 
     @nondestructive
     def test_that_clicking_on_theme_name_loads_its_detail_page(self, mozwebqa):
-        """test for litmus 15363"""
+        """Test for Litmus 15363."""
         home_page = Home(mozwebqa)
         themes_page = home_page.click_themes()
         theme_name = themes_page.addon_name(1)
@@ -136,7 +136,7 @@ class TestThemes:
 
     @nondestructive
     def test_that_themes_page_has_correct_title(self, mozwebqa):
-        """test for litmus 15340"""
+        """Test for Litmus 15340."""
         home_page = Home(mozwebqa)
         themes_page = home_page.click_themes()
         expected_title = "Most Popular Themes :: Add-ons for Firefox"
@@ -144,7 +144,7 @@ class TestThemes:
 
     @nondestructive
     def test_themes_page_breadcrumb(self, mozwebqa):
-        """test for litmus 15344"""
+        """Test for Litmus 15344."""
         home_page = Home(mozwebqa)
         themes_page = home_page.click_themes()
         expected_breadcrumb = "Themes"
@@ -152,7 +152,7 @@ class TestThemes:
 
     @nondestructive
     def test_that_clicking_on_a_subcategory_loads_expected_page(self, mozwebqa):
-        """test for litmus 15949"""
+        """Test for Litmus 15949."""
         home_page = Home(mozwebqa)
         themes_page = home_page.click_themes()
         selected_category = themes_page.themes_category
@@ -170,7 +170,7 @@ class TestThemes:
 
     @nondestructive
     def test_that_themes_categories_are_listed_on_left_hand_side(self, mozwebqa):
-        """ test for litmus 15342"""
+        """Test for Litmus 15342."""
         home_page = Home(mozwebqa)
         themes_page = home_page.click_themes()
         current_page_url = home_page.get_url_current_page()
@@ -185,7 +185,7 @@ class TestThemes:
 
     @nondestructive
     def test_that_themes_categories_are_not_extensions_categories(self, mozwebqa):
-        """ test for litmus 15343"""
+        """Test for Litmus 15343."""
         home_page = Home(mozwebqa)
         themes_page = home_page.click_themes()
         themes_categories = themes_page.get_all_categories
@@ -199,7 +199,7 @@ class TestThemes:
     @nondestructive
     def test_that_last_themes_page_is_not_empty(self, mozwebqa):
         """
-        Litmus 15359
+        Test for Litmus 15359.
         https://litmus.mozilla.org/show_test.cgi?id=15359
         """
         home_page = Home(mozwebqa)

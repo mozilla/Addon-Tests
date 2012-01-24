@@ -49,7 +49,7 @@ class TestExtensions:
     @nondestructive
     def test_featured_tab_is_highlighted_by_default(self, mozwebqa):
         """
-        Litmus 29706
+        Test for Litmus 29706.
         https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=29706
         """
         home_page = Home(mozwebqa)
@@ -59,7 +59,7 @@ class TestExtensions:
     @nondestructive
     def test_next_button_is_disabled_on_the_last_page(self, mozwebqa):
         """
-        Litmus 29710
+        Test for Litmus 29710.
         https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=29710
         """
         home_page = Home(mozwebqa)
