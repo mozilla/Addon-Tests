@@ -218,10 +218,10 @@ class TestHome:
     @pytest.mark.litmus([25747, 25751, 25756, 25760, 25764])
     def test_top_three_menu_items_are_featured(self, mozwebqa):
         home_page = Home(mozwebqa)
-        actual_header_menus = home_page.header.site_nav
-        for menu in actual_header_menus:
+        for menu in home_page.header.menus:
             if menu.name == u"MORE\u2026":
-                [Assert.false(item.is_featured, 'Item %s from menu %s is fetured' % (item.name, menu.name)) for item in menu.items]
+                # 'more' menu has no featured items
+                [Assert.false(item.is_featured) for item in menu.items]
             else:
-                [Assert.true(item.is_featured, 'Item %s from menu %s is not fetured' % (item.name, menu.name)) for item in menu.items[:3]]
-                [Assert.false(item.is_featured, 'Item %s from menu %s is fetured' % (item.name, menu.name)) for item in menu.items[3:]]
+                [Assert.true(item.is_featured) for item in menu.items[:3]]
+                [Assert.false(item.is_featured) for item in menu.items[3:]]
