@@ -99,21 +99,22 @@ class HeaderMenu(Page):
             return self._root_element.find_element(By.CSS_SELECTOR, '*').tag_name == 'em'
 
         def click(self):
+            menu_name = self._menu.name
             self._menu.hover()
             ActionChains(self.selenium).\
-                move_to_element(self.root_element).\
+                move_to_element(self._root_element).\
                 click().\
                 perform()
 
-            if "EXTENSIONS" in self._hover_element.text:
+            if "EXTENSIONS" in menu_name:
                 from pages.extensions import ExtensionsHome
                 return ExtensionsHome(self.testsetup)
-            elif "PERSONAS" in self._hover_element.text:
+            elif "PERSONAS" in menu_name:
                 from pages.personas import Personas
                 return Personas(self.testsetup)
-            elif "THEMES" in self._hover_element.text:
+            elif "THEMES" in menu_name:
                 from pages.themes import Themes
                 return Themes(self.testsetup)
-            elif "COLLECTIONS" in self._hover_element.text:
+            elif "COLLECTIONS" in menu_name:
                 from pages.collection import Collections
                 return Collections(self.testsetup)
