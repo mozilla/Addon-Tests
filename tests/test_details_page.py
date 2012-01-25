@@ -287,7 +287,7 @@ class TestDetails:
         https://litmus.mozilla.org/show_test.cgi?id=11922
         """
         detail_page = Details(mozwebqa, 'firebug')
-        Assert.equal(detail_page.breadcrumb, 'Add-ons for Firefox\nExtensions Firebug')
+        Assert.equal(detail_page.breadcrumb_region.text, 'Add-ons for Firefox\nExtensions Firebug')
 
     @nondestructive
     def test_that_clicking_info_link_slides_down_page_to_version_info(self, mozwebqa):
@@ -308,18 +308,18 @@ class TestDetails:
         home_page = Home(mozwebqa)
         detail_page = Details(mozwebqa, 'firebug')
 
-        Assert.equal(detail_page.breadcrumbs[0].name, 'Add-ons for Firefox')
-        link = detail_page.breadcrumbs[0].link_value
-        detail_page.breadcrumbs[0].click_breadcrumb()
+        Assert.equal(detail_page.breadcrumb_region.breadcrumbs[0].get_breadcrumb_item_text(1), 'Add-ons for Firefox')
+        link = detail_page.breadcrumb_region.breadcrumbs[0].link_value
+        detail_page.breadcrumb_region.breadcrumbs[0].click_breadcrumb()
 
         Assert.true(home_page.is_the_current_page)
         Assert.true(home_page.get_url_current_page().endswith(link))
 
         home_page.return_to_previous_page()
 
-        Assert.equal(detail_page.breadcrumbs[1].name, 'Extensions')
-        link = detail_page.breadcrumbs[1].link_value
-        detail_page.breadcrumbs[1].click_breadcrumb()
+        Assert.equal(detail_page.breadcrumb_region.breadcrumbs[1].get_breadcrumb_item_text(2), 'Extensions')
+        link = detail_page.breadcrumb_region.breadcrumbs[1].link_value
+        detail_page.breadcrumb_region.breadcrumbs[1].click_breadcrumb()
 
         amo_extenstions_page = ExtensionsHome(mozwebqa)
         Assert.true(amo_extenstions_page.is_the_current_page)
@@ -327,7 +327,7 @@ class TestDetails:
 
         home_page.return_to_previous_page()
 
-        Assert.equal(detail_page.breadcrumbs[2].name, 'Firebug')
+        Assert.equal(detail_page.breadcrumb_region.breadcrumbs[2].get_breadcrumb_item_text(3), 'Firebug')
 
     @nondestructive
     def test_that_add_a_review_button_works(self, mozwebqa):

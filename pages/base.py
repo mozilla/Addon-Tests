@@ -117,13 +117,8 @@ class Base(Page):
 
     @property
     def breadcrumb_region(self):
-        from pages.regions.breadcrumbs import BreadcrumbsRegion
-        return BreadcrumbsRegion(self.testsetup)
-
-    @property
-    def breadcrumbs_list(self):
-        return [self.BreadcrumbsRegion(self.testsetup, element)
-                for element in self.selenium.find_elements(*self._breadcrumbs_locator)]
+        from pages.regions.breadcrumbs import BreadcrumbRegion
+        return BreadcrumbRegion(self.testsetup)
 
     def _extract_iso_dates(self, date_format, *locator):
         """

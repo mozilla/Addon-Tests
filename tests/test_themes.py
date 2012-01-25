@@ -148,7 +148,7 @@ class TestThemes:
         home_page = Home(mozwebqa)
         themes_page = home_page.click_themes()
         expected_breadcrumb = "Themes"
-        Assert.equal(expected_breadcrumb, themes_page.breadcrumb_region.get_breadcrumb_item_text(2))
+        Assert.equal(expected_breadcrumb, themes_page.breadcrumb_region.breadcrumbs[1].get_breadcrumb_item_text(2))
 
     @nondestructive
     def test_that_clicking_on_a_subcategory_loads_expected_page(self, mozwebqa):

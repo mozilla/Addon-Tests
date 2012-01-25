@@ -133,23 +133,23 @@ class TestPersonas:
 
         # Verify breadcrumb menu format, i.e. Add-ons for Firefox > Personas > {Persona Name}.
         persona_title = personas_detail_page.title
-        Assert.equal("Add-ons for Firefox", personas_detail_page.breadcrumb_region.get_breadcrumb_item_text(1))
-        Assert.equal("Personas", personas_detail_page.breadcrumb_region.get_breadcrumb_item_text(2))
+        Assert.equal("Add-ons for Firefox", personas_detail_page.breadcrumb_region.breadcrumbs[0].get_breadcrumb_item_text(1))
+        Assert.equal("Personas", personas_detail_page.breadcrumb_region.breadcrumbs[1].get_breadcrumb_item_text(2))
 
         persona_breadcrumb_title = len(persona_title) > 40 and '%s...' % persona_title[:40] or persona_title
 
-        Assert.equal(personas_detail_page.breadcrumb_region.get_breadcrumb_item_text(3), persona_breadcrumb_title)
+        Assert.equal(personas_detail_page.breadcrumb_region.breadcrumbs[2].get_breadcrumb_item_text(3), persona_breadcrumb_title)
 
         # Step 4: Click on the links present in the Breadcrumb menu.
         # Verify that the Personas link loads the Personas home page.
-        personas_detail_page.breadcrumb_region.click_breadcrumb("Personas")
+        personas_detail_page.breadcrumb_region.breadcrumbs[1].click_breadcrumb("Personas")
         Assert.true(personas_page.is_the_current_page)
 
         personas_page.return_to_previous_page()
         Assert.true(personas_detail_page.is_the_current_page)
 
         # Verify that the Add-ons for Firefox link loads the AMO home page.
-        personas_detail_page.breadcrumb_region.click_breadcrumb("Add-ons for Firefox")
+        personas_detail_page.breadcrumb_region.breadcrumbs[0].click_breadcrumb("Add-ons for Firefox")
         Assert.true(home_page.is_the_current_page)
 
     @nondestructive
@@ -159,9 +159,9 @@ class TestPersonas:
         personas_page = Personas(mozwebqa)
         rainbow_personas_detail_page = personas_page.open_persona_detail_page("rainbow-firefox")
         Assert.equal("rainbow firefox", rainbow_personas_detail_page.title)
-        Assert.equal("Add-ons for Firefox", rainbow_personas_detail_page.breadcrumb_region.get_breadcrumb_item_text(1))
-        Assert.equal("Personas", rainbow_personas_detail_page.breadcrumb_region.get_breadcrumb_item_text(2))
-        Assert.equal("rainbow firefox", rainbow_personas_detail_page.breadcrumb_region.get_breadcrumb_item_text(3))
+        Assert.equal("Add-ons for Firefox", rainbow_personas_detail_page.breadcrumb_region.breadcrumbs[0].get_breadcrumb_item_text(1))
+        Assert.equal("Personas", rainbow_personas_detail_page.breadcrumb_region.breadcrumbs[1].get_breadcrumb_item_text(2))
+        Assert.equal("rainbow firefox", rainbow_personas_detail_page.breadcrumb_region.breadcrumbs[2].get_breadcrumb_item_text(3))
 
     @nondestructive
     def test_personas_breadcrumb_format(self, mozwebqa):
@@ -171,6 +171,6 @@ class TestPersonas:
         """
         home_page = Home(mozwebqa)
         personas_page = home_page.click_personas()
-        Assert.equal(personas_page.breadcrumb_region.get_breadcrumb_item_text(1), 'Add-ons for Firefox')
-        Assert.equal(personas_page.breadcrumb_region.get_breadcrumb_item_text(2), 'Personas')
+        Assert.equal(personas_page.breadcrumb_region.breadcrumbs[0].get_breadcrumb_item_text(1), 'Add-ons for Firefox')
+        Assert.equal(personas_page.breadcrumb_region.breadcrumbs[1].get_breadcrumb_item_text(2), 'Personas')
         Assert.equal(personas_page.breadcrumb_region.get_breadcrumb_item_text_all, 'Add-ons for Firefox Personas')
