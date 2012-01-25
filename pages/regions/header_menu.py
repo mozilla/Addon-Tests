@@ -85,7 +85,7 @@ class HeaderMenu(Page):
 
         def __init__(self, testsetup, element, menu):
             Page.__init__(self, testsetup)
-            self._root_element = item_element
+            self._root_element = element
             self._menu = menu
 
         @property
