@@ -72,7 +72,8 @@ class HeaderMenu(Page):
             return Collections(self.testsetup)
 
     def hover(self):
-       ActionChains(self.selenium).move_to_element(self._name_locator).perform()
+       element = self._root_element.find_element(*self._name_locator)
+       ActionChains(self.selenium).move_to_element(element).perform()
 
     @property
     def items(self):
@@ -90,16 +91,15 @@ class HeaderMenu(Page):
 
         @property
         def name(self):
-            element = self._root_element.find_element(*self._name_locator)
-            self._menu.hover
-            return element.text
+            self._menu.hover()
+            return self._root_element.find_element(*self._name_locator).text
 
         @property
         def is_featured(self):
             return self._root_element.find_element(By.CSS_SELECTOR, '*').tag_name == 'em'
 
         def click(self):
-            self._menu.hover
+            self._menu.hover()
             ActionChains(self.selenium).\
                 move_to_element(self.root_element).\
                 click().\

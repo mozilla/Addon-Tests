@@ -183,7 +183,7 @@ class Base(Page):
             for menu in self.menus:
                 if menu.name == value:
                     return menu
-                raise Exception("Menu not found: '%s'. Menus: %s" % (value, [menu.name for menu in self.menus]))
+            raise Exception("Menu not found: '%s'. Menus: %s" % (value, [menu.name for menu in self.menus]))
 
         @property
         def menus(self):
