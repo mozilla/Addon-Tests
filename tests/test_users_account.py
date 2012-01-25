@@ -45,6 +45,7 @@ from unittestzero import Assert
 
 from pages.home import Home
 
+xfail = pytest.mark.xfail
 nondestructive = pytest.mark.nondestructive
 destructive = pytest.mark.destructive
 
@@ -120,6 +121,7 @@ class TestAccounts:
 
         Assert.equal(view_profile_page.about_me, 'About me')
 
+    @xfail(reason="https://www.pivotaltracker.com/story/show/23966893")
     @destructive
     def test_hide_email_checkbox_works(self, mozwebqa):
         home_page = Home(mozwebqa)
