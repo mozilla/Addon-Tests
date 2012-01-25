@@ -113,7 +113,7 @@ class TestHome:
         https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25746
         """
         home_page = Home(mozwebqa)
-        extensions_page = home_page.click_extensions()
+        extensions_page = home_page.header.application_masthead("Extensions").click()
         Assert.true(extensions_page.is_the_current_page)
 
     @nondestructive
@@ -139,7 +139,7 @@ class TestHome:
 
         for menu in self.header_menu_values_list:
             card_items_list = self.header_menu_values_list[menu]
-            menu_nav = home_page.header.site_nav(menu)
+            menu_nav = home_page.header.application_masthead(menu)
             Assert.equal(menu.upper(), menu_nav.name)
             card_items = menu_nav.menu_items
             for i in range(len(card_items_list)):
@@ -192,7 +192,7 @@ class TestHome:
         home_page = Home(mozwebqa)
 
         for menu in self.header_menu_values_list:
-            menu_item = home_page.header.site_nav(menu)
+            menu_item = home_page.header.application_masthead(menu)
             menu_item.hover_over_menu_item()
             Assert.true(menu_item.is_menu_dropdown_visible)
             home_page.hover_over_addons_home_title()

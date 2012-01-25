@@ -45,7 +45,6 @@ from unittestzero import Assert
 from urllib2 import urlparse
 
 from pages.details import Details
-from pages.statistics import Statistics
 from pages.addons_api import AddOnsAPI
 
 xfail = pytest.mark.xfail

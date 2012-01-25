@@ -51,9 +51,7 @@ from pages.page import Page
 
 class Base(Page):
 
-    _current_page_locator = (By.CSS_SELECTOR, ".paginator .num > a:nth-child(1)")
-
-    _amo_logo_locator = ((By.CSS_SELECTOR, ".site-title"))
+    _amo_logo_locator = (By.CSS_SELECTOR, ".site-title")
     _amo_logo_link_locator = (By.CSS_SELECTOR, ".site-title a")
     _amo_logo_image_locator = (By.CSS_SELECTOR, ".site-title img")
 
@@ -104,10 +102,6 @@ class Base(Page):
     def click_mozilla_logo(self):
         self.selenium.find_element(*self._mozilla_logo_link_locator).click()
 
-    @property
-    def current_page(self):
-        return int(self.selenium.find_element(*self._current_page_locator).text)
-
     def credentials_of_user(self, user):
         return self.parse_yaml_file(self.credentials)[user]
 
@@ -119,6 +113,11 @@ class Base(Page):
     def breadcrumb_region(self):
         from pages.regions.breadcrumbs import BreadcrumbRegion
         return BreadcrumbRegion(self.testsetup)
+
+    @property
+    def paginator(self):
+        from pages.regions.paginator import Paginator
+        return Paginator(self.testsetup)
 
     def _extract_iso_dates(self, date_format, *locator):
         """
@@ -176,7 +175,7 @@ class Base(Page):
         _account_dropdown_locator = (By.CSS_SELECTOR, "#aux-nav .account ul")
         _logout_locator = (By.CSS_SELECTOR, "li.nomenu.logout > a")
 
-        def site_nav(self, lookup):
+        def application_masthead(self, lookup):
             from pages.regions.header_menu import HeaderMenu
             return HeaderMenu(self.testsetup, lookup)
 

@@ -69,12 +69,9 @@ class SearchHome(Base):
 
     _hover_more_locator = (By.CSS_SELECTOR, "li.extras > a")
 
-    _next_link_locator = (By.CSS_SELECTOR, ".paginator .rel > a:nth-child(3)")
-    _previous_link_locator = (By.CSS_SELECTOR, ".paginator .rel > a:nth-child(2)")
     _updating_locator = (By.CSS_SELECTOR, "div.updating")
-    _results_displayed_text_locator = (By.CSS_SELECTOR, ".paginator .pos")
 
-    def _wait_for_results_refresh(self):
+    def wait_for_results_refresh(self):
         WebDriverWait(self.selenium, 10).until(lambda s: not self.is_element_present(*self._updating_locator))
 
     @property
@@ -107,7 +104,7 @@ class SearchHome(Base):
         ActionChains(self.selenium).move_to_element(hover_element).\
             move_to_element(click_element).\
             click().perform()
-        self._wait_for_results_refresh()
+        self.wait_for_results_refresh()
         return SearchHome(self.testsetup)
 
     def result(self, lookup):
@@ -117,23 +114,6 @@ class SearchHome(Base):
     def results(self):
         return [self.SearchResult(self.testsetup, element)
                 for element in self.selenium.find_elements(*self._results_locator)]
-
-    def page_forward(self):
-        self.selenium.find_element(*self._next_link_locator).click()
-        self._wait_for_results_refresh()
-
-    def page_back(self):
-        self.selenium.find_element(*self._previous_link_locator).click()
-        self._wait_for_results_refresh()
-
-    @property
-    def is_next_link_enabled(self):
-        button = self.selenium.find_element(*self._next_link_locator).get_attribute('class')
-        return not("disabled" in button)
-
-    @property
-    def results_displayed(self):
-        return self.selenium.find_element(*self._results_displayed_text_locator).text
 
     class SearchResult(Page):
         _name_locator = (By.CSS_SELECTOR, 'div.info > h3 > a')
