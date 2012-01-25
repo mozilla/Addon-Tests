@@ -135,7 +135,6 @@ class Base(Page):
 
         Returns:
           ['2010-05-09T00:00:00','2011-06-11T00:00:00']
-
         """
         addon_dates = [element.text for element in self.selenium.find_elements(*locator)]
 

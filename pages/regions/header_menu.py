@@ -43,15 +43,18 @@ from pages.page import Page
 
 
 class HeaderMenu(Page):
-    #This class access the header area from the top of the AMO impala pages
-    #to access it just use:
-    #    HeaderMenu(self.testsetup, lookup)
-    #Where lookup is:
-    #    -the menu name you want to access;
-    #    -the menu item number you want to access;
-    #Ex:
-    #    HeaderMenu(self.testsetup, 'Extensions') returns the Extension menu
-    #    HeaderMenu(self.testsetup, 1) returns the Personas menu
+
+    """
+    This class access the header area from the top of the AMO impala pages.
+    To access it just use:
+        HeaderMenu(self.testsetup, lookup)
+    Where lookup is:
+        -the menu name you want to access;
+        -the menu item number you want to access;
+    Ex:
+        HeaderMenu(self.testsetup, 'Extensions') returns the Extension menu
+        HeaderMenu(self.testsetup, 1) returns the Personas menu
+    """
 
     _header_menu_locator = (By.XPATH, '//nav[@id=\'site-nav\']/ul/li')
     _link_locator = (By.CSS_SELECTOR, 'a')

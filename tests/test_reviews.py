@@ -54,8 +54,9 @@ class TestReviews:
 
     @nondestructive
     def test_that_all_reviews_hyperlink_works(self, mozwebqa):
-        """ Test for litmus 4843
-            https://litmus.mozilla.org/show_test.cgi?id=4843
+        """
+        Test for Litmus 4843.
+        https://litmus.mozilla.org/show_test.cgi?id=4843
         """
         #Open details page for Adblock Plus
         details_page = Details(mozwebqa, 'Adblock Plus')
@@ -91,8 +92,10 @@ class TestReviews:
     @xfail(reason="bug 708970")
     @destructive
     def test_that_new_review_is_saved(self, mozwebqa):
-        """ Litmus 22921
-            https://litmus.mozilla.org/show_test.cgi?id=22921 """
+        """
+        Test for Litmus 22921.
+        https://litmus.mozilla.org/show_test.cgi?id=22921
+        """
         # Step 1 - Login into AMO
         home_page = Home(mozwebqa)
         home_page.login("browserID")
@@ -124,8 +127,10 @@ class TestReviews:
     @xfail(reason="refactoring to compensate for purchased addons http://bit.ly/ucH6Ow")
     @destructive
     def test_that_one_star_rating_increments(self, mozwebqa):
-        """ Litmus 22916
-            https://litmus.mozilla.org/show_test.cgi?id=22916 """
+        """
+        Test for Litmus 22916.
+        https://litmus.mozilla.org/show_test.cgi?id=22916
+        """
         # Step 1 - Login into AMO
         home_page = Home(mozwebqa)
         home_page.login("browserID")
@@ -157,8 +162,10 @@ class TestReviews:
     @xfail(reason="refactoring to compensate for purchased addons http://bit.ly/ucH6Ow")
     @destructive
     def test_that_two_star_rating_increments(self, mozwebqa):
-        """ Litmus 22917
-            https://litmus.mozilla.org/show_test.cgi?id=22917 """
+        """
+        Test for Litmus 22917.
+        https://litmus.mozilla.org/show_test.cgi?id=22917
+        """
         # Step 1 - Login into AMO
         home_page = Home(mozwebqa)
         home_page.login("browserID")
@@ -190,8 +197,10 @@ class TestReviews:
     @xfail(reason="refactoring to compensate for purchased addons http://bit.ly/ucH6Ow")
     @destructive
     def test_that_three_star_rating_increments(self, mozwebqa):
-        """ Litmus 22918
-            https://litmus.mozilla.org/show_test.cgi?id=22918 """
+        """
+        Test for Litmus 22918.
+        https://litmus.mozilla.org/show_test.cgi?id=22918
+        """
         # Step 1 - Login into AMO
         home_page = Home(mozwebqa)
         home_page.login("browserID")
@@ -223,8 +232,10 @@ class TestReviews:
     @xfail(reason="refactoring to compensate for purchased addons http://bit.ly/ucH6Ow")
     @destructive
     def test_that_four_star_rating_increments(self, mozwebqa):
-        """ Litmus 22919
-            https://litmus.mozilla.org/show_test.cgi?id=22918 """
+        """
+        Test for Litmus 22919.
+        https://litmus.mozilla.org/show_test.cgi?id=22918
+        """
         # Step 1 - Login into AMO
         home_page = Home(mozwebqa)
         home_page.login("browserID")
@@ -256,8 +267,10 @@ class TestReviews:
     @xfail(reason="refactoring to compensate for purchased addons http://bit.ly/ucH6Ow")
     @destructive
     def test_that_five_star_rating_increments(self, mozwebqa):
-        """ Litmus 22920
-            https://litmus.mozilla.org/show_test.cgi?id=22920 """
+        """
+        Test for Litmus 22920
+        https://litmus.mozilla.org/show_test.cgi?id=22920
+        """
         # Step 1 - Login into AMO
         home_page = Home(mozwebqa)
         home_page.login("browserID")
