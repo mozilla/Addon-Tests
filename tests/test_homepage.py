@@ -185,11 +185,8 @@ class TestHome:
         Assert.equal('Featured', extensions_page.default_selected_tab)
 
     @nondestructive
+    @pytest.mark.litmus([25744, 25745, 25747, 25749, 25751, 25754, 25756, 25758, 25760, 25763, 25764])
     def test_header_menus_and_items_are_correct(self, mozwebqa):
-        """
-        Litmus 25744 =>  25796
-        http://bit.ly/pfDkXq
-        """
         home_page = Home(mozwebqa)
         actual_header_menus = home_page.header.site_nav
         Assert.equal(sorted(self.expected_header_menus.keys()), sorted([menu.name for menu in actual_header_menus]))
@@ -198,11 +195,8 @@ class TestHome:
             Assert.equal(self.expected_header_menus[menu.name], [item.name for item in menu.items])
 
     @nondestructive
+    @pytest.mark.litmus([25747, 25751, 25756, 25760, 25764])
     def test_top_three_menu_items_are_featured(self, mozwebqa):
-        """
-        Litmus 25744 =>  25796
-        http://bit.ly/pfDkXq
-        """
         home_page = Home(mozwebqa)
         actual_header_menus = home_page.header.site_nav
         for menu in actual_header_menus:
