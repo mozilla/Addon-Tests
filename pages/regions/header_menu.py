@@ -90,8 +90,9 @@ class HeaderMenu(Page):
 
         @property
         def name(self):
+            element = self._root_element.find_element(*self._name_locator)
             self._menu.hover
-            return self._root_element.find_element(*self._name_locator).text
+            return element.text
 
         @property
         def is_featured(self):
