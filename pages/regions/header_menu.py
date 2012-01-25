@@ -71,33 +71,35 @@ class HeaderMenu(Page):
             from pages.collection import Collections
             return Collections(self.testsetup)
 
+    def hover(self):
+       ActionChains(self.selenium).move_to_element(self._name_locator).perform()
+
     @property
     def items(self):
-        return [self.HeaderMenuItem(self.testsetup, element, self._root_element.find_element(*self._name_locator))
+        return [self.HeaderMenuItem(self.testsetup, element, self)
                 for element in self._root_element.find_elements(*self._menu_items_locator)]
 
     class HeaderMenuItem (Page):
 
         _name_locator = (By.CSS_SELECTOR, 'a')
 
-        def __init__(self, testsetup, element, hover):
+        def __init__(self, testsetup, element, menu):
             Page.__init__(self, testsetup)
-            self._root_element = element
-            self._hover_element = hover
+            self._root_element = item_element
+            self._menu = menu
 
         @property
         def name(self):
-            element = self._root_element.find_element(*self._name_locator)
-            ActionChains(self.selenium).move_to_element(self._hover_element).perform()
-            return element.text
+            self._menu.hover
+            return self._root_element.find_element(*self._name_locator).text
 
         @property
         def is_featured(self):
             return self._root_element.find_element(By.CSS_SELECTOR, '*').tag_name == 'em'
 
         def click(self):
+            self._menu.hover
             ActionChains(self.selenium).\
-                move_to_element(self._hover_element).\
                 move_to_element(self.root_element).\
                 click().\
                 perform()

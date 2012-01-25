@@ -49,22 +49,40 @@ from pages.home import Home
 xfail = pytest.mark.xfail
 nondestructive = pytest.mark.nondestructive
 
+class HeaderMenu:
+
+    def __init__(self, name, items):
+        self.name = name
+        self.items = items
+
+    @property
+    def name(self):
+        return self.name
+
+    @property
+    def items(self):
+        return self.items
 
 class TestHome:
 
-    expected_header_menus = {
-                "EXTENSIONS":       ["Featured", "Most Popular", "Top Rated", "Alerts & Updates", "Appearance", "Bookmarks",
-                                     "Download Management", "Feeds, News & Blogging", "Games & Entertainment",
-                                     "Language Support", "Photos, Music & Videos", "Privacy & Security", "Shopping",
-                                     "Social & Communication", "Tabs", "Web Development", "Other"],
-                "PERSONAS":         ["Most Popular", "Top Rated", "Newest", "Abstract", "Causes", "Fashion", "Film and TV",
-                                     "Firefox", "Foxkeh", "Holiday", "Music", "Nature", "Other", "Scenery", "Seasonal", "Solid", "Sports", "Websites"],
-                "THEMES":           ["Most Popular", "Top Rated", "Newest", "Animals", "Compact", "Large", "Miscellaneous", "Modern", "Nature",
-                                     "OS Integration", "Retro", "Sports"],
-                "COLLECTIONS":      ["Featured", "Most Followers", "Newest", "Collections I've Made", "Collections I'm Following",
-                                     "My Favorite Add-ons"],
-                u"MORE\u2026":      ["Add-ons for Mobile", "Dictionaries & Language Packs", "Search Tools", "Developer Hub"]
-                }
+    expected_header_menus = [
+        HeaderMenu('EXTENSIONS', [
+            "Featured", "Most Popular", "Top Rated", "Alerts & Updates", "Appearance", "Bookmarks",
+            "Download Management", "Feeds, News & Blogging", "Games & Entertainment",
+            "Language Support", "Photos, Music & Videos", "Privacy & Security", "Shopping",
+            "Social & Communication", "Tabs", "Web Development", "Other"]),
+        HeaderMenu('PERSONAS', [
+            "Most Popular", "Top Rated", "Newest", "Abstract", "Causes", "Fashion", "Film and TV",
+            "Firefox", "Foxkeh", "Holiday", "Music", "Nature", "Other", "Scenery", "Seasonal",
+            "Solid", "Sports", "Websites"]),
+        HeaderMenu('THEMES', [
+            "Most Popular", "Top Rated", "Newest", "Animals", "Compact", "Large", "Miscellaneous",
+            "Modern", "Nature", "OS Integration", "Retro", "Sports"]),
+        HeaderMenu('COLLECTIONS', [
+            "Featured", "Most Followers", "Newest", "Collections I've Made",
+            "Collections I'm Following", "My Favorite Add-ons"]),
+        HeaderMenu(u'MORE\u2026', [
+            "Add-ons for Mobile", "Dictionaries & Language Packs", "Search Tools", "Developer Hub"])]
 
     @nondestructive
     def test_that_checks_the_most_popular_section_exists(self, mozwebqa):
@@ -188,11 +206,13 @@ class TestHome:
     @pytest.mark.litmus([25744, 25745, 25747, 25749, 25751, 25754, 25756, 25758, 25760, 25763, 25764])
     def test_header_menus_and_items_are_correct(self, mozwebqa):
         home_page = Home(mozwebqa)
-        actual_header_menus = home_page.header.site_nav
-        Assert.equal(sorted(self.expected_header_menus.keys()), sorted([menu.name for menu in actual_header_menus]))
+        
+        Assert.equal(
+            [menu.name for menu in self.expected_header_menus],
+            [menu.name for menu in home_page.header.menus])
 
-        for menu in actual_header_menus:
-            Assert.equal(self.expected_header_menus[menu.name], [item.name for item in menu.items])
+        for menu in self.expected_header_menus:
+            Assert.equal(menu.items, [item.name for item in home_page.header.menu(menu.name).items])
 
     @nondestructive
     @pytest.mark.litmus([25747, 25751, 25756, 25760, 25764])
