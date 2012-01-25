@@ -40,47 +40,30 @@
 from pages.page import Page
 from selenium.webdriver.common.by import By
 
-class PayPal(Page):
+class PayPalFrame(Page):
 
-    _pop_up_id = '_wrapper'
-    _email_locator = (By.ID, 'email')
-    _password_locator = (By.ID, 'password')
+    _iframe_id = 'PPDGFrame'
 
     _paypal_login_button = (By.CSS_SELECTOR, 'div.logincnt > p > a.button')
-    _log_in_button_locator = (By.ID, 'login')
-    _next_button_locator = (By.CSS_SELECTOR, 'button.start')
-    _sign_in_locator = (By.ID, 'signInButton')
-    _log_out_locator = (By.ID, 'logOutLink')
-    _pay_button_locator = (By.ID, '_eventId_submit')
-    _order_details_locator = (By.ID, 'order-details')
+    _finish_purchase_locator = (By.ID, 'addon_info')
+    _close_frame_locator = (By.CSS_SELECTOR, 'div#site-nonfx > a.close')
 
     def __init__(self, testsetup):
         Page.__init__(self, testsetup)
-        #self.selenium.switch_to_frame(self._pop_up_id)
+        self.selenium.switch_to_frame(self._iframe_id)
 
     def login_to_paypal(self, user="paypal"):
         self.selenium.find_element(*self._paypal_login_button).click()
-        #from pages.paypal import PayPal
-        #pop_up = PayPal(self.testsetup)
-        self.login_paypal(user)
+        from pages.paypal_window import PayPal
+        pop_up = PayPal(self.testsetup)
+        pop_up.login_paypal(user)
+        return PayPal(self.testsetup)
 
-    def login_paypal(self, user):
-        credentials = self.testsetup.credentials[user]
+    @property
+    def is_purchase_successful(self):
+        purchase_message = self.selenium.find_element(*self._finish_purchase_locator).text
+        return ('Your purchase of Adhaadhoora is complete.' in purchase_message)
 
-        self.selenium.find_element(*self._email_locator).send_keys(credentials['email'])
-        self.selenium.find_element(*self._password_locator).send_keys(credentials['password'])
-
-    def close(self):
-        self.selenium.find_element(*self._pay_button_locator).click()
+    def close_paypal_frame(self):
+        self.selenium.find_element(*self._close_frame_locator).click()
         self.selenium.switch_to_window('')
-
-    @property
-    def is_user_logged_in(self):
-        self.is_element_visible(*self._log_out_locator)
-
-    def click_pay(self):
-        self.selenium.find_element(*self._pay_button_locator).click()
-
-    @property
-    def is_payment_successful(self):
-        self.is_element_visible(*self._order_details_locator)

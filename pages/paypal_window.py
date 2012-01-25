@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 # ***** BEGIN LICENSE BLOCK *****
 # Version: MPL 1.1/GPL 2.0/LGPL 2.1
 #
@@ -15,11 +17,10 @@
 #
 # The Initial Developer of the Original Code is
 # Mozilla.
-# Portions created by the Initial Developer are Copyright (C) 2011
+# Portions created by the Initial Developer are Copyright (C) 2012
 # the Initial Developer. All Rights Reserved.
 #
-# Contributor(s): Bebe <florin.strugariu@softvision.ro>
-#                 Alex Rodionov <p0deje@gmail.com>
+# Contributor(s): Teodosia Pop <teodosia.pop@softvision.ro>
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -34,42 +35,42 @@
 # the terms of any one of the MPL, the GPL or the LGPL.
 #
 # ***** END LICENSE BLOCK *****
-#
-#
-# File contains users data.
-#
-# Each user is a section named with its role
-# and any number of values. At least email,
-# password and name should be present.
-#
-# Example:
-#     admin:
-#         email: email@site.com
-#         password: password
-#         name: Test User
-#
-# Still, you are free to add any more data you wish. It will be kept
-# in the same dictionary.
-#
-# Example:
-#     admin:
-#         email: email@site.com
-#         password: password
-#         name: Test User
-#         username: testuser
-#         some_user_data: data
-#
-# The contents of this file are accessible via the pytest-mozwebqa plugin:
-#
-# Example:
-#   credentials = mozwebqa.credentials['default']
-#   credentials['email']
 
-default:
-    email: <value>
-    password: <value>
-    name: <value>
-paypal:
-    email: <value>
-    password: <value>
-    name: <value>
+
+from pages.page import Page
+from selenium.webdriver.common.by import By
+
+class PayPal(Page):
+
+    _pop_up_id = '_popupFlow'
+    _email_locator = (By.ID, 'email')
+    _password_locator = (By.ID, 'password')
+    _login_locator = (By.CSS_SELECTOR, 'p.buttons > input')
+
+    _pay_button_locator = (By.NAME, '_eventId_submit')
+    _order_details_locator = (By.ID, 'order-details')
+
+    def __init__(self, testsetup):
+        Page.__init__(self, testsetup)
+        self.selenium.switch_to_window(self._pop_up_id)
+
+    def login_paypal(self, user):
+        credentials = self.testsetup.credentials[user]
+        self.selenium.find_element(*self._email_locator).send_keys(credentials['email'])
+        self.selenium.find_element(*self._password_locator).send_keys(credentials['password'])
+        self.selenium.find_element(*self._login_locator).click()
+
+    def close_paypal_popup(self):
+        self.selenium.find_element(*self._pay_button_locator).click()
+        self.selenium.self.selenium.switch_to_frame('PPDGFrame')
+
+    @property
+    def is_user_logged_into_paypal(self):
+        return self.is_element_visible(*self._log_out_locator)
+
+    def click_pay(self):
+        self.selenium.find_element(*self._pay_button_locator).click()
+
+    @property
+    def is_payment_successful(self):
+        return self.is_element_visible(*self._order_details_locator)
