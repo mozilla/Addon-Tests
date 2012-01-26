@@ -284,13 +284,13 @@ class Details(Base):
 
     @property
     def is_version_information_section_in_view(self):
-        """ Check if the information section is in view.
+        """
+        Check if the information section is in view.
 
         The script returns the pixels the current document has been scrolled from the
         upper left corner of the window, vertically.
         If the offset is > 1000, the page has scrolled to the information section and it
         is in view.
-
         """
         return (self.selenium.execute_script('return window.pageYOffset')) > 1000
 
@@ -359,7 +359,7 @@ class Details(Base):
             return support_url
 
     def _extract_url_from_link(self, url):
-        #parses out extra certificate stuff from urls in staging only
+        """Parses out extra certificate stuff from urls in staging only."""
         return urlparse.unquote(re.search('\w+://.*/(\w+%3A//.*)', url).group(1))
 
     @property

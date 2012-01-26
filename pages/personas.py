@@ -69,11 +69,11 @@ class Personas(Base):
 
     @property
     def persona_count(self):
-        """ Returns the total number of persona links in the page. """
+        """Returns the total number of persona links in the page."""
         return len(self.selenium.find_elements(*self._personas_locator))
 
     def click_persona(self, index):
-        """ Clicks on the persona with the given index in the page. """
+        """Clicks on the persona with the given index in the page."""
         self.selenium.find_elements(*self._personas_locator)[index].click()
         return PersonasDetail(self.testsetup)
 
@@ -156,11 +156,11 @@ class PersonasBrowse(Base):
 
     @property
     def sort_key(self):
-        """ Returns the current value of the sort request parameter. """
+        """Returns the current value of the sort request parameter."""
         url = self.selenium.current_url
         return re.search("[/][?]sort=(.+)[&]?", url).group(1)
 
     @property
     def sort_by(self):
-        """ Returns the label of the currently selected sort option. """
+        """Returns the label of the currently selected sort option."""
         return self.selenium.find_element(*self._selected_sort_by_locator).text
