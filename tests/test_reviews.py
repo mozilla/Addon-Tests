@@ -22,6 +22,7 @@
 #
 # Contributor(s): Tobias Markus <tobbi.bugs@googlemail.com>
 #                 Alex Rodionov <p0deje@gmail.com>
+#                 Alin Trif <alin.trif@softvision.ro>
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -149,7 +150,7 @@ class TestReviews:
         view_reviews = write_review_block.click_to_save_review()
 
         # Step 6 - Ensure rating increased by one
-        view_reviews.breadcrumb_region.breadcrumbs[2].click_breadcrumb()
+        view_reviews.breadcrumbs[2].click()
         details_page = Details(mozwebqa)
         new_rating_counter = details_page.get_rating_counter(1)
         Assert.equal(new_rating_counter, 1)
@@ -182,7 +183,7 @@ class TestReviews:
         view_reviews = write_review_block.click_to_save_review()
 
         # Step 6 - Ensure rating increased by one
-        view_reviews.breadcrumb_region.breadcrumbs[2].click_breadcrumb()
+        view_reviews.breadcrumbs[2].click()
         details_page = Details(mozwebqa)
         new_rating_counter = details_page.get_rating_counter(2)
         Assert.equal(new_rating_counter, 1)
@@ -215,7 +216,7 @@ class TestReviews:
         view_reviews = write_review_block.click_to_save_review()
 
         # Step 6 - Ensure rating increased by one
-        view_reviews.breadcrumb_region.breadcrumbs[2].click_breadcrumb()
+        view_reviews.breadcrumbs[2].click()
         details_page = Details(mozwebqa)
         new_rating_counter = details_page.get_rating_counter(3)
         Assert.equal(new_rating_counter, 1)
@@ -248,7 +249,7 @@ class TestReviews:
         view_reviews = write_review_block.click_to_save_review()
 
         # Step 6 - Ensure rating increased by one
-        view_reviews.breadcrumb_region.breadcrumbs[2].click_breadcrumb()
+        view_reviews.breadcrumbs[2].click()
         details_page = Details(mozwebqa)
         new_rating_counter = details_page.get_rating_counter(4)
         Assert.equal(new_rating_counter, 1)
@@ -281,7 +282,7 @@ class TestReviews:
         view_reviews = write_review_block.click_to_save_review()
 
         # Step 6 - Ensure rating increased by one
-        view_reviews.breadcrumb_region.breadcrumbs[2].click_breadcrumb()
+        view_reviews.breadcrumbs[2].click()
         details_page = Details(mozwebqa)
         new_rating_counter = details_page.get_rating_counter(5)
         Assert.equal(new_rating_counter, 1)

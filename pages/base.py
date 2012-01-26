@@ -115,6 +115,11 @@ class Base(Page):
         return BreadcrumbRegion(self.testsetup)
 
     @property
+    def breadcrumbs(self):
+        from pages.regions.breadcrumbs import BreadcrumbRegion
+        return BreadcrumbRegion(self.testsetup).breadcrumbs
+
+    @property
     def paginator(self):
         from pages.regions.paginator import Paginator
         return Paginator(self.testsetup)
