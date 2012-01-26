@@ -49,14 +49,14 @@ from selenium.common.exceptions import ElementNotVisibleException
 
 
 class Page(object):
-    '''
-    Base class for all Pages
-    '''
+    """
+    Base class for all Pages.
+    """
 
     def __init__(self, testsetup):
-        '''
+        """
         Constructor
-        '''
+        """
         self.testsetup = testsetup
         self.base_url = testsetup.base_url
         self.api_base_url = testsetup.api_base_url
