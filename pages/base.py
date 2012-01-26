@@ -110,11 +110,6 @@ class Base(Page):
         return Base.HeaderRegion(self.testsetup)
 
     @property
-    def breadcrumb_region(self):
-        from pages.regions.breadcrumbs import BreadcrumbRegion
-        return BreadcrumbRegion(self.testsetup)
-
-    @property
     def breadcrumbs(self):
         from pages.regions.breadcrumbs import BreadcrumbRegion
         return BreadcrumbRegion(self.testsetup).breadcrumbs

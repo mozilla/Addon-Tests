@@ -166,8 +166,9 @@ class TestThemes:
         themes_page = home_page.header.application_masthead("Themes").click()
         selected_category = themes_page.themes_category
         amo_category_page = themes_page.click_on_first_category()
-        expected_breadcrumb = "Add-ons for Firefox Themes %s" % selected_category
-        Assert.equal(expected_breadcrumb, amo_category_page.breadcrumb_region.text.replace('\n', ' '))
+        expected_breadcrumbs = ['Add-ons for Firefox', 'Themes', selected_category]
+
+        [Assert.equal(expected_breadcrumbs[i], amo_category_page.breadcrumbs[i].text) for i in range(len(amo_category_page.breadcrumbs))]
 
     @nondestructive
     def test_that_themes_categories_are_listed_on_left_hand_side(self, mozwebqa):

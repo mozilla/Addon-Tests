@@ -289,7 +289,9 @@ class TestDetails:
         https://litmus.mozilla.org/show_test.cgi?id=11922
         """
         detail_page = Details(mozwebqa, 'firebug')
-        Assert.equal(detail_page.breadcrumb_region.text, 'Add-ons for Firefox\nExtensions Firebug')
+        Assert.equal(detail_page.breadcrumbs[0].text, 'Add-ons for Firefox')
+        Assert.equal(detail_page.breadcrumbs[1].text, 'Extensions')
+        Assert.equal(detail_page.breadcrumbs[2].text, 'Firebug')
 
     @nondestructive
     def test_that_clicking_info_link_slides_down_page_to_version_info(self, mozwebqa):
@@ -314,7 +316,7 @@ class TestDetails:
 
         Assert.equal(detail_page.breadcrumbs[0].text, 'Add-ons for Firefox')
         link = detail_page.breadcrumbs[0].href_value
-        detail_page.breadcrumb_region.breadcrumbs[0].click()
+        detail_page.breadcrumbs[0].click()
 
         Assert.true(home_page.is_the_current_page)
         Assert.true(home_page.get_url_current_page().endswith(link))

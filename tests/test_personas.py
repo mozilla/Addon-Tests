@@ -191,4 +191,3 @@ class TestPersonas:
         personas_page = home_page.header.application_masthead("Personas").click()
         Assert.equal(personas_page.breadcrumbs[0].text, 'Add-ons for Firefox')
         Assert.equal(personas_page.breadcrumbs[1].text, 'Personas')
-        Assert.equal(personas_page.breadcrumb_region.text, 'Add-ons for Firefox Personas')

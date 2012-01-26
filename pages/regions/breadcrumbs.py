@@ -50,11 +50,6 @@ class BreadcrumbRegion(Page):
         return [self.BreadcrumbItem(self.testsetup, element)
                 for element in self.selenium.find_elements(*self._breadcrumbs_locator)]
 
-    @property
-    def text(self):
-        """ Returns the label of all the items in the breadcrumb menu. """
-        return self.selenium.find_element(*self._breadcrumbs_text_locator).text
-
     class BreadcrumbItem(Page):
         _breadcrumbs_locator = (By.CSS_SELECTOR, ' li')  # breadcrumbs elements locator
         _link_locator = (By.CSS_SELECTOR, ' a')
