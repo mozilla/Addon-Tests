@@ -38,6 +38,8 @@
 # ***** END LICENSE BLOCK *****
 
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.common.action_chains import ActionChains
 
 from pages.page import Page
 from pages.base import Base
@@ -47,24 +49,32 @@ class ExtensionsHome(Base):
 
     _page_title = 'Featured Extensions :: Add-ons for Firefox'
     _extensions_locator = (By.CSS_SELECTOR, "div.items div.item")
-    _last_page_link_locator = (By.CSS_SELECTOR, ".paginator .rel > a:nth-child(4)")
-    _first_page_link_locator = (By.CSS_SELECTOR, ".paginator .rel > a:nth-child(1)")
     _default_selected_tab_locator = (By.CSS_SELECTOR, "#sorter li.selected")
+
+    _sort_by_most_users_locator = (By.CSS_SELECTOR, "div#sorter > ul > li:nth-child(2) > a")
+
+    _updating_locator = (By.CSS_SELECTOR, "div.updating")
 
     @property
     def extensions(self):
         return [Extension(self.testsetup, element)
                 for element in self.selenium.find_elements(*self._extensions_locator)]
 
-    def go_to_last_page(self):
-        self.selenium.find_element(*self._last_page_link_locator).click()
-
-    def go_to_first_page(self):
-        self.selenium.find_element(*self._first_page_link_locator).click()
-
     @property
     def default_selected_tab(self):
         return self.selenium.find_element(*self._default_selected_tab_locator).text
+
+    def _wait_for_results_refresh(self):
+        WebDriverWait(self.selenium, 10).until(lambda s: not self.is_element_present(*self._updating_locator))
+
+    def sort_by(self, type):
+        click_element = self.selenium.find_element(*getattr(self, '_sort_by_%s_locator' % type.replace(' ', '_').lower()))
+        footer = self.selenium.find_element(*self._footer_locator)
+        ActionChains(self.selenium).\
+            move_to_element(footer).\
+            move_to_element(click_element).\
+            click().perform()
+        self._wait_for_results_refresh()
 
 
 class Extension(Page):

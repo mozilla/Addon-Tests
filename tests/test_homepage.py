@@ -87,7 +87,7 @@ class TestHome:
     @nondestructive
     def test_that_checks_the_most_popular_section_exists(self, mozwebqa):
         """
-        Litmus 25807
+        Test for Litmus 25807.
         https://litmus.mozilla.org/show_test.cgi?id=25807
         """
         home_page = Home(mozwebqa)
@@ -96,8 +96,10 @@ class TestHome:
 
     @nondestructive
     def test_that_clicking_on_addon_name_loads_details_page(self, mozwebqa):
-        """ Litmus 25812
-            https://litmus.mozilla.org/show_test.cgi?id=25812"""
+        """
+        Test for Litmus 25812.
+        https://litmus.mozilla.org/show_test.cgi?id=25812
+        """
         home_page = Home(mozwebqa)
         details_page = home_page.click_on_first_addon()
         Assert.true(details_page.is_the_current_page)
@@ -105,7 +107,7 @@ class TestHome:
     @nondestructive
     def test_that_featured_personas_exist_on_the_home(self, mozwebqa):
         """
-        Litmus29698
+        Test for Litmus29698.
         https://litmus.mozilla.org/show_test.cgi?id=29698
         """
         home_page = Home(mozwebqa)
@@ -115,7 +117,7 @@ class TestHome:
     @nondestructive
     def test_that_clicking_see_all_personas_link_works(self, mozwebqa):
         """
-        Litmus 29699
+        Test for Litmus 29699.
         https://litmus.mozilla.org/show_test.cgi?id=29699
         """
         home_page = Home(mozwebqa)
@@ -127,17 +129,17 @@ class TestHome:
     @nondestructive
     def test_that_extensions_link_loads_extensions_page(self, mozwebqa):
         """
-        Litmus 25746
+        Test for Litmus 25746.
         https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25746
         """
         home_page = Home(mozwebqa)
-        extensions_page = home_page.click_extensions()
+        extensions_page = home_page.header.application_masthead("Extensions").click()
         Assert.true(extensions_page.is_the_current_page)
 
     @nondestructive
     def test_that_most_popular_section_is_ordered_by_users(self, mozwebqa):
         """
-        Litmus 25808
+        Test for Litmus 25808.
         https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25808
         """
         home_page = Home(mozwebqa)
@@ -148,7 +150,7 @@ class TestHome:
     @nondestructive
     def test_that_featured_collections_exist_on_the_home(self, mozwebqa):
         """
-        Litmus 25805
+        Test for Litmus 25805.
         https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25805
         """
         home_page = Home(mozwebqa)
@@ -156,9 +158,20 @@ class TestHome:
         Assert.equal(home_page.featured_collections_count, 4)
 
     @nondestructive
+    def test_that_featured_extensions_exist_on_the_home(self, mozwebqa):
+        """
+        Test for Litmus 25800.
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25800
+        """
+        home_page = Home(mozwebqa)
+        Assert.equal(home_page.featured_extensions_title, 'Featured Extensions', 'Featured Extensions region title doesn\'t match')
+        Assert.equal(home_page.featured_extensions_see_all, u'See all \xbb', 'Featured Extensions region see all link is not correct')
+        Assert.equal(home_page.featured_extensions_count, 6)
+
+    @nondestructive
     def test_that_clicking_see_all_collections_link_works(self, mozwebqa):
         """
-        Litmus 25806
+        Test for Litmus 25806.
         https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25806
         """
         home_page = Home(mozwebqa)
@@ -167,9 +180,24 @@ class TestHome:
         Assert.true(featured_collection_page.get_url_current_page().endswith('/collections/?sort=featured'))
 
     @nondestructive
+    def test_that_items_menu_fly_out_while_hovering(self, mozwebqa):
+        """
+        Test for Litmus 25754.
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25754
+        """
+        #I've adapted the test to check open/closed for all menu items
+        home_page = Home(mozwebqa)
+
+        for menu in self.header_menu_values_list:
+            menu_item = home_page.header.application_masthead(menu)
+            menu_item.hover_over_menu_item()
+            Assert.true(menu_item.is_menu_dropdown_visible)
+            home_page.hover_over_addons_home_title()
+            Assert.false(menu_item.is_menu_dropdown_visible)
+
     def test_that_clicking_top_rated_shows_addons_sorted_by_rating(self, mozwebqa):
         """
-        Litmus 25791
+        Test for Litmus 25791.
         https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25791
         """
         home_page = Home(mozwebqa)
@@ -181,7 +209,7 @@ class TestHome:
     @nondestructive
     def test_that_clicking_most_popular_shows_addons_sorted_by_users(self, mozwebqa):
         """
-        Litmus 25790
+        Test for Litmus 25790.
         https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25790
         """
         home_page = Home(mozwebqa)
@@ -193,7 +221,7 @@ class TestHome:
     @nondestructive
     def test_that_clicking_featured_shows_addons_sorted_by_featured(self, mozwebqa):
         """
-        Litmus 25790
+        Test for Litmus 25790.
         https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25790
         """
         home_page = Home(mozwebqa)

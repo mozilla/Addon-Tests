@@ -53,16 +53,17 @@ nondestructive = pytest.mark.nondestructive
 
 
 class TestDiscoveryPane:
-    """ This only works with Firefox 4 """
+    """This only works with Firefox 4."""
 
     #Need to get this info before run
     basepath = '/en-US/firefox/discovery/pane/4.0/Darwin'
 
     @nondestructive
     def test_that_users_with_less_than_3_addons_get_what_are_addons(self, mozwebqa):
-        """ Test case for litmus 15063 -
+        """
+        Test for Litmus 15063.
         Since Selenium starts with a clean profile all the time this will always have
-        less than 3 addons
+        less than 3 addons.
         """
         discovery_pane = DiscoveryPane(mozwebqa, self.basepath)
         what_are_addons_expected = "Add-ons are applications that let you personalize "
@@ -74,7 +75,7 @@ class TestDiscoveryPane:
 
     @nondestructive
     def test_that_mission_statement_is_on_addons_home_page(self, mozwebqa):
-        """ TestCase for Litmus 15065 """
+        """Test for Litmus 15065."""
         discovery_pane = DiscoveryPane(mozwebqa, self.basepath)
         expected_text = "Thanks for using Firefox and supporting Mozilla's mission!"
 
@@ -86,7 +87,7 @@ class TestDiscoveryPane:
 
     @nondestructive
     def test_that_featured_personas_is_present_and_has_5_item(self, mozwebqa):
-        """ TestCase for Litmus 15079, 15080 """
+        """Test for Litmus 15079, 15080."""
         discovery_pane = DiscoveryPane(mozwebqa, self.basepath)
         Assert.true(discovery_pane.is_personas_section_visible)
         Assert.equal(5, discovery_pane.personas_count)
@@ -94,7 +95,7 @@ class TestDiscoveryPane:
 
     @nondestructive
     def test_that_featured_personas_go_to_their_landing_page_when_clicked(self, mozwebqa):
-        """ TestCase for Litmus 15081 """
+        """Test for Litmus 15081."""
         discovery_pane = DiscoveryPane(mozwebqa, self.basepath)
         first_persona = discovery_pane.first_persona
         persona = discovery_pane.click_on_first_persona()
@@ -102,7 +103,7 @@ class TestDiscoveryPane:
 
     @nondestructive
     def test_that_More_Ways_To_Customize_section_is_available(self, mozwebqa):
-        " TestCase for Litmus 15082 """
+        """Test for Litmus 15082."""
         discovery_pane = DiscoveryPane(mozwebqa, self.basepath)
         Assert.true(discovery_pane.more_ways_section_visible)
         Assert.equal("Browse all add-ons", discovery_pane.more_ways_addons)
@@ -110,14 +111,14 @@ class TestDiscoveryPane:
 
     @nondestructive
     def test_that_up_and_coming_is_present_and_had_5_items(self, mozwebqa):
-        """ TestCase for Litmus 15074 """
+        """Test for Litmus 15074."""
         discovery_pane = DiscoveryPane(mozwebqa, self.basepath)
         Assert.equal(5, discovery_pane.up_and_coming_item_count)
 
     @nondestructive
     def test_the_logout_link_for_logged_in_users(self, mozwebqa):
         """
-        Litmus 15110
+        Test for Litmus 15110.
         https://litmus.mozilla.org/show_test.cgi?id=15110
         """
         home_page = Home(mozwebqa)
@@ -131,9 +132,34 @@ class TestDiscoveryPane:
         Assert.false(home_page.header.is_user_logged_in)
 
     @nondestructive
+    def test_that_carousel_works(self, mozwebqa):
+        """
+        Test for Litmus 15071.
+        https://litmus.mozilla.org/show_test.cgi?id=15071
+        """
+        discovery_pane = DiscoveryPane(mozwebqa, self.basepath)
+        slider2 = ''
+
+        #checking > button works and slides change
+        for i in range(0, len(discovery_pane.sliders)):
+            slider1 = discovery_pane.sliders[i].header_name
+            Assert.not_equal(slider1, slider2)
+            Assert.greater(discovery_pane.sliders[i].opacity_value_for_next, 0.3)
+            discovery_pane.sliders[i].click_next()
+            slider2 = slider1
+
+        #checking < button works and slides change
+        for i in range(0, len(discovery_pane.sliders)):
+            slider1 = discovery_pane.sliders[i].header_name
+            Assert.not_equal(slider1, slider2)
+            Assert.greater(discovery_pane.sliders[i].opacity_value_for_previous, 0.3)
+            discovery_pane.sliders[i].click_previous()
+            slider2 = slider1
+
+    @nondestructive
     def test_that_extension_is_underlined_while_hover_and_text_not(self, mozwebqa):
         """
-        Litmus 15118
+        Test for Litmus 15118.
         https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=15118
         """
         discovery_pane = DiscoveryPane(mozwebqa, self.basepath)

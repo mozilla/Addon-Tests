@@ -69,6 +69,7 @@ class Themes(Base):
     _category_link_locator = (By.CSS_SELECTOR, _categories_locator[1] + ':nth-of-type(%s) a')
     _next_link_locator = (By.CSS_SELECTOR, '.paginator .rel > a:nth-child(3)')
     _previous_link_locator = (By.CSS_SELECTOR, '.paginator .rel > a:nth-child(2)')
+    _last_page_link_locator = (By.CSS_SELECTOR, '.rel > a:nth-child(4)')
 
     @property
     def _addons_root_element(self):
@@ -143,22 +144,6 @@ class Themes(Base):
         pattern = "(\d)"
         ratings = self._extract_integers(pattern, *self._addons_rating_locator)
         return ratings
-
-    def page_forward(self):
-        footer = self.selenium.find_element(*self._footer_locator)
-        forward = self.selenium.find_element(*self._next_link_locator)
-
-        ActionChains(self.selenium).move_to_element(footer).\
-            move_to_element(forward).\
-            click().perform()
-
-    def page_back(self):
-        footer = self.selenium.find_element(*self._footer_locator)
-        back = self.selenium.find_element(*self._previous_link_locator)
-
-        ActionChains(self.selenium).move_to_element(footer).\
-            move_to_element(back).\
-            click().perform()
 
 
 class Theme(Base):

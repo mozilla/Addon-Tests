@@ -51,12 +51,15 @@ nondestructive = pytest.mark.nondestructive
 
 class TestPersonas:
 
+    @xfail(reason="disabled until Selenium issue http://code.google.com/p/selenium/issues/detail?id=3182 is fixed")
     @nondestructive
     def test_start_exploring_link_in_the_promo_box(self, mozwebqa):
-        """ Test for Litmus 12037
-            https://litmus.mozilla.org/show_test.cgi?id=12037"""
+        """
+        Test for Litmus 12037.
+        https://litmus.mozilla.org/show_test.cgi?id=12037
+        """
         home_page = Home(mozwebqa)
-        personas_page = home_page.click_personas()
+        personas_page = home_page.header.application_masthead("Personas").click()
         Assert.true(personas_page.is_the_current_page)
         Assert.true(personas_page.is_featured_addons_present)
         browse_personas_page = personas_page.click_start_exploring()
@@ -66,27 +69,33 @@ class TestPersonas:
 
     @nondestructive
     def test_page_title_for_personas_landing_page(self, mozwebqa):
-        """ Test for Litmus 15391
-            https://litmus.mozilla.org/show_test.cgi?id=15391"""
+        """
+        Test for Litmus 15391.
+        https://litmus.mozilla.org/show_test.cgi?id=15391
+        """
         home_page = Home(mozwebqa)
-        personas_page = home_page.click_personas()
+        personas_page = home_page.header.application_masthead("Personas").click()
         Assert.true(personas_page.is_the_current_page)
 
     @nondestructive
     def test_the_featured_personas_section(self, mozwebqa):
-        """ Test for Litmus 15392
-            https://litmus.mozilla.org/show_test.cgi?id=15392"""
+        """
+        Test for Litmus 15392.
+        https://litmus.mozilla.org/show_test.cgi?id=15392
+        """
         home_page = Home(mozwebqa)
-        personas_page = home_page.click_personas()
+        personas_page = home_page.header.application_masthead("Personas").click()
         Assert.true(personas_page.is_the_current_page)
         Assert.equal(6, personas_page.featured_personas_count)
 
     @nondestructive
     def test_the_recently_added_section(self, mozwebqa):
-        """ Test for Litmus 15393
-            https://litmus.mozilla.org/show_test.cgi?id=15393"""
+        """
+        Test for Litmus Litmus 15393.
+        https://litmus.mozilla.org/show_test.cgi?id=15393
+        """
         home_page = Home(mozwebqa)
-        personas_page = home_page.click_personas()
+        personas_page = home_page.header.application_masthead("Personas").click()
         Assert.true(personas_page.is_the_current_page)
         Assert.equal(6, personas_page.recently_added_count)
         recently_added_dates = personas_page.recently_added_dates
@@ -94,10 +103,12 @@ class TestPersonas:
 
     @nondestructive
     def test_the_most_popular_section(self, mozwebqa):
-        """ Test for Litmus 15394
-            https://litmus.mozilla.org/show_test.cgi?id=15394"""
+        """
+        Test for Litmus 15394.
+        https://litmus.mozilla.org/show_test.cgi?id=15394
+        """
         home_page = Home(mozwebqa)
-        personas_page = home_page.click_personas()
+        personas_page = home_page.header.application_masthead("Personas").click()
         Assert.true(personas_page.is_the_current_page)
         Assert.equal(6, personas_page.most_popular_count)
         downloads = personas_page.most_popular_downloads
@@ -105,10 +116,12 @@ class TestPersonas:
 
     @nondestructive
     def test_the_top_rated_section(self, mozwebqa):
-        """ Test for Litmus 15395
-            https://litmus.mozilla.org/show_test.cgi?id=15395"""
+        """
+        Test for Litmus 15395.
+        https://litmus.mozilla.org/show_test.cgi?id=15395
+        """
         home_page = Home(mozwebqa)
-        personas_page = home_page.click_personas()
+        personas_page = home_page.header.application_masthead("Personas").click()
         Assert.true(personas_page.is_the_current_page)
         Assert.equal(6, personas_page.top_rated_count)
         ratings = personas_page.top_rated_ratings
@@ -116,12 +129,14 @@ class TestPersonas:
 
     @nondestructive
     def test_breadcrumb_menu_in_persona_details_page(self, mozwebqa):
-        """ Test for Litmus 12046
-            https://litmus.mozilla.org/show_test.cgi?id=12046"""
+        """
+        Test for Litmus Litmus 12046.
+        https://litmus.mozilla.org/show_test.cgi?id=12046
+        """
 
         # Step 1, 2: Access AMO Home, Click on Persona category link.
         home_page = Home(mozwebqa)
-        personas_page = home_page.click_personas()
+        personas_page = home_page.header.application_masthead("Personas").click()
         Assert.true(personas_page.is_the_current_page)
 
         # Step 3: Click on any persona.
@@ -153,8 +168,10 @@ class TestPersonas:
 
     @nondestructive
     def test_breadcrumb_menu_for_rainbow_firefox_persona(self, mozwebqa):
-        """ Verify the breadcrumb menu for a known persona.
-            https://preview.addons.mozilla.org/en-us/firefox/addon/rainbow-firefox/"""
+        """
+        Verify the breadcrumb menu for a known persona.
+        https://preview.addons.mozilla.org/en-us/firefox/addon/rainbow-firefox/
+        """
         personas_page = Personas(mozwebqa)
         rainbow_personas_detail_page = personas_page.open_persona_detail_page("rainbow-firefox")
         Assert.equal("rainbow firefox", rainbow_personas_detail_page.title)
@@ -169,7 +186,7 @@ class TestPersonas:
         https://litmus.mozilla.org/show_test.cgi?id=12034
         """
         home_page = Home(mozwebqa)
-        personas_page = home_page.click_personas()
+        personas_page = home_page.header.application_masthead("Personas").click()
         Assert.equal(personas_page.breadcrumb_text(0), 'Add-ons for Firefox')
         Assert.equal(personas_page.breadcrumb_text(1), 'Personas')
         Assert.equal(personas_page.breadcrumb_text_all, 'Add-ons for Firefox Personas')
