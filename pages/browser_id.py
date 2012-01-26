@@ -42,6 +42,7 @@
 from pages.page import Page
 from selenium.webdriver.common.by import By
 
+
 class BrowserID(Page):
 
     _email_locator = (By.ID, 'email')

@@ -90,6 +90,7 @@ class ExtensionsHome(Base):
             click().perform()
         self._wait_for_results_refresh()
 
+
 class Extension(Page):
         _name_locator = (By.CSS_SELECTOR, "h3 a")
 

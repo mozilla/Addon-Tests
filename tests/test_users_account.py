@@ -53,7 +53,7 @@ class TestAccounts:
 
     @nondestructive
     def test_user_can_login_and_logout(self, mozwebqa):
-        """ 
+        """
         Test for Litmus 7857 and 4859.
         https://litmus.mozilla.org/show_test.cgi?id=7857
         https://litmus.mozilla.org/show_test.cgi?id=4859
@@ -69,7 +69,7 @@ class TestAccounts:
 
     @nondestructive
     def test_user_can_login_and_logout_using_browser_id(self, mozwebqa):
-        """ 
+        """
         Test for Litmus 7857 and 4859.
         https://litmus.mozilla.org/show_test.cgi?id=7857
         https://litmus.mozilla.org/show_test.cgi?id=4859

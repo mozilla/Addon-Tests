@@ -138,8 +138,10 @@ class TestSearch:
 
     @nondestructive
     def test_that_blank_search_returns_results(self, mozwebqa):
-        """ Litmus 11759
-            https://litmus.mozilla.org/show_test.cgi?id=11759 """
+        """
+        Test for Litmus 11759.
+        https://litmus.mozilla.org/show_test.cgi?id=11759
+        """
         home_page = Home(mozwebqa)
         search_page = home_page.header.search_for("")
 
