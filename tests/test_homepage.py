@@ -133,7 +133,7 @@ class TestHome:
         https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25746
         """
         home_page = Home(mozwebqa)
-        extensions_page = home_page.header.application_masthead("Extensions").click()
+        extensions_page = home_page.header.menu("EXTENSIONS").click()
         Assert.true(extensions_page.is_the_current_page)
 
     @nondestructive
@@ -188,9 +188,9 @@ class TestHome:
         #I've adapted the test to check open/closed for all menu items
         home_page = Home(mozwebqa)
 
-        for menu in self.header_menu_values_list:
-            menu_item = home_page.header.application_masthead(menu)
-            menu_item.hover_over_menu_item()
+        for menu in self.expected_header_menus:
+            menu_item = home_page.header.menu(menu.name)
+            menu_item.hover()
             Assert.true(menu_item.is_menu_dropdown_visible)
             home_page.hover_over_addons_home_title()
             Assert.false(menu_item.is_menu_dropdown_visible)
@@ -234,7 +234,7 @@ class TestHome:
     @pytest.mark.litmus([25744, 25745, 25747, 25749, 25751, 25754, 25756, 25758, 25760, 25763, 25764])
     def test_header_menus_and_items_are_correct(self, mozwebqa):
         home_page = Home(mozwebqa)
-        
+
         Assert.equal(
             [menu.name for menu in self.expected_header_menus],
             [menu.name for menu in home_page.header.menus])

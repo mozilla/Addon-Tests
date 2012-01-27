@@ -46,6 +46,7 @@ class HeaderMenu(Page):
 
     _menu_items_locator = (By.CSS_SELECTOR, 'ul > li')
     _name_locator = (By.CSS_SELECTOR, 'a')
+    _submenu_locator = (By.CSS_SELECTOR, 'ul > li')
 
     def __init__(self, testsetup, element):
         Page.__init__(self, testsetup)
@@ -56,24 +57,30 @@ class HeaderMenu(Page):
         return self._root_element.find_element(*self._name_locator).text
 
     def click(self):
+        name = self.name
         self._root_element.find_element(*self._name_locator).click()
 
-        if "EXTENSIONS" in menu_item_name:
+        if "EXTENSIONS" in name:
             from pages.extensions import ExtensionsHome
             return ExtensionsHome(self.testsetup)
-        elif "PERSONAS" in menu_item_name:
+        elif "PERSONAS" in name:
             from pages.personas import Personas
             return Personas(self.testsetup)
-        elif "THEMES" in menu_item_name:
+        elif "THEMES" in name:
             from pages.themes import Themes
             return Themes(self.testsetup)
-        elif "COLLECTIONS" in menu_item_name:
+        elif "COLLECTIONS" in name:
             from pages.collection import Collections
             return Collections(self.testsetup)
 
     def hover(self):
        element = self._root_element.find_element(*self._name_locator)
        ActionChains(self.selenium).move_to_element(element).perform()
+
+    @property
+    def is_menu_dropdown_visible(self):
+        dropdown_menu = self._root_element.find_element(*self._submenu_locator)
+        return dropdown_menu.is_displayed()
 
     @property
     def items(self):
