@@ -66,7 +66,6 @@ class Personas(Base):
     _top_rated_locator = (By.XPATH, "//div[@class='addons-column'][3]//div[@class='persona persona-small']")
 
     _persona_header_locator = (By.CSS_SELECTOR, ".featured-inner > h2")
-    _personas_breadcrumb_locator = (By.CSS_SELECTOR, "ol.breadcrumbs")
 
     @property
     def persona_count(self):
@@ -125,21 +124,12 @@ class Personas(Base):
     def persona_header(self):
         return self.selenium.find_element(*self._persona_header_locator).text
 
-    def breadcrumb_text(self, value):
-        return self.selenium.find_element(self._personas_breadcrumb_locator[0],
-                                          self._personas_breadcrumb_locator[1] + "> li:nth-child(%s)" % (value + 1)).text
-
-    @property
-    def breadcrumb_text_all(self):
-        return self.selenium.find_element(*self._personas_breadcrumb_locator).text
-
 
 class PersonasDetail(Base):
 
     _page_title_regex = '.+ :: Add-ons for Firefox'
 
     _personas_title_locator = (By.CSS_SELECTOR, 'h2.addon')
-    _breadcrumb_locator = (By.CSS_SELECTOR, 'ol.breadcrumbs')
 
     @property
     def is_the_current_page(self):
@@ -150,16 +140,6 @@ class PersonasDetail(Base):
     @property
     def title(self):
         return self.selenium.find_element(*self._personas_title_locator).text
-
-    def get_breadcrumb_item_text(self, lookup):
-        """Returns the label of the given item in the breadcrumb menu."""
-        breadcrumb = self.selenium.find_element(*self._breadcrumb_locator)
-        return breadcrumb.find_element(By.CSS_SELECTOR, 'li:nth-child(%s)' % lookup).text
-
-    def click_breadcrumb_item(self, lookup):
-        """Clicks on the given item in the breadcrumb menu."""
-        breadcrumb = self.selenium.find_element(*self._breadcrumb_locator)
-        breadcrumb.find_element(By.LINK_TEXT, lookup).click()
 
 
 class PersonasBrowse(Base):
