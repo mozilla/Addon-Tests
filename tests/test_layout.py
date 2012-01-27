@@ -52,7 +52,7 @@ class TestAmoLayout:
 
     @nondestructive
     def test_other_applications_thunderbird(self, mozwebqa):
-        """ 
+        """
         Test for Litmus 5037.
         https://litmus.mozilla.org/show_test.cgi?id=5037
         """

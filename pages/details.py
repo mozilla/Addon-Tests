@@ -290,7 +290,7 @@ class Details(Base):
 
     @property
     def is_version_information_section_in_view(self):
-        """ 
+        """
         Check if the information section is in view.
 
         The script returns the pixels the current document has been scrolled from the

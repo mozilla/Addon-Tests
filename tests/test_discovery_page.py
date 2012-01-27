@@ -60,7 +60,7 @@ class TestDiscoveryPane:
 
     @nondestructive
     def test_that_users_with_less_than_3_addons_get_what_are_addons(self, mozwebqa):
-        """ 
+        """
         Test for Litmus 15063.
         Since Selenium starts with a clean profile all the time this will always have
         less than 3 addons.

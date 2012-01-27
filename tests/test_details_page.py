@@ -139,7 +139,7 @@ class TestDetails:
 
     @nondestructive
     def test_that_external_link_leads_to_addon_website(self, mozwebqa):
-        """ 
+        """
         Test for Litmus 11809.
         https://litmus.mozilla.org/show_test.cgi?id=11809
         """
@@ -293,7 +293,7 @@ class TestDetails:
 
     @nondestructive
     def test_that_clicking_info_link_slides_down_page_to_version_info(self, mozwebqa):
-        """ 
+        """
         Test for Litmus 25725.
         https://litmus.mozilla.org/show_test.cgi?id=25725
         """
