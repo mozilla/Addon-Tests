@@ -128,9 +128,6 @@ class Details(Base):
 
     # purchase addon
     _purchase_button_locator = (By.CSS_SELECTOR, 'p.install-button > a.button')
-    _purchase_addon_dialog_locator = (By.CSS_SELECTOR, 'div.paypal-modal')
-    _pay_with_paypal_button_locator = (By.CSS_SELECTOR, '.paypal-parent > form > button.paypal')
-    _accept_and_install_button_locator = (By.CSS_SELECTOR, 'p.install-button')
 
     def __init__(self, testsetup, addon_name=None):
         #formats name for url
@@ -564,22 +561,7 @@ class Details(Base):
     def beta_version(self):
         return self.selenium.find_element(*self._development_version_locator).text
 
-    @property
-    def is_purchase_addon_dialog_visible(self):
-        return self.is_element_visible(*self._purchase_addon_dialog_locator)
-
-    @property
-    def is_pay_with_paypal_button_visible(self):
-        return self.is_element_visible(*self._pay_with_paypal_button_locator)
-
     def click_purchase_button(self):
         self.selenium.find_element(*self._purchase_button_locator).click()
-
-    def click_pay_with_paypal(self):
-        self.selenium.find_element(*self._pay_with_paypal_button_locator).click()
-        from pages.regions.paypal_frame import PayPalFrame
-        return PayPalFrame(self.testsetup)
-
-    @property
-    def is_accept_and_install_button_visible(self):
-        return self.is_element_visible(*self._accept_and_install_button_locator)
+        from pages.eula import EULA
+        return EULA(self.testsetup)

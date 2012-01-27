@@ -49,6 +49,8 @@ class TestPaypal:
     Until Selenium issue http://code.google.com/p/selenium/issues/detail?id=2067 is fixed.
     """
 
+    addon_name = 'Adhaadhoora'
+
     def test_that_user_can_purchase_an_addon(self, mozwebqa):
         """Test for purchasing an addon using PayPal."""
         addon_page = Home(mozwebqa)
@@ -57,14 +59,14 @@ class TestPaypal:
         Assert.true(addon_page.is_the_current_page)
         Assert.true(addon_page.header.is_user_logged_in)
 
-        addon_page = Details(mozwebqa, 'Adhaadhoora')
+        addon_page = Details(mozwebqa, self.addon_name)
 
-        addon_page.click_purchase_button()
-        addon_page.click_purchase_button()
-        Assert.true(addon_page.is_purchase_addon_dialog_visible)
-        Assert.true(addon_page.is_pay_with_paypal_button_visible)
+        eula_page = addon_page.click_purchase_button()
+        eula_page.click_purchase_button()
+        Assert.true(eula_page.is_purchase_addon_dialog_visible)
+        Assert.true(eula_page.is_pay_with_paypal_button_visible)
 
-        paypal_frame = addon_page.click_pay_with_paypal()
+        paypal_frame = eula_page.click_pay_with_paypal()
         payment_popup = paypal_frame.login_to_paypal(user="paypal")
         Assert.true(payment_popup.is_user_logged_into_paypal)
         payment_popup.click_pay()
@@ -72,4 +74,4 @@ class TestPaypal:
         payment_popup.close_paypal_popup()
         Assert.true(paypal_frame.is_purchase_successful)
         paypal_frame.close_paypal_frame()
-        Assert.true(addon_page.is_accept_and_install_button_visible)
+        Assert.true(eula_page.is_accept_and_install_button_visible)

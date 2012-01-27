@@ -40,7 +40,7 @@
 from pages.page import Page
 from selenium.webdriver.common.by import By
 
-class PayPal(Page):
+class PayPalPopup(Page):
 
     _pop_up_id = '_popupFlow'
     _email_locator = (By.ID, 'email')

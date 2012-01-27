@@ -17,7 +17,7 @@
 #
 # The Initial Developer of the Original Code is
 # Mozilla.
-# Portions created by the Initial Developer are Copyright (C) 2012
+# Portions created by the Initial Developer are Copyright (C) 2011
 # the Initial Developer. All Rights Reserved.
 #
 # Contributor(s): Teodosia Pop <teodosia.pop@softvision.ro>
@@ -36,39 +36,37 @@
 #
 # ***** END LICENSE BLOCK *****
 
-import re
-
-from pages.page import Page
+from pages.base import Base
 
 from selenium.webdriver.common.by import By
 
 
-class PayPalFrame(Page):
+class EULA(Base):
 
-    _iframe_id = 'PPDGFrame'
-
-    _paypal_login_button = (By.CSS_SELECTOR, 'div.logincnt > p > a.button')
-    _finish_purchase_locator = (By.ID, 'addon_info')
-    _close_frame_locator = (By.CSS_SELECTOR, 'div#site-nonfx > a.close')
+    _purchase_button_locator = (By.CSS_SELECTOR, 'p.install-button > a.button')
+    _purchase_addon_dialog_locator = (By.CSS_SELECTOR, 'div.paypal-modal')
+    _pay_with_paypal_button_locator = (By.CSS_SELECTOR, '.paypal-parent > form > button.paypal')
+    _accept_and_install_button_locator = (By.CSS_SELECTOR, 'p.install-button')
 
     def __init__(self, testsetup):
-        Page.__init__(self, testsetup)
-        self.selenium.switch_to_frame(self._iframe_id)
+        Base.__init__(self, testsetup)
 
-    def login_to_paypal(self, user="paypal"):
-        self.selenium.find_element(*self._paypal_login_button).click()
-        login_button = self.selenium.find_element(*self._paypal_login_button)
-
-        from pages.paypal_popup import PayPalPopup
-        pop_up = PayPalPopup(self.testsetup)
-        pop_up.login_paypal(user)
-        return PayPalPopup(self.testsetup)
+    def click_purchase_button(self):
+        self.selenium.find_element(*self._purchase_button_locator).click()
 
     @property
-    def is_purchase_successful(self):
-        purchase_message = self.selenium.find_element(*self._finish_purchase_locator).text
-        return re.match('Your purchase of (\w+){1,} is complete.', purchase_message)
+    def is_purchase_addon_dialog_visible(self):
+        return self.is_element_visible(*self._purchase_addon_dialog_locator)
 
-    def close_paypal_frame(self):
-        self.selenium.find_element(*self._close_frame_locator).click()
-        self.selenium.switch_to_window('')
+    @property
+    def is_pay_with_paypal_button_visible(self):
+        return self.is_element_visible(*self._pay_with_paypal_button_locator)
+
+    def click_pay_with_paypal(self):
+        self.selenium.find_element(*self._pay_with_paypal_button_locator).click()
+        from pages.regions.paypal_frame import PayPalFrame
+        return PayPalFrame(self.testsetup)
+
+    @property
+    def is_accept_and_install_button_visible(self):
+        return self.is_element_visible(*self._accept_and_install_button_locator)
