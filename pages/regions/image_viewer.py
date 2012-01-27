@@ -60,7 +60,7 @@ class ImageViewer(Page):
         return self.is_element_visible(*self._image_viewer)
 
     def wait_for_image_viewer_to_finish_animating(self):
-        WebDriverWait(self.selenium, 10).until(lambda s: self.is_element_visible(*self._caption_locator))
+        WebDriverWait(self.selenium, 10).until(lambda s: self.is_element_visible(*self._image_viewer))
 
     @property
     def images_count(self):
