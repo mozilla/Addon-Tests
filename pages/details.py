@@ -56,8 +56,6 @@ from pages.base import Base
 
 class Details(Base):
 
-    _breadcrumb_locator = (By.ID, "breadcrumbs")
-
     #addon informations
     _title_locator = (By.CSS_SELECTOR, "#addon > hgroup > h1.addon")
     _version_number_locator = (By.CSS_SELECTOR, "span.version-number")
@@ -166,10 +164,6 @@ class Details(Base):
     def daily_users_number(self):
         text = self.selenium.find_element(*self._daily_users_link_locator).text
         return int(text.split()[0].replace(',', ''))
-
-    @property
-    def breadcrumb(self):
-        return self.selenium.find_element(*self._breadcrumb_locator).text
 
     @property
     def version_number(self):
