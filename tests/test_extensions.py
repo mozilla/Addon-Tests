@@ -68,3 +68,23 @@ class TestExtensions:
         featured_extensions_page.paginator.click_last_page()
 
         Assert.true(featured_extensions_page.paginator.is_next_page_disabled, 'Next button is available')
+
+    @nondestructive
+    def test_that_checks_the_if_extensions_are_sorted_by_recently_updated(self, mozwebqa):
+        """
+        Litmus 29727
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=29727
+        """
+        home_page = Home(mozwebqa)
+        featured_extensions_page = home_page.header.application_masthead("Extensions").click()
+
+        featured_extensions_page.sort_by('recently updated')
+        Assert.equal(featured_extensions_page.default_selected_tab, "Recently Updated")
+        Assert.contains("sort=updated", featured_extensions_page.get_url_current_page())
+
+        updated_dates = [i.updated_date for i in featured_extensions_page.extensions]
+        Assert.is_sorted_descending(updated_dates)
+        featured_extensions_page.paginator.click_next_page()
+
+        updated_dates.extend([i.updated_date for i in featured_extensions_page.extensions])
+        Assert.is_sorted_descending(updated_dates)
