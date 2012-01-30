@@ -46,9 +46,10 @@
 # ***** END LICENSE BLOCK *****
 
 from selenium.webdriver.common.by import By
-
-from pages.base import Base
 from selenium.webdriver.common.action_chains import ActionChains
+
+from pages.page import Page
+from pages.base import Base
 
 
 class DiscoveryPane(Base):
@@ -66,6 +67,9 @@ class DiscoveryPane(Base):
     _more_ways_personas_locator = (By.ID, "more-personas")
     _up_and_coming_item = (By.XPATH, "//section[@id='up-and-coming']/ul/li/a[@class='addon-title']")
     _logout_link_locator = (By.CSS_SELECTOR, "#logout > a")
+
+    _carousel_locator = (By.CSS_SELECTOR, "#promos .slider li.panel")
+
     _featured_addons_base_locator = (By.CSS_SELECTOR, "#featured-addons .addon-title ")
 
     def __init__(self, testsetup, path):
@@ -148,6 +152,48 @@ class DiscoveryPane(Base):
             move_to_element(hover_element).\
             perform()
         return hover_element.find_element(By.CSS_SELECTOR, "p").value_of_css_property('text-decoration')
+
+    @property
+    def sliders(self):
+        return [self.SliderRegion(self.testsetup, element)
+                for element in self.selenium.find_elements(*self._carousel_locator)]
+
+    class SliderRegion(Page):
+        _header_text_locator = (By.CSS_SELECTOR, "h2")
+        _next_slider_locator = (By.CSS_SELECTOR, "#nav-features .nav-next a")
+        _previous_slider_locator = (By.CSS_SELECTOR, "#nav-features .nav-prev a")
+
+        def __init__(self, testsetup, element):
+            Page.__init__(self, testsetup)
+            self._root_element = element
+
+        @property
+        def header_name(self):
+            return self._root_element.find_element(*self._header_text_locator).text
+
+        def click_next(self):
+            self.selenium.find_element(*self._next_slider_locator).click()
+
+        def click_previous(self):
+            self.selenium.find_element(*self._previous_slider_locator).click()
+
+        @property
+        def opacity_value_for_next(self):
+            head = self.selenium.find_element(By.CSS_SELECTOR, '#learn-more')
+            next_element = self.selenium.find_element(*self._next_slider_locator)
+            ActionChains(self.selenium).\
+                move_to_element(head).\
+                move_to_element(next_element).perform()
+            return next_element.value_of_css_property('opacity')
+
+        @property
+        def opacity_value_for_previous(self):
+            head = self.selenium.find_element(By.CSS_SELECTOR, '#learn-more')
+            next_element = self.selenium.find_element(*self._previous_slider_locator)
+            ActionChains(self.selenium).\
+                move_to_element(head).\
+                move_to_element(next_element).perform()
+            return next_element.value_of_css_property('opacity')
 
 
 class DiscoveryPersonasDetail(Base):

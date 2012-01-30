@@ -56,13 +56,13 @@ class TestDetails:
 
     @nondestructive
     def test_that_register_login_link_is_present_in_addon_details_page(self, mozwebqa):
-        """ Test for Litmus 9890"""
+        """Test for Litmus 9890."""
         details_page = Details(mozwebqa, "Firebug")
         Assert.equal(details_page.register_link, "Log in / Register", "Login / Register text does not match the expected one")
 
     @nondestructive
     def test_that_dropdown_menu_is_present_after_click_on_other_apps(self, mozwebqa):
-        """ Test for Litmus 9890"""
+        """Test for Litmus 9890."""
         details_page = Details(mozwebqa, "Firebug")
         Assert.equal(details_page.other_apps, "Other Applications")
         #TODO: Fix when the hover event works
@@ -70,32 +70,32 @@ class TestDetails:
 
     @nondestructive
     def test_that_addon_name_is_displayed(self, mozwebqa):
-        """ Test for Litmus 9890"""
+        """Test for Litmus 9890."""
         details_page = Details(mozwebqa, "Firebug")
         # check that the name is not empty
         Assert.not_none(details_page.title, "")
 
     @nondestructive
     def test_that_summary_is_displayed(self, mozwebqa):
-        """ Test for Litmus 9890"""
+        """Test for Litmus 9890."""
         details_page = Details(mozwebqa, "Firebug")
         # check that the summary is not empty
         Assert.not_none(re.match('(\w+\s*){3,}', details_page.summary))
 
     @nondestructive
     def test_that_about_this_addon_is_displayed(self, mozwebqa):
-        """ Test for Litmus 9890"""
+        """Test for Litmus 9890."""
         details_page = Details(mozwebqa, "Firebug")
         Assert.equal(details_page.about_addon, "About this Add-on")
         Assert.not_none(re.match('(\w+\s*){3,}', details_page.description))
 
     @nondestructive
     def test_that_version_information_is_displayed(self, mozwebqa):
-        """ Test for Litmus 9890"""
+        """Test for Litmus 9890."""
         details_page = Details(mozwebqa, 'Firebug')
         Assert.equal(details_page.version_information_heading, 'Version Information')
         """
-        Updated for Litmus 25721
+        Test for Litmus 25721.
         https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25721
         """
 
@@ -111,7 +111,7 @@ class TestDetails:
 
     @nondestructive
     def test_that_reviews_are_displayed(self, mozwebqa):
-        """ Test for Litmus 9890"""
+        """Test for Litmus 9890."""
         details_page = Details(mozwebqa, "Firebug")
         Assert.equal(details_page.review_title, "Reviews")
         Assert.true(details_page.has_reviews)
@@ -119,28 +119,30 @@ class TestDetails:
 
     @nondestructive
     def test_that_in_often_used_with_addons_are_displayed(self, mozwebqa):
-        """ Test for Litmus 9890"""
+        """Test for Litmus 9890."""
         details_page = Details(mozwebqa, "Firebug")
         Assert.equal(details_page.often_used_with_header, u"Often used with\u2026")
         Assert.true(details_page.is_often_used_with_list_visible)
 
     @nondestructive
     def test_that_tags_are_displayed(self, mozwebqa):
-        """ Test for Litmus 9890"""
+        """Test for Litmus 9890."""
         details_page = Details(mozwebqa, "Firebug")
         Assert.true(details_page.are_tags_visible)
 
     @nondestructive
     def test_part_of_collections_are_displayed(self, mozwebqa):
-        """ Test for Litmus 9890"""
+        """Test for Litmus 9890."""
         details_page = Details(mozwebqa, "Firebug")
         Assert.equal(details_page.part_of_collections_header, 'Part of these Collections')
         Assert.true(len(details_page.part_of_collections) > 0)
 
     @nondestructive
     def test_that_external_link_leads_to_addon_website(self, mozwebqa):
-        """ Litmus 11809
-            https://litmus.mozilla.org/show_test.cgi?id=11809 """
+        """
+        Test for Litmus 11809.
+        https://litmus.mozilla.org/show_test.cgi?id=11809
+        """
         # Step 1 - Open AMO Home
         # Step 2 - Open Adblock Plus details page
         details_page = Details(mozwebqa, 'Adblock Plus')
@@ -152,7 +154,7 @@ class TestDetails:
 
     @nondestructive
     def test_that_whats_this_link_for_source_license_links_to_an_answer_in_faq(self, mozwebqa):
-        """ Test for Litmus 11530"""
+        """Test for Litmus 11530."""
         details_page = Details(mozwebqa, "Firebug")
         details_page.click_version_information_heading()
         user_faq_page = details_page.click_whats_this_license()
@@ -162,7 +164,7 @@ class TestDetails:
     @nondestructive
     def test_other_addons_label_when_there_are_multiple_authors(self, mozwebqa):
         """
-        Litmus 11926
+        Test for Litmus 11926.
         https://litmus.mozilla.org/show_test.cgi?id=11926
         """
         addon_with_multiple_authors = 'firebug'
@@ -174,7 +176,7 @@ class TestDetails:
     @nondestructive
     def test_other_addons_label_when_there_is_only_one_author(self, mozwebqa):
         """
-        Litmus 11926
+        Test for Litmus 11926.
         https://litmus.mozilla.org/show_test.cgi?id=11926
         """
         addon_with_one_authors = 'F1 by Mozilla Labs'
@@ -186,7 +188,7 @@ class TestDetails:
     @nondestructive
     def test_navigating_to_other_addons(self, mozwebqa):
         """
-        Litmus 11926
+        Test for Litmus 11926.
         https://litmus.mozilla.org/show_test.cgi?id=11926"""
         detail_page = Details(mozwebqa, 'firebug')
 
@@ -199,7 +201,7 @@ class TestDetails:
     @nondestructive
     def test_details_more_images(self, mozwebqa):
         """
-        Litmus 4846
+        Test for Litmus 4846.
         https://litmus.mozilla.org/show_test.cgi?id=4846
         """
         detail_page = Details(mozwebqa, 'firebug')
@@ -268,7 +270,7 @@ class TestDetails:
     @nondestructive
     def test_that_review_usernames_are_clickable(self, mozwebqa):
         """
-        Litmus 4842
+        Test for Litmus 4842.
         https://litmus.mozilla.org/show_test.cgi?id=4842
         """
         addon_name = 'firebug'
@@ -283,16 +285,20 @@ class TestDetails:
     @nondestructive
     def test_that_details_page_has_breadcrumb(self, mozwebqa):
         """
-        Litmus 11922
+        Test for Litmus 11922.
         https://litmus.mozilla.org/show_test.cgi?id=11922
         """
         detail_page = Details(mozwebqa, 'firebug')
-        Assert.equal(detail_page.breadcrumb, 'Add-ons for Firefox\nExtensions Firebug')
+        Assert.equal(detail_page.breadcrumbs[0].text, 'Add-ons for Firefox')
+        Assert.equal(detail_page.breadcrumbs[1].text, 'Extensions')
+        Assert.equal(detail_page.breadcrumbs[2].text, 'Firebug')
 
     @nondestructive
     def test_that_clicking_info_link_slides_down_page_to_version_info(self, mozwebqa):
-        """ Test for Litmus 25725
-            https://litmus.mozilla.org/show_test.cgi?id=25725 """
+        """
+        Test for Litmus 25725.
+        https://litmus.mozilla.org/show_test.cgi?id=25725
+        """
         details_page = Details(mozwebqa, 'firebug')
         details_page.click_version_info_link()
         Assert.equal(details_page.version_info_link, details_page.version_information_href)
@@ -302,24 +308,24 @@ class TestDetails:
     @nondestructive
     def test_that_breadcrumb_links_in_details_page_work(self, mozwebqa):
         """
-        Litmus 11923
+        Test for Litmus 11923.
         https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=11923
         """
         home_page = Home(mozwebqa)
         detail_page = Details(mozwebqa, 'firebug')
 
-        Assert.equal(detail_page.breadcrumbs[0].name, 'Add-ons for Firefox')
-        link = detail_page.breadcrumbs[0].link_value
-        detail_page.breadcrumbs[0].click_breadcrumb()
+        Assert.equal(detail_page.breadcrumbs[0].text, 'Add-ons for Firefox')
+        link = detail_page.breadcrumbs[0].href_value
+        detail_page.breadcrumbs[0].click()
 
         Assert.true(home_page.is_the_current_page)
         Assert.true(home_page.get_url_current_page().endswith(link))
 
         home_page.return_to_previous_page()
 
-        Assert.equal(detail_page.breadcrumbs[1].name, 'Extensions')
-        link = detail_page.breadcrumbs[1].link_value
-        detail_page.breadcrumbs[1].click_breadcrumb()
+        Assert.equal(detail_page.breadcrumbs[1].text, 'Extensions')
+        link = detail_page.breadcrumbs[1].href_value
+        detail_page.breadcrumbs[1].click()
 
         amo_extenstions_page = ExtensionsHome(mozwebqa)
         Assert.true(amo_extenstions_page.is_the_current_page)
@@ -327,12 +333,12 @@ class TestDetails:
 
         home_page.return_to_previous_page()
 
-        Assert.equal(detail_page.breadcrumbs[2].name, 'Firebug')
+        Assert.equal(detail_page.breadcrumbs[2].text, 'Firebug')
 
     @nondestructive
     def test_that_add_a_review_button_works(self, mozwebqa):
         """
-        Litmus 25729
+        Test for Litmus 25729.
         https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25729
         """
         #Step 1: Addons Home Page loads and Addons Details loads
@@ -350,7 +356,7 @@ class TestDetails:
     @nondestructive
     def test_the_developers_comments_section(self, mozwebqa):
         """
-        Test for Litmus 25724
+        Test for Litmus 25724.
         https://litmus.mozilla.org/show_test.cgi?id=25724
         """
         details_page = Details(mozwebqa, 'Firebug')
@@ -362,7 +368,7 @@ class TestDetails:
     @nondestructive
     def test_that_add_to_collection_flyout_for_anonymous_users(self, mozwebqa):
         """
-        Litmus 25711
+        Test for Litmus 25711.
         https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25711
         """
         details_page = Details(mozwebqa, 'Firebug')
@@ -373,7 +379,7 @@ class TestDetails:
     @nondestructive
     def test_that_the_development_channel_expands(self, mozwebqa):
         """
-        Litmus 25711
+        Test for Litmus 25711.
         https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25711
         """
         details_page = Details(mozwebqa, 'Firebug')
@@ -388,7 +394,7 @@ class TestDetails:
     @nondestructive
     def test_click_on_other_collections(self, mozwebqa):
         """
-        Litmus 25722
+        Test for Litmus 25722.
         https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25722
         """
         details_pg = Details(mozwebqa, 'Firebug')
@@ -402,7 +408,7 @@ class TestDetails:
     @nondestructive
     def test_the_development_channel_section(self, mozwebqa):
         """
-        Test for Litmus 25732
+        Test for Litmus 25732.
         https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25732
         """
         details_page = Details(mozwebqa, 'Firebug')
@@ -420,7 +426,7 @@ class TestDetails:
     @nondestructive
     def test_that_license_link_works(self, mozwebqa):
         """
-        Litmus 25726
+        Test for Litmus 25726.
         https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25726
         """
         addon_name = 'Firebug'

@@ -145,30 +145,6 @@ class Themes(Base):
         ratings = self._extract_integers(pattern, *self._addons_rating_locator)
         return ratings
 
-    def page_forward(self):
-        footer = self.selenium.find_element(*self._footer_locator)
-        forward = self.selenium.find_element(*self._next_link_locator)
-
-        ActionChains(self.selenium).move_to_element(footer).\
-            move_to_element(forward).\
-            click().perform()
-
-    def page_back(self):
-        footer = self.selenium.find_element(*self._footer_locator)
-        back = self.selenium.find_element(*self._previous_link_locator)
-
-        ActionChains(self.selenium).move_to_element(footer).\
-            move_to_element(back).\
-            click().perform()
-
-    def last_page(self):
-        footer = self.selenium.find_element(*self._footer_locator)
-        last = self.selenium.find_element(*self._last_page_link_locator)
-
-        ActionChains(self.selenium).move_to_element(footer).\
-            move_to_element(last).\
-            click().perform()
-
 
 class Theme(Base):
 
@@ -187,7 +163,3 @@ class ThemesCategory(Base):
     @property
     def title(self):
         return self.selenium.find_element(*self._title_locator).text
-
-    @property
-    def breadcrumb(self):
-        return self.selenium.find_element(*self._breadcrumb_locator).text.replace('\n', ' ')

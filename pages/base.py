@@ -51,15 +51,12 @@ from pages.page import Page
 
 class Base(Page):
 
-    _current_page_locator = (By.CSS_SELECTOR, ".paginator .num > a:nth-child(1)")
-
-    _amo_logo_locator = ((By.CSS_SELECTOR, ".site-title"))
+    _amo_logo_locator = (By.CSS_SELECTOR, ".site-title")
     _amo_logo_link_locator = (By.CSS_SELECTOR, ".site-title a")
     _amo_logo_image_locator = (By.CSS_SELECTOR, ".site-title img")
 
     _mozilla_logo_link_locator = (By.CSS_SELECTOR, "#global-header-tab a")
 
-    _breadcrumbs_locator = (By.CSS_SELECTOR, "#breadcrumbs > ol  li")
     _footer_locator = (By.CSS_SELECTOR, "#footer")
 
     def login(self, type="normal", user="default"):
@@ -105,10 +102,6 @@ class Base(Page):
     def click_mozilla_logo(self):
         self.selenium.find_element(*self._mozilla_logo_link_locator).click()
 
-    @property
-    def current_page(self):
-        return int(self.selenium.find_element(*self._current_page_locator).text)
-
     def credentials_of_user(self, user):
         return self.parse_yaml_file(self.credentials)[user]
 
@@ -118,8 +111,13 @@ class Base(Page):
 
     @property
     def breadcrumbs(self):
-        return [self.BreadcrumbsRegion(self.testsetup, element)
-                for element in self.selenium.find_elements(*self._breadcrumbs_locator)]
+        from pages.regions.breadcrumbs import Breadcrumbs
+        return Breadcrumbs(self.testsetup).breadcrumbs
+
+    @property
+    def paginator(self):
+        from pages.regions.paginator import Paginator
+        return Paginator(self.testsetup)
 
     def _extract_iso_dates(self, date_format, *locator):
         """
@@ -136,7 +134,6 @@ class Base(Page):
 
         Returns:
           ['2010-05-09T00:00:00','2011-06-11T00:00:00']
-
         """
         addon_dates = [element.text for element in self.selenium.find_elements(*locator)]
 
@@ -177,7 +174,7 @@ class Base(Page):
         _account_dropdown_locator = (By.CSS_SELECTOR, "#aux-nav .account ul")
         _logout_locator = (By.CSS_SELECTOR, "li.nomenu.logout > a")
 
-        def site_nav(self, lookup):
+        def application_masthead(self, lookup):
             from pages.regions.header_menu import HeaderMenu
             return HeaderMenu(self.testsetup, lookup)
 
@@ -258,23 +255,3 @@ class Base(Page):
         @property
         def is_user_logged_in(self):
             return self.is_element_visible(*self._account_controller_locator)
-
-    class BreadcrumbsRegion(Page):
-
-        _breadcrumb_locator = (By.CSS_SELECTOR, '#breadcrumbs>ol')  # Base locator
-        _link_locator = (By.CSS_SELECTOR, ' a')
-
-        def __init__(self, testsetup, element):
-            Page.__init__(self, testsetup)
-            self._root_element = element
-
-        def click_breadcrumb(self):
-            self._root_element.find_element(*self._link_locator).click()
-
-        @property
-        def name(self):
-            return self._root_element.text
-
-        @property
-        def link_value(self):
-            return self._root_element.find_element(*self._link_locator).get_attribute('href')

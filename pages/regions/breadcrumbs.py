@@ -36,35 +36,35 @@
 #
 # ***** END LICENSE BLOCK *****
 
-import pytest
+from selenium.webdriver.common.by import By
 
-from unittestzero import Assert
-from pages.home import Home
-
-nondestructive = pytest.mark.nondestructive
+from pages.page import Page
 
 
-class TestExtensions:
+class Breadcrumbs(Page):
+    _breadcrumbs_locator = (By.CSS_SELECTOR, "#breadcrumbs li")
+    _breadcrumbs_text_locator = (By.ID, "breadcrumbs")
 
-    @nondestructive
-    def test_featured_tab_is_highlighted_by_default(self, mozwebqa):
-        """
-        Test for Litmus 29706.
-        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=29706
-        """
-        home_page = Home(mozwebqa)
-        featured_extensions_page = home_page.header.application_masthead("Extensions").click()
-        Assert.equal(featured_extensions_page.default_selected_tab, "Featured")
+    @property
+    def breadcrumbs(self):
+        return [self.BreadcrumbItem(self.testsetup, breadcrumb_list_item)
+                for breadcrumb_list_item in self.selenium.find_elements(*self._breadcrumbs_locator)]
 
-    @nondestructive
-    def test_next_button_is_disabled_on_the_last_page(self, mozwebqa):
-        """
-        Test for Litmus 29710.
-        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=29710
-        """
-        home_page = Home(mozwebqa)
-        featured_extensions_page = home_page.header.application_masthead("Extensions").click()
-        featured_extensions_page.sort_by('most_users')
-        featured_extensions_page.paginator.click_last_page()
+    class BreadcrumbItem(Page):
+        _breadcrumbs_locator = (By.CSS_SELECTOR, ' li')  # breadcrumbs elements locator
+        _link_locator = (By.CSS_SELECTOR, ' a')
 
-        Assert.true(featured_extensions_page.paginator.is_next_page_disabled, 'Next button is available')
+        def __init__(self, testsetup, breadcrumb_list_element):
+            Page.__init__(self, testsetup)
+            self._root_element = breadcrumb_list_element
+
+        def click(self):
+            self._root_element.find_element(*self._link_locator).click()
+
+        @property
+        def text(self):
+            return self._root_element.text
+
+        @property
+        def href_value(self):
+            return self._root_element.find_element(*self._link_locator).get_attribute('href')

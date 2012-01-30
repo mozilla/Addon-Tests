@@ -22,6 +22,7 @@
 #
 # Contributor(s): Tobias Markus <tobbi.bugs@googlemail.com>
 #                 Alex Rodionov <p0deje@gmail.com>
+#                 Alin Trif <alin.trif@softvision.ro>
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -54,8 +55,9 @@ class TestReviews:
 
     @nondestructive
     def test_that_all_reviews_hyperlink_works(self, mozwebqa):
-        """ Test for litmus 4843
-            https://litmus.mozilla.org/show_test.cgi?id=4843
+        """
+        Test for Litmus 4843.
+        https://litmus.mozilla.org/show_test.cgi?id=4843
         """
         #Open details page for Adblock Plus
         details_page = Details(mozwebqa, 'Adblock Plus')
@@ -65,34 +67,36 @@ class TestReviews:
         Assert.equal(details_page.review_count, 20)
 
         #Go to the last page and check that the next button is not present
-        details_page.go_to_last_page()
-        Assert.false(details_page.is_next_link_enabled)
+        details_page.paginator.click_last_page()
+        Assert.true(details_page.paginator.is_next_page_disabled)
 
         #Go one page back, check that it has 20 reviews
         #that the page number decreases and that the next link is visible
-        page_number = details_page.current_page
-        details_page.page_back()
-        Assert.true(details_page.is_next_link_visible)
+        page_number = details_page.paginator.page_number
+        details_page.paginator.click_prev_page()
+        Assert.false(details_page.paginator.is_next_page_disabled)
         Assert.equal(details_page.review_count, 20)
-        Assert.equal(details_page.current_page, page_number - 1)
+        Assert.equal(details_page.paginator.page_number, page_number - 1)
 
         #Go to the first page and check that the prev button is not present
-        details_page.go_to_first_page()
-        Assert.false(details_page.is_prev_link_enabled)
+        details_page.paginator.click_first_page()
+        Assert.true(details_page.paginator.is_prev_page_disabled)
 
         #Go one page forward, check that it has 20 reviews,
         #that the page number increases and that the prev link is visible
-        page_number = details_page.current_page
-        details_page.page_forward()
-        Assert.true(details_page.is_prev_link_visible)
+        page_number = details_page.paginator.page_number
+        details_page.paginator.click_next_page()
+        Assert.false(details_page.paginator.is_prev_page_disabled)
         Assert.equal(details_page.review_count, 20)
-        Assert.equal(details_page.current_page, page_number + 1)
+        Assert.equal(details_page.paginator.page_number, page_number + 1)
 
     @xfail(reason="bug 708970")
     @destructive
     def test_that_new_review_is_saved(self, mozwebqa):
-        """ Litmus 22921
-            https://litmus.mozilla.org/show_test.cgi?id=22921 """
+        """
+        Test for Litmus 22921.
+        https://litmus.mozilla.org/show_test.cgi?id=22921
+        """
         # Step 1 - Login into AMO
         home_page = Home(mozwebqa)
         home_page.login("browserID")
@@ -124,8 +128,10 @@ class TestReviews:
     @xfail(reason="refactoring to compensate for purchased addons http://bit.ly/ucH6Ow")
     @destructive
     def test_that_one_star_rating_increments(self, mozwebqa):
-        """ Litmus 22916
-            https://litmus.mozilla.org/show_test.cgi?id=22916 """
+        """
+        Test for Litmus 22916.
+        https://litmus.mozilla.org/show_test.cgi?id=22916
+        """
         # Step 1 - Login into AMO
         home_page = Home(mozwebqa)
         home_page.login("browserID")
@@ -135,7 +141,7 @@ class TestReviews:
         extensions_home_page = home_page.click_to_explore('Top Rated')
 
         # Step 3 - Pick an addon with no reviews
-        extensions_home_page.go_to_last_page()
+        extensions_home_page.paginator.click_last_page()
         addon = extensions_home_page.extensions[-1]  # the last one is without rating
         details_page = addon.click()
 
@@ -149,7 +155,7 @@ class TestReviews:
         view_reviews = write_review_block.click_to_save_review()
 
         # Step 6 - Ensure rating increased by one
-        view_reviews.breadcrumbs[2].click_breadcrumb()
+        view_reviews.breadcrumbs[2].click()
         details_page = Details(mozwebqa)
         new_rating_counter = details_page.get_rating_counter(1)
         Assert.equal(new_rating_counter, 1)
@@ -157,8 +163,10 @@ class TestReviews:
     @xfail(reason="refactoring to compensate for purchased addons http://bit.ly/ucH6Ow")
     @destructive
     def test_that_two_star_rating_increments(self, mozwebqa):
-        """ Litmus 22917
-            https://litmus.mozilla.org/show_test.cgi?id=22917 """
+        """
+        Test for Litmus 22917.
+        https://litmus.mozilla.org/show_test.cgi?id=22917
+        """
         # Step 1 - Login into AMO
         home_page = Home(mozwebqa)
         home_page.login("browserID")
@@ -168,7 +176,7 @@ class TestReviews:
         extensions_home_page = home_page.click_to_explore('Top Rated')
 
         # Step 3 - Pick an addon with no reviews
-        extensions_home_page.go_to_last_page()
+        extensions_home_page.paginator.click_last_page()
         addon = extensions_home_page.extensions[-1]  # the last one is without rating
         details_page = addon.click()
 
@@ -182,7 +190,7 @@ class TestReviews:
         view_reviews = write_review_block.click_to_save_review()
 
         # Step 6 - Ensure rating increased by one
-        view_reviews.breadcrumbs[2].click_breadcrumb()
+        view_reviews.breadcrumbs[2].click()
         details_page = Details(mozwebqa)
         new_rating_counter = details_page.get_rating_counter(2)
         Assert.equal(new_rating_counter, 1)
@@ -190,8 +198,10 @@ class TestReviews:
     @xfail(reason="refactoring to compensate for purchased addons http://bit.ly/ucH6Ow")
     @destructive
     def test_that_three_star_rating_increments(self, mozwebqa):
-        """ Litmus 22918
-            https://litmus.mozilla.org/show_test.cgi?id=22918 """
+        """
+        Test for Litmus 22918.
+        https://litmus.mozilla.org/show_test.cgi?id=22918
+        """
         # Step 1 - Login into AMO
         home_page = Home(mozwebqa)
         home_page.login("browserID")
@@ -201,7 +211,7 @@ class TestReviews:
         extensions_home_page = home_page.click_to_explore('Top Rated')
 
         # Step 3 - Pick an addon with no reviews
-        extensions_home_page.go_to_last_page()
+        extensions_home_page.paginator.click_last_page()
         addon = extensions_home_page.extensions[-1]  # the last one is without rating
         details_page = addon.click()
 
@@ -215,7 +225,7 @@ class TestReviews:
         view_reviews = write_review_block.click_to_save_review()
 
         # Step 6 - Ensure rating increased by one
-        view_reviews.breadcrumbs[2].click_breadcrumb()
+        view_reviews.breadcrumbs[2].click()
         details_page = Details(mozwebqa)
         new_rating_counter = details_page.get_rating_counter(3)
         Assert.equal(new_rating_counter, 1)
@@ -223,8 +233,10 @@ class TestReviews:
     @xfail(reason="refactoring to compensate for purchased addons http://bit.ly/ucH6Ow")
     @destructive
     def test_that_four_star_rating_increments(self, mozwebqa):
-        """ Litmus 22919
-            https://litmus.mozilla.org/show_test.cgi?id=22918 """
+        """
+        Test for Litmus 22919.
+        https://litmus.mozilla.org/show_test.cgi?id=22918
+        """
         # Step 1 - Login into AMO
         home_page = Home(mozwebqa)
         home_page.login("browserID")
@@ -234,7 +246,7 @@ class TestReviews:
         extensions_home_page = home_page.click_to_explore('Top Rated')
 
         # Step 3 - Pick an addon with no reviews
-        extensions_home_page.go_to_last_page()
+        extensions_home_page.paginator.click_last_page()
         addon = extensions_home_page.extensions[-1]  # the last one is without rating
         details_page = addon.click()
 
@@ -248,7 +260,7 @@ class TestReviews:
         view_reviews = write_review_block.click_to_save_review()
 
         # Step 6 - Ensure rating increased by one
-        view_reviews.breadcrumbs[2].click_breadcrumb()
+        view_reviews.breadcrumbs[2].click()
         details_page = Details(mozwebqa)
         new_rating_counter = details_page.get_rating_counter(4)
         Assert.equal(new_rating_counter, 1)
@@ -256,8 +268,10 @@ class TestReviews:
     @xfail(reason="refactoring to compensate for purchased addons http://bit.ly/ucH6Ow")
     @destructive
     def test_that_five_star_rating_increments(self, mozwebqa):
-        """ Litmus 22920
-            https://litmus.mozilla.org/show_test.cgi?id=22920 """
+        """
+        Test for Litmus 22920
+        https://litmus.mozilla.org/show_test.cgi?id=22920
+        """
         # Step 1 - Login into AMO
         home_page = Home(mozwebqa)
         home_page.login("browserID")
@@ -267,7 +281,7 @@ class TestReviews:
         extensions_home_page = home_page.click_to_explore('Top Rated')
 
         # Step 3 - Pick an addon with no reviews
-        extensions_home_page.go_to_last_page()
+        extensions_home_page.paginator.click_last_page()
         addon = extensions_home_page.extensions[-1]  # the last one is without rating
         details_page = addon.click()
 
@@ -281,7 +295,7 @@ class TestReviews:
         view_reviews = write_review_block.click_to_save_review()
 
         # Step 6 - Ensure rating increased by one
-        view_reviews.breadcrumbs[2].click_breadcrumb()
+        view_reviews.breadcrumbs[2].click()
         details_page = Details(mozwebqa)
         new_rating_counter = details_page.get_rating_counter(5)
         Assert.equal(new_rating_counter, 1)

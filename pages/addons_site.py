@@ -85,7 +85,7 @@ class ViewReviews(Base):
 
     @property
     def reviews(self):
-        """ Returns review object with index. """
+        """Returns review object with index."""
         return [self.ReviewSnippet(self.testsetup, element) for element in self.selenium.find_elements(*self._review_locator)]
 
     class ReviewSnippet(Base):

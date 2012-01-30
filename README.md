@@ -124,7 +124,7 @@ we'd like to ask you to do:
 4. Add your test into the "tests" folder and the necessary methods for it into the appropriate file in "pages"
 5. Make sure all tests are passing, and submit a pull request with your changes
 
-[GitHub Templates]: https://github.com/AutomatedTester/mozwebqa-test-templates
+[GitHub Templates]: https://github.com/mozilla/mozwebqa-test-templates 
 [Style Guide]: https://wiki.mozilla.org/QA/Execution/Web_Testing/Docs/Automation/StyleGuide
 
 License

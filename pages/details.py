@@ -56,8 +56,6 @@ from pages.base import Base
 
 class Details(Base):
 
-    _breadcrumb_locator = (By.ID, "breadcrumbs")
-
     #addon informations
     _title_locator = (By.CSS_SELECTOR, "#addon > hgroup > h1.addon")
     _version_number_locator = (By.CSS_SELECTOR, "span.version-number")
@@ -121,10 +119,6 @@ class Details(Base):
     _development_channel_content_locator = (By.CSS_SELECTOR, "#beta-channel > div.content")
     _development_version_locator = (By.CSS_SELECTOR, '.beta-version')
 
-    _next_link_locator = (By.CSS_SELECTOR, ".paginator .rel > a:nth-child(3)")
-    _previous_link_locator = (By.CSS_SELECTOR, ".paginator .rel > a:nth-child(2)")
-    _last_page_link_locator = (By.CSS_SELECTOR, ".paginator .rel > a:nth-child(4)")
-    _first_page_link_locator = (By.CSS_SELECTOR, ".paginator .rel > a:nth-child(1)")
 
     def __init__(self, testsetup, addon_name=None):
         #formats name for url
@@ -170,10 +164,6 @@ class Details(Base):
     def daily_users_number(self):
         text = self.selenium.find_element(*self._daily_users_link_locator).text
         return int(text.split()[0].replace(',', ''))
-
-    @property
-    def breadcrumb(self):
-        return self.selenium.find_element(*self._breadcrumb_locator).text
 
     @property
     def version_number(self):
@@ -294,13 +284,13 @@ class Details(Base):
 
     @property
     def is_version_information_section_in_view(self):
-        """ Check if the information section is in view.
+        """
+        Check if the information section is in view.
 
         The script returns the pixels the current document has been scrolled from the
         upper left corner of the window, vertically.
         If the offset is > 1000, the page has scrolled to the information section and it
         is in view.
-
         """
         return (self.selenium.execute_script('return window.pageYOffset')) > 1000
 
@@ -325,35 +315,6 @@ class Details(Base):
         return [self.PartOfCollectionsSnippet(self.testsetup, element)
                 for element in self.selenium.find_elements(*self._part_of_collections_list_locator)]
 
-    def page_forward(self):
-        self.selenium.find_element(*self._next_link_locator).click()
-
-    def page_back(self):
-        self.selenium.find_element(*self._previous_link_locator).click()
-
-    def go_to_last_page(self):
-        self.selenium.find_element(*self._last_page_link_locator).click()
-
-    def go_to_first_page(self):
-        self.selenium.find_element(*self._first_page_link_locator).click()
-
-    @property
-    def is_prev_link_enabled(self):
-        button = self.selenium.find_element(*self._previous_link_locator).get_attribute('class')
-        return not ("disabled" in button)
-
-    @property
-    def is_prev_link_visible(self):
-        return self.is_element_visible(*self._previous_link_locator)
-
-    @property
-    def is_next_link_enabled(self):
-        button = self.selenium.find_element(*self._next_link_locator).get_attribute('class')
-        return not("disabled" in button)
-
-    @property
-    def is_next_link_visible(self):
-        return self.is_element_visible(*self._next_link_locator)
 
     class PartOfCollectionsSnippet(Page):
 
@@ -398,7 +359,7 @@ class Details(Base):
             return support_url
 
     def _extract_url_from_link(self, url):
-        #parses out extra certificate stuff from urls in staging only
+        """Parses out extra certificate stuff from urls in staging only."""
         return urlparse.unquote(re.search('\w+://.*/(\w+%3A//.*)', url).group(1))
 
     @property

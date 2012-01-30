@@ -49,9 +49,6 @@ class ExtensionsHome(Base):
 
     _page_title = 'Featured Extensions :: Add-ons for Firefox'
     _extensions_locator = (By.CSS_SELECTOR, "div.items div.item")
-    _next_page_locator = (By.CSS_SELECTOR, ".paginator .rel > a:nth-child(3)")
-    _last_page_link_locator = (By.CSS_SELECTOR, ".paginator .rel > a:nth-child(4)")
-    _first_page_link_locator = (By.CSS_SELECTOR, ".paginator .rel > a:nth-child(1)")
     _default_selected_tab_locator = (By.CSS_SELECTOR, "#sorter li.selected")
 
     _sort_by_most_users_locator = (By.CSS_SELECTOR, "div#sorter > ul > li:nth-child(2) > a")
@@ -62,17 +59,6 @@ class ExtensionsHome(Base):
     def extensions(self):
         return [Extension(self.testsetup, element)
                 for element in self.selenium.find_elements(*self._extensions_locator)]
-
-    @property
-    def is_next_button_disabled(self):
-        next_button = self.selenium.find_element(*self._next_page_locator)
-        return 'disabled' in next_button.get_attribute('class')
-
-    def go_to_last_page(self):
-        self.selenium.find_element(*self._last_page_link_locator).click()
-
-    def go_to_first_page(self):
-        self.selenium.find_element(*self._first_page_link_locator).click()
 
     @property
     def default_selected_tab(self):
@@ -89,6 +75,7 @@ class ExtensionsHome(Base):
             move_to_element(click_element).\
             click().perform()
         self._wait_for_results_refresh()
+
 
 class Extension(Page):
         _name_locator = (By.CSS_SELECTOR, "h3 a")
