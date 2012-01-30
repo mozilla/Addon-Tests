@@ -1,4 +1,4 @@
-#!/ usr / bin / env python
+#!/usr/bin/env python
 
 # ***** BEGIN LICENSE BLOCK *****
 # Version: MPL 1.1/GPL 2.0/LGPL 2.1
@@ -38,6 +38,7 @@
 
 
 import pytest
+
 from unittestzero import Assert
 
 from pages.home import Home
@@ -57,6 +58,7 @@ class TestPaypal:
     @destructive
     def test_that_user_can_purchase_an_addon(self, mozwebqa):
         """Test that checks the Contribute button for an addon using PayPal."""
+
         addon_page = Home(mozwebqa)
 
         addon_page.login('browserID')
