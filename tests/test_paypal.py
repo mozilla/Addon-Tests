@@ -1,3 +1,5 @@
+#!/ usr / bin / env python
+
 # ***** BEGIN LICENSE BLOCK *****
 # Version: MPL 1.1/GPL 2.0/LGPL 2.1
 #
@@ -15,11 +17,10 @@
 #
 # The Initial Developer of the Original Code is
 # Mozilla.
-# Portions created by the Initial Developer are Copyright (C) 2011
+# Portions created by the Initial Developer are Copyright (C) 2012
 # the Initial Developer. All Rights Reserved.
 #
-# Contributor(s): Bebe <florin.strugariu@softvision.ro>
-#                 Alex Rodionov <p0deje@gmail.com>
+# Contributor(s): Teodosia Pop <teodosia.pop@softvision.ro>
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -34,42 +35,43 @@
 # the terms of any one of the MPL, the GPL or the LGPL.
 #
 # ***** END LICENSE BLOCK *****
-#
-#
-# File contains users data.
-#
-# Each user is a section named with its role
-# and any number of values. At least email,
-# password and name should be present.
-#
-# Example:
-#     admin:
-#         email: email@site.com
-#         password: password
-#         name: Test User
-#
-# Still, you are free to add any more data you wish. It will be kept
-# in the same dictionary.
-#
-# Example:
-#     admin:
-#         email: email@site.com
-#         password: password
-#         name: Test User
-#         username: testuser
-#         some_user_data: data
-#
-# The contents of this file are accessible via the pytest-mozwebqa plugin:
-#
-# Example:
-#   credentials = mozwebqa.credentials['default']
-#   credentials['email']
 
-default:
-    email: <value>
-    password: <value>
-    name: <value>
-paypal:
-    email: <value>
-    password: <value>
-    name: <value>
+
+import pytest
+from unittestzero import Assert
+
+from pages.home import Home
+from pages.details import Details
+
+destructive = pytest.mark.destructive
+
+
+class TestPaypal:
+    """
+    This test only works with Firefox 7.
+    Until Selenium issue http://code.google.com/p/selenium/issues/detail?id=2067 is fixed.
+    """
+
+    addon_name = 'Adblock Plus'
+
+    @destructive
+    def test_that_user_can_purchase_an_addon(self, mozwebqa):
+        """Test that checks the Contribute button for an addon using PayPal."""
+        addon_page = Home(mozwebqa)
+
+        addon_page.login('browserID')
+        Assert.true(addon_page.is_the_current_page)
+        Assert.true(addon_page.header.is_user_logged_in)
+
+        addon_page = Details(mozwebqa, self.addon_name)
+
+        contribution_snippet = addon_page.click_contribute_button()
+        paypal_frame = contribution_snippet.click_make_contribution_button()
+        Assert.true(addon_page.is_paypal_login_dialog_visible)
+
+        payment_popup = paypal_frame.login_to_paypal(user="paypal")
+        Assert.true(payment_popup.is_user_logged_into_paypal)
+        payment_popup.click_pay()
+        Assert.true(payment_popup.is_payment_successful)
+        payment_popup.close_paypal_popup()
+        Assert.true(addon_page.is_the_current_page)
