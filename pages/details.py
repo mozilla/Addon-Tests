@@ -421,7 +421,6 @@ class Details(Base):
             images[image_no].find_element(*self._link_locator).click()
             from pages.regions.image_viewer import ImageViewer
             image_viewer = ImageViewer(self.testsetup)
-            image_viewer.wait_for_image_viewer_to_finish_animating()
             return image_viewer
 
         def image_title(self, image_no):
