@@ -49,6 +49,7 @@ from pages.details import Details
 from pages.extensions import ExtensionsHome
 from pages.home import Home
 
+xfail = pytest.mark.xfail
 nondestructive = pytest.mark.nondestructive
 
 
@@ -198,6 +199,7 @@ class TestDetails:
             Assert.contains(name, detail_page.title)
             Details(mozwebqa, 'firebug')
 
+    @xfail(reason="bug 721921")
     @nondestructive
     def test_details_more_images(self, mozwebqa):
         """
