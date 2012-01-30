@@ -147,7 +147,7 @@ class Details(Base):
         try:
             return self.selenium.find_element(*self._no_restart_locator).text
         except:
-            return False
+            return ""
 
     @property
     def has_reviews(self):
