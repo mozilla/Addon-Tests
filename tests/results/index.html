@@ -1,0 +1,40 @@
+<html><head><title>Test Report</title><style>
+body {font-family: Helvetica, Arial, sans-serif; font-size: 12px}
+a {color: #999}
+h2 {font-size: 16px}
+table {border: 1px solid #e6e6e6; color: #999; font-size: 12px; border-collapse: collapse}
+#configuration tr:nth-child(odd) {background-color: #f6f6f6}
+th, td {padding: 5px; border: 1px solid #E6E6E6; text-align: left}
+th {font-weight: bold}
+tr.passed, tr.skipped, tr.xfailed, tr.error, tr.failed, tr.xpassed {color: inherit}
+tr.passed + tr.additional {display: none}
+.passed {color: green}
+.skipped, .xfailed {color: orange}
+.error, .failed, .xpassed {color: red}
+.log {display: inline-block; width: 800px; height: 230px; overflow-y: scroll; color: black; border: 1px solid #E6E6E6; padding: 5px; background-color: #E6E6E6; font-family: "Courier New", Courier, monospace; white-space: pre}
+.screenshot {display: inline-block; border: 1px solid #E6E6E6; width: 320px; height: 240px; overflow: hidden}
+.screenshot img {width: 320px}
+.video {display: inline-block; width: 320px; height: 240px}
+</style></head><body>
+<h2>Configuration</h2>
+<table id="configuration"><tr><th>Base URL</th><td><a href="https://addons-dev.allizom.org">https://addons-dev.allizom.org</td></tr>
+<tr><th>Selenium API</th><td>webdriver</td></tr>
+<tr><th>Driver</th><td>firefox</td></tr>
+<tr><th>Firefox Path</th><td>C:\Program Files\Mozilla Firefox\firefox</td></tr>
+<tr><th>Capture Network Traffic</th><td>False</td></tr>
+<tr><th>Credentials</th><td>F:\credentials\AMO.yaml</td></tr>
+</table>
+<h2>Summary</h2>
+<p>1 tests ran in 264 seconds.<br />
+<span class="passed">0 passed</span>, <span class="skipped">0 skipped</span>, <span class="failed">1 failed</span>, <span class="error">0 errors</span>.<br />
+<span class="skipped">0 expected failures</span>, <span class="failed">0 unexpected passes</span>.</p>
+<h2>Results</h2>
+<table id="results">
+<tr><th>Result</th><th>Class</th><th>Name</th><th>Duration</th><th>Links</th></tr>
+<tr class="failed"><td class="failed">Failed</td><td>test_search.TestSearch</td><td>test_that_search_results_return_20_results_per_page</td><td>256s</td><td><a href="debug\test_search_TestSearch_test_that_search_results_return_20_results_per_page.html">HTML</a>, <a href="debug\test_search_TestSearch_test_that_search_results_return_20_results_per_page.png">Screenshot</a></td>
+<tr class="additional"><td colspan="5">
+<div class="log">self = &lt;tests.test_search.TestSearch instance at 0x03A6A990&gt;<br />mozwebqa = &lt;mozwebqa.mozwebqa.TestSetup instance at 0x03A6A7D8&gt;<br /><br />    @nondestructive<br />    def test_that_search_results_return_20_results_per_page(self, mozwebqa):<br />        """<br />            Test for Litmus 17346.<br />            https://litmus.mozilla.org/show_test.cgi?id=17346<br />            """<br />        home_page = Home(mozwebqa)<br />        search_page = home_page.header.search_for('deutsch')<br />    <br />        first_expected = 1<br />        second_expected = 20<br />    <br />        while not search_page.paginator.is_next_page_disabled:<br />            first_count = search_page.paginator.start_item<br />            second_count = search_page.paginator.end_item<br />    <br />            Assert.equal(first_expected, first_count)<br />            Assert.equal(second_expected, second_count)<br />&gt;           Assert.equal(search_page.result_count, 20)<br /><br />File "F:\workspace\merge\Addon-Tests\tests\test_search.py", line 283<br /><br />_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ <br /><br />self = &lt;class unittestzero.Assert at 0x03A4DF00&gt;, first = 19, second = 20<br />msg = None<br /><br />    @classmethod<br />    def equal(self, first, second, msg=None):<br />&gt;       assert first == second, msg<br /><span class="error">E       assert 19 == 20</span><br /><br />File "C:\Python26\lib\site-packages\unittestzero.py", line 45<br />AssertionError<br />
+</div>
+<div class="screenshot"><a href="debug\test_search_TestSearch_test_that_search_results_return_20_results_per_page.png"><img src="debug\test_search_TestSearch_test_that_search_results_return_20_results_per_page.png" /></a></div>
+</td></tr>
+</table></body></html>
