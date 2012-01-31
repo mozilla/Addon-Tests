@@ -87,6 +87,7 @@ class TestHome:
         Assert.true(details_page.is_the_current_page)
 
     @nondestructive
+    @xfail(reason="bug 722649")
     def test_that_featured_personas_exist_on_the_home(self, mozwebqa):
         """
         Test for Litmus29698.
