@@ -86,7 +86,7 @@ class ExtensionsHome(Base):
 
 class Extension(Page):
         _name_locator = (By.CSS_SELECTOR, "h3 a")
-        _created_date = (By.CSS_SELECTOR, 'div.info > div.vitals > div.updated')
+        _updated_date = (By.CSS_SELECTOR, 'div.info > div.vitals > div.updated')
 
         def __init__(self, testsetup, element):
             Page.__init__(self, testsetup)
@@ -104,7 +104,7 @@ class Extension(Page):
         @property
         def updated_date(self):
             """ Returns updated date of result in POSIX format """
-            date = self._root_element.find_element(*self._created_date).text.replace('Updated ', '')
+            date = self._root_element.find_element(*self._updated_date).text.replace('Updated ', '')
             # convert to POSIX format
             date = strptime(date, '%B %d, %Y')
             return mktime(date)

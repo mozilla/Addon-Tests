@@ -70,7 +70,7 @@ class TestExtensions:
         Assert.true(featured_extensions_page.paginator.is_next_page_disabled, 'Next button is available')
 
     @nondestructive
-    def test_that_checks_the_if_extensions_are_sorted_by_recently_updated(self, mozwebqa):
+    def test_that_checks_if_the_extensions_are_sorted_by_recently_updated(self, mozwebqa):
         """
         Litmus 29727
         https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=29727
