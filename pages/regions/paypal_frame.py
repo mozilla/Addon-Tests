@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 # ***** BEGIN LICENSE BLOCK *****
 # Version: MPL 1.1/GPL 2.0/LGPL 2.1
 #
@@ -15,11 +17,10 @@
 #
 # The Initial Developer of the Original Code is
 # Mozilla.
-# Portions created by the Initial Developer are Copyright (C) 2011
+# Portions created by the Initial Developer are Copyright (C) 2012
 # the Initial Developer. All Rights Reserved.
 #
-# Contributor(s): Bebe <florin.strugariu@softvision.ro>
-#                 Alex Rodionov <p0deje@gmail.com>
+# Contributor(s): Teodosia Pop <teodosia.pop@softvision.ro>
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -34,42 +35,27 @@
 # the terms of any one of the MPL, the GPL or the LGPL.
 #
 # ***** END LICENSE BLOCK *****
-#
-#
-# File contains users data.
-#
-# Each user is a section named with its role
-# and any number of values. At least email,
-# password and name should be present.
-#
-# Example:
-#     admin:
-#         email: email@site.com
-#         password: password
-#         name: Test User
-#
-# Still, you are free to add any more data you wish. It will be kept
-# in the same dictionary.
-#
-# Example:
-#     admin:
-#         email: email@site.com
-#         password: password
-#         name: Test User
-#         username: testuser
-#         some_user_data: data
-#
-# The contents of this file are accessible via the pytest-mozwebqa plugin:
-#
-# Example:
-#   credentials = mozwebqa.credentials['default']
-#   credentials['email']
 
-default:
-    email: <value>
-    password: <value>
-    name: <value>
-paypal:
-    email: <value>
-    password: <value>
-    name: <value>
+import re
+
+from pages.page import Page
+
+from selenium.webdriver.common.by import By
+
+
+class PayPalFrame(Page):
+
+    _iframe_id = 'PPDGFrame'
+    _paypal_login_button = (By.CSS_SELECTOR, 'div.logincnt > p > a.button')
+
+    def __init__(self, testsetup):
+        Page.__init__(self, testsetup)
+        self.selenium.switch_to_frame(self._iframe_id)
+
+    def login_to_paypal(self, user="paypal"):
+        self.selenium.find_element(*self._paypal_login_button).click()
+
+        from pages.paypal_popup import PayPalPopup
+        pop_up = PayPalPopup(self.testsetup)
+        pop_up.login_paypal(user)
+        return PayPalPopup(self.testsetup)
