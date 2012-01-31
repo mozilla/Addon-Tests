@@ -87,7 +87,7 @@ class TestPersonas:
         home_page = Home(mozwebqa)
         personas_page = home_page.header.application_masthead("Personas").click()
         Assert.true(personas_page.is_the_current_page)
-        Assert.equal(6, personas_page.featured_personas_count)
+        Assert.equal(2, personas_page.featured_personas_count)
 
     @nondestructive
     def test_the_recently_added_section(self, mozwebqa):
