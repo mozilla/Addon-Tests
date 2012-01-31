@@ -78,6 +78,7 @@ class TestPersonas:
         personas_page = home_page.header.application_masthead("Personas").click()
         Assert.true(personas_page.is_the_current_page)
 
+    @xfail(reason="bug 722649")
     @nondestructive
     def test_the_featured_personas_section(self, mozwebqa):
         """
