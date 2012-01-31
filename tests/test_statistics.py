@@ -11,7 +11,7 @@ from pages.details import Details
 
 nondestructive = pytest.mark.nondestructive
 
-class TestDetails:
+class TestStatistics:
 
     @nondestructive
     def test_that_verifies_the_url_of_the_statistics_page(self, mozwebqa):
