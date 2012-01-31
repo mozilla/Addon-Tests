@@ -61,7 +61,7 @@ class DiscoveryPane(Base):
     _download_count_text_locator = (By.ID, "download-count")
     _personas_section_locator = (By.ID, "featured-personas")
     _personas_see_all_link = (By.CSS_SELECTOR, ".all[href='/en-US/firefox/personas/']")
-    _personas_locator = (By.XPATH, "//*[@id='featured-personas']/ul/li")
+    _personas_locator = (By.CSS_SELECTOR, "#featured-personas ul li")
     _more_ways_section_locator = (By.ID, "more-ways")
     _more_ways_addons_locator = (By.ID, "more-addons")
     _more_ways_personas_locator = (By.ID, "more-personas")
