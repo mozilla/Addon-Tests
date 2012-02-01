@@ -60,7 +60,6 @@ class ExtensionsHome(Base):
 
     _updating_locator = (By.CSS_SELECTOR, "div.updating")
 
-
     @property
     def extensions(self):
         return [Extension(self.testsetup, element)
