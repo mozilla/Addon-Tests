@@ -199,18 +199,8 @@ class TestDetails:
             Details(mozwebqa, 'firebug')
 
     @nondestructive
-    def test_details_more_images(self, mozwebqa):
-        """
-        Test for Litmus 4846.
-        https://litmus.mozilla.org/show_test.cgi?id=4846
-        """
+    def test_navigation_buttons_for_image_viewer(self, mozwebqa):
         detail_page = Details(mozwebqa, 'firebug')
-
-        image_viewer = detail_page.previewer.click_image()
-        Assert.true(image_viewer.is_visible)
-        image_viewer.close()
-        Assert.false(image_viewer.is_visible)
-
         images_count = detail_page.previewer.image_count
         image_set_count = detail_page.previewer.image_set_count
         images_title = []
@@ -221,10 +211,10 @@ class TestDetails:
                     images_title.append(detail_page.previewer.image_title(img_set * 3 + img_no))
                     image_link.append(detail_page.previewer.image_link(img_set * 3 + img_no))
 
-            image_viewer = detail_page.previewer.next_set()
+            detail_page.previewer.next_set()
 
         for img_set in range(image_set_count):
-            image_viewer = detail_page.previewer.prev_set()
+            detail_page.previewer.prev_set()
 
         image_viewer = detail_page.previewer.click_image()
         Assert.true(image_viewer.is_visible)
@@ -263,9 +253,6 @@ class TestDetails:
                 image_viewer.click_previous()
             else:
                 Assert.false(image_viewer.is_previous_present)
-
-        image_viewer.close()
-        Assert.false(image_viewer.is_visible)
 
     @nondestructive
     def test_that_review_usernames_are_clickable(self, mozwebqa):
