@@ -199,71 +199,12 @@ class TestDetails:
             Details(mozwebqa, 'firebug')
 
     @nondestructive
-    def test_details_more_images(self, mozwebqa):
-        """
-        Test for Litmus 4846.
-        https://litmus.mozilla.org/show_test.cgi?id=4846
-        """
+    def test_open_close_functionality_for_image_viewer(self, mozwebqa):
+
         detail_page = Details(mozwebqa, 'firebug')
 
         image_viewer = detail_page.previewer.click_image()
         Assert.true(image_viewer.is_visible)
-        image_viewer.close()
-        Assert.false(image_viewer.is_visible)
-
-        images_count = detail_page.previewer.image_count
-        image_set_count = detail_page.previewer.image_set_count
-        images_title = []
-        image_link = []
-        for img_set in range(image_set_count):
-            for img_no in range(3):
-                if img_set * 3 + img_no != images_count:
-                    images_title.append(detail_page.previewer.image_title(img_set * 3 + img_no))
-                    image_link.append(detail_page.previewer.image_link(img_set * 3 + img_no))
-
-            image_viewer = detail_page.previewer.next_set()
-
-        for img_set in range(image_set_count):
-            image_viewer = detail_page.previewer.prev_set()
-
-        image_viewer = detail_page.previewer.click_image()
-        Assert.true(image_viewer.is_visible)
-        Assert.equal(images_count, image_viewer.images_count)
-
-        for i in range(image_viewer.images_count):
-            Assert.true(image_viewer.is_visible)
-
-            Assert.equal(image_viewer.caption, images_title[i])
-            Assert.equal(image_viewer.image_link.split('/')[8], image_link[i].split('/')[8])
-
-            if not i == 0:
-                Assert.true(image_viewer.is_previous_present)
-            else:
-                Assert.false(image_viewer.is_previous_present)
-
-            if not i == image_viewer.images_count - 1:
-                Assert.true(image_viewer.is_next_present)
-                image_viewer.click_next()
-            else:
-                Assert.false(image_viewer.is_next_present)
-
-        for i in range(image_viewer.images_count - 1, -1, -1):
-            Assert.true(image_viewer.is_visible)
-
-            Assert.equal(image_viewer.caption, images_title[i])
-            Assert.equal(image_viewer.image_link.split('/')[8], image_link[i].split('/')[8])
-
-            if not i == image_viewer.images_count - 1:
-                Assert.true(image_viewer.is_next_present)
-            else:
-                Assert.false(image_viewer.is_next_present)
-
-            if not i == 0:
-                Assert.true(image_viewer.is_previous_present)
-                image_viewer.click_previous()
-            else:
-                Assert.false(image_viewer.is_previous_present)
-
         image_viewer.close()
         Assert.false(image_viewer.is_visible)
 
