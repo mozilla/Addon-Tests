@@ -253,7 +253,7 @@ class Base(Page):
             return MyCollections(self.testsetup)
 
         def click_my_favorites(self):
-            item_locator = (By.CSS_SELECTOR, ' li:nth-child(4) a')
+            item_locator = (By.CSS_SELECTOR, " li:nth-child(4) a")
             hover_element = self.selenium.find_element(*self._account_controller_locator)
             click_element = self.selenium.find_element(*self._account_dropdown_locator).find_element(*item_locator)
             ActionChains(self.selenium).move_to_element(hover_element).\
@@ -265,9 +265,10 @@ class Base(Page):
 
         @property
         def is_my_favorites_menu_present(self):
-            item_locator = (By.CSS_SELECTOR, ' li:nth-child(4) a')
+            item_locator = (By.CSS_SELECTOR, " li:nth-child(4) a")
             hover_element = self.selenium.find_element(*self._account_controller_locator)
             ActionChains(self.selenium).move_to_element(hover_element).perform()
+
             target_element = self.selenium.find_element(*self._account_dropdown_locator).find_element(*item_locator).text
             return 'My Favorites' in target_element
 
