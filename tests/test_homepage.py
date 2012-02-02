@@ -28,6 +28,7 @@ class HeaderMenu:
     def items(self):
         return self.items
 
+
 class TestHome:
 
     expected_header_menus = [
@@ -201,10 +202,10 @@ class TestHome:
         home_page = Home(mozwebqa)
 
         # compile lists of the expected and actual top level navigation items
-        expected__navigation_menu = [menu.name for menu in self.expected_header_menus]
+        expected_navigation_menu = [menu.name for menu in self.expected_header_menus]
         actual_navigation_menus = [actual_menu.name for actual_menu in home_page.header.site_navigation_menus]
 
-        Assert.equal(expected__navigation_menu, actual_navigation_menus)
+        Assert.equal(expected_navigation_menu, actual_navigation_menus)
 
     @nondestructive
     @pytest.mark.litmus([25745, 25747, 25749, 25751, 25754, 25756, 25758, 25760, 25763, 25764])
@@ -217,16 +218,16 @@ class TestHome:
             expected_menu_items = menu.items
             actual_menu_items = [menu_items.name for menu_items in home_page.header.site_navigation_menu(menu.name).items]
 
-            Assert.equal(menu.items, actual_menu_items)
+            Assert.equal(expected_menu_items, actual_menu_items)
 
     @nondestructive
     @pytest.mark.litmus([25747, 25751, 25756, 25760, 25764])
     def test_top_three_items_in_each_site_navigation_menu_are_featured(self, mozwebqa):
         home_page = Home(mozwebqa)
 
-        # loop through each actual top level menu 
+        # loop through each actual top level menu
         for actual_menu in home_page.header.site_navigation_menus:
-            # 'more' navigation_menu has no featured items so we have a different assertion 
+            # 'more' navigation_menu has no featured items so we have a different assertion
             if actual_menu.name == u"MORE\u2026":
                 # loop through each of the items in the top level menu and check is_featured property
                 [Assert.false(item.is_featured) for item in actual_menu.items]
