@@ -15,6 +15,7 @@ nondestructive = pytest.mark.nondestructive
 
 class TestAmoLayout:
 
+    @pytest.mark.native
     @nondestructive
     def test_other_applications_thunderbird(self, mozwebqa):
         """
@@ -76,6 +77,7 @@ class TestAmoLayout:
         tooltip = home_page.get_title_of_link('Other applications')
         Assert.equal(tooltip, 'Find add-ons for other applications')
 
+    @pytest.mark.native
     @nondestructive
     def test_the_applications_listed_in_other_applications(self, mozwebqa):
         """

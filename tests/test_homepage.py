@@ -93,6 +93,7 @@ class TestHome:
         most_popular_items = home_page.most_popular_items
         Assert.is_sorted_descending([i.users_number for i in most_popular_items])
 
+    @pytest.mark.native
     @xfail(reason="pivotal tracker task to refactor this test: http://bit.ly/rXtwZk")
     @nondestructive
     def test_that_verifies_upper_menu_navigation_items(self, mozwebqa):
@@ -148,6 +149,7 @@ class TestHome:
         Assert.true(featured_collection_page.is_the_current_page)
         Assert.true(featured_collection_page.get_url_current_page().endswith('/collections/?sort=featured'))
 
+    @pytest.mark.native
     @nondestructive
     def test_that_items_menu_fly_out_while_hovering(self, mozwebqa):
         """
