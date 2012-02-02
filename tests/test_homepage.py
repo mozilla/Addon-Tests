@@ -13,6 +13,7 @@ from pages.home import Home
 xfail = pytest.mark.xfail
 nondestructive = pytest.mark.nondestructive
 
+
 class HeaderMenu:
 
     def __init__(self, name, items):
@@ -97,7 +98,7 @@ class TestHome:
         https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25746
         """
         home_page = Home(mozwebqa)
-        extensions_page = home_page.header.menu("EXTENSIONS").click()
+        extensions_page = home_page.header.site_navigation_menu("EXTENSIONS").click()
         Assert.true(extensions_page.is_the_current_page)
 
     @nondestructive
@@ -153,7 +154,7 @@ class TestHome:
         home_page = Home(mozwebqa)
 
         for menu in self.expected_header_menus:
-            menu_item = home_page.header.menu(menu.name)
+            menu_item = home_page.header.site_navigation_menu(menu.name)
             menu_item.hover()
             Assert.true(menu_item.is_menu_dropdown_visible)
             home_page.hover_over_addons_home_title()
@@ -195,25 +196,41 @@ class TestHome:
         Assert.equal('Featured', extensions_page.default_selected_tab)
 
     @nondestructive
-    @pytest.mark.litmus([25744, 25745, 25747, 25749, 25751, 25754, 25756, 25758, 25760, 25763, 25764])
-    def test_header_menus_and_items_are_correct(self, mozwebqa):
+    @pytest.mark.litmus(25744)
+    def test_header_site_navigation_menus_are_correct(self, mozwebqa):
         home_page = Home(mozwebqa)
 
-        Assert.equal(
-            [menu.name for menu in self.expected_header_menus],
-            [menu.name for menu in home_page.header.menus])
+        # compile lists of the expected and actual top level navigation items
+        expected__navigation_menu = [menu.name for menu in self.expected_header_menus]
+        actual_navigation_menus = [actual_menu.name for actual_menu in home_page.header.site_navigation_menus]
 
+        Assert.equal(expected__navigation_menu, actual_navigation_menus)
+
+    @nondestructive
+    @pytest.mark.litmus([25745, 25747, 25749, 25751, 25754, 25756, 25758, 25760, 25763, 25764])
+    def test_the_name_of_each_site_navigation_menu_in_the_header(self, mozwebqa):
+        home_page = Home(mozwebqa)
+
+        # loop through each expected menu and collect a list of the items in the menu
+        # and then assert that they exist in the actual menu on the page
         for menu in self.expected_header_menus:
-            Assert.equal(menu.items, [item.name for item in home_page.header.menu(menu.name).items])
+            expected_menu_items = menu.items
+            actual_menu_items = [menu_items.name for menu_items in home_page.header.site_navigation_menu(menu.name).items]
+
+            Assert.equal(menu.items, actual_menu_items)
 
     @nondestructive
     @pytest.mark.litmus([25747, 25751, 25756, 25760, 25764])
-    def test_top_three_menu_items_are_featured(self, mozwebqa):
+    def test_top_three_items_in_each_site_navigation_menu_are_featured(self, mozwebqa):
         home_page = Home(mozwebqa)
-        for menu in home_page.header.menus:
-            if menu.name == u"MORE\u2026":
-                # 'more' menu has no featured items
-                [Assert.false(item.is_featured) for item in menu.items]
+
+        # loop through each actual top level menu 
+        for actual_menu in home_page.header.site_navigation_menus:
+            # 'more' navigation_menu has no featured items so we have a different assertion 
+            if actual_menu.name == u"MORE\u2026":
+                # loop through each of the items in the top level menu and check is_featured property
+                [Assert.false(item.is_featured) for item in actual_menu.items]
             else:
-                [Assert.true(item.is_featured) for item in menu.items[:3]]
-                [Assert.false(item.is_featured) for item in menu.items[3:]]
+                # first 3 are featured, the others are not
+                [Assert.true(item.is_featured) for item in actual_menu.items[:3]]
+                [Assert.false(item.is_featured) for item in actual_menu.items[3:]]

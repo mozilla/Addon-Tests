@@ -11,10 +11,18 @@ from pages.page import Page
 
 
 class HeaderMenu(Page):
+    """
+    This class access the header area from the top of the AMO pages.
+    To access it just use:
+        HeaderMenu(self.testsetup, lookup)
+    Where lookup is:
+        -the web element coresponding to the menu you want to access
+    Ex:
+        HeaderMenu(self.testsetup, personas_element) returns the Personas menu
+    """
 
     _menu_items_locator = (By.CSS_SELECTOR, 'ul > li')
     _name_locator = (By.CSS_SELECTOR, 'a')
-    _submenu_locator = (By.CSS_SELECTOR, 'ul > li')
 
     def __init__(self, testsetup, element):
         Page.__init__(self, testsetup)
@@ -42,12 +50,12 @@ class HeaderMenu(Page):
             return Collections(self.testsetup)
 
     def hover(self):
-       element = self._root_element.find_element(*self._name_locator)
-       ActionChains(self.selenium).move_to_element(element).perform()
+        element = self._root_element.find_element(*self._name_locator)
+        ActionChains(self.selenium).move_to_element(element).perform()
 
     @property
     def is_menu_dropdown_visible(self):
-        dropdown_menu = self._root_element.find_element(*self._submenu_locator)
+        dropdown_menu = self._root_element.find_element(*self._menu_items_locator)
         return dropdown_menu.is_displayed()
 
     @property

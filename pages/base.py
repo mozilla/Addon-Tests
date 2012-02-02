@@ -139,18 +139,20 @@ class Base(Page):
         _account_dropdown_locator = (By.CSS_SELECTOR, "#aux-nav .account ul")
         _logout_locator = (By.CSS_SELECTOR, "li.nomenu.logout > a")
 
-        _menus_locator = (By.CSS_SELECTOR , "#site-nav > ul > li")
+        _site_navigation_menus_locator = (By.CSS_SELECTOR, "#site-nav > ul > li")
 
-        def menu(self, value):
-            for menu in self.menus:
+        def site_navigation_menu(self, value):
+            #used to access one specific menu
+            for menu in self.site_navigation_menus:
                 if menu.name == value:
                     return menu
             raise Exception("Menu not found: '%s'. Menus: %s" % (value, [menu.name for menu in self.menus]))
 
         @property
-        def menus(self):
+        def site_navigation_menus(self):
+            #returns a list containing all the site navigation menus
             from pages.regions.header_menu import HeaderMenu
-            return [HeaderMenu(self.testsetup, element) for element in self.selenium.find_elements(*self._menus_locator)]
+            return [HeaderMenu(self.testsetup, element) for element in self.selenium.find_elements(*self._site_navigation_menus_locator)]
 
         def click_other_application(self, other_app):
             hover_locator = self.selenium.find_element(*self._other_applications_locator)
