@@ -144,9 +144,9 @@ class Base(Page):
         def site_navigation_menu(self, value):
             #used to access one specific menu
             for menu in self.site_navigation_menus:
-                if menu.name == value:
+                if menu.name == value.upper():
                     return menu
-            raise Exception("Menu not found: '%s'. Menus: %s" % (value, [menu.name for menu in self.menus]))
+            raise Exception("Menu not found: '%s'. Menus: %s" % (value, [menu.name for menu in self.site_navigation_menus]))
 
         @property
         def site_navigation_menus(self):
