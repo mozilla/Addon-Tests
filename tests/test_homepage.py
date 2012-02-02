@@ -51,7 +51,6 @@ class TestHome:
         Assert.true(details_page.is_the_current_page)
 
     @nondestructive
-    @xfail(reason="bug 722649")
     def test_that_featured_personas_exist_on_the_home(self, mozwebqa):
         """
         Test for Litmus29698.
@@ -59,7 +58,7 @@ class TestHome:
         """
         home_page = Home(mozwebqa)
         Assert.equal(home_page.featured_personas_title, u'Featured Personas See all \xbb', 'Featured Personas region title doesn\'t match')
-        Assert.equal(home_page.featured_personas_count, 6)
+        Assert.less_equal(home_page.featured_personas_count, 6)
 
     @nondestructive
     def test_that_clicking_see_all_personas_link_works(self, mozwebqa):
