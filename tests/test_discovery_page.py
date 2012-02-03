@@ -66,12 +66,12 @@ class TestDiscoveryPane:
         Assert.equal(first_persona, persona.persona_title)
 
     @nondestructive
-    def test_that_More_Ways_To_Customize_section_is_available(self, mozwebqa):
+    def test_that_more_ways_to_customize_section_is_available(self, mozwebqa):
         """Test for Litmus 15082."""
         discovery_pane = DiscoveryPane(mozwebqa, self.basepath)
         Assert.true(discovery_pane.more_ways_section_visible)
-        Assert.equal("Browse all add-ons", discovery_pane.more_ways_addons)
-        Assert.equal("See all themes", discovery_pane.more_ways_personas)
+        Assert.equal("Browse all add-ons", discovery_pane.browse_all_addons)
+        Assert.equal("See all themes", discovery_pane.see_all_themes)
 
     @nondestructive
     def test_that_up_and_coming_is_present_and_had_5_items(self, mozwebqa):
