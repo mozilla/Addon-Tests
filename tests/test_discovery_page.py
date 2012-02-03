@@ -71,7 +71,7 @@ class TestDiscoveryPane:
         discovery_pane = DiscoveryPane(mozwebqa, self.basepath)
         Assert.true(discovery_pane.more_ways_section_visible)
         Assert.equal("Browse all add-ons", discovery_pane.more_ways_addons)
-        Assert.equal("See all themes and Personas", discovery_pane.more_ways_personas)
+        Assert.equal("See all themes", discovery_pane.more_ways_personas)
 
     @nondestructive
     def test_that_up_and_coming_is_present_and_had_5_items(self, mozwebqa):
