@@ -173,10 +173,10 @@ class TestThemes:
         Assert.greater_equal(themes_page.addon_count, 1)
 
     @nondestructive
-    def test_that_last_themes_page_is_not_empty(self, mozwebqa):
+    def test_that_check_the_flag_for_featured_addons(self, mozwebqa):
         """
-        Test for Litmus 15359.
-        https://litmus.mozilla.org/show_test.cgi?id=15359
+        Test for Litmus 15361
+        https://litmus.mozilla.org/show_test.cgi?id=15361
         """
         home_page = Home(mozwebqa)
         themes_page = home_page.header.application_masthead("Themes").click()

@@ -31,7 +31,6 @@ class Themes(Base):
     _previous_link_locator = (By.CSS_SELECTOR, '.paginator .rel > a:nth-child(2)')
     _last_page_link_locator = (By.CSS_SELECTOR, '.rel > a:nth-child(4)')
 
-
     @property
     def _addons_root_element(self):
         return self.selenium.find_element(*self._addons_root_locator)
@@ -109,7 +108,6 @@ class Themes(Base):
     @property
     def themes(self):
         return [self.Theme(self.testsetup, theme)for theme in self.selenium.find_elements(*self._addons_root_locator)]
-
 
     class Theme(Page):
 
