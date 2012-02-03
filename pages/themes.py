@@ -8,6 +8,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
 
 from pages.base import Base
+from pages.page import Page
 
 
 class Themes(Base):
@@ -29,6 +30,7 @@ class Themes(Base):
     _next_link_locator = (By.CSS_SELECTOR, '.paginator .rel > a:nth-child(3)')
     _previous_link_locator = (By.CSS_SELECTOR, '.paginator .rel > a:nth-child(2)')
     _last_page_link_locator = (By.CSS_SELECTOR, '.rel > a:nth-child(4)')
+
 
     @property
     def _addons_root_element(self):
@@ -103,6 +105,37 @@ class Themes(Base):
         pattern = "(\d)"
         ratings = self._extract_integers(pattern, *self._addons_rating_locator)
         return ratings
+
+    @property
+    def themes(self):
+        return [self.Theme(self.testsetup, theme)for theme in self.selenium.find_elements(*self._addons_root_locator)]
+
+
+    class Theme(Page):
+
+        _compatibile_locator = (By.CSS_SELECTOR, "div.hovercard > span.notavail")
+        _hovercard_locator = (By.CSS_SELECTOR, "div.hovercard")
+
+        def __init__(self, testsetup, element):
+            Page.__init__(self, testsetup)
+            self._root_element = element
+
+        @property
+        def is_compatibile(self):
+            return 'incompatible' in self._root_element.find_element(*self._hovercard_locator).get_attribute('class')
+
+        @property
+        def incompatibile_flag_text(self):
+            return self._root_element.find_element(*self._compatibile_locator).text
+
+        @property
+        def is_incompatibile_flag_present(self):
+            from selenium.common.exceptions import NoSuchElementException
+            try:
+                self._root_element.find_element(*self._compatibile_locator)
+                return True
+            except NoSuchElementException:
+                return False
 
 
 class Theme(Base):
