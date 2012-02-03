@@ -188,6 +188,7 @@ class MyCollections(Base):
     def my_collections_header_text(self):
         return self.selenium.find_element(*self._header_locator).text
 
+
 class MyFavorites(Base):
 
     _header_locator = (By.CSS_SELECTOR, 'h2.collection > span')
