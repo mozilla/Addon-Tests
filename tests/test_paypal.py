@@ -13,6 +13,7 @@ from pages.home import Home
 from pages.details import Details
 
 destructive = pytest.mark.destructive
+nondestructive = pytest.mark.nondestructive
 
 
 class TestPaypal:
@@ -45,3 +46,16 @@ class TestPaypal:
         Assert.true(payment_popup.is_payment_successful)
         payment_popup.close_paypal_popup()
         Assert.true(addon_page.is_the_current_page)
+
+    @nondestructive
+    def test_that_user_can_login_and_logout_from_paypal(self, mozwebqa):
+        addon_page = Details(mozwebqa, self.addon_name)
+
+        contribution_snippet = addon_page.click_contribute_button()
+        paypal_frame = contribution_snippet.click_make_contribution_button()
+        Assert.true(addon_page.is_paypal_login_dialog_visible)
+
+        payment_popup = paypal_frame.login_to_paypal(user="paypal")
+        Assert.true(payment_popup.is_user_logged_into_paypal)
+        payment_popup.logout_paypal()
+        #Assert.true(is_user_logged_out)

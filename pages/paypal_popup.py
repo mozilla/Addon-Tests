@@ -30,6 +30,10 @@ class PayPalPopup(Page):
         self.selenium.find_element(*self._password_locator).send_keys(credentials['password'])
         self.selenium.find_element(*self._login_locator).click()
 
+    def logout_paypal(self):
+        self.selenium.find_element(*self._log_out_locator).click()
+        self.selenium.switch_to_window('')
+
     def close_paypal_popup(self):
         self.selenium.find_element(*self._pay_button_locator).click()
         self.selenium.switch_to_window('')
