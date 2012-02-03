@@ -554,7 +554,7 @@ class Details(Base):
     def _wait_for_favorite_addon_to_be_added(self):
         WebDriverWait(self.selenium, 10).until(lambda s: not self.is_element_present(*self._add_to_favorites_updating_locator))
 
-    def mark_as_favorite(self):
+    def click_add_to_favorites(self):
         self.selenium.find_element(*self._add_to_favorites_widget_locator).click()
         self._wait_for_favorite_addon_to_be_added()
 
