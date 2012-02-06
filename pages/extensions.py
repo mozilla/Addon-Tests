@@ -1,41 +1,10 @@
 #!/usr/bin/env python
 
-# ***** BEGIN LICENSE BLOCK *****
-# Version: MPL 1.1/GPL 2.0/LGPL 2.1
-#
-# The contents of this file are subject to the Mozilla Public License Version
-# 1.1 (the "License"); you may not use this file except in compliance with
-# the License. You may obtain a copy of the License at
-# http://www.mozilla.org/MPL/
-#
-# Software distributed under the License is distributed on an "AS IS" basis,
-# WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
-# for the specific language governing rights and limitations under the
-# License.
-#
-# The Original Code is Mozilla WebQA Selenium Tests.
-#
-# The Initial Developer of the Original Code is
-# Mozilla.
-# Portions created by the Initial Developer are Copyright (C) 2011
-# the Initial Developer. All Rights Reserved.
-#
-# Contributor(s): Bebe <florin.strugariu@softvision.ro>
-#                 Alin Trif <alin.trif@softvision.ro>
-#
-# Alternatively, the contents of this file may be used under the terms of
-# either the GNU General Public License Version 2 or later (the "GPL"), or
-# the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
-# in which case the provisions of the GPL or the LGPL are applicable instead
-# of those above. If you wish to allow use of your version of this file only
-# under the terms of either the GPL or the LGPL, and not to allow others to
-# use your version of this file under the terms of the MPL, indicate your
-# decision by deleting the provisions above and replace them with the notice
-# and other provisions required by the GPL or the LGPL. If you do not delete
-# the provisions above, a recipient may use your version of this file under
-# the terms of any one of the MPL, the GPL or the LGPL.
-#
-# ***** END LICENSE BLOCK *****
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+from time import strptime, mktime
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -52,6 +21,9 @@ class ExtensionsHome(Base):
     _default_selected_tab_locator = (By.CSS_SELECTOR, "#sorter li.selected")
 
     _sort_by_most_users_locator = (By.CSS_SELECTOR, "div#sorter > ul > li:nth-child(2) > a")
+    _sort_by_recently_updated_locator = (By.CSS_SELECTOR, "li.extras > ul > li:nth-child(3) > a")
+
+    _hover_more_locator = (By.CSS_SELECTOR, "li.extras > a")
 
     _updating_locator = (By.CSS_SELECTOR, "div.updating")
 
@@ -68,10 +40,12 @@ class ExtensionsHome(Base):
         WebDriverWait(self.selenium, 10).until(lambda s: not self.is_element_present(*self._updating_locator))
 
     def sort_by(self, type):
+        hover_element = self.selenium.find_element(*self._hover_more_locator)
         click_element = self.selenium.find_element(*getattr(self, '_sort_by_%s_locator' % type.replace(' ', '_').lower()))
         footer = self.selenium.find_element(*self._footer_locator)
         ActionChains(self.selenium).\
             move_to_element(footer).\
+            move_to_element(hover_element).\
             move_to_element(click_element).\
             click().perform()
         self._wait_for_results_refresh()
@@ -79,6 +53,7 @@ class ExtensionsHome(Base):
 
 class Extension(Page):
         _name_locator = (By.CSS_SELECTOR, "h3 a")
+        _updated_date = (By.CSS_SELECTOR, 'div.info > div.vitals > div.updated')
 
         def __init__(self, testsetup, element):
             Page.__init__(self, testsetup)
@@ -92,3 +67,11 @@ class Extension(Page):
             self._root_element.find_element(*self._name_locator).click()
             from pages.details import Details
             return Details(self.testsetup)
+
+        @property
+        def updated_date(self):
+            """ Returns updated date of result in POSIX format """
+            date = self._root_element.find_element(*self._updated_date).text.replace('Updated ', '')
+            # convert to POSIX format
+            date = strptime(date, '%B %d, %Y')
+            return mktime(date)

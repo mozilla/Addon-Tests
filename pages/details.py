@@ -1,54 +1,14 @@
 #!/usr/bin/env python
 
-# ***** BEGIN LICENSE BLOCK *****
-# Version: MPL 1.1/GPL 2.0/LGPL 2.1
-#
-# The contents of this file are subject to the Mozilla Public License Version
-# 1.1 (the "License"); you may not use this file except in compliance with
-# the License. You may obtain a copy of the License at
-# http://www.mozilla.org/MPL/
-#
-# Software distributed under the License is distributed on an "AS IS" basis,
-# WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
-# for the specific language governing rights and limitations under the
-# License.
-#
-# The Original Code is Mozilla WebQA Selenium Tests.
-#
-# The Initial Developer of the Original Code is
-# Mozilla.
-# Portions created by the Initial Developer are Copyright (C) 2011
-# the Initial Developer. All Rights Reserved.
-#
-# Contributor(s): Bebe <florin.strugariu@softvision.ro>
-#                 David Burns
-#                 Marc George
-#                 Dave Hunt <dhunt@mozilla.com>
-#                 Alex Rodionov <p0deje@gmail.com>
-#                 Joel Andersson <janderssn@gmail.com>
-#                 Marlena Compton <mcompton@mozilla.com>
-#                 Teodosia Pop <teodosia.pop@softvision.ro>
-#                 Alex Lakatos <alex@greensqr.com>
-#                 Alin Trif <alin.trif@softvision.ro>
-#
-# Alternatively, the contents of this file may be used under the terms of
-# either the GNU General Public License Version 2 or later (the "GPL"), or
-# the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
-# in which case the provisions of the GPL or the LGPL are applicable instead
-# of those above. If you wish to allow use of your version of this file only
-# under the terms of either the GPL or the LGPL, and not to allow others to
-# use your version of this file under the terms of the MPL, indicate your
-# decision by deleting the provisions above and replace them with the notice
-# and other provisions required by the GPL or the LGPL. If you do not delete
-# the provisions above, a recipient may use your version of this file under
-# the terms of any one of the MPL, the GPL or the LGPL.
-#
-# ***** END LICENSE BLOCK *****
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import re
 
 from urllib2 import urlparse
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
 
 from pages.page import Page
 from pages.base import Base
@@ -114,6 +74,7 @@ class Details(Base):
     _add_to_collection_locator = (By.CSS_SELECTOR, ".collection-add.widget.collection")
     _add_to_collection_widget_button_locator = (By.CSS_SELECTOR, ".collection-add-login .register-button .button")
     _add_to_collection_widget_login_link_locator = (By.CSS_SELECTOR, "div.collection-add-login p:nth-child(3) > a")
+    _add_to_favorites_widget_locator = (By.CSS_SELECTOR, 'div.widgets > a.favorite')
 
     _development_channel_locator = (By.CSS_SELECTOR, "#beta-channel")
     _development_channel_toggle = (By.CSS_SELECTOR, '#beta-channel a.toggle')
@@ -126,6 +87,8 @@ class Details(Base):
     _previous_link_locator = (By.CSS_SELECTOR, ".paginator .rel > a:nth-child(2)")
     _last_page_link_locator = (By.CSS_SELECTOR, ".paginator .rel > a:nth-child(4)")
     _first_page_link_locator = (By.CSS_SELECTOR, ".paginator .rel > a:nth-child(1)")
+
+    _add_to_favorites_updating_locator = (By.CSS_SELECTOR, "a.ajax-loading")
 
     # contribute to addon
     _contribute_button_locator = (By.ID, 'contribute-button')
@@ -587,3 +550,15 @@ class Details(Base):
     @property
     def is_paypal_login_dialog_visible(self):
         return self.is_element_visible(*self._paypal_login_dialog_locator)
+
+    def _wait_for_favorite_addon_to_be_added(self):
+        WebDriverWait(self.selenium, 10).until(lambda s: not self.is_element_present(*self._add_to_favorites_updating_locator))
+
+    def click_add_to_favorites(self):
+        self.selenium.find_element(*self._add_to_favorites_widget_locator).click()
+        self._wait_for_favorite_addon_to_be_added()
+
+    @property
+    def is_addon_marked_as_favorite(self):
+        is_favorite = self.selenium.find_element(*self._add_to_favorites_widget_locator).text
+        return 'Remove from favorites' in is_favorite

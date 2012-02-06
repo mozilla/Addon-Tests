@@ -1,45 +1,8 @@
 #!/usr/bin/env python
 
-# ***** BEGIN LICENSE BLOCK *****
-# Version: MPL 1.1/GPL 2.0/LGPL 2.1
-#
-# The contents of this file are subject to the Mozilla Public License Version
-# 1.1 (the "License"); you may not use this file except in compliance with
-# the License. You may obtain a copy of the License at
-# http://www.mozilla.org/MPL/
-#
-# Software distributed under the License is distributed on an "AS IS" basis,
-# WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
-# for the specific language governing rights and limitations under the
-# License.
-#
-# The Original Code is Mozilla WebQA Selenium Tests.
-#
-# The Initial Developer of the Original Code is
-# Mozilla.
-# Portions created by the Initial Developer are Copyright (C) 2011
-# the Initial Developer. All Rights Reserved.
-#
-# Contributor(s): David Burns
-#                 Marc George
-#                 Dave Hunt <dhunt@mozilla.com>
-#                 Joel Andersson <janderssn@gmail.com>
-#                 Teodosia Pop <teodosia.pop@softvision.ro>
-#                 Alin Trif <alin.trif@softvision.ro>
-#
-# Alternatively, the contents of this file may be used under the terms of
-# either the GNU General Public License Version 2 or later (the "GPL"), or
-# the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
-# in which case the provisions of the GPL or the LGPL are applicable instead
-# of those above. If you wish to allow use of your version of this file only
-# under the terms of either the GPL or the LGPL, and not to allow others to
-# use your version of this file under the terms of the MPL, indicate your
-# decision by deleting the provisions above and replace them with the notice
-# and other provisions required by the GPL or the LGPL. If you do not delete
-# the provisions above, a recipient may use your version of this file under
-# the terms of any one of the MPL, the GPL or the LGPL.
-#
-# ***** END LICENSE BLOCK *****
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import pytest
 
@@ -57,7 +20,7 @@ class TestThemes:
     def test_that_themes_can_be_sorted_by_name(self, mozwebqa):
         """Test for Litmus 11727 and 4839."""
         home_page = Home(mozwebqa)
-        themes_page = home_page.header.application_masthead("Themes").click()
+        themes_page = home_page.header.site_navigation_menu("Themes").click()
         themes_page.click_sort_by("name")
         addons = themes_page.addon_names
         addons_set = set(addons)
@@ -77,7 +40,7 @@ class TestThemes:
     def test_that_themes_can_be_sorted_by_updated_date(self, mozwebqa):
         """Test for Litmus 11638."""
         home_page = Home(mozwebqa)
-        themes_page = home_page.header.application_masthead("Themes").click()
+        themes_page = home_page.header.site_navigation_menu("Themes").click()
         themes_page.click_sort_by("updated")
         addons = themes_page.addon_names
         addons_set = set(addons)
@@ -92,7 +55,7 @@ class TestThemes:
     def test_that_themes_can_be_sorted_by_created_date(self, mozwebqa):
         """Test for Litmus 11638."""
         home_page = Home(mozwebqa)
-        themes_page = home_page.header.application_masthead("Themes").click()
+        themes_page = home_page.header.site_navigation_menu("Themes").click()
         themes_page.click_sort_by("created")
         addons = themes_page.addon_names
         addons_set = set(addons)
@@ -107,7 +70,7 @@ class TestThemes:
     def test_that_themes_can_be_sorted_by_popularity(self, mozwebqa):
         """Test for Litmus 11638."""
         home_page = Home(mozwebqa)
-        themes_page = home_page.header.application_masthead("Themes").click()
+        themes_page = home_page.header.site_navigation_menu("Themes").click()
         themes_page.click_sort_by("popular")
         addons = themes_page.addon_names
         addons_set = set(addons)
@@ -122,7 +85,7 @@ class TestThemes:
     def test_that_themes_loads_themes_landing_page(self, mozwebqa):
         """Test for Litmus 15339."""
         home_page = Home(mozwebqa)
-        themes_page = home_page.header.application_masthead("Themes").click()
+        themes_page = home_page.header.site_navigation_menu("Themes").click()
         url_current_page = themes_page.get_url_current_page()
         Assert.true(url_current_page.endswith("/themes/"))
 
@@ -130,7 +93,7 @@ class TestThemes:
     def test_that_clicking_on_theme_name_loads_its_detail_page(self, mozwebqa):
         """Test for Litmus 15363."""
         home_page = Home(mozwebqa)
-        themes_page = home_page.header.application_masthead("Themes").click()
+        themes_page = home_page.header.site_navigation_menu("Themes").click()
         theme_name = themes_page.addon_name(1)
         theme_page = themes_page.click_on_first_addon()
         Assert.contains(theme_name, theme_page.addon_title)
@@ -139,7 +102,7 @@ class TestThemes:
     def test_that_themes_page_has_correct_title(self, mozwebqa):
         """Test for Litmus 15340."""
         home_page = Home(mozwebqa)
-        themes_page = home_page.header.application_masthead("Themes").click()
+        themes_page = home_page.header.site_navigation_menu("Themes").click()
         expected_title = "Most Popular Themes :: Add-ons for Firefox"
         Assert.equal(expected_title, themes_page.page_title)
 
@@ -147,7 +110,7 @@ class TestThemes:
     def test_themes_page_breadcrumb(self, mozwebqa):
         """Test for Litmus 15344."""
         home_page = Home(mozwebqa)
-        themes_page = home_page.header.application_masthead("Themes").click()
+        themes_page = home_page.header.site_navigation_menu("Themes").click()
         expected_breadcrumb = "Themes"
         Assert.equal(expected_breadcrumb, themes_page.breadcrumbs[1].text)
 
@@ -155,7 +118,7 @@ class TestThemes:
     def test_that_clicking_on_a_subcategory_loads_expected_page(self, mozwebqa):
         """Test for Litmus 15949."""
         home_page = Home(mozwebqa)
-        themes_page = home_page.header.application_masthead("Themes").click()
+        themes_page = home_page.header.site_navigation_menu("Themes").click()
         selected_category = themes_page.themes_category
         amo_category_page = themes_page.click_on_first_category()
         Assert.equal(selected_category, amo_category_page.title)
@@ -163,7 +126,7 @@ class TestThemes:
     @nondestructive
     def test_themes_subcategory_page_breadcrumb(self, mozwebqa):
         home_page = Home(mozwebqa)
-        themes_page = home_page.header.application_masthead("Themes").click()
+        themes_page = home_page.header.site_navigation_menu("Themes").click()
         selected_category = themes_page.themes_category
         amo_category_page = themes_page.click_on_first_category()
         expected_breadcrumbs = ['Add-ons for Firefox', 'Themes', selected_category]
@@ -174,7 +137,7 @@ class TestThemes:
     def test_that_themes_categories_are_listed_on_left_hand_side(self, mozwebqa):
         """Test for Litmus 15342."""
         home_page = Home(mozwebqa)
-        themes_page = home_page.header.application_masthead("Themes").click()
+        themes_page = home_page.header.site_navigation_menu("Themes").click()
         current_page_url = home_page.get_url_current_page()
         Assert.true(current_page_url.endswith("/themes/"))
         default_categories = ["Animals", "Compact", "Large", "Miscellaneous", "Modern", "Nature", "OS Integration", "Retro", "Sports"]
@@ -189,10 +152,10 @@ class TestThemes:
     def test_that_themes_categories_are_not_extensions_categories(self, mozwebqa):
         """Test for Litmus 15343."""
         home_page = Home(mozwebqa)
-        themes_page = home_page.header.application_masthead("Themes").click()
+        themes_page = home_page.header.site_navigation_menu("Themes").click()
         themes_categories = themes_page.get_all_categories
 
-        home_page.header.application_masthead("Extensions").click()
+        home_page.header.site_navigation_menu("Extensions").click()
         extensions_categories = themes_page.get_all_categories
 
         Assert.not_equal(len(themes_categories), len(extensions_categories))
@@ -205,6 +168,6 @@ class TestThemes:
         https://litmus.mozilla.org/show_test.cgi?id=15359
         """
         home_page = Home(mozwebqa)
-        themes_page = home_page.header.application_masthead("Themes").click()
+        themes_page = home_page.header.site_navigation_menu("Themes").click()
         themes_page.paginator.click_last_page()
         Assert.greater_equal(themes_page.addon_count, 1)
