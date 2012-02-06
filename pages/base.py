@@ -139,9 +139,20 @@ class Base(Page):
         _account_dropdown_locator = (By.CSS_SELECTOR, "#aux-nav .account ul")
         _logout_locator = (By.CSS_SELECTOR, "li.nomenu.logout > a")
 
-        def application_masthead(self, lookup):
+        _site_navigation_menus_locator = (By.CSS_SELECTOR, "#site-nav > ul > li")
+
+        def site_navigation_menu(self, value):
+            #used to access one specific menu
+            for menu in self.site_navigation_menus:
+                if menu.name == value.upper():
+                    return menu
+            raise Exception("Menu not found: '%s'. Menus: %s" % (value, [menu.name for menu in self.site_navigation_menus]))
+
+        @property
+        def site_navigation_menus(self):
+            #returns a list containing all the site navigation menus
             from pages.regions.header_menu import HeaderMenu
-            return HeaderMenu(self.testsetup, lookup)
+            return [HeaderMenu(self.testsetup, element) for element in self.selenium.find_elements(*self._site_navigation_menus_locator)]
 
         def click_other_application(self, other_app):
             hover_locator = self.selenium.find_element(*self._other_applications_locator)
@@ -216,6 +227,26 @@ class Base(Page):
 
             from pages.user import MyCollections
             return MyCollections(self.testsetup)
+
+        def click_my_favorites(self):
+            item_locator = (By.CSS_SELECTOR, " li:nth-child(4) a")
+            hover_element = self.selenium.find_element(*self._account_controller_locator)
+            click_element = self.selenium.find_element(*self._account_dropdown_locator).find_element(*item_locator)
+            ActionChains(self.selenium).move_to_element(hover_element).\
+                move_to_element(click_element).\
+                click().perform()
+
+            from pages.user import MyFavorites
+            return MyFavorites(self.testsetup)
+
+        @property
+        def is_my_favorites_menu_present(self):
+            item_locator = (By.CSS_SELECTOR, " li:nth-child(4) a")
+            hover_element = self.selenium.find_element(*self._account_controller_locator)
+            ActionChains(self.selenium).move_to_element(hover_element).perform()
+
+            target_element = self.selenium.find_element(*self._account_dropdown_locator).find_element(*item_locator).text
+            return 'My Favorites' in target_element
 
         @property
         def is_user_logged_in(self):

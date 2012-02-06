@@ -80,11 +80,11 @@ class DiscoveryPane(Base):
         return self.is_element_visible(*self._more_ways_section_locator)
 
     @property
-    def more_ways_addons(self):
+    def browse_all_addons(self):
         return self.selenium.find_element(*self._more_ways_addons_locator).text
 
     @property
-    def more_ways_personas(self):
+    def see_all_themes(self):
         return self.selenium.find_element(*self._more_ways_personas_locator).text
 
     @property
