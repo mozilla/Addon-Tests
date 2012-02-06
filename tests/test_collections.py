@@ -16,7 +16,7 @@ destructive = pytest.mark.destructive
 
 class TestCollections:
 
-    @nondestructive
+    @destructive
     def test_create_collection(self, mozwebqa):
         """
         """
@@ -27,13 +27,16 @@ class TestCollections:
 
         random_name = "random number following%s" % random.randrange(1, 100)
 
-        create_collection_page.input_name(random_name)
-        create_collection_page.input_description(random_name)
+        create_collection_page.type_name(random_name)
+        create_collection_page.type_description(random_name)
         collection = create_collection_page.click_create_collection()
 
         Assert.equal(collection.notification, "Collection created!")
-        Assert.equal(collection.collection_name, 'Name is ' + random_name)
+        Assert.equal(collection.collection_name, random_name)
         collection.delete()
         user_collections = collection.delete_confirmation()
-        Assert.equal(user_collections.collections_text, 'No collections found.')
-
+        if not user_collections.collection_text is 'No collections found.':
+            for collection_element in range(len(user_collections.collections)):
+                Assert.true(random_name not in user_collections.collections[collection_element].text)
+        else:
+            return True
