@@ -268,7 +268,7 @@ class TestSearch:
         https://litmus.mozilla.org/show_test.cgi?id=17352
         """
         home_page = Home(mozwebqa)
-        amo_collection_page = home_page.header.application_masthead("Collections").click()
+        amo_collection_page = home_page.header.site_navigation_menu("Collections").click()
         amo_search_results_page = amo_collection_page.search_for('web')
 
         Assert.true(amo_search_results_page.result_count > 0)
@@ -280,7 +280,7 @@ class TestSearch:
         https://litmus.mozilla.org/show_test.cgi?id=17349
         """
         amo_home_page = Home(mozwebqa)
-        amo_personas_page = amo_home_page.header.application_masthead("Personas").click()
+        amo_personas_page = amo_home_page.header.site_navigation_menu("Personas").click()
         amo_personas_page.header.search_for('fox')
 
         Assert.true(amo_personas_page.persona_count > 0)

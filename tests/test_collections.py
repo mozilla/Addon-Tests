@@ -21,7 +21,7 @@ class TestCollections:
         """
         """
         home_page = Home(mozwebqa)
-        collections_page = home_page.header.application_masthead("Collections").click()
+        collections_page = home_page.header.site_navigation_menu("Collections").click()
         create_collection_page = collections_page.click_create_collection_button()
         home_page.login("browserID")
 

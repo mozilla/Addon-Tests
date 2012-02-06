@@ -8,6 +8,7 @@ import re
 
 from urllib2 import urlparse
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
 
 from pages.page import Page
 from pages.base import Base
@@ -73,6 +74,7 @@ class Details(Base):
     _add_to_collection_locator = (By.CSS_SELECTOR, ".collection-add.widget.collection")
     _add_to_collection_widget_button_locator = (By.CSS_SELECTOR, ".collection-add-login .register-button .button")
     _add_to_collection_widget_login_link_locator = (By.CSS_SELECTOR, "div.collection-add-login p:nth-child(3) > a")
+    _add_to_favorites_widget_locator = (By.CSS_SELECTOR, 'div.widgets > a.favorite')
 
     _development_channel_locator = (By.CSS_SELECTOR, "#beta-channel")
     _development_channel_toggle = (By.CSS_SELECTOR, '#beta-channel a.toggle')
@@ -85,6 +87,8 @@ class Details(Base):
     _previous_link_locator = (By.CSS_SELECTOR, ".paginator .rel > a:nth-child(2)")
     _last_page_link_locator = (By.CSS_SELECTOR, ".paginator .rel > a:nth-child(4)")
     _first_page_link_locator = (By.CSS_SELECTOR, ".paginator .rel > a:nth-child(1)")
+
+    _add_to_favorites_updating_locator = (By.CSS_SELECTOR, "a.ajax-loading")
 
     # contribute to addon
     _contribute_button_locator = (By.ID, 'contribute-button')
@@ -482,7 +486,7 @@ class Details(Base):
 
     class DetailsReviewSnippet(Page):
 
-        _reviews_locator = (By.CSS_SELECTOR, '#reviews div') # Base locator
+        _reviews_locator = (By.CSS_SELECTOR, '#reviews div')  # Base locator
         _username_locator = (By.CSS_SELECTOR, 'p.byline a')
 
         def __init__(self, testsetup, element):
@@ -546,3 +550,15 @@ class Details(Base):
     @property
     def is_paypal_login_dialog_visible(self):
         return self.is_element_visible(*self._paypal_login_dialog_locator)
+
+    def _wait_for_favorite_addon_to_be_added(self):
+        WebDriverWait(self.selenium, 10).until(lambda s: not self.is_element_present(*self._add_to_favorites_updating_locator))
+
+    def click_add_to_favorites(self):
+        self.selenium.find_element(*self._add_to_favorites_widget_locator).click()
+        self._wait_for_favorite_addon_to_be_added()
+
+    @property
+    def is_addon_marked_as_favorite(self):
+        is_favorite = self.selenium.find_element(*self._add_to_favorites_widget_locator).text
+        return 'Remove from favorites' in is_favorite

@@ -11,105 +11,93 @@ from pages.page import Page
 
 
 class HeaderMenu(Page):
-
     """
-    This class access the header area from the top of the AMO impala pages.
+    This class access the header area from the top of the AMO pages.
     To access it just use:
         HeaderMenu(self.testsetup, lookup)
     Where lookup is:
-        -the menu name you want to access;
-        -the menu item number you want to access;
+        -the web element coresponding to the menu you want to access
     Ex:
-        HeaderMenu(self.testsetup, 'Extensions') returns the Extension menu
-        HeaderMenu(self.testsetup, 1) returns the Personas menu
+        HeaderMenu(self.testsetup, personas_element) returns the Personas menu
     """
 
-    _header_menu_locator = (By.XPATH, '//nav[@id=\'site-nav\']/ul/li')
-    _link_locator = (By.CSS_SELECTOR, 'a')
-    _header_submenu_list_locator = (By.CSS_SELECTOR, 'ul > li')
+    _menu_items_locator = (By.CSS_SELECTOR, 'ul > li')
+    _name_locator = (By.CSS_SELECTOR, 'a')
 
-    def __init__(self, testsetup, lookup):
+    def __init__(self, testsetup, element):
         Page.__init__(self, testsetup)
-        if type(lookup) == int:
-            self._root_element = self.selenium.find_elements(*self._header_menu_locator)[lookup]
-        else:
-            self._root_element = self.selenium.find_element(self._header_menu_locator[0], '%s[a[text()=\'%s\']]' % (self._header_menu_locator[1], lookup))
+        self._root_element = element
 
     @property
     def name(self):
-        return self._root_element.find_element(*self._link_locator).text
+        return self._root_element.find_element(*self._name_locator).text
 
     def click(self):
-        menu_item_name = self.name
-        self._root_element.find_element(*self._link_locator).click()
+        name = self.name
+        self._root_element.find_element(*self._name_locator).click()
 
-        if "EXTENSIONS" in menu_item_name:
+        if "EXTENSIONS" in name:
             from pages.extensions import ExtensionsHome
             return ExtensionsHome(self.testsetup)
-        elif "PERSONAS" in menu_item_name:
+        elif "PERSONAS" in name:
             from pages.personas import Personas
             return Personas(self.testsetup)
-        elif "THEMES" in menu_item_name:
+        elif "THEMES" in name:
             from pages.themes import Themes
             return Themes(self.testsetup)
-        elif "COLLECTIONS" in menu_item_name:
+        elif "COLLECTIONS" in name:
             from pages.collections import Collections
             return Collections(self.testsetup)
 
-    def hover_over_menu_item(self):
-        ActionChains(self.selenium).\
-            move_to_element(self._root_element).\
-            perform()
+    def hover(self):
+        element = self._root_element.find_element(*self._name_locator)
+        ActionChains(self.selenium).move_to_element(element).perform()
 
     @property
     def is_menu_dropdown_visible(self):
-        dropdown_menu = self._root_element.find_element(*self._header_submenu_list_locator)
+        dropdown_menu = self._root_element.find_element(*self._menu_items_locator)
         return dropdown_menu.is_displayed()
 
     @property
-    def menu_items(self):
-        submenu_list = self._root_element.find_elements(*self._header_submenu_list_locator)
-        return [self.SubMenu(self.testsetup, i, self._root_element) for i in range(len(submenu_list))]
+    def items(self):
+        return [self.HeaderMenuItem(self.testsetup, element, self)
+                for element in self._root_element.find_elements(*self._menu_items_locator)]
 
-    class SubMenu(Page):
+    class HeaderMenuItem (Page):
 
-        _header_submenu_list_locator = (By.CSS_SELECTOR, 'ul > li')
-        _link_tag = (By.CSS_SELECTOR, 'a')
+        _name_locator = (By.CSS_SELECTOR, 'a')
 
-        def __init__(self, testsetup, lookup, root_element):
+        def __init__(self, testsetup, element, menu):
             Page.__init__(self, testsetup)
-            self._root_element = root_element
-            self.lookup = lookup
-            if type(self.lookup) == int:
-                self._submenu_root_element = self._root_element.find_elements(*self._header_submenu_list_locator)[self.lookup]
+            self._root_element = element
+            self._menu = menu
 
         @property
         def name(self):
-            submenu_link = self._submenu_root_element.find_element(*self._link_tag)
-            ActionChains(self.selenium).move_to_element(self._root_element).perform()
-            return submenu_link.text
+            self._menu.hover()
+            return self._root_element.find_element(*self._name_locator).text
 
         @property
         def is_featured(self):
-            return self._submenu_root_element.find_element(By.CSS_SELECTOR, '*').tag_name == 'em'
+            return self._root_element.find_element(By.CSS_SELECTOR, '*').tag_name == 'em'
 
         def click(self):
-            submenu_link = self._submenu_root_element.find_element(*self._link_tag)
-            parent_menu_name = self._root_element.find_element(*self._link_locator).text
+            menu_name = self._menu.name
+            self._menu.hover()
+            ActionChains(self.selenium).\
+                move_to_element(self._root_element).\
+                click().\
+                perform()
 
-            ActionChains(self.selenium).move_to_element(self._root_element).\
-                move_to_element(submenu_link).\
-                click().perform()
-
-            if "Extensions" in parent_menu_name:
+            if "EXTENSIONS" in menu_name:
                 from pages.extensions import ExtensionsHome
                 return ExtensionsHome(self.testsetup)
-            elif "Personas" in parent_menu_name:
+            elif "PERSONAS" in menu_name:
                 from pages.personas import Personas
                 return Personas(self.testsetup)
-            elif "Themes" in parent_menu_name:
+            elif "THEMES" in menu_name:
                 from pages.themes import Themes
                 return Themes(self.testsetup)
-            elif "Collections" in parent_menu_name:
-                from pages.collection import Collections
+            elif "COLLECTIONS" in menu_name:
+                from pages.collections import Collections
                 return Collections(self.testsetup)
