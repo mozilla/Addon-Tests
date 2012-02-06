@@ -27,7 +27,7 @@ class TestPersonas:
         https://litmus.mozilla.org/show_test.cgi?id=12037
         """
         home_page = Home(mozwebqa)
-        personas_page = home_page.header.application_masthead("Personas").click()
+        personas_page = home_page.header.site_navigation_menu("Personas").click()
         Assert.true(personas_page.is_the_current_page)
         Assert.true(personas_page.is_featured_addons_present)
         browse_personas_page = personas_page.click_start_exploring()
@@ -42,7 +42,7 @@ class TestPersonas:
         https://litmus.mozilla.org/show_test.cgi?id=15391
         """
         home_page = Home(mozwebqa)
-        personas_page = home_page.header.application_masthead("Personas").click()
+        personas_page = home_page.header.site_navigation_menu("Personas").click()
         Assert.true(personas_page.is_the_current_page)
 
     @nondestructive
@@ -52,7 +52,7 @@ class TestPersonas:
         https://litmus.mozilla.org/show_test.cgi?id=15392
         """
         home_page = Home(mozwebqa)
-        personas_page = home_page.header.application_masthead("Personas").click()
+        personas_page = home_page.header.site_navigation_menu("Personas").click()
         Assert.true(personas_page.is_the_current_page)
         Assert.less_equal(personas_page.featured_personas_count, 6)
 
@@ -63,7 +63,7 @@ class TestPersonas:
         https://litmus.mozilla.org/show_test.cgi?id=15393
         """
         home_page = Home(mozwebqa)
-        personas_page = home_page.header.application_masthead("Personas").click()
+        personas_page = home_page.header.site_navigation_menu("Personas").click()
         Assert.true(personas_page.is_the_current_page)
         Assert.equal(6, personas_page.recently_added_count)
         recently_added_dates = personas_page.recently_added_dates
@@ -76,7 +76,7 @@ class TestPersonas:
         https://litmus.mozilla.org/show_test.cgi?id=15394
         """
         home_page = Home(mozwebqa)
-        personas_page = home_page.header.application_masthead("Personas").click()
+        personas_page = home_page.header.site_navigation_menu("Personas").click()
         Assert.true(personas_page.is_the_current_page)
         Assert.equal(6, personas_page.most_popular_count)
         downloads = personas_page.most_popular_downloads
@@ -89,7 +89,7 @@ class TestPersonas:
         https://litmus.mozilla.org/show_test.cgi?id=15395
         """
         home_page = Home(mozwebqa)
-        personas_page = home_page.header.application_masthead("Personas").click()
+        personas_page = home_page.header.site_navigation_menu("Personas").click()
         Assert.true(personas_page.is_the_current_page)
         Assert.equal(6, personas_page.top_rated_count)
         ratings = personas_page.top_rated_ratings
@@ -104,7 +104,7 @@ class TestPersonas:
 
         # Step 1, 2: Access AMO Home, Click on Persona category link.
         home_page = Home(mozwebqa)
-        personas_page = home_page.header.application_masthead("Personas").click()
+        personas_page = home_page.header.site_navigation_menu("Personas").click()
         Assert.true(personas_page.is_the_current_page)
 
         # Step 3: Click on any persona.
@@ -155,6 +155,6 @@ class TestPersonas:
         """
         home_page = Home(mozwebqa)
 
-        personas_page = home_page.header.application_masthead("Personas").click()
+        personas_page = home_page.header.site_navigation_menu("Personas").click()
         Assert.equal(personas_page.breadcrumbs[0].text, 'Add-ons for Firefox')
         Assert.equal(personas_page.breadcrumbs[1].text, 'Personas')
