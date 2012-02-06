@@ -123,11 +123,11 @@ class Themes(Base):
             return 'incompatible' in self._root_element.find_element(*self._hovercard_locator).get_attribute('class')
 
         @property
-        def incompatibile_flag_text(self):
+        def incompatible_flag_text(self):
             return self._root_element.find_element(*self._compatible_locator).text
 
         @property
-        def is_incompatibile_flag_present(self):
+        def is_incompatible_flag_present(self):
             from selenium.common.exceptions import NoSuchElementException
             try:
                 self._root_element.find_element(*self._compatible_locator)
