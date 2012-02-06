@@ -10,5 +10,4 @@ execnet==1.0.9
 BeautifulSoup==3.2.0
 pytest-mozwebqa==0.7.1
 UnittestZero
-pep8==0.6.1
 rdflib==3.1.0
