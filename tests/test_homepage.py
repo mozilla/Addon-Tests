@@ -208,6 +208,7 @@ class TestHome:
 
         Assert.equal(expected_navigation_menu, actual_navigation_menus)
 
+    @pytest.mark.native
     @nondestructive
     @pytest.mark.litmus([25745, 25747, 25749, 25751, 25754, 25756, 25758, 25760, 25763, 25764])
     def test_the_name_of_each_site_navigation_menu_in_the_header(self, mozwebqa):
