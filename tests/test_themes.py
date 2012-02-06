@@ -179,7 +179,7 @@ class TestThemes:
         https://litmus.mozilla.org/show_test.cgi?id=15361
         """
         home_page = Home(mozwebqa)
-        themes_page = home_page.header.application_masthead("Themes").click()
+        themes_page = home_page.header.site_navigation_menu("Themes").click()
 
         themes = themes_page.themes
 
