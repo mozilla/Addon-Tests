@@ -35,7 +35,7 @@ class Collections(Base):
         self.selenium.find_element(*self._create_a_collection_locator).click()
         return self.CreateNewCollection(self.testsetup)
 
-    class UserCollections(Base):
+    class UserCollections(Page):
 
         _collections_locator = (By.CSS_SELECTOR, ".featured-inner")
         _collection_text_locator = (By.CSS_SELECTOR, ".item > h3 > a")
@@ -48,7 +48,7 @@ class Collections(Base):
         def collections(self):
             return self.selenium.find_elements(*self._collections_locator)
 
-    class CreateNewCollection(Base):
+    class CreateNewCollection(Page):
 
         _name_field_locator = (By.ID, "id_name")
         _description_field_locator = (By.ID, "id_description")
