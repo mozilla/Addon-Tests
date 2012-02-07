@@ -33,9 +33,11 @@ How to Set up and Build AMO Tests Locally
 This repository contains Selenium tests used to test the website addons.mozilla.org.
 
 Mozilla maintains an guide to running Automated tests on our QMO website:
+
 https://quality.mozilla.org/docs/webqa/running-webqa-automated-tests/
 
 This wiki page has some advanced instructions specific to Windows:
+
 https://wiki.mozilla.org/QA_SoftVision_Team/WebQA_Automation
 
 
@@ -69,7 +71,7 @@ An example of running one test in a file:
 	py.test --driver=firefox --credentials=/credentials.yaml -q tests/test_details_page.py -k test_that_external_link_leads_to_addon_website
 
 For more advanced command line options and commands for running tests against a Selenium Grid or moz-grid-config see the documentation on [davehunt's pytest mozwebqa github][pymozwebqa]:
-[pymozwebqa] https://github.com/davehunt/pytest-mozwebqa
+[pymozwebqa]: https://github.com/davehunt/pytest-mozwebqa
 
 ###Virtualenv and Virtualenvwrapper (Optional/Intermediate level)
 While most of us have had some experience using virtual machines, [virtualenv][venv] is something else entirely.  It's used to keep libraries that you install from clashing and messing up your local environment.  After installing virtualenv, installing [virtualenvwrapper][wrapper] will give you some nice commands to use with virtualenvwrapper.
@@ -78,7 +80,8 @@ While most of us have had some experience using virtual machines, [virtualenv][v
 [wrapper]: http://www.doughellmann.com/projects/virtualenvwrapper/
 
 ### Moz-grid-config (Optional/Intermediate level)
-Prerequisites [Java Runtime Environment][Java JRE], [Apache Ant][ANT]
+Prerequisites: [Java Runtime Environment][Java JRE], [Apache Ant][ANT]
+
 [Moz-grid-config][moz-grid] is a project containining our Selenium Grid configuration. It uses Apache Ant to run the Selenium hub or node to the configuration defined in the yaml files.
 
 We recommend git cloning the repository for a couple of reasons:
@@ -93,7 +96,7 @@ You will need to make sure that the name of your Firefox application matches one
 [moz-grid]:https://github.com/mozilla/moz-grid-config
 [ANT]: http://ant.apache.org/
 [Java JRE]: http://www.oracle.com/technetwork/java/javase/downloads/index.html
-[Selenium Download]: http://code.google.com/p/selenium/downloads/list
+[Selenium Downloads]: http://code.google.com/p/selenium/downloads/list
 
 
 Writing Tests
@@ -106,7 +109,7 @@ we'd like to ask you to do:
 2. Follow our simple [style guide][Style Guide]
 3. Fork this project with your own GitHub account
 4. Add your test into the "tests" folder and the necessary methods for it into the appropriate file in "pages"
-5. Make sure all tests are passing, and submit a pull request with your changes
+5. Make sure all tests are passing and submit a pull request with your changes
 
 [GitHub Templates]: https://github.com/mozilla/mozwebqa-test-templates 
 [Style Guide]: https://wiki.mozilla.org/QA/Execution/Web_Testing/Docs/Automation/StyleGuide
