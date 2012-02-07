@@ -43,18 +43,18 @@ https://wiki.mozilla.org/QA_SoftVision_Team/WebQA_Automation
 
 ###You will need to install the following:
 
-### Git
+#### Git
 If you have cloned this project already then you can skip this!
 GitHub has excellent guides for [Windows][GitWin], [MacOSX][GitMacOSX] and [Linux][GitLinux].
 [GitWin]: http://help.github.com/win-set-up-git/
 [GitMacOSX]: http://help.github.com/mac-set-up-git/
 [GitLinux]: http://help.github.com/linux-set-up-git/
 
-### Python
+#### Python
 Before you will be able to run these tests you will need to have [Python 2.6][Python] installed.
 [Python]: http://python.org/getit/
 
-### Running tests locally
+#### Running tests locally
 
 Tests are run using the py.test library.  You will find examples here for running all of the tests, tests in one file and running a single test.
 
@@ -73,13 +73,13 @@ An example of running one test in a file:
 For more advanced command line options and commands for running tests against a Selenium Grid or moz-grid-config see the documentation on [davehunt's pytest mozwebqa github][pymozwebqa]:
 [pymozwebqa]: https://github.com/davehunt/pytest-mozwebqa
 
-###Virtualenv and Virtualenvwrapper (Optional/Intermediate level)
+####Virtualenv and Virtualenvwrapper (Optional/Intermediate level)
 While most of us have had some experience using virtual machines, [virtualenv][venv] is something else entirely.  It's used to keep libraries that you install from clashing and messing up your local environment.  After installing virtualenv, installing [virtualenvwrapper][wrapper] will give you some nice commands to use with virtualenvwrapper.
 
 [venv]: http://pypi.python.org/pypi/virtualenv
 [wrapper]: http://www.doughellmann.com/projects/virtualenvwrapper/
 
-### Moz-grid-config (Optional/Intermediate level)
+#### Moz-grid-config (Optional/Intermediate level)
 Prerequisites: [Java Runtime Environment][Java JRE], [Apache Ant][ANT]
 
 [Moz-grid-config][moz-grid] is a project containining our Selenium Grid configuration. It uses Apache Ant to run the Selenium hub or node to the configuration defined in the yaml files.
