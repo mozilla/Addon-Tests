@@ -8,17 +8,16 @@ Skills needed for contributing effectively
 
 We love working with contributors to fill out the Selenium test coverage for addons, but it does require a few skills.   If you want to contribute automated tests to AMO, you will need to know some Python, some Selenium and you will need some basic familiarity with Github.
 
-If you know some Python, it's worth having a look at the Selenium framework to understand the basic concepts of browser based testing and especially page objects. We've got a branch which uses [Selenium RC][SeRC] and a branch which uses [Selenium Webdriver][webdriver].
+If you know some Python, it's worth having a look at the Selenium framework to understand the basic concepts of browser based testing and especially page objects. Our suite uses [Selenium WebDriver][webdriver].
 
 If you need to brush up on programming but are eager to start contributing immediately, please consider helping us find bugs in Mozilla [Firefox][firefox] or find bugs in the Mozilla web-sites tested by the [WebQA][webqa] team.
 
 To brush up on Python skills before engaging with us, [Dive Into Python][dive] is an excellent resource.  MIT also has [lecture notes on Python][mit] available through their open courseware.The programming concepts you will need to know include functions, working with classes, and some object oriented programming basics. 
 
 [mit]: http://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-189-a-gentle-introduction-to-programming-using-python-january-iap-2011/
-[dive]: http://diveintopython.nfshost.com/toc/index.html
+[dive]: http://www.diveintopython.net/toc/index.html
 [webqa]: http://quality.mozilla.org/teams/web-qa/
 [firefox]: http://quality.mozilla.org/teams/desktop-firefox/
-[SeRC]: http://seleniumhq.org/docs/05_selenium_rc.html
 [webdriver]: http://seleniumhq.org/docs/03_webdriver.html
 
 Questions are always welcome
@@ -52,7 +51,7 @@ GitHub has excellent guides for [Windows][GitWin], [MacOSX][GitMacOSX] and [Linu
 
 #### Python
 Before you will be able to run these tests you will need to have [Python 2.6][Python] installed.
-[Python]: http://python.org/getit/
+[Python]: http://www.python.org/download/releases/2.6.6/
 
 #### Running tests locally
 
@@ -64,11 +63,11 @@ An example of running all tests without a Selenium Server:
 	
 An example of running all of the tests in one file:
 
-	py.test --driver=firefox --credentials=/credentials.yaml -q tests/test_details_page.py
+	py.test --driver=firefox --credentials=/credentials.yaml tests/test_details_page.py
 	
 An example of running one test in a file:
 
-	py.test --driver=firefox --credentials=/credentials.yaml -q tests/test_details_page.py -k test_that_external_link_leads_to_addon_website
+	py.test --driver=firefox --credentials=/credentials.yaml tests/test_details_page.py -k test_that_external_link_leads_to_addon_website
 
 For more advanced command line options and commands for running tests against a Selenium Grid or moz-grid-config see the documentation on [davehunt's pytest mozwebqa github][pymozwebqa]:
 [pymozwebqa]: https://github.com/davehunt/pytest-mozwebqa
