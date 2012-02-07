@@ -30,87 +30,71 @@ While we take pains to keep our documentation updated, the best source of inform
 
 How to Set up and Build AMO Tests Locally
 -----------------------------------------
-This repository contains Selenium tests used to test the website addons.mozilla.org.  This readme file describes who to set up your environment to run the Selenium tests on your local machine.  [This wiki page][softvision] has instructions specific to windows.
+This repository contains Selenium tests used to test the website addons.mozilla.org.
 
-[softvision]: https://wiki.mozilla.org/QA_SoftVision_Team/WebQA_Automation
+Mozilla maintains an guide to running Automated tests on our QMO website:
+https://quality.mozilla.org/docs/webqa/running-webqa-automated-tests/
+
+This wiki page has some advanced instructions specific to Windows:
+https://wiki.mozilla.org/QA_SoftVision_Team/WebQA_Automation
+
 
 ###You will need to install the following:
 
-### Java
-You will need a version of the [Java Runtime Environment][JRE] installed
-
-[JRE]: http://www.oracle.com/technetwork/java/javase/downloads/index.html
+### Git
+If you have cloned this project already then you can skip this!
+GitHub has excellent guides for [Windows][GitWin], [MacOSX][GitMacOSX] and [Linux][GitLinux].
+[GitWin]: http://help.github.com/win-set-up-git/
+[GitMacOSX]: http://help.github.com/mac-set-up-git/
+[GitLinux]: http://help.github.com/linux-set-up-git/
 
 ### Python
-Before you will be able to run these tests you will need to have Python 2.6 installed.
+Before you will be able to run these tests you will need to have [Python 2.6][Python] installed.
+[Python]: http://python.org/getit/
 
-### Requirements.txt
-This will install several Python libraries needed for running our tests including pytest and our own mozwebqa plugin.
+### Running tests locally
 
-Run
+Tests are run using the py.test library.  You will find examples here for running all of the tests, tests in one file and running a single test.
 
-    easy_install pip
+An example of running all tests without a Selenium Server:
 
-followed by
+	py.test --driver=firefox --credentials=/credentials.yaml
+	
+An example of running all of the tests in one file:
 
-    sudo pip install -r requirements.txt
-    
-__note__
+	py.test --driver=firefox --credentials=/credentials.yaml -q tests/test_details_page.py
+	
+An example of running one test in a file:
 
-If you are running on Ubuntu/Debian you will need to do following first
+	py.test --driver=firefox --credentials=/credentials.yaml -q tests/test_details_page.py -k test_that_external_link_leads_to_addon_website
 
-    sudo apt-get install python-setuptools
-    
-to install the required Python libraries.
+For more advanced command line options and commands for running tests against a Selenium Grid or moz-grid-config see the documentation on [davehunt's pytest mozwebqa github][pymozwebqa]:
+[pymozwebqa] https://github.com/davehunt/pytest-mozwebqa
 
-###Virtualenv and Virtualenvwrapper
+###Virtualenv and Virtualenvwrapper (Optional/Intermediate level)
 While most of us have had some experience using virtual machines, [virtualenv][venv] is something else entirely.  It's used to keep libraries that you install from clashing and messing up your local environment.  After installing virtualenv, installing [virtualenvwrapper][wrapper] will give you some nice commands to use with virtualenvwrapper.
 
 [venv]: http://pypi.python.org/pypi/virtualenv
 [wrapper]: http://www.doughellmann.com/projects/virtualenvwrapper/
 
-### Moz-grid-config
+### Moz-grid-config (Optional/Intermediate level)
+Prerequisites [Java Runtime Environment][Java JRE], [Apache Ant][ANT]
+[Moz-grid-config][moz-grid] is a project containining our Selenium Grid configuration. It uses Apache Ant to run the Selenium hub or node to the configuration defined in the yaml files.
 
-[Moz-grid-config][moz-grid] is a separate repository containining our Selenium grid configuration.  We recommend git cloning the repository for a couple of reasons:
+We recommend git cloning the repository for a couple of reasons:
 
-1. It will give you access to a profile containing certificate exceptions which you will need.
-2. It contains a jar file of the latest Selenium in it's lib directory
+1. The commands to launch a node or hub are all pre-configured and as simple as typing `ant launch-hub` or `ant launch-node`
+2. The paths to browser binaries and nodes can be stored in configuration (yaml) files
+3. It contains a jar file of the latest Selenium in it's lib directory
 
 (If you prefer to download Selenium it's own, you can do that from [here][Selenium Downloads])
-
-To start the Selenium jar file with the moz-grid-config firefox profile, run the following command line:
-
-    java -jar <your path here>/moz-grid-config/lib/selenium-server-standalone-<current version>.jar -firefoxProfileTemplate <your path here>/moz-grid-config/firefoxprofiles/certificateExceptions/
-
 You will need to make sure that the name of your Firefox application matches one of the names in moz-grid-config/grid_configuration.yml.  As an example:  even though Firefox typically installs without a version number in the name, moz-grid-config requires it to be named "Firefox <version number>".app on mac. 
 
-[Selenium Downloads]: http://code.google.com/p/selenium/downloads/list
 [moz-grid]:https://github.com/mozilla/moz-grid-config
-### Running tests locally
+[ANT]: http://ant.apache.org/
+[Java JRE]: http://www.oracle.com/technetwork/java/javase/downloads/index.html
+[Selenium Download]: http://code.google.com/p/selenium/downloads/list
 
-Tests are run using the py.test library.  You will find examples here for running all of the tests, tests in one file and running a single test.
-
-An example of running all tests:
-
-	py.test --browser="Firefox 7 on Mac OS X" --credentials=/credentials.yaml
-	
-An example of running all of the tests in one file:
-
-	py.test --browser="Firefox 7 on Mac OS X" --credentials=/credentials.yaml -q tests/test_details_page.py
-	
-An example of running one test in a file:
-
-	py.test  --browser="Firefox 7 on Mac OS X" --credentials=/credentials.yaml -q tests/test_details_page.py -k test_that_external_link_leads_to_addon_website
-
-To run the user accounts tests:
-
-1. Create an account on the AMO instance
-2. Edit the credentials.yaml with your credentials
-3. Run the tests with:
-
-		py.test --credentials=~/credentials.yaml
-
-For more command line options access https://github.com/davehunt/pytest-mozwebqa
 
 Writing Tests
 -------------
