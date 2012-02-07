@@ -45,3 +45,20 @@ class TestPaypal:
         Assert.true(payment_popup.is_payment_successful)
         payment_popup.close_paypal_popup()
         Assert.true(addon_page.is_the_current_page)
+
+    @destructive
+    def test_that_user_can_make_a_contribution_without_logging_into_amo(self, mozwebqa):
+        """Test that checks if the user is able to make a contribution without logging in to AMO."""
+        addon_page = Details(mozwebqa, 'Adblock Plus')
+        Assert.false(addon_page.header.is_user_logged_in)
+
+        contribution_snippet = addon_page.click_contribute_button()
+        paypal_frame = contribution_snippet.click_make_contribution_button()
+        Assert.true(addon_page.is_paypal_login_dialog_visible)
+
+        payment_popup = paypal_frame.login_to_paypal(user="paypal")
+        Assert.true(payment_popup.is_user_logged_into_paypal)
+        payment_popup.click_pay()
+        Assert.true(payment_popup.is_payment_successful)
+        payment_popup.close_paypal_popup()
+        Assert.true(addon_page.is_the_current_page)
