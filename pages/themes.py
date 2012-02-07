@@ -111,7 +111,7 @@ class Themes(Base):
 
     class Theme(Page):
 
-        _compatible_locator = (By.CSS_SELECTOR, "div.hovercard > span.notavail")
+        _not_compatible_locator = (By.CSS_SELECTOR, "div.hovercard > span.notavail")
         _hovercard_locator = (By.CSS_SELECTOR, "div.hovercard")
 
         def __init__(self, testsetup, element):
@@ -119,18 +119,18 @@ class Themes(Base):
             self._root_element = element
 
         @property
-        def is_compatibile(self):
+        def is_incompatible(self):
             return 'incompatible' in self._root_element.find_element(*self._hovercard_locator).get_attribute('class')
 
         @property
-        def incompatible_flag_text(self):
-            return self._root_element.find_element(*self._compatible_locator).text
+        def not_compatible_flag_text(self):
+            return self._root_element.find_element(*self._not_compatible_locator).text
 
         @property
         def is_incompatible_flag_present(self):
             from selenium.common.exceptions import NoSuchElementException
             try:
-                self._root_element.find_element(*self._compatible_locator)
+                self._root_element.find_element(*self._not_compatible_locator)
                 return True
             except NoSuchElementException:
                 return False
