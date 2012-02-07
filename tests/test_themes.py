@@ -175,3 +175,22 @@ class TestThemes:
         themes_page = home_page.header.site_navigation_menu("Themes").click()
         themes_page.paginator.click_last_page()
         Assert.greater_equal(themes_page.addon_count, 1)
+
+    @nondestructive
+    def test_that_check_the_flag_for_featured_addons(self, mozwebqa):
+        """
+        Test for Litmus 15361
+        https://litmus.mozilla.org/show_test.cgi?id=15361
+        """
+        home_page = Home(mozwebqa)
+        themes_page = home_page.header.site_navigation_menu("Themes").click()
+
+        themes = themes_page.themes
+
+        for theme in themes:
+            if theme.is_incompatible:
+                Assert.true(theme.is_incompatible_flag_present)
+                Assert.equal('This theme is incompatible with your version of Firefox',
+                             theme.not_compatible_flag_text)
+            else:
+                Assert.false(theme.is_incompatible_flag_present)

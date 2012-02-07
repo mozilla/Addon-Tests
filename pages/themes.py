@@ -8,6 +8,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
 
 from pages.base import Base
+from pages.page import Page
 
 
 class Themes(Base):
@@ -103,6 +104,36 @@ class Themes(Base):
         pattern = "(\d)"
         ratings = self._extract_integers(pattern, *self._addons_rating_locator)
         return ratings
+
+    @property
+    def themes(self):
+        return [self.Theme(self.testsetup, theme)for theme in self.selenium.find_elements(*self._addons_root_locator)]
+
+    class Theme(Page):
+
+        _not_compatible_locator = (By.CSS_SELECTOR, "div.hovercard > span.notavail")
+        _hovercard_locator = (By.CSS_SELECTOR, "div.hovercard")
+
+        def __init__(self, testsetup, element):
+            Page.__init__(self, testsetup)
+            self._root_element = element
+
+        @property
+        def is_incompatible(self):
+            return 'incompatible' in self._root_element.find_element(*self._hovercard_locator).get_attribute('class')
+
+        @property
+        def not_compatible_flag_text(self):
+            return self._root_element.find_element(*self._not_compatible_locator).text
+
+        @property
+        def is_incompatible_flag_present(self):
+            from selenium.common.exceptions import NoSuchElementException
+            try:
+                self._root_element.find_element(*self._not_compatible_locator)
+                return True
+            except NoSuchElementException:
+                return False
 
 
 class Theme(Base):
