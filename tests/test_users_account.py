@@ -207,5 +207,5 @@ class TestAccounts:
             home_page = Home(mozwebqa)
 
         my_favorites_page = home_page.header.click_my_favorites()
-        Assert.equal(my_favorites_page.is_the_current_page)
+        Assert.true(my_favorites_page.is_the_current_page)
         Assert.equal('My Favorite Add-ons', my_favorites_page.my_favorites_header_text)
