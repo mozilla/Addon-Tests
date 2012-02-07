@@ -13,7 +13,6 @@ from pages.home import Home
 from pages.details import Details
 
 destructive = pytest.mark.destructive
-nondestructive = pytest.mark.nondestructive
 
 
 class TestPaypal:
