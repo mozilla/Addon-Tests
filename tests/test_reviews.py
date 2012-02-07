@@ -56,6 +56,7 @@ class TestReviews:
         Assert.equal(details_page.review_count, 20)
         Assert.equal(details_page.paginator.page_number, page_number + 1)
 
+    @pytest.mark.native
     @xfail(reason="bug 708970")
     @destructive
     def test_that_new_review_is_saved(self, mozwebqa):
@@ -91,6 +92,7 @@ class TestReviews:
         Assert.equal(review.date, date)
         Assert.equal(review.text, body)
 
+    @pytest.mark.native
     @xfail(reason="refactoring to compensate for purchased addons http://bit.ly/ucH6Ow")
     @destructive
     def test_that_one_star_rating_increments(self, mozwebqa):
@@ -126,6 +128,7 @@ class TestReviews:
         new_rating_counter = details_page.get_rating_counter(1)
         Assert.equal(new_rating_counter, 1)
 
+    @pytest.mark.native
     @xfail(reason="refactoring to compensate for purchased addons http://bit.ly/ucH6Ow")
     @destructive
     def test_that_two_star_rating_increments(self, mozwebqa):
@@ -161,6 +164,7 @@ class TestReviews:
         new_rating_counter = details_page.get_rating_counter(2)
         Assert.equal(new_rating_counter, 1)
 
+    @pytest.mark.native
     @xfail(reason="refactoring to compensate for purchased addons http://bit.ly/ucH6Ow")
     @destructive
     def test_that_three_star_rating_increments(self, mozwebqa):
@@ -196,6 +200,7 @@ class TestReviews:
         new_rating_counter = details_page.get_rating_counter(3)
         Assert.equal(new_rating_counter, 1)
 
+    @pytest.mark.native
     @xfail(reason="refactoring to compensate for purchased addons http://bit.ly/ucH6Ow")
     @destructive
     def test_that_four_star_rating_increments(self, mozwebqa):
@@ -231,6 +236,7 @@ class TestReviews:
         new_rating_counter = details_page.get_rating_counter(4)
         Assert.equal(new_rating_counter, 1)
 
+    @pytest.mark.native
     @xfail(reason="refactoring to compensate for purchased addons http://bit.ly/ucH6Ow")
     @destructive
     def test_that_five_star_rating_increments(self, mozwebqa):

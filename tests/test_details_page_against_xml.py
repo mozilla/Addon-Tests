@@ -164,6 +164,7 @@ class TestDetailsAgainstXML:
         max_version = xml_compatible_applications[2]
         Assert.equal(browser_compatible_applications, 'Works with %s %s - %s' % (name, min_version, max_version))
 
+    @pytest.mark.native
     @nondestructive
     def test_that_addon_number_of_total_downloads_is_correct(self, mozwebqa):
         """Test for Litmus 15331."""

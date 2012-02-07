@@ -57,6 +57,7 @@ class TestDiscoveryPane:
         Assert.equal(5, discovery_pane.personas_count)
         Assert.true(discovery_pane.is_personas_see_all_link_visible)
 
+    @pytest.mark.native
     @nondestructive
     def test_that_featured_personas_go_to_their_landing_page_when_clicked(self, mozwebqa):
         """Test for Litmus 15081."""
@@ -95,6 +96,7 @@ class TestDiscoveryPane:
         Assert.true(home_page.is_the_current_page)
         Assert.false(home_page.header.is_user_logged_in)
 
+    @pytest.mark.native
     @nondestructive
     def test_that_carousel_works(self, mozwebqa):
         """
@@ -120,6 +122,7 @@ class TestDiscoveryPane:
             discovery_pane.sliders[i].click_previous()
             slider2 = slider1
 
+    @pytest.mark.native
     @nondestructive
     def test_that_extension_is_underlined_while_hover_and_text_not(self, mozwebqa):
         """

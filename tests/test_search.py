@@ -157,6 +157,7 @@ class TestSearch:
         Assert.greater(search_page.result_count, 0)
         Assert.true(int(search_page.number_of_results_text.split()[0]) > 0)
 
+    @pytest.mark.native
     @nondestructive
     def test_sorting_by_downloads(self, mozwebqa):
         """
@@ -174,6 +175,7 @@ class TestSearch:
         downloads.extend([i.downloads for i in search_page.results()])
         Assert.is_sorted_descending(downloads)
 
+    @pytest.mark.native
     @nondestructive
     def test_sorting_by_newest(self, mozwebqa):
         """
@@ -185,6 +187,7 @@ class TestSearch:
         Assert.true('sort=created' in search_page.get_url_current_page())
         Assert.is_sorted_descending([i.created_date for i in search_page.results()])
 
+    @pytest.mark.native
     @xfail(reason="Bugzilla 698165")
     @nondestructive
     def test_sorting_by_most_recently_updated(self, mozwebqa):
@@ -201,6 +204,7 @@ class TestSearch:
         results.extend([i.updated_date for i in search_page.results()])
         Assert.is_sorted_descending(results)
 
+    @pytest.mark.native
     @nondestructive
     def test_sorting_by_number_of_most_users(self, mozwebqa):
         """

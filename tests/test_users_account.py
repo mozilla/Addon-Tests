@@ -52,6 +52,7 @@ class TestAccounts:
         home_page.header.click_logout()
         Assert.false(home_page.header.is_user_logged_in)
 
+    @pytest.mark.native
     @nondestructive
     def test_user_can_access_the_edit_profile_page(self, mozwebqa):
         """
@@ -73,6 +74,7 @@ class TestAccounts:
         Assert.equal("Details", amo_user_edit_page.details_header_text)
         Assert.equal("Notifications", amo_user_edit_page.notification_header_text)
 
+    @pytest.mark.native
     @nondestructive
     def test_user_can_access_the_view_profile_page(self, mozwebqa):
         """
@@ -89,6 +91,7 @@ class TestAccounts:
 
         Assert.equal(view_profile_page.about_me, 'About me')
 
+    @pytest.mark.native
     @xfail(reason="https://www.pivotaltracker.com/story/show/23966893")
     @destructive
     def test_hide_email_checkbox_works(self, mozwebqa):
@@ -126,6 +129,7 @@ class TestAccounts:
 
             Assert.equal(view_profile_page.is_email_field_present, initial_state, 'Could not restore profile to initial state.')
 
+    @pytest.mark.native
     @destructive
     def test_user_can_update_profile_information_in_account_settings_page(self, mozwebqa):
         """
@@ -171,6 +175,7 @@ class TestAccounts:
 
             user_edit_page.click_update_account()
 
+    @pytest.mark.native
     @nondestructive
     def test_user_my_collections_page(self, mozwebqa):
         """
@@ -188,6 +193,7 @@ class TestAccounts:
         Assert.equal('Collections by %s :: Add-ons for Firefox' % username, home_page.page_title)
         Assert.equal('Collections by %s' % username, my_collections_page.my_collections_header_text)
 
+    @pytest.mark.native
     @destructive
     def test_user_my_favorites_page(self, mozwebqa):
         """
