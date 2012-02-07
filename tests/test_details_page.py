@@ -165,6 +165,11 @@ class TestDetails:
 
     @nondestructive
     def test_open_close_functionality_for_image_viewer(self, mozwebqa):
+        """
+        Test for Litmus 4846.
+        https://litmus.mozilla.org/show_test.cgi?id=4846
+        https://bugzilla.mozilla.org/show_bug.cgi?id=721921
+        """
 
         detail_page = Details(mozwebqa, 'firebug')
 
@@ -175,6 +180,10 @@ class TestDetails:
 
     @nondestructive
     def test_navigation_buttons_for_image_viewer(self, mozwebqa):
+        """
+        Test for Litmus 4846.
+        https://litmus.mozilla.org/show_test.cgi?id=4846
+        """
 
         detail_page = Details(mozwebqa, 'firebug')
         images_count = detail_page.previewer.image_count
