@@ -57,6 +57,7 @@ class TestDiscoveryPane:
         Assert.equal(5, discovery_pane.personas_count)
         Assert.true(discovery_pane.is_personas_see_all_link_visible)
 
+    @pytest.mark.native
     @nondestructive
     def test_that_featured_personas_go_to_their_landing_page_when_clicked(self, mozwebqa):
         """Test for Litmus 15081."""

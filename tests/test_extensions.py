@@ -24,6 +24,7 @@ class TestExtensions:
         featured_extensions_page = home_page.header.site_navigation_menu("Extensions").click()
         Assert.equal(featured_extensions_page.default_selected_tab, "Featured")
 
+    @pytest.mark.native
     @nondestructive
     def test_next_button_is_disabled_on_the_last_page(self, mozwebqa):
         """
@@ -37,6 +38,7 @@ class TestExtensions:
 
         Assert.true(featured_extensions_page.paginator.is_next_page_disabled, 'Next button is available')
 
+    @pytest.mark.native
     @nondestructive
     def test_that_checks_if_the_extensions_are_sorted_by_recently_updated(self, mozwebqa):
         """

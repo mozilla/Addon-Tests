@@ -193,6 +193,7 @@ class TestAccounts:
         Assert.equal('Collections by %s :: Add-ons for Firefox' % username, home_page.page_title)
         Assert.equal('Collections by %s' % username, my_collections_page.my_collections_header_text)
 
+    @pytest.mark.native
     @destructive
     def test_user_my_favorites_page(self, mozwebqa):
         """
