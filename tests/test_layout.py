@@ -105,3 +105,12 @@ class TestAmoLayout:
         Assert.equal(home_page.header.search_field_placeholder, 'search for add-ons')
         Assert.true(home_page.header.is_search_button_visible)
         Assert.equal(home_page.header.search_button_title, 'Search')
+
+    @nondestructive
+    def test_the_search_box_exist(self, mozwebqa):
+        """
+        Test for Litmus 25766
+        https://litmus.mozilla.org/show_test.cgi?id=25766
+        """
+        home_page = Home(mozwebqa)
+        Assert.true(home_page.header.is_search_textbox_visible)

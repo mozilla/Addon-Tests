@@ -184,6 +184,10 @@ class Base(Page):
             return self.is_element_visible(*self._search_button_locator)
 
         @property
+        def is_search_textbox_visible(self):
+            return self.is_element_visible(*self._search_textbox_locator)
+
+        @property
         def search_button_title(self):
             return self.selenium.find_element(*self._search_button_locator).get_attribute('title')
 
