@@ -31,7 +31,7 @@ How to Set up and Build AMO Tests Locally
 -----------------------------------------
 This repository contains Selenium tests used to test the website addons.mozilla.org.
 
-Mozilla maintains an guide to running Automated tests on our QMO website:
+Mozilla maintains a guide to running Automated tests on our QMO website:
 
 https://quality.mozilla.org/docs/webqa/running-webqa-automated-tests/
 
@@ -55,7 +55,9 @@ Before you will be able to run these tests you will need to have [Python 2.6][Py
 
 #### Running tests locally
 
-Tests are run using the py.test library.  You will find examples here for running all of the tests, tests in one file and running a single test.
+Tests are run using the py.test library. You will find examples here for running all of the tests, tests in one file and running a single test.
+
+WebDriver does not need a Selenium Server or Grid to run so these examples bypass this step and just use the --driver command.
 
 An example of running all tests without a Selenium Server:
 
@@ -69,7 +71,9 @@ An example of running one test in a file:
 
 	py.test --driver=firefox --credentials=/credentials.yaml tests/test_details_page.py -k test_that_external_link_leads_to_addon_website
 
-For more advanced command line options and commands for running tests against a Selenium Grid or moz-grid-config see the documentation on [davehunt's pytest mozwebqa github][pymozwebqa]:
+For information about running tests against a Selenium Grid or moz-grid-config see the section in this document about setting up moz-grid-config.
+
+The mozwebqa plugin has advanced command line options for reporting and using browsers. See the documentation on [davehunt's pytest mozwebqa github][pymozwebqa]:
 [pymozwebqa]: https://github.com/davehunt/pytest-mozwebqa
 
 ####Virtualenv and Virtualenvwrapper (Optional/Intermediate level)
