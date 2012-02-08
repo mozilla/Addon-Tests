@@ -10,8 +10,8 @@ import pytest
 
 from unittestzero import Assert
 
-from pages.discovery import DiscoveryPane
-from pages.home import Home
+from pages.desktop.discovery import DiscoveryPane
+from pages.desktop.home import Home
 
 nondestructive = pytest.mark.nondestructive
 

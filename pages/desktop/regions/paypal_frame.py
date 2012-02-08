@@ -22,7 +22,7 @@ class PayPalFrame(Page):
     def login_to_paypal(self, user="paypal"):
         self.selenium.find_element(*self._paypal_login_button).click()
 
-        from pages.paypal_popup import PayPalPopup
+        from pages.desktop.paypal_popup import PayPalPopup
         pop_up = PayPalPopup(self.testsetup)
         pop_up.login_paypal(user)
         return PayPalPopup(self.testsetup)

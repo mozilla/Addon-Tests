@@ -12,8 +12,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.action_chains import ActionChains
 
 from pages.page import Page
-from pages.base import Base
-from pages.regions.search_filter import FilterBase
+from pages.desktop.base import Base
+from pages.desktop.regions.search_filter import FilterBase
 
 
 class SearchHome(Base):

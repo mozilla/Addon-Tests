@@ -8,7 +8,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
 
 from pages.page import Page
-from pages.base import Base
+from pages.desktop.base import Base
 
 
 class Home(Base):
@@ -54,18 +54,18 @@ class Home(Base):
 
     def click_featured_personas_see_all_link(self):
         self.selenium.find_element(*self._featured_personas_see_all_link).click()
-        from pages.personas import Personas
+        from pages.desktop.personas import Personas
         return Personas(self.testsetup)
 
     def click_featured_collections_see_all_link(self):
         self.selenium.find_element(*self._featured_collections_locator).find_element(By.CSS_SELECTOR, " a").click()
-        from pages.collection import Collections
+        from pages.desktop.collection import Collections
         return Collections(self.testsetup)
 
     def click_to_explore(self, what):
         what = what.replace(' ', '_').lower()
         self.selenium.find_element(*getattr(self, "_explore_%s_link_locator" % what)).click()
-        from pages.extensions import ExtensionsHome
+        from pages.desktop.extensions import ExtensionsHome
         return ExtensionsHome(self.testsetup)
 
     @property
@@ -107,7 +107,7 @@ class Home(Base):
 
     def click_on_first_addon(self):
         self.selenium.find_element(*self._first_addon_locator).click()
-        from pages.details import Details
+        from pages.desktop.details import Details
         return Details(self.testsetup)
 
     def get_title_of_link(self, name):
@@ -141,7 +141,7 @@ class Home(Base):
 
         def click_link(self):
             self._root_element.find_element(*self._link_locator).click()
-            from pages.category import Category
+            from pages.desktop.category import Category
             return Category(self.testsetup)
 
     class MostPopularRegion(Page):

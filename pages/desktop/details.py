@@ -11,7 +11,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 
 from pages.page import Page
-from pages.base import Base
+from pages.desktop.base import Base
 
 
 class Details(Base):
@@ -138,7 +138,7 @@ class Details(Base):
 
     def click_view_statistics(self):
         self.selenium.find_element(*self._daily_users_link_locator).click()
-        from pages.statistics import Statistics
+        from pages.desktop.statistics import Statistics
         return Statistics(self.testsetup)
 
     @property
@@ -172,7 +172,7 @@ class Details(Base):
 
     def click_whats_this_license(self):
         self.selenium.find_element(*self._whats_this_license_locator).click()
-        from pages.addons_site import UserFAQ
+        from pages.desktop.addons_site import UserFAQ
         return UserFAQ(self.testsetup)
 
     @property
@@ -339,7 +339,7 @@ class Details(Base):
 
         def click_collection(self):
             self._root_element.find_element(*self._name_locator).click()
-            from pages.collection import Collections
+            from pages.desktop.collection import Collections
             return Collections(self.testsetup)
 
         @property
@@ -424,7 +424,7 @@ class Details(Base):
         def click_image(self, image_no=0):
             images = self.selenium.find_elements(*self._image_locator)
             images[image_no].find_element(*self._link_locator).click()
-            from pages.regions.image_viewer import ImageViewer
+            from pages.desktop.regions.image_viewer import ImageViewer
             image_viewer = ImageViewer(self.testsetup)
             return image_viewer
 
@@ -499,12 +499,12 @@ class Details(Base):
 
         def click_username(self):
             self._root_element.find_element(*self._username_locator).click()
-            from pages.user import User
+            from pages.desktop.user import User
             return User(self.testsetup)
 
     def click_to_write_review(self):
         self.selenium.find_element(*self._add_review_link_locator).click()
-        from pages.addons_site import WriteReviewBlock
+        from pages.desktop.addons_site import WriteReviewBlock
         return WriteReviewBlock(self.testsetup)
 
     @property
@@ -540,7 +540,7 @@ class Details(Base):
 
         def click_make_contribution_button(self):
             self.selenium.find_element(*self._make_contribution_button_locator).click()
-            from pages.regions.paypal_frame import PayPalFrame
+            from pages.desktop.regions.paypal_frame import PayPalFrame
             return PayPalFrame(self.testsetup)
 
     def click_contribute_button(self):

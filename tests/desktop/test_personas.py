@@ -10,8 +10,8 @@ import pytest
 
 from unittestzero import Assert
 
-from pages.home import Home
-from pages.personas import Personas
+from pages.desktop.home import Home
+from pages.desktop.personas import Personas
 
 xfail = pytest.mark.xfail
 nondestructive = pytest.mark.nondestructive

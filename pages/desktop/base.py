@@ -27,7 +27,7 @@ class Base(Page):
     def login(self, type="normal", user="default"):
         if type == "normal":
             self.selenium.get(self.base_url + "/en-US/firefox/users/login")
-            from pages.user import Login
+            from pages.desktop.user import Login
             login = Login(self.testsetup)
             login.login_user_normal(user)
         elif type == "browserID":
@@ -45,7 +45,7 @@ class Base(Page):
 
     def click_amo_logo(self):
         self.selenium.find_element(*self._amo_logo_locator).click()
-        from pages.home import Home
+        from pages.desktop.home import Home
         return Home(self.testsetup)
 
     @property
@@ -76,12 +76,12 @@ class Base(Page):
 
     @property
     def breadcrumbs(self):
-        from pages.regions.breadcrumbs import Breadcrumbs
+        from pages.desktop.regions.breadcrumbs import Breadcrumbs
         return Breadcrumbs(self.testsetup).breadcrumbs
 
     @property
     def paginator(self):
-        from pages.regions.paginator import Paginator
+        from pages.desktop.regions.paginator import Paginator
         return Paginator(self.testsetup)
 
     def _extract_iso_dates(self, date_format, *locator):
@@ -151,7 +151,7 @@ class Base(Page):
         @property
         def site_navigation_menus(self):
             #returns a list containing all the site navigation menus
-            from pages.regions.header_menu import HeaderMenu
+            from pages.desktop.regions.header_menu import HeaderMenu
             return [HeaderMenu(self.testsetup, element) for element in self.selenium.find_elements(*self._site_navigation_menus_locator)]
 
         def click_other_application(self, other_app):
@@ -172,7 +172,7 @@ class Base(Page):
             search_box = self.selenium.find_element(*self._search_textbox_locator)
             search_box.send_keys(search_term)
             self.selenium.find_element(*self._search_button_locator).click()
-            from pages.search import SearchHome
+            from pages.desktop.search import SearchHome
             return SearchHome(self.testsetup)
 
         @property
@@ -189,7 +189,7 @@ class Base(Page):
 
         def click_login_browser_id(self):
             self.selenium.find_element(*self._login_browser_id_locator).click()
-            from pages.user import Login
+            from pages.desktop.user import Login
             return Login(self.testsetup)
 
         def click_logout(self):
@@ -203,7 +203,7 @@ class Base(Page):
                 move_to_element(click_element).\
                 click().perform()
 
-            from pages.user import EditProfile
+            from pages.desktop.user import EditProfile
             return EditProfile(self.testsetup)
 
         def click_view_profile(self):
@@ -214,7 +214,7 @@ class Base(Page):
                 move_to_element(click_element).\
                 click().perform()
 
-            from pages.user import ViewProfile
+            from pages.desktop.user import ViewProfile
             return ViewProfile(self.testsetup)
 
         def click_my_collections(self):
@@ -225,7 +225,7 @@ class Base(Page):
                 move_to_element(click_element).\
                 click().perform()
 
-            from pages.user import MyCollections
+            from pages.desktop.user import MyCollections
             return MyCollections(self.testsetup)
 
         def click_my_favorites(self):
@@ -236,7 +236,7 @@ class Base(Page):
                 move_to_element(click_element).\
                 click().perform()
 
-            from pages.user import MyFavorites
+            from pages.desktop.user import MyFavorites
             return MyFavorites(self.testsetup)
 
         @property

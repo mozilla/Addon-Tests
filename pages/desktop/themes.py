@@ -7,7 +7,7 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
 
-from pages.base import Base
+from pages.desktop.base import Base
 from pages.page import Page
 
 

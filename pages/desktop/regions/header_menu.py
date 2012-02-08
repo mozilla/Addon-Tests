@@ -12,7 +12,7 @@ from pages.page import Page
 
 class HeaderMenu(Page):
     """
-    This class access the header area from the top of the AMO pages.
+    This class access the header area from the top of the AMO pages.desktop.
     To access it just use:
         HeaderMenu(self.testsetup, lookup)
     Where lookup is:
@@ -37,16 +37,16 @@ class HeaderMenu(Page):
         self._root_element.find_element(*self._name_locator).click()
 
         if "EXTENSIONS" in name:
-            from pages.extensions import ExtensionsHome
+            from pages.desktop.extensions import ExtensionsHome
             return ExtensionsHome(self.testsetup)
         elif "PERSONAS" in name:
-            from pages.personas import Personas
+            from pages.desktop.personas import Personas
             return Personas(self.testsetup)
         elif "THEMES" in name:
-            from pages.themes import Themes
+            from pages.desktop.themes import Themes
             return Themes(self.testsetup)
         elif "COLLECTIONS" in name:
-            from pages.collection import Collections
+            from pages.desktop.collection import Collections
             return Collections(self.testsetup)
 
     def hover(self):
@@ -90,14 +90,14 @@ class HeaderMenu(Page):
                 perform()
 
             if "EXTENSIONS" in menu_name:
-                from pages.extensions import ExtensionsHome
+                from pages.desktop.extensions import ExtensionsHome
                 return ExtensionsHome(self.testsetup)
             elif "PERSONAS" in menu_name:
-                from pages.personas import Personas
+                from pages.desktop.personas import Personas
                 return Personas(self.testsetup)
             elif "THEMES" in menu_name:
-                from pages.themes import Themes
+                from pages.desktop.themes import Themes
                 return Themes(self.testsetup)
             elif "COLLECTIONS" in menu_name:
-                from pages.collection import Collections
+                from pages.desktop.collection import Collections
                 return Collections(self.testsetup)

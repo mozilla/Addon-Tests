@@ -8,7 +8,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
 
 from pages.page import Page
-from pages.base import Base
+from pages.desktop.base import Base
 
 
 class DiscoveryPane(Base):
@@ -93,7 +93,7 @@ class DiscoveryPane(Base):
 
     def click_logout(self):
         self.selenium.find_element(*self._logout_link_locator).click()
-        from pages.home import Home
+        from pages.desktop.home import Home
         return Home(self.testsetup, open_url=False)
 
     @property

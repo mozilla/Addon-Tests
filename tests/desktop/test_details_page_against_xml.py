@@ -10,8 +10,8 @@ import pytest
 from unittestzero import Assert
 from urllib2 import urlparse
 
-from pages.details import Details
-from pages.addons_api import AddOnsAPI
+from pages.desktop.details import Details
+from pages.desktop.addons_api import AddOnsAPI
 
 xfail = pytest.mark.xfail
 nondestructive = pytest.mark.nondestructive

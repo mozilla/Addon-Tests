@@ -9,8 +9,8 @@ import pytest
 
 from unittestzero import Assert
 
-from pages.home import Home
-from pages.details import Details
+from pages.desktop.home import Home
+from pages.desktop.details import Details
 
 destructive = pytest.mark.destructive
 

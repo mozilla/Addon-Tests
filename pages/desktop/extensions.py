@@ -11,7 +11,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.action_chains import ActionChains
 
 from pages.page import Page
-from pages.base import Base
+from pages.desktop.base import Base
 
 
 class ExtensionsHome(Base):
@@ -65,7 +65,7 @@ class Extension(Page):
 
         def click(self):
             self._root_element.find_element(*self._name_locator).click()
-            from pages.details import Details
+            from pages.desktop.details import Details
             return Details(self.testsetup)
 
         @property

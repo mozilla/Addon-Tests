@@ -10,8 +10,8 @@ from copy import deepcopy
 
 from unittestzero import Assert
 
-from pages.home import Home
-from pages.details import Details
+from pages.desktop.home import Home
+from pages.desktop.details import Details
 
 xfail = pytest.mark.xfail
 nondestructive = pytest.mark.nondestructive

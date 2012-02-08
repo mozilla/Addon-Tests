@@ -7,7 +7,7 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
-from pages.base import Base
+from pages.desktop.base import Base
 from pages.page import Page
 
 
@@ -36,7 +36,7 @@ class Login(Base):
         password.send_keys(Keys.RETURN)
 
     def login_user_browser_id(self, user):
-        from pages.browser_id import BrowserID
+        from pages.desktop.browser_id import BrowserID
         pop_up = BrowserID(self.testsetup)
         pop_up.login_browser_id(user)
         pop_up.sign_in()

@@ -9,7 +9,7 @@ import urllib2
 
 from BeautifulSoup import BeautifulStoneSoup
 
-from pages.base import Base
+from pages.desktop.base import Base
 
 
 class AddOnsAPI(Base):

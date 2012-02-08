@@ -6,7 +6,7 @@
 
 import pytest
 from unittestzero import Assert
-from pages.details import Details
+from pages.desktop.details import Details
 
 
 nondestructive = pytest.mark.nondestructive
