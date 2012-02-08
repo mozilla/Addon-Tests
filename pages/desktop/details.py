@@ -486,7 +486,7 @@ class Details(Base):
 
     class DetailsReviewSnippet(Page):
 
-        _reviews_locator = (By.CSS_SELECTOR, '#reviews div') # Base locator
+        _reviews_locator = (By.CSS_SELECTOR, '#reviews div')  # Base locator
         _username_locator = (By.CSS_SELECTOR, 'p.byline a')
 
         def __init__(self, testsetup, element):
