@@ -185,7 +185,7 @@ class Base(Page):
 
         @property
         def is_search_textbox_visible(self):
-			return self.is_element_visible(*self._search_textbox_locator)        
+            return self.is_element_visible(*self._search_textbox_locator)        
 
         @property
         def search_button_title(self):
