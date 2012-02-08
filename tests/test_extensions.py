@@ -24,6 +24,23 @@ class TestExtensions:
         featured_extensions_page = home_page.header.site_navigation_menu("Extensions").click()
         Assert.equal(featured_extensions_page.default_selected_tab, "Featured")
 
+    @nondestructive
+    def test_previous_button_is_disabled_on_the_first_page(self, mozwebqa):
+        """
+        Test for Litmus 29709.
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=29709
+        """
+        home_page = Home(mozwebqa)
+        featured_extensions_page = home_page.header.site_navigation_menu("Extensions").click()
+        featured_extensions_page.sort_by('most_users')
+
+        Assert.true(featured_extensions_page.paginator.is_prev_page_disabled)
+
+        featured_extensions_page.paginator.click_next_page()
+        featured_extensions_page.paginator.click_prev_page()
+
+        Assert.true(featured_extensions_page.paginator.is_prev_page_disabled)
+
     @pytest.mark.native
     @nondestructive
     def test_next_button_is_disabled_on_the_last_page(self, mozwebqa):
