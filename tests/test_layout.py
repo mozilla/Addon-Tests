@@ -106,9 +106,9 @@ class TestAmoLayout:
 
     @nondestructive
     def test_the_search_box_exist(self, mozwebqa):
-		"""
-		Test for Litmus 25766
-		https://litmus.mozilla.org/show_test.cgi?id=25766
-		"""
-		home_page = Home(mozwebqa)
-		Assert.true(home_page.header.is_search_textbox_visible)
+        """
+        Test for Litmus 25766
+        https://litmus.mozilla.org/show_test.cgi?id=25766
+        """
+        home_page = Home(mozwebqa)
+        Assert.true(home_page.header.is_search_textbox_visible)
