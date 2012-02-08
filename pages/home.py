@@ -59,7 +59,7 @@ class Home(Base):
 
     def click_featured_collections_see_all_link(self):
         self.selenium.find_element(*self._featured_collections_locator).find_element(By.CSS_SELECTOR, " a").click()
-        from pages.collection import Collections
+        from pages.collections import Collections
         return Collections(self.testsetup)
 
     def click_to_explore(self, what):

@@ -46,7 +46,7 @@ class HeaderMenu(Page):
             from pages.themes import Themes
             return Themes(self.testsetup)
         elif "COLLECTIONS" in name:
-            from pages.collection import Collections
+            from pages.collections import Collections
             return Collections(self.testsetup)
 
     def hover(self):
@@ -99,5 +99,5 @@ class HeaderMenu(Page):
                 from pages.themes import Themes
                 return Themes(self.testsetup)
             elif "COLLECTIONS" in menu_name:
-                from pages.collection import Collections
+                from pages.collections import Collections
                 return Collections(self.testsetup)

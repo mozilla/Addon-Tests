@@ -339,7 +339,7 @@ class Details(Base):
 
         def click_collection(self):
             self._root_element.find_element(*self._name_locator).click()
-            from pages.collection import Collections
+            from pages.collections import Collections
             return Collections(self.testsetup)
 
         @property
@@ -486,7 +486,7 @@ class Details(Base):
 
     class DetailsReviewSnippet(Page):
 
-        _reviews_locator = (By.CSS_SELECTOR, '#reviews div') # Base locator
+        _reviews_locator = (By.CSS_SELECTOR, '#reviews div')  # Base locator
         _username_locator = (By.CSS_SELECTOR, 'p.byline a')
 
         def __init__(self, testsetup, element):
