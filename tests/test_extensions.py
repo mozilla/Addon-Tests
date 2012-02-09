@@ -24,6 +24,7 @@ class TestExtensions:
         featured_extensions_page = home_page.header.site_navigation_menu("Extensions").click()
         Assert.equal(featured_extensions_page.default_selected_tab, "Featured")
 
+    @pytest.mark.native
     @nondestructive
     def test_previous_button_is_disabled_on_the_first_page(self, mozwebqa):
         """
