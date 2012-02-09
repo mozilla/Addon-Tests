@@ -38,6 +38,7 @@ class TestExtensions:
 
         Assert.true(featured_extensions_page.paginator.is_next_page_disabled, 'Next button is available')
 
+    @pytest.mark.native
     @nondestructive
     def test_that_checks_if_the_extensions_are_sorted_by_newest(self, mozwebqa):
         """
