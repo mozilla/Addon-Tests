@@ -26,6 +26,24 @@ class TestExtensions:
 
     @pytest.mark.native
     @nondestructive
+    def test_previous_button_is_disabled_on_the_first_page(self, mozwebqa):
+        """
+        Test for Litmus 29709.
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=29709
+        """
+        home_page = Home(mozwebqa)
+        featured_extensions_page = home_page.header.site_navigation_menu("Extensions").click()
+        featured_extensions_page.sort_by('most_users')
+
+        Assert.true(featured_extensions_page.paginator.is_prev_page_disabled)
+
+        featured_extensions_page.paginator.click_next_page()
+        featured_extensions_page.paginator.click_prev_page()
+
+        Assert.true(featured_extensions_page.paginator.is_prev_page_disabled)
+
+    @pytest.mark.native
+    @nondestructive
     def test_next_button_is_disabled_on_the_last_page(self, mozwebqa):
         """
         Test for Litmus 29710.
@@ -37,6 +55,26 @@ class TestExtensions:
         featured_extensions_page.paginator.click_last_page()
 
         Assert.true(featured_extensions_page.paginator.is_next_page_disabled, 'Next button is available')
+
+    @pytest.mark.native
+    @nondestructive
+    def test_that_checks_if_the_extensions_are_sorted_by_newest(self, mozwebqa):
+        """
+        Test for Litmus 29719
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=29719
+        """
+        home_page = Home(mozwebqa)
+        featured_extensions_page = home_page.header.site_navigation_menu("Extensions").click()
+        featured_extensions_page.sort_by('newest')
+        Assert.equal(featured_extensions_page.default_selected_tab, "Newest")
+        Assert.contains("sort=created", featured_extensions_page.get_url_current_page())
+
+        added_dates = [i.added_date for i in featured_extensions_page.extensions]
+        Assert.is_sorted_descending(added_dates)
+        featured_extensions_page.paginator.click_next_page()
+
+        added_dates.extend([i.added_date for i in featured_extensions_page.extensions])
+        Assert.is_sorted_descending(added_dates)
 
     @pytest.mark.native
     @nondestructive
