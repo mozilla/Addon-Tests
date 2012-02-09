@@ -22,6 +22,7 @@ class ExtensionsHome(Base):
 
     _sort_by_most_users_locator = (By.CSS_SELECTOR, "div#sorter > ul > li:nth-child(2) > a")
     _sort_by_recently_updated_locator = (By.CSS_SELECTOR, "li.extras > ul > li:nth-child(3) > a")
+    _sort_by_newest_locator = (By.CSS_SELECTOR, "div#sorter > ul > li:nth-child(4) > a")
 
     _hover_more_locator = (By.CSS_SELECTOR, "li.extras > a")
 
@@ -67,6 +68,14 @@ class Extension(Page):
             self._root_element.find_element(*self._name_locator).click()
             from pages.details import Details
             return Details(self.testsetup)
+
+        @property
+        def added_date(self):
+            """ Returns updated date of result in POSIX format """
+            date = self._root_element.find_element(*self._updated_date).text.replace('Added ', '')
+            # convert to POSIX format
+            date = strptime(date, '%B %d, %Y')
+            return mktime(date)
 
         @property
         def updated_date(self):

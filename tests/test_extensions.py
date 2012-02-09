@@ -40,6 +40,26 @@ class TestExtensions:
 
     @pytest.mark.native
     @nondestructive
+    def test_that_checks_if_the_extensions_are_sorted_by_newest(self, mozwebqa):
+        """
+        Test for Litmus 29719
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=29719
+        """
+        home_page = Home(mozwebqa)
+        featured_extensions_page = home_page.header.site_navigation_menu("Extensions").click()
+        featured_extensions_page.sort_by('newest')
+        Assert.equal(featured_extensions_page.default_selected_tab, "Newest")
+        Assert.contains("sort=created", featured_extensions_page.get_url_current_page())
+
+        added_dates = [i.added_date for i in featured_extensions_page.extensions]
+        Assert.is_sorted_descending(added_dates)
+        featured_extensions_page.paginator.click_next_page()
+
+        added_dates.extend([i.added_date for i in featured_extensions_page.extensions])
+        Assert.is_sorted_descending(added_dates)
+
+    @pytest.mark.native
+    @nondestructive
     def test_that_checks_if_the_extensions_are_sorted_by_recently_updated(self, mozwebqa):
         """
         Litmus 29727
