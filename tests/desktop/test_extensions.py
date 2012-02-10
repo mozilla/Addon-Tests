@@ -43,7 +43,12 @@ class TestExtensions:
         Assert.contains("&page=1", featured_extensions_page.get_url_current_page())
 
         featured_extensions_page.paginator.click_last_page()
+
+        Assert.true(featured_extensions_page.paginator.is_next_page_disabled)
+
         featured_extensions_page.paginator.click_first_page()
+
+        Assert.true(featured_extensions_page.paginator.is_prev_page_disabled)
 
     @pytest.mark.native
     @nondestructive
