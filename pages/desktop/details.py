@@ -5,6 +5,7 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import re
+import time
 
 from urllib2 import urlparse
 from selenium.webdriver.common.by import By
@@ -68,6 +69,7 @@ class Details(Base):
     #other_addons
     _other_addons_by_author_locator = (By.CSS_SELECTOR, "#author-addons > ul.listing-grid > section li")
     _other_addons_by_author_text_locator = (By.CSS_SELECTOR, '#author-addons > h2')
+    _reviews_section_header_locator = (By.CSS_SELECTOR, '#reviews > h2')
     _reviews_locator = (By.CSS_SELECTOR, "section#reviews div")
     _add_review_link_locator = (By.ID, "add-review")
 
@@ -329,6 +331,14 @@ class Details(Base):
     def is_next_link_visible(self):
         return self.is_element_visible(*self._next_link_locator)
 
+    @property
+    def is_reviews_section_in_view(self):
+        return (self.selenium.execute_script('return window.pageYOffset')) > 800
+
+    @property
+    def is_reviews_section_visible(self):
+        return self.is_element_visible(*self._reviews_section_header_locator)
+
     class PartOfCollectionsSnippet(Page):
 
         _name_locator = (By.CSS_SELECTOR, ' div.summary > h3')
@@ -339,7 +349,7 @@ class Details(Base):
 
         def click_collection(self):
             self._root_element.find_element(*self._name_locator).click()
-            from pages.desktop.collection import Collections
+            from pages.desktop.collections import Collections
             return Collections(self.testsetup)
 
         @property
@@ -461,6 +471,10 @@ class Details(Base):
 
     def click_version_info_link(self):
         self.selenium.find_element(*self._info_link_locator).click()
+
+    def click_user_reviews_link(self):
+        self.selenium.find_element(*self._review_link_locator).click()
+        time.sleep(5)
 
     def click_version_information_header(self):
         self.selenium.find_element(*self._version_information_heading_link_locator).click()
