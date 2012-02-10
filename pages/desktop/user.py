@@ -6,6 +6,7 @@
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import WebDriverWait
 
 from pages.desktop.base import Base
 from pages.page import Page
@@ -18,6 +19,7 @@ class Login(Base):
     _email_locator = (By.ID, 'id_username')
     _password_locator = (By.ID, 'id_password')
     _login_button_locator = (By.ID, 'login-submit')
+    _logout_locator = (By.CSS_SELECTOR, '.logout')
     _normal_login_locator = (By.ID, 'show-normal-login')
     _browser_id_locator = (By.CSS_SELECTOR, 'button.browserid-login')
 
@@ -36,10 +38,12 @@ class Login(Base):
         password.send_keys(Keys.RETURN)
 
     def login_user_browser_id(self, user):
-        from pages.desktop.browser_id import BrowserID
-        pop_up = BrowserID(self.testsetup)
-        pop_up.login_browser_id(user)
-        pop_up.sign_in()
+        credentials = self.testsetup.credentials[user]
+        from pages.desktop.browserid import BrowserID
+        pop_up = BrowserID(self.selenium, self.timeout)
+        #pop_up.login_browser_id(user)
+        pop_up.sign_in(credentials['email'], credentials['password'])
+        WebDriverWait(self.selenium, 20).until(lambda s: s.find_element(*self._logout_locator))
 
 
 class ViewProfile(Base):
