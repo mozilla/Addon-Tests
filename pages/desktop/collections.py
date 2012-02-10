@@ -6,7 +6,7 @@
 
 from selenium.webdriver.common.by import By
 
-from pages.base import Base
+from pages.desktop.base import Base
 from pages.page import Page
 
 
