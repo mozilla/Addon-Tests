@@ -3,6 +3,7 @@ Selenium Tests for addons.mozilla.org (amo)
 
 Thank you for checking out Mozilla's Addon-Tests test suite. Mozilla and the Mozwebqa team are grateful for the help and hard work of many contributors like yourself.
 The following contributors have submitted pull requests to Addon-Tests:
+
 https://github.com/mozilla/Addon-Tests/contributors
 
 Getting involved as a contributor
