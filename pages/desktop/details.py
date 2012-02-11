@@ -339,7 +339,7 @@ class Details(Base):
 
         def click_collection(self):
             self._root_element.find_element(*self._name_locator).click()
-            from pages.desktop.collection import Collections
+            from pages.desktop.collections import Collections
             return Collections(self.testsetup)
 
         @property
