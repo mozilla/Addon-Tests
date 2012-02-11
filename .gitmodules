@@ -1,0 +1,3 @@
+[submodule "pages/desktop/browserid"]
+	path = pages/desktop/browserid
+	url = git://github.com/davehunt/bidpom.git
