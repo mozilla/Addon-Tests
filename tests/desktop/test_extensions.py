@@ -26,6 +26,32 @@ class TestExtensions:
 
     @pytest.mark.native
     @nondestructive
+    def test_pagination(self, mozwebqa):
+        '''
+        Test for Litmus 29708
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=29708
+        '''
+        home_page = Home(mozwebqa)
+        featured_extensions_page = home_page.header.site_navigation_menu("Extensions").click()
+        featured_extensions_page.sort_by('most_users')
+        featured_extensions_page.paginator.click_next_page()
+
+        Assert.contains("&page=2", featured_extensions_page.get_url_current_page())
+
+        featured_extensions_page.paginator.click_prev_page()
+
+        Assert.contains("&page=1", featured_extensions_page.get_url_current_page())
+
+        featured_extensions_page.paginator.click_last_page()
+
+        Assert.true(featured_extensions_page.paginator.is_next_page_disabled)
+
+        featured_extensions_page.paginator.click_first_page()
+
+        Assert.true(featured_extensions_page.paginator.is_prev_page_disabled)
+
+    @pytest.mark.native
+    @nondestructive
     def test_previous_button_is_disabled_on_the_first_page(self, mozwebqa):
         """
         Test for Litmus 29709.
@@ -75,6 +101,29 @@ class TestExtensions:
 
         added_dates.extend([i.added_date for i in featured_extensions_page.extensions])
         Assert.is_sorted_descending(added_dates)
+
+    @pytest.mark.native
+    @nondestructive
+    def test_that_checks_the_extensions_are_sorted_by_name(self, mozwebqa):
+        """
+        Litmus 29723
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=29723
+        """
+        home_page = Home(mozwebqa)
+        featured_extensions_page = home_page.header.site_navigation_menu("Extensions").click()
+        featured_extensions_page.sort_by('name')
+
+        Assert.contains("sort=name", featured_extensions_page.get_url_current_page())
+
+        names = [i.name for i in featured_extensions_page.extensions]
+        sorted_names = sorted(names, key=unicode.lower)
+        Assert.true(names[:] == sorted_names[:])
+
+        featured_extensions_page.paginator.click_next_page()
+
+        names.extend([i.name for i in featured_extensions_page.extensions])
+        sorted_names = sorted(names, key=unicode.lower)
+        Assert.true(names[:] == sorted_names[:])
 
     @pytest.mark.native
     @nondestructive
