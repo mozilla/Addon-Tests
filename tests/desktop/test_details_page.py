@@ -410,7 +410,7 @@ class TestDetails:
     @nondestructive
     def test_that_clicking_user_reviews_slides_down_page_to_reviews_section(self, mozwebqa):
         """
-        Test for Lit mus 25708.
+        Test for Litmus 25708.
         https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25708
         """
         details_page = Details(mozwebqa, 'firebug')
