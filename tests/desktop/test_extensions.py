@@ -69,8 +69,8 @@ class TestExtensions:
         featured_extensions_page.sort_by('featured')
 
         Assert.contains("sort=featured", featured_extensions_page.get_url_current_page())
-        for i in featured_extensions_page.extensions:
-            Assert.equal("FEATURED", i.featured)
+        for extension in featured_extensions_page.extensions:
+            Assert.equal("FEATURED", extension.featured)
 
     @pytest.mark.native
     @nondestructive
