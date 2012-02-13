@@ -333,7 +333,7 @@ class Details(Base):
 
     @property
     def is_reviews_section_in_view(self):
-        return (self.selenium.execute_script('return window.pageYOffset')) > 800
+        return self.selenium.execute_script('return window.pageYOffset') > 1000
 
     @property
     def is_reviews_section_visible(self):
@@ -474,7 +474,7 @@ class Details(Base):
 
     def click_user_reviews_link(self):
         self.selenium.find_element(*self._review_link_locator).click()
-        time.sleep(5)
+        WebDriverWait(self.selenium, 10).until(lambda s: (self.selenium.execute_script('return window.pageYOffset')) > 1000)
 
     def click_version_information_header(self):
         self.selenium.find_element(*self._version_information_heading_link_locator).click()
