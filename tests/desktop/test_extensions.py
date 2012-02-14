@@ -84,6 +84,22 @@ class TestExtensions:
 
     @pytest.mark.native
     @nondestructive
+    def test_that_checks_if_the_extensions_are_sorted_by_featured(self, mozwebqa):
+        """
+        Test for Litmus 29713
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=29713
+        """
+        home_page = Home(mozwebqa)
+        featured_extensions_page = home_page.header.site_navigation_menu("Extensions").click()
+        featured_extensions_page.sort_by('most users')
+        featured_extensions_page.sort_by('featured')
+
+        Assert.contains("sort=featured", featured_extensions_page.get_url_current_page())
+        for extension in featured_extensions_page.extensions:
+            Assert.equal("FEATURED", extension.featured)
+
+    @pytest.mark.native
+    @nondestructive
     def test_that_checks_if_the_extensions_are_sorted_by_newest(self, mozwebqa):
         """
         Test for Litmus 29719
