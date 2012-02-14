@@ -13,35 +13,35 @@ class TestHome:
     @pytest.mark.nondestructive
     def test_that_checks_the_mobile_version_link(self, mozwebqa):
         home = Home(mozwebqa)
-#        Assert.true(home.is_the_current_page)
+        Assert.true(home.is_the_current_page)
 
-#        Assert.equal('VIEW FULL SITE', home.footer.desktop_version_text)
+        Assert.equal('VIEW FULL SITE', home.footer.desktop_version_text)
 
-#        home.footer.click_desktop_version()
-#        Assert.true(home_desktop.is_the_current_page)
+        home.footer.click_desktop_version()
+        Assert.true(home_desktop.is_the_current_page)
 
-#    @pytest.mark.nondestructive
-#    def test_that_checks_the_header_menu(self, mozwebqa):
-#        home = Home(mozwebqa)
-#        Assert.true(home.is_the_current_page)
-#
-#        Assert.equal('FIREFOX ADD-ONS', home.header_text)
-#        Assert.equal('Return to the Firefox Add-ons homepage', home.header_title)
-#        Assert.equal('Easy ways to personalize.', home.header_stetement_text)
-#
-#        Assert.equal(u'Learn More\xbb', home.learn_more_text)
-#        home.click_learn_more()
-#
-#        Assert.true(home.is_learn_more_msg_visible)
-#        Assert.equal("Add-ons are applications that let you personalize Firefox with extra functionality and style. Whether you mistype the name of a website or can't read a busy page, there's an add-on to improve your on-the-go browsing.",
-#                     home.learn_more_msg_text)
-#
-#    @pytest.mark.nondestructive
-#    def test_that_checks_the_footer_items(self, mozwebqa):
-#        home = Home(mozwebqa)
-#        Assert.true(home.is_the_current_page)
-#
-#        Assert.true(home.footer.is_other_language_dropdown_visible)
-#        Assert.equal('Other languages', home.footer.other_language_text)
-#        Assert.equal('Privacy Policy', home.footer.privacy_text)
-#        Assert.equal('Legal Notices', home.footer.legal_text)
+    @pytest.mark.nondestructive
+    def test_that_checks_the_header_menu(self, mozwebqa):
+        home = Home(mozwebqa)
+        Assert.true(home.is_the_current_page)
+
+        Assert.equal('FIREFOX ADD-ONS', home.header_text)
+        Assert.equal('Return to the Firefox Add-ons homepage', home.header_title)
+        Assert.equal('Easy ways to personalize.', home.header_stetement_text)
+
+        Assert.equal(u'Learn More\xbb', home.learn_more_text)
+        home.click_learn_more()
+
+        Assert.true(home.is_learn_more_msg_visible)
+        Assert.equal("Add-ons are applications that let you personalize Firefox with extra functionality and style. Whether you mistype the name of a website or can't read a busy page, there's an add-on to improve your on-the-go browsing.",
+                     home.learn_more_msg_text)
+
+    @pytest.mark.nondestructive
+    def test_that_checks_the_footer_items(self, mozwebqa):
+        home = Home(mozwebqa)
+        Assert.true(home.is_the_current_page)
+
+        Assert.true(home.footer.is_other_language_dropdown_visible)
+        Assert.equal('Other languages', home.footer.other_language_text)
+        Assert.equal('Privacy Policy', home.footer.privacy_text)
+        Assert.equal('Legal Notices', home.footer.legal_text)
