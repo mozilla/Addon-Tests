@@ -406,3 +406,15 @@ class TestDetails:
         Assert.equal(details_page.license_link_text, 'BSD License')
         license_link = details_page.license_site
         Assert.not_none(license_link)
+
+    @nondestructive
+    def test_that_clicking_user_reviews_slides_down_page_to_reviews_section(self, mozwebqa):
+        """
+        Test for Litmus 25708.
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25708
+        """
+        details_page = Details(mozwebqa, 'firebug')
+        details_page.click_user_reviews_link()
+
+        Assert.true(details_page.is_reviews_section_visible)
+        Assert.true(details_page.is_reviews_section_in_view)
