@@ -124,3 +124,8 @@ class SearchHome(Base):
             # convert to POSIX format
             date = strptime(date, '%B %d, %Y')
             return mktime(date)
+
+        def click_result(self):
+            self._root_element.click()
+            from pages.desktop.details import Details
+            return Details(self.testsetup)
