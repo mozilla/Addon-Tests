@@ -126,6 +126,6 @@ class SearchHome(Base):
             return mktime(date)
 
         def click_result(self):
-            self._root_element.click()
+            self._root_element.find_element(*self._name_locator).click()
             from pages.desktop.details import Details
             return Details(self.testsetup)

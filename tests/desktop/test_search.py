@@ -148,8 +148,8 @@ class TestSearch:
                 Assert.contains('cool', search_page.result(i).text.lower())
             except:
                 details_page = search_page.result(i).click_result()
-                Assert.contains('cool', details_page.about_addon.lower())
-                details_page.page_back()
+                Assert.contains('cool', details_page.description.lower())
+                details_page.return_to_previous_page()
 
     @nondestructive
     def test_that_searching_with_numerals_returns_results(self, mozwebqa):
