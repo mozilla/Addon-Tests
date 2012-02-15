@@ -23,6 +23,8 @@ class Base(Page):
 
         def click_desktop_version(self):
             self.selenium.find_element(*self._desktop_version_locator).click()
+            from pages.desktop.home import Home
+            return Home(self.testsetup)
 
         @property
         def desktop_version_text(self):

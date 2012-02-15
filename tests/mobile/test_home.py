@@ -17,7 +17,7 @@ class TestHome:
 
         Assert.equal('VIEW FULL SITE', home.footer.desktop_version_text)
 
-        home.footer.click_desktop_version()
+        home_desktop = home.footer.click_desktop_version()
         Assert.true(home_desktop.is_the_current_page)
 
     @pytest.mark.nondestructive
