@@ -340,16 +340,6 @@ class Details(Base):
     def is_reviews_section_visible(self):
         return self.is_element_visible(*self._reviews_section_header_locator)
 
-    @property
-    def is_other_apps_dropdown_menu_visible(self):
-        hover_element = self.selenium.find_element(*self._other_applications_locator)
-        other_apps_menu_items = self.selenium.find_element(By.CSS_SELECTOR, " li a")
-        ActionChains(self.selenium).\
-            move_to_element(hover_element).\
-            move_to_element(other_apps_menu_items).\
-            perform()
-        return other_apps_menu_items.is_displayed()
-
     class PartOfCollectionsSnippet(Page):
 
         _name_locator = (By.CSS_SELECTOR, ' div.summary > h3')
