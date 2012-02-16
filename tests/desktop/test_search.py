@@ -141,14 +141,16 @@ class TestSearch:
         https://litmus.mozilla.org/show_test.cgi?id=17353
         """
         home_page = Home(mozwebqa)
-        search_page = home_page.header.search_for('Cool')
+        search_term = 'cool'
+        search_page = home_page.header.search_for(search_term)
 
         for i in range(10):
             try:
-                Assert.contains('cool', search_page.result(i).text.lower())
+                Assert.contains(search_term, search_page.result(i).text.lower())
             except:
                 details_page = search_page.result(i).click_result()
-                Assert.contains('cool', details_page.description.lower())
+                search_range = details_page.description + details_page.devs_comments_message
+                Assert.contains(search_term, search_range.lower())
                 details_page.return_to_previous_page()
 
     @nondestructive
