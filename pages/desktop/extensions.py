@@ -5,6 +5,7 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from time import strptime, mktime
+from re import search
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -21,6 +22,7 @@ class ExtensionsHome(Base):
     _default_selected_tab_locator = (By.CSS_SELECTOR, "#sorter li.selected")
 
     _sort_by_most_users_locator = (By.CSS_SELECTOR, "div#sorter > ul > li:nth-child(2) > a")
+    _sort_by_top_rated_locator = (By.CSS_SELECTOR, "div#sorter > ul > li:nth-child(3) > a")
     _sort_by_recently_updated_locator = (By.CSS_SELECTOR, "li.extras > ul > li:nth-child(3) > a")
     _sort_by_newest_locator = (By.CSS_SELECTOR, "div#sorter > ul > li:nth-child(4) > a")
     _sort_by_name_locator = (By.CSS_SELECTOR, "li.extras > ul > li:nth-child(1) > a")
@@ -58,6 +60,8 @@ class Extension(Page):
         _name_locator = (By.CSS_SELECTOR, "h3 a")
         _updated_date = (By.CSS_SELECTOR, 'div.info > div.vitals > div.updated')
         _featured_locator = (By.CSS_SELECTOR, 'div.info > h3 > span.featured')
+        _rating_locator = (By.CSS_SELECTOR, "div.info > div.vitals > span.rating > span")
+        _votes_locator = (By.CSS_SELECTOR, "div.info > div.vitals > span.rating > a")
 
         def __init__(self, testsetup, element):
             Page.__init__(self, testsetup)
@@ -91,3 +95,13 @@ class Extension(Page):
             # convert to POSIX format
             date = strptime(date, '%B %d, %Y')
             return mktime(date)
+
+        @property
+        def rating(self):
+            rating = self._root_element.find_element(*self._rating_locator).text
+            return int(search('Rated (\d+) out of 5 stars', rating).group(1))
+
+        @property
+        def number_of_votes(self):
+            votes = self._root_element.find_element(*self._votes_locator).text
+            return int(search('\((\d+)\)', votes).group(1))

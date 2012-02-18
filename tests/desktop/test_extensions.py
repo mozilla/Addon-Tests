@@ -100,6 +100,27 @@ class TestExtensions:
 
     @pytest.mark.native
     @nondestructive
+    def test_that_checks_if_the_extensions_are_sorted_by_top_rated(self, mozwebqa):
+        """
+        Test for Litmus 29717
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=29717
+        """
+        home_page = Home(mozwebqa)
+        featured_extensions_page = home_page.header.site_navigation_menu("Extensions").click()
+        featured_extensions_page.sort_by("Top Rated")
+        Assert.equal(featured_extensions_page.default_selected_tab, "Top Rated")
+        Assert.contains("sort=rating", featured_extensions_page.get_url_current_page())
+
+        ratings = [i.rating for i in featured_extensions_page.extensions]
+        Assert.is_sorted_descending(ratings)
+        featured_extensions_page.paginator.click_next_page()
+
+        ratings.extend([i.rating for i in featured_extensions_page.extensions])
+        Assert.is_sorted_descending(ratings)
+
+
+    @pytest.mark.native
+    @nondestructive
     def test_that_checks_if_the_extensions_are_sorted_by_newest(self, mozwebqa):
         """
         Test for Litmus 29719
