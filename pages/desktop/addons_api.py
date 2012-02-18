@@ -181,3 +181,9 @@ class AddOnsAPI(Base):
 
     def goto_url_from_xml(self, url):
         self.selenium.get(url)
+
+    def get_install_link(self, addon_name):
+        try:
+            return self.get_xml_for_single_addon(addon_name).install.string
+        except:
+            self._print_search_error()
