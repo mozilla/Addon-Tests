@@ -58,6 +58,7 @@ class Extension(Page):
         _name_locator = (By.CSS_SELECTOR, "h3 a")
         _updated_date = (By.CSS_SELECTOR, 'div.info > div.vitals > div.updated')
         _featured_locator = (By.CSS_SELECTOR, 'div.info > h3 > span.featured')
+        _user_count_locator = (By.CSS_SELECTOR, 'div.adu')
 
         def __init__(self, testsetup, element):
             Page.__init__(self, testsetup)
@@ -70,6 +71,10 @@ class Extension(Page):
         @property
         def name(self):
             return self._root_element.find_element(*self._name_locator).text
+
+        @property
+        def user_count(self):
+            return self._root_element.find_element(*self._user_count_locator).text
 
         def click(self):
             self._root_element.find_element(*self._name_locator).click()
