@@ -24,7 +24,7 @@ class TestCollections:
         """
         home_page = Home(mozwebqa)
         featured_collections_page = home_page.header.site_navigation_menu("Collections").click()
-        Assert.equal(featured_collections_page .default_selected_tab, "Featured")
+        Assert.equal(featured_collections_page.default_selected_tab, "Featured")
 
     @destructive
     def test_create_collection(self, mozwebqa):
