@@ -74,7 +74,7 @@ class Extension(Page):
 
         @property
         def user_count(self):
-            return self._root_element.find_element(*self._user_count_locator).text
+            return self._root_element.find_element(*self._user_count_locator).text.strip('user').replace(',','').rstrip()
 
         def click(self):
             self._root_element.find_element(*self._name_locator).click()

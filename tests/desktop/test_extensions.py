@@ -110,9 +110,8 @@ class TestExtensions:
         featured_extensions_page.sort_by('most_users')
 
         Assert.contains("sort=users", featured_extensions_page.get_url_current_page())
-        user_counts = [int(extension.user_count.strip('user').replace(',','').rstrip()) for extension in featured_extensions_page.extensions]
-        sorted_user_count = sorted(user_counts, reverse = True)
-        Assert.true(user_counts[:] == sorted_user_count[:])
+        user_counts = [int(extension.user_count) for extension in featured_extensions_page.extensions]
+        Assert.is_sorted_descending(user_counts)
 
     @pytest.mark.native
     @nondestructive
