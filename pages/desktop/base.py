@@ -125,6 +125,7 @@ class Base(Page):
 
         #other applications
         _other_applications_locator = (By.ID, "other-apps")
+        _other_applications_menu_locator = (By.CLASS_NAME, "other-apps")
 
         #Search box
         _search_button_locator = (By.CSS_SELECTOR, ".search-button")
@@ -255,3 +256,17 @@ class Base(Page):
         @property
         def is_user_logged_in(self):
             return self.is_element_visible(*self._account_controller_locator)
+
+        @property
+        def menu_name(self):
+            return self.selenium.find_element(*self._other_applications_locator).text
+
+        def hover_over_other_apps_menu(self):
+            hover_element = self.selenium.find_element(*self._other_applications_locator)
+            ActionChains(self.selenium).\
+                move_to_element(hover_element).\
+                perform()
+
+        @property
+        def is_other_apps_dropdown_menu_visible(self):
+            return self.selenium.find_element(*self._other_applications_menu_locator).is_displayed()

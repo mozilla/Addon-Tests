@@ -10,6 +10,7 @@ import time
 from urllib2 import urlparse
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.common.action_chains import ActionChains
 
 from pages.page import Page
 from pages.desktop.base import Base
