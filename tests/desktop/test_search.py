@@ -144,11 +144,12 @@ class TestSearch:
         search_term = 'cool'
         search_page = home_page.header.search_for(search_term)
 
-        for i in range(10):
+        for i in range(0, len(search_page.results)):
             try:
-                Assert.contains(search_term, search_page.result(i).text.lower())
+                Assert.contains(search_term, search_page.results[i].text.lower())
             except:
-                details_page = search_page.result(i).click_result()
+                details_page = search_page.results[i].click_result()
+                details_page.click_devs_comments()
                 search_range = details_page.description + details_page.devs_comments_message
                 Assert.contains(search_term, search_range.lower())
                 details_page.return_to_previous_page()
@@ -174,12 +175,12 @@ class TestSearch:
         search_page = Home(mozwebqa).header.search_for('firebug')
         search_page.sort_by('Weekly Downloads')
         Assert.true('sort=downloads' in search_page.get_url_current_page())
-        downloads = [i.downloads for i in search_page.results()]
+        downloads = [i.downloads for i in search_page.results]
         Assert.is_sorted_descending(downloads)
         search_page.paginator.click_next_page()
         search_page.wait_for_results_refresh()
 
-        downloads.extend([i.downloads for i in search_page.results()])
+        downloads.extend([i.downloads for i in search_page.results])
         Assert.is_sorted_descending(downloads)
 
     @pytest.mark.native
@@ -192,7 +193,7 @@ class TestSearch:
         search_page = Home(mozwebqa).header.search_for('firebug')
         search_page.sort_by('Newest')
         Assert.true('sort=created' in search_page.get_url_current_page())
-        Assert.is_sorted_descending([i.created_date for i in search_page.results()])
+        Assert.is_sorted_descending([i.created_date for i in search_page.results])
 
     @pytest.mark.native
     @xfail(reason="Bugzilla 698165")
@@ -205,10 +206,10 @@ class TestSearch:
         search_page = Home(mozwebqa).header.search_for('firebug')
         search_page.sort_by('Recently Updated')
         Assert.true('sort=updated' in search_page.get_url_current_page())
-        results = [i.updated_date for i in search_page.results()]
+        results = [i.updated_date for i in search_page.results]
         Assert.is_sorted_descending(results)
         search_page.paginator.click_next_page()
-        results.extend([i.updated_date for i in search_page.results()])
+        results.extend([i.updated_date for i in search_page.results])
         Assert.is_sorted_descending(results)
 
     @pytest.mark.native
@@ -221,7 +222,7 @@ class TestSearch:
         search_page = Home(mozwebqa).header.search_for('firebug')
         search_page.sort_by('Most Users')
         Assert.true('sort=users' in search_page.get_url_current_page())
-        Assert.is_sorted_descending([i.users for i in search_page.results()])
+        Assert.is_sorted_descending([i.users for i in search_page.results])
 
     @nondestructive
     def test_that_searching_for_a_tag_returns_results(self, mozwebqa):
