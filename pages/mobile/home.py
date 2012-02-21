@@ -4,8 +4,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-from pages.mobile.base import Base
 from selenium.webdriver.common.by import By
+from pages.mobile.base import Base
 
 
 class Home(Base):
@@ -13,7 +13,7 @@ class Home(Base):
     _page_title = 'Add-ons for Firefox'
 
     _header_locator = (By.CSS_SELECTOR, 'h1.site-title > a')
-    _header_statment_locator = (By.CSS_SELECTOR, '#home-header>hgroup>h2')
+    _header_statment_locator = (By.CSS_SELECTOR, '#home-header > hgroup > h2')
     _learn_more_locator = (By.CSS_SELECTOR, '#learnmore')
     _learn_more_msg_locator = (By.CSS_SELECTOR, '#learnmore-msg')
 

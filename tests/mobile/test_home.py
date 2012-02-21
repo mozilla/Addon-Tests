@@ -8,6 +8,7 @@ import pytest
 from unittestzero import Assert
 from pages.mobile.home import Home
 
+
 class TestHome:
 
     @pytest.mark.nondestructive

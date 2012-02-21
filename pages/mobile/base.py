@@ -17,9 +17,9 @@ class Base(Page):
     class Footer(Page):
         _desktop_version_locator = (By.CSS_SELECTOR, 'a.desktop-link')
         _other_language_locator = (By.CSS_SELECTOR, '#language')
-        _other_language_text_locator = (By.CSS_SELECTOR, '#lang_form>label')
-        _privacy_locator = (By.CSS_SELECTOR, '#footer-links>a:nth-child(1)')
-        _legal_locator = (By.CSS_SELECTOR, '#footer-links>a:nth-child(2)')
+        _other_language_text_locator = (By.CSS_SELECTOR, '#lang_form > label')
+        _privacy_locator = (By.CSS_SELECTOR, '#footer-links > a:nth-child(1)')
+        _legal_locator = (By.CSS_SELECTOR, '#footer-links > a:nth-child(2)')
 
         def click_desktop_version(self):
             self.selenium.find_element(*self._desktop_version_locator).click()
