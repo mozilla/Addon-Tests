@@ -100,6 +100,21 @@ class TestExtensions:
 
     @pytest.mark.native
     @nondestructive
+    def test_that_checks_if_the_extensions_are_sorted_by_most_user(self, mozwebqa):
+        """
+        Test for Litmus 29715
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=29715
+        """
+        home_page = Home(mozwebqa)
+        featured_extensions_page = home_page.header.site_navigation_menu("Extensions").click()
+        featured_extensions_page.sort_by('most_users')
+
+        Assert.contains("sort=users", featured_extensions_page.get_url_current_page())
+        user_counts = [extension.user_count for extension in featured_extensions_page.extensions]
+        Assert.is_sorted_descending(user_counts)
+
+    @pytest.mark.native
+    @nondestructive
     def test_that_checks_if_the_extensions_are_sorted_by_newest(self, mozwebqa):
         """
         Test for Litmus 29719

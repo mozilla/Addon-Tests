@@ -47,3 +47,8 @@ class TestAPIOnlyTests:
         addon_xml = AddOnsAPI(mozwebqa)
         Assert.equal("4", addon_xml.get_addon_status("Firebug")[0])
         Assert.equal("Fully Reviewed", addon_xml.get_addon_status("Firebug")[1])
+
+    def test_that_firebug_has_install_link(self, mozwebqa):
+        """Test for Litmus 15327."""
+        addon_xml = AddOnsAPI(mozwebqa)
+        Assert.contains("fx.xpi?src=api", addon_xml.get_install_link("Firebug"))
