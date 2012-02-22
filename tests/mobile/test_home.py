@@ -12,7 +12,7 @@ from pages.mobile.home import Home
 class TestHome:
 
     @pytest.mark.nondestructive
-    def test_that_checks_the_mobile_version_link(self, mozwebqa):
+    def test_that_checks_the_desktop_version_link(self, mozwebqa):
         home = Home(mozwebqa)
         Assert.true(home.is_the_current_page)
 
@@ -28,7 +28,7 @@ class TestHome:
 
         Assert.equal('FIREFOX ADD-ONS', home.header_text)
         Assert.equal('Return to the Firefox Add-ons homepage', home.header_title)
-        Assert.equal('Easy ways to personalize.', home.header_stetement_text)
+        Assert.equal('Easy ways to personalize.', home.header_statement_text)
 
         Assert.equal(u'Learn More\xbb', home.learn_more_text)
         home.click_learn_more()

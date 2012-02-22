@@ -13,7 +13,7 @@ class Home(Base):
     _page_title = 'Add-ons for Firefox'
 
     _header_locator = (By.CSS_SELECTOR, 'h1.site-title > a')
-    _header_statment_locator = (By.CSS_SELECTOR, '#home-header > hgroup > h2')
+    _header_statement_locator = (By.CSS_SELECTOR, '#home-header > hgroup > h2')
     _learn_more_locator = (By.CSS_SELECTOR, '#learnmore')
     _learn_more_msg_locator = (By.CSS_SELECTOR, '#learnmore-msg')
 
@@ -30,8 +30,8 @@ class Home(Base):
         return self.selenium.find_element(*self._header_locator).get_attribute('title')
 
     @property
-    def header_stetement_text(self):
-        return self.selenium.find_element(*self._header_statment_locator).text
+    def header_statement_text(self):
+        return self.selenium.find_element(*self._header_statement_locator).text
 
     @property
     def learn_more_text(self):
