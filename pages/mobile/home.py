@@ -17,6 +17,8 @@ class Home(Base):
     _learn_more_locator = (By.CSS_SELECTOR, '#learnmore')
     _learn_more_msg_locator = (By.CSS_SELECTOR, '#learnmore-msg')
 
+    _all_featured_addons_locator = (By.CSS_SELECTOR, '#list-featured > li > a')
+
     def __init__(self, testsetup):
         Base.__init__(self, testsetup)
         self.selenium.get(self.base_url)
@@ -47,3 +49,8 @@ class Home(Base):
     @property
     def is_learn_more_msg_visible(self):
         return self.is_element_visible(*self._learn_more_msg_locator)
+
+    def click_all_featured_addons_link(self):
+        self.selenium.find_element(*self._all_featured_addons_locator).click()
+        from pages.mobile.extensions import Extensions
+        return Extensions(self.testsetup)

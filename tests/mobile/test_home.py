@@ -46,3 +46,17 @@ class TestHome:
         Assert.equal('Other languages', home.footer.other_language_text)
         Assert.equal('Privacy Policy', home.footer.privacy_text)
         Assert.equal('Legal Notices', home.footer.legal_text)
+
+    @pytest.mark.nondestructive
+    def test_all_featured_extensions_link(self, mozwebqa):
+        """
+        litmus 15136
+        https://litmus.mozilla.org/show_test.cgi?id=15136
+        """
+
+        home = Home(mozwebqa)
+        Assert.true(home.is_the_current_page)
+        featured_extensions = home.click_all_featured_addons_link()
+
+        Assert.equal(featured_extensions.page_header, 'Featured Extensions')
+        Assert.contains('sort=featured', featured_extensions.get_url_current_page())
