@@ -46,3 +46,16 @@ class TestHome:
         Assert.equal('Other languages', home.footer.other_language_text)
         Assert.equal('Privacy Policy', home.footer.privacy_text)
         Assert.equal('Legal Notices', home.footer.legal_text)
+
+    @pytest.mark.nondestructive
+    def test_that_checks_the_search_box_and_button(self, mozwebqa):
+        """
+        Test for Litmus 15128.
+        https://litmus.mozilla.org/show_test.cgi?id=15128
+        """
+        home = Home(mozwebqa)
+        Assert.true(home.is_the_current_page)
+
+        Assert.true(home.is_search_box_visible)
+        Assert.equal('search for add-ons', home.search_box_placeholder)
+        Assert.true(home.is_search_button_visible)
