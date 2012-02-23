@@ -143,6 +143,7 @@ class TestSearch:
         home_page = Home(mozwebqa)
         search_term = 'cool'
         search_page = home_page.header.search_for(search_term)
+        Assert.false(search_page.is_no_results_present)
 
         for i in range(0, len(search_page.results)):
             try:
