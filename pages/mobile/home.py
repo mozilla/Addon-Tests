@@ -6,6 +6,7 @@
 
 from selenium.webdriver.common.by import By
 from pages.mobile.base import Base
+from pages.page import Page
 
 
 class Home(Base):
@@ -16,6 +17,7 @@ class Home(Base):
     _header_statement_locator = (By.CSS_SELECTOR, '#home-header > hgroup > h2')
     _learn_more_locator = (By.CSS_SELECTOR, '#learnmore')
     _learn_more_msg_locator = (By.CSS_SELECTOR, '#learnmore-msg')
+    _tabs_locator = (By.CSS_SELECTOR, 'nav.tabs > ul > li')
 
     def __init__(self, testsetup):
         Base.__init__(self, testsetup)
@@ -47,3 +49,20 @@ class Home(Base):
     @property
     def is_learn_more_msg_visible(self):
         return self.is_element_visible(*self._learn_more_msg_locator)
+
+    @property
+    def tabs(self):
+        return [self.Tabs(self.testsetup, element)
+                for element in self.selenium.find_elements(*self._tabs_locator)]
+
+    class Tabs(Page):
+
+        _tab_name_locator = (By.CSS_SELECTOR, 'a')
+
+        def __init__(self, testsetup, element):
+            Page.__init__(self, testsetup)
+            self._root_element = element
+
+        @property
+        def name(self):
+            return self._root_element.find_element(*self._tab_name_locator).text
