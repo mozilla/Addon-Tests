@@ -69,6 +69,14 @@ class Home(Base):
         def name(self):
             return self._root_element.find_element(*self._tab_name_locator).text
 
+        def click(self):
+            self._root_element.find_element(*self._tab_name_locator).click()
+
+        @property
+        def is_tab_selected(self):
+            is_selected = self._root_element.get_attribute('class')
+            return 'selected' in is_selected
+
     def is_search_box_visible(self):
         return self.is_element_visible(*self._search_box_locator)
 

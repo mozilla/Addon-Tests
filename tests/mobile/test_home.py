@@ -74,3 +74,5 @@ class TestHome:
 
         for tab in range(0, len(home.tabs)):
             Assert.equal(self.expected_tabs[tab], home.tabs[tab].name)
+            home.tabs[tab].click()
+            Assert.true(home.tabs[tab].is_tab_selected)
