@@ -288,6 +288,10 @@ class Details(Base):
     def are_tags_visible(self):
         return self.is_element_visible(*self._tags_locator)
 
+    @property
+    def is_devs_comments_section_present(self):
+        return self.is_element_present(*self._devs_comments_section_locator)
+
     def is_devs_comments_section_expanded(self):
         is_expanded = self.selenium.find_element(*self._devs_comments_section_locator).get_attribute("class")
         return ("expanded" in is_expanded)
