@@ -78,6 +78,7 @@ class SearchHome(Base):
         elements = self.selenium.find_elements(*self._results_locator)
         return self.SearchResult(self.testsetup, elements[lookup])
 
+    @property
     def results(self):
         return [self.SearchResult(self.testsetup, element)
                 for element in self.selenium.find_elements(*self._results_locator)]
@@ -124,3 +125,8 @@ class SearchHome(Base):
             # convert to POSIX format
             date = strptime(date, '%B %d, %Y')
             return mktime(date)
+
+        def click_result(self):
+            self._root_element.find_element(*self._name_locator).click()
+            from pages.desktop.details import Details
+            return Details(self.testsetup)
