@@ -62,3 +62,16 @@ class TestHome:
         Assert.equal(featured_extensions.title, 'MOBILE ADD-ONS')
         Assert.equal(featured_extensions.page_header, 'Featured Extensions')
         Assert.contains('sort=featured', featured_extensions.get_url_current_page())
+
+    @pytest.mark.nondestructive
+    def test_that_checks_the_search_box_and_button(self, mozwebqa):
+        """
+        Test for Litmus 15128.
+        https://litmus.mozilla.org/show_test.cgi?id=15128
+        """
+        home = Home(mozwebqa)
+        Assert.true(home.is_the_current_page)
+
+        Assert.true(home.is_search_box_visible)
+        Assert.equal('search for add-ons', home.search_box_placeholder)
+        Assert.true(home.is_search_button_visible)

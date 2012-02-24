@@ -16,6 +16,8 @@ class Home(Base):
     _header_statement_locator = (By.CSS_SELECTOR, '#home-header > hgroup > h2')
     _learn_more_locator = (By.CSS_SELECTOR, '#learnmore')
     _learn_more_msg_locator = (By.CSS_SELECTOR, '#learnmore-msg')
+    _search_box_locator = (By.CSS_SELECTOR, 'form#search > input')
+    _search_button_locator = (By.CSS_SELECTOR, 'form#search > button')
 
     _all_featured_addons_locator = (By.CSS_SELECTOR, '#list-featured > li > a')
     _default_selected_tab_locator = (By.CSS_SELECTOR, 'li.selected a')
@@ -59,3 +61,15 @@ class Home(Base):
     @property
     def default_selected_tab_text(self):
         return self.selenium.find_element(*self._default_selected_tab_locator).text
+
+    @property
+    def is_search_box_visible(self):
+        return self.is_element_visible(*self._search_box_locator)
+
+    @property
+    def search_box_placeholder(self):
+        return self.selenium.find_element(*self._search_box_locator).get_attribute('placeholder')
+
+    @property
+    def is_search_button_visible(self):
+        return self.is_element_visible(*self._search_button_locator)
