@@ -18,6 +18,7 @@ class Home(Base):
     _learn_more_msg_locator = (By.CSS_SELECTOR, '#learnmore-msg')
 
     _all_featured_addons_locator = (By.CSS_SELECTOR, '#list-featured > li > a')
+    _default_selected_tab_locator = (By.CSS_SELECTOR, 'li.selected a')
 
     def __init__(self, testsetup):
         Base.__init__(self, testsetup)
@@ -54,3 +55,7 @@ class Home(Base):
         self.selenium.find_element(*self._all_featured_addons_locator).click()
         from pages.mobile.extensions import Extensions
         return Extensions(self.testsetup)
+
+    @property
+    def default_selected_tab_text(self):
+        return self.selenium.find_element(*self._default_selected_tab_locator).text

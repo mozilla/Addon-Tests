@@ -10,8 +10,13 @@ from pages.mobile.base import Base
 
 class Extensions(Base):
 
+    _page_title_locator = (By.CSS_SELECTOR, 'h1.site-title > a')
     _page_header_locator = (By.CSS_SELECTOR, '#content > h2')
 
     @property
     def page_header(self):
         return self.selenium.find_element(*self._page_header_locator).text
+
+    @property
+    def title(self):
+        return str(self.selenium.find_element(*self._page_title_locator).text)

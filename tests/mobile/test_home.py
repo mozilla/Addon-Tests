@@ -56,7 +56,9 @@ class TestHome:
 
         home = Home(mozwebqa)
         Assert.true(home.is_the_current_page)
+        Assert.equal(home.default_selected_tab_text, 'Featured')
         featured_extensions = home.click_all_featured_addons_link()
 
+        Assert.equal(featured_extensions.title, 'MOBILE ADD-ONS')
         Assert.equal(featured_extensions.page_header, 'Featured Extensions')
         Assert.contains('sort=featured', featured_extensions.get_url_current_page())
