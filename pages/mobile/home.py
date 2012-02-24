@@ -18,6 +18,8 @@ class Home(Base):
     _learn_more_locator = (By.CSS_SELECTOR, '#learnmore')
     _learn_more_msg_locator = (By.CSS_SELECTOR, '#learnmore-msg')
     _tabs_locator = (By.CSS_SELECTOR, 'nav.tabs > ul > li')
+    _search_box_locator = (By.CSS_SELECTOR, 'form#search > input')
+    _search_button_locator = (By.CSS_SELECTOR, 'form#search > button')
 
     def __init__(self, testsetup):
         Base.__init__(self, testsetup)
@@ -66,3 +68,14 @@ class Home(Base):
         @property
         def name(self):
             return self._root_element.find_element(*self._tab_name_locator).text
+
+    def is_search_box_visible(self):
+        return self.is_element_visible(*self._search_box_locator)
+
+    @property
+    def search_box_placeholder(self):
+        return self.selenium.find_element(*self._search_box_locator).get_attribute('placeholder')
+
+    @property
+    def is_search_button_visible(self):
+        return self.is_element_visible(*self._search_button_locator)
