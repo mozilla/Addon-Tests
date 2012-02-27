@@ -59,3 +59,17 @@ class TestHome:
         Assert.true(home.is_search_box_visible)
         Assert.equal('search for add-ons', home.search_box_placeholder)
         Assert.true(home.is_search_button_visible)
+
+    @pytest.mark.nondestructive
+    def test_the_amo_logo_text_and_title(self, mozwebqa):
+        """
+        Test for Litmus 15128.
+        https://litmus.mozilla.org/show_test.cgi?id=15128
+        """
+        home = Home(mozwebqa)
+        Assert.true(home.is_the_current_page)
+
+        Assert.equal('Return to the Firefox Add-ons homepage', home.logo_title)
+        Assert.equal('FIREFOX ADD-ONS', home.logo_text)
+        Assert.contains('-cdn.allizom.org/media/img/zamboni/app_icons/firefox.png', home.logo_image_src)
+        Assert.equal('Easy ways to personalize.', home.subtitle)

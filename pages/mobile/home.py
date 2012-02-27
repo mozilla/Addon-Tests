@@ -18,6 +18,9 @@ class Home(Base):
     _learn_more_msg_locator = (By.CSS_SELECTOR, '#learnmore-msg')
     _search_box_locator = (By.CSS_SELECTOR, 'form#search > input')
     _search_button_locator = (By.CSS_SELECTOR, 'form#search > button')
+    _logo_title_locator = (By.CSS_SELECTOR, 'h1.site-title > a')
+    _logo_image_src_locator = (By.CSS_SELECTOR, 'h1.site-title > a > img')
+    _subtitle_locator = (By.CSS_SELECTOR, 'hgroup > h2')
 
     def __init__(self, testsetup):
         Base.__init__(self, testsetup)
@@ -61,3 +64,19 @@ class Home(Base):
     @property
     def is_search_button_visible(self):
         return self.is_element_visible(*self._search_button_locator)
+
+    @property
+    def logo_title(self):
+        return self.selenium.find_element(*self._logo_title_locator).get_attribute('title')
+
+    @property
+    def logo_text(self):
+        return self.selenium.find_element(*self._logo_title_locator).text
+
+    @property
+    def logo_image_src(self):
+        return self.selenium.find_element(*self._logo_image_src_locator).get_attribute('src')
+
+    @property
+    def subtitle(self):
+        return self.selenium.find_element(*self._subtitle_locator).text
