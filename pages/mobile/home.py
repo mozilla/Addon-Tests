@@ -60,6 +60,7 @@ class Home(Base):
     class Tabs(Page):
 
         _tab_name_locator = (By.CSS_SELECTOR, 'a')
+        _tab_content_locator = (By.ID, 'listing')
 
         def __init__(self, testsetup, element):
             Page.__init__(self, testsetup)
@@ -76,6 +77,11 @@ class Home(Base):
         def is_tab_selected(self):
             is_selected = self._root_element.get_attribute('class')
             return 'selected' in is_selected
+
+        @property
+        def is_tab_content_visible(self):
+            content = (self._tab_content_locator[0], '%s-%s' % (self._tab_content_locator[1], self.name.lower()))
+            return self.is_element_visible(*content)
 
     def is_search_box_visible(self):
         return self.is_element_visible(*self._search_box_locator)
