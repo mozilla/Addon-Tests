@@ -59,3 +59,18 @@ class TestHome:
         Assert.true(home.is_search_box_visible)
         Assert.equal('search for add-ons', home.search_box_placeholder)
         Assert.true(home.is_search_button_visible)
+
+    @pytest.mark.nondestructive
+    def test_expendable_header(self, mozwebqa):
+        """
+        Litmus 15128
+        https://litmus.mozilla.org/show_test.cgi?id=15128
+        """
+        dropdown_menu_items = ['MOZILLA FIREFOX', 'FEATURES', 'DESKTOP', 'ADD-ONS', 'SUPPORT', 'VISIT MOZILLA']
+
+        home = Home(mozwebqa)
+        home.header.click()
+        Assert.true(home.is_dropdown_menu_visible)
+
+        menu_names = [str(menu.name) for menu in home.header.dropdown_menu_items]
+        Assert.equal(menu_names, dropdown_menu_items)

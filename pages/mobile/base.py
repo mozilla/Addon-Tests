@@ -14,6 +14,10 @@ class Base(Page):
     def footer(self):
         return Base.Footer(self.testsetup)
 
+    @property
+    def header(self):
+        return Base.HeaderRegion(self.testsetup)
+
     class Footer(Page):
         _desktop_version_locator = (By.CSS_SELECTOR, 'a.desktop-link')
         _other_language_locator = (By.CSS_SELECTOR, '#language')
@@ -45,3 +49,16 @@ class Base(Page):
         @property
         def legal_text(self):
             return self.selenium.find_element(*self._legal_locator).text
+
+    class HeaderRegion(Page):
+
+        _menu_items_locator = (By.CSS_SELECTOR, '.menu-items li')
+        _menu_button_locator = (By.CSS_SELECTOR, '.tab > a')
+
+        @property
+        def dropdown_menu_items(self):
+            from pages.mobile.regions.menu_region import DropdownMenu
+            return [DropdownMenu(self.testsetup, element) for element in self.selenium.find_elements(*self._menu_items_locator)]
+
+        def click(self):
+            self.selenium.find_element(*self._menu_button_locator).click()

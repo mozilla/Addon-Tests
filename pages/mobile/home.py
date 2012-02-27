@@ -19,6 +19,8 @@ class Home(Base):
     _search_box_locator = (By.CSS_SELECTOR, 'form#search > input')
     _search_button_locator = (By.CSS_SELECTOR, 'form#search > button')
 
+    _dropdown_menu_locator = (By.CLASS_NAME, 'menu-items')
+
     def __init__(self, testsetup):
         Base.__init__(self, testsetup)
         self.selenium.get(self.base_url)
@@ -61,3 +63,13 @@ class Home(Base):
     @property
     def is_search_button_visible(self):
         return self.is_element_visible(*self._search_button_locator)
+
+    @property
+    def is_dropdown_menu_visible(self):
+        return self.is_element_visible(*self._dropdown_menu_locator)
+
+    @property
+    def dropdown_menu_items(self):
+        #returns a list containing all the site navigation menus
+        from pages.mobile.regions.menu_region import DropdownMenu
+        return [DropdownMenu(self.testsetup, element) for element in self.selenium.find_elements(*self._site_navigation_menus_locator)]
