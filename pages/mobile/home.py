@@ -19,7 +19,7 @@ class Home(Base):
     _search_box_locator = (By.CSS_SELECTOR, 'form#search > input')
     _search_button_locator = (By.CSS_SELECTOR, 'form#search > button')
     _logo_title_locator = (By.CSS_SELECTOR, 'h1.site-title > a')
-    _logo_image_src_locator = (By.CSS_SELECTOR, 'h1.site-title > a > img')
+    _logo_image_locator = (By.CSS_SELECTOR, 'h1.site-title > a > img')
     _subtitle_locator = (By.CSS_SELECTOR, 'hgroup > h2')
 
     def __init__(self, testsetup):
@@ -75,7 +75,7 @@ class Home(Base):
 
     @property
     def logo_image_src(self):
-        return self.selenium.find_element(*self._logo_image_src_locator).get_attribute('src')
+        return self.selenium.find_element(*self._logo_image_locator).get_attribute('src')
 
     @property
     def subtitle(self):
