@@ -11,6 +11,8 @@ from pages.mobile.home import Home
 
 class TestHome:
 
+    expected_menu_items = ['MOZILLA FIREFOX', 'FEATURES', 'DESKTOP', 'ADD-ONS', 'SUPPORT', 'VISIT MOZILLA']
+
     @pytest.mark.nondestructive
     def test_that_checks_the_desktop_version_link(self, mozwebqa):
         home = Home(mozwebqa)
@@ -61,16 +63,14 @@ class TestHome:
         Assert.true(home.is_search_button_visible)
 
     @pytest.mark.nondestructive
-    def test_expendable_header(self, mozwebqa):
+    def test_expandable_header(self, mozwebqa):
         """
         Litmus 15128
         https://litmus.mozilla.org/show_test.cgi?id=15128
         """
-        dropdown_menu_items = ['MOZILLA FIREFOX', 'FEATURES', 'DESKTOP', 'ADD-ONS', 'SUPPORT', 'VISIT MOZILLA']
-
         home = Home(mozwebqa)
         home.header.click()
         Assert.true(home.is_dropdown_menu_visible)
 
         menu_names = [str(menu.name) for menu in home.header.dropdown_menu_items]
-        Assert.equal(menu_names, dropdown_menu_items)
+        Assert.equal(menu_names, self.expected_menu_items)
