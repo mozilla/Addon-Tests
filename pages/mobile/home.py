@@ -19,6 +19,9 @@ class Home(Base):
     _search_box_locator = (By.CSS_SELECTOR, 'form#search > input')
     _search_button_locator = (By.CSS_SELECTOR, 'form#search > button')
 
+    _all_featured_addons_locator = (By.CSS_SELECTOR, '#list-featured > li > a')
+    _default_selected_tab_locator = (By.CSS_SELECTOR, 'li.selected a')
+
     def __init__(self, testsetup):
         Base.__init__(self, testsetup)
         self.selenium.get(self.base_url)
@@ -49,6 +52,15 @@ class Home(Base):
     @property
     def is_learn_more_msg_visible(self):
         return self.is_element_visible(*self._learn_more_msg_locator)
+
+    def click_all_featured_addons_link(self):
+        self.selenium.find_element(*self._all_featured_addons_locator).click()
+        from pages.mobile.extensions import Extensions
+        return Extensions(self.testsetup)
+
+    @property
+    def default_selected_tab_text(self):
+        return self.selenium.find_element(*self._default_selected_tab_locator).text
 
     @property
     def is_search_box_visible(self):
