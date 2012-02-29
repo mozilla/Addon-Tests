@@ -189,4 +189,3 @@ class TestExtensions:
 
         updated_dates.extend([i.updated_date for i in featured_extensions_page.extensions])
         Assert.is_sorted_descending(updated_dates)
-

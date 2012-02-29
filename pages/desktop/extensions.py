@@ -97,4 +97,3 @@ class Extension(Page):
             # convert to POSIX format
             date = strptime(date, '%B %d, %Y')
             return mktime(date)
-
