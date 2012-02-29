@@ -60,8 +60,7 @@ class Extension(Page):
         _name_locator = (By.CSS_SELECTOR, "h3 a")
         _updated_date = (By.CSS_SELECTOR, 'div.info > div.vitals > div.updated')
         _featured_locator = (By.CSS_SELECTOR, 'div.info > h3 > span.featured')
-        _rating_locator = (By.CSS_SELECTOR, "div.info > div.vitals > span.rating > span")
-        _votes_locator = (By.CSS_SELECTOR, "div.info > div.vitals > span.rating > a")
+        _user_count_locator = (By.CSS_SELECTOR, 'div.adu')
 
         def __init__(self, testsetup, element):
             Page.__init__(self, testsetup)
@@ -74,6 +73,10 @@ class Extension(Page):
         @property
         def name(self):
             return self._root_element.find_element(*self._name_locator).text
+
+        @property
+        def user_count(self):
+            return int(self._root_element.find_element(*self._user_count_locator).text.strip('user').replace(',','').rstrip())
 
         def click(self):
             self._root_element.find_element(*self._name_locator).click()
@@ -96,12 +99,3 @@ class Extension(Page):
             date = strptime(date, '%B %d, %Y')
             return mktime(date)
 
-        @property
-        def rating(self):
-            rating = self._root_element.find_element(*self._rating_locator).text
-            return int(search('Rated (\d+) out of 5 stars', rating).group(1))
-
-        @property
-        def number_of_votes(self):
-            votes = self._root_element.find_element(*self._votes_locator).text
-            return int(search('\((\d+)\)', votes).group(1))

@@ -29,9 +29,9 @@ class TestDetails:
     def test_that_dropdown_menu_is_present_after_click_on_other_apps(self, mozwebqa):
         """Test for Litmus 9890."""
         details_page = Details(mozwebqa, "Firebug")
-        Assert.equal(details_page.other_apps, "Other Applications")
-        #TODO: Fix when the hover event works
-        #Assert.true(details_page.is_other_apps_dropdown_menu_visible
+        Assert.equal(details_page.header.menu_name, "Other Applications")
+        details_page.header.hover_over_other_apps_menu()
+        Assert.true(details_page.header.is_other_apps_dropdown_menu_visible)
 
     @nondestructive
     def test_that_addon_name_is_displayed(self, mozwebqa):

@@ -13,6 +13,7 @@ from pages.page import Page
 class Collections(Base):
 
     _page_title = "Featured Collections :: Add-ons for Firefox"
+    _default_selected_tab_locator = (By.CSS_SELECTOR, "#sorter li.selected")
 
     #Search box
     _search_button_locator = (By.CSS_SELECTOR, "button.search-button")
@@ -24,6 +25,10 @@ class Collections(Base):
     @property
     def collection_name(self):
         return self.selenium.find_element(*self._collection_name).text
+
+    @property
+    def default_selected_tab(self):
+        return self.selenium.find_element(*self._default_selected_tab_locator).text
 
     def search_for(self, search_term):
         search_box = self.selenium.find_element(*self._search_textbox_locator)

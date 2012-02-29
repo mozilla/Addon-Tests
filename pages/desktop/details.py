@@ -10,6 +10,7 @@ import time
 from urllib2 import urlparse
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.common.action_chains import ActionChains
 
 from pages.page import Page
 from pages.desktop.base import Base
@@ -287,6 +288,10 @@ class Details(Base):
     @property
     def are_tags_visible(self):
         return self.is_element_visible(*self._tags_locator)
+
+    @property
+    def is_devs_comments_section_present(self):
+        return self.is_element_present(*self._devs_comments_section_locator)
 
     def is_devs_comments_section_expanded(self):
         is_expanded = self.selenium.find_element(*self._devs_comments_section_locator).get_attribute("class")
