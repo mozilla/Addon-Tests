@@ -111,13 +111,6 @@ class TestExtensions:
         Assert.equal(featured_extensions_page.default_selected_tab, "Top Rated")
         Assert.contains("sort=rating", featured_extensions_page.get_url_current_page())
 
-        ratings = [i.rating for i in featured_extensions_page.extensions]
-        Assert.is_sorted_descending(ratings)
-        featured_extensions_page.paginator.click_next_page()
-
-        ratings.extend([i.rating for i in featured_extensions_page.extensions])
-        Assert.is_sorted_descending(ratings)
-
     @pytest.mark.native
     @nondestructive
     def test_that_checks_if_the_extensions_are_sorted_by_most_user(self, mozwebqa):

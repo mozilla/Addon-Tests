@@ -5,7 +5,6 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from time import strptime, mktime
-from re import search
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
