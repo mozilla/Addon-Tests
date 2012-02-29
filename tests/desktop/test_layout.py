@@ -87,8 +87,7 @@ class TestAmoLayout:
         expected_apps = [
             "Thunderbird",
             "Mobile",
-            "SeaMonkey",
-            "Sunbird"]
+            "SeaMonkey"]
         home_page = Home(mozwebqa)
 
         for app in expected_apps:
