@@ -6,6 +6,7 @@
 
 from selenium.webdriver.common.by import By
 from pages.mobile.base import Base
+from pages.page import Page
 
 
 class Home(Base):
@@ -16,6 +17,7 @@ class Home(Base):
     _header_statement_locator = (By.CSS_SELECTOR, '#home-header > hgroup > h2')
     _learn_more_locator = (By.CSS_SELECTOR, '#learnmore')
     _learn_more_msg_locator = (By.CSS_SELECTOR, '#learnmore-msg')
+    _tabs_locator = (By.CSS_SELECTOR, 'nav.tabs > ul > li')
     _search_box_locator = (By.CSS_SELECTOR, 'form#search > input')
     _search_button_locator = (By.CSS_SELECTOR, 'form#search > button')
 
@@ -61,6 +63,37 @@ class Home(Base):
     @property
     def default_selected_tab_text(self):
         return self.selenium.find_element(*self._default_selected_tab_locator).text
+
+    @property
+    def tabs(self):
+        return [self.Tabs(self.testsetup, element)
+                for element in self.selenium.find_elements(*self._tabs_locator)]
+
+    class Tabs(Page):
+
+        _tab_name_locator = (By.CSS_SELECTOR, 'a')
+        _tab_content_locator = (By.ID, 'listing')
+
+        def __init__(self, testsetup, element):
+            Page.__init__(self, testsetup)
+            self._root_element = element
+
+        @property
+        def name(self):
+            return self._root_element.find_element(*self._tab_name_locator).text
+
+        def click(self):
+            self._root_element.find_element(*self._tab_name_locator).click()
+
+        @property
+        def is_tab_selected(self):
+            is_selected = self._root_element.get_attribute('class')
+            return 'selected' in is_selected
+
+        @property
+        def is_tab_content_visible(self):
+            content = (self._tab_content_locator[0], '%s-%s' % (self._tab_content_locator[1], self.name.lower()))
+            return self.is_element_visible(*content)
 
     @property
     def is_search_box_visible(self):

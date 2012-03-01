@@ -11,6 +11,8 @@ from pages.mobile.home import Home
 
 class TestHome:
 
+    expected_tabs = ['Featured', 'Popular', 'Categories']
+
     @pytest.mark.nondestructive
     def test_that_checks_the_desktop_version_link(self, mozwebqa):
         home = Home(mozwebqa)
@@ -75,3 +77,19 @@ class TestHome:
         Assert.true(home.is_search_box_visible)
         Assert.equal('search for add-ons', home.search_box_placeholder)
         Assert.true(home.is_search_button_visible)
+
+    def test_that_checks_the_tabs(self, mozwebqa):
+        """
+        Test for Litmus 15128.
+        https://litmus.mozilla.org/show_test.cgi?id=15128
+        """
+        home = Home(mozwebqa)
+        Assert.true(home.is_the_current_page)
+
+        Assert.equal(3, len(home.tabs))
+
+        for tab in reversed(range(len(home.tabs))):
+            Assert.equal(self.expected_tabs[tab], home.tabs[tab].name)
+            home.tabs[tab].click()
+            Assert.true(home.tabs[tab].is_tab_selected)
+            Assert.true(home.tabs[tab].is_tab_content_visible)
