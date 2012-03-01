@@ -71,5 +71,5 @@ class TestHome:
 
         Assert.equal('Return to the Firefox Add-ons homepage', home.logo_title)
         Assert.equal('FIREFOX ADD-ONS', home.logo_text)
-        Assert.contains('-cdn.allizom.org/media/img/zamboni/app_icons/firefox.png', home.logo_image_src)
+        Assert.contains('.org/media/img/zamboni/app_icons/firefox.png', home.logo_image_src)
         Assert.equal('Easy ways to personalize.', home.subtitle)
