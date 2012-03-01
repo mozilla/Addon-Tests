@@ -83,6 +83,7 @@ class Home(Base):
             content = (self._tab_content_locator[0], '%s-%s' % (self._tab_content_locator[1], self.name.lower()))
             return self.is_element_visible(*content)
 
+    @property
     def is_search_box_visible(self):
         return self.is_element_visible(*self._search_box_locator)
 
