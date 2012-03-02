@@ -13,6 +13,7 @@ class Home(Base):
     _page_title = 'Add-ons for Firefox'
 
     _header_locator = (By.CSS_SELECTOR, 'h1.site-title > a')
+    _header_logo_locator = (By.CSS_SELECTOR, '.site-title > a > img')
     _header_statement_locator = (By.CSS_SELECTOR, '#home-header > hgroup > h2')
     _learn_more_locator = (By.CSS_SELECTOR, '#learnmore')
     _learn_more_msg_locator = (By.CSS_SELECTOR, '#learnmore-msg')
@@ -37,6 +38,14 @@ class Home(Base):
     @property
     def header_statement_text(self):
         return self.selenium.find_element(*self._header_statement_locator).text
+
+    @property
+    def if_header_firefox_logo_visible(self):
+        return self.selenium.find_element(*self._header_logo_locator).is_displayed()
+
+    @property
+    def header_firefox_logo_src(self):
+        return self.selenium.find_element(*self._header_logo_locator).get_attribute('src')
 
     @property
     def learn_more_text(self):
