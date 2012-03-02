@@ -52,13 +52,30 @@ class Base(Page):
 
     class HeaderRegion(Page):
 
+        _dropdown_menu_locator = (By.CLASS_NAME, 'menu-items')
         _menu_items_locator = (By.CSS_SELECTOR, '.menu-items li')
         _menu_button_locator = (By.CSS_SELECTOR, '.tab > a')
 
+        def click_header_menu(self):
+            self.selenium.find_element(*self._menu_button_locator).click()
+
+        @property
+        def is_dropdown_menu_visible(self):
+            return self.is_element_visible(*self._dropdown_menu_locator)
+
         @property
         def dropdown_menu_items(self):
-            from pages.mobile.regions.menu_region import DropdownMenu
-            return [DropdownMenu(self.testsetup, element) for element in self.selenium.find_elements(*self._menu_items_locator)]
+            #returns a list containing all the menu items
+            return [self.MenuItem(self.testsetup, element) for element in self.selenium.find_elements(*self._menu_items_locator)]
 
-        def click(self):
-            self.selenium.find_element(*self._menu_button_locator).click()
+        class MenuItem(Page):
+
+            _name_items_locator = (By.CSS_SELECTOR, 'a')
+
+            def __init__(self, testsetup, element):
+                Page.__init__(self, testsetup)
+                self._root_element = element
+
+            @property
+            def name(self):
+                return self._root_element.find_element(*self._name_items_locator).text

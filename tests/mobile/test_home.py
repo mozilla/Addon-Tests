@@ -13,6 +13,8 @@ class TestHome:
 
     expected_menu_items = ['MOZILLA FIREFOX', 'FEATURES', 'DESKTOP', 'ADD-ONS', 'SUPPORT', 'VISIT MOZILLA']
 
+    expected_tabs = ['Featured', 'Popular', 'Categories']
+
     @pytest.mark.nondestructive
     def test_that_checks_the_desktop_version_link(self, mozwebqa):
         home = Home(mozwebqa)
@@ -50,6 +52,22 @@ class TestHome:
         Assert.equal('Legal Notices', home.footer.legal_text)
 
     @pytest.mark.nondestructive
+    def test_all_featured_extensions_link(self, mozwebqa):
+        """
+        litmus 15136
+        https://litmus.mozilla.org/show_test.cgi?id=15136
+        """
+
+        home = Home(mozwebqa)
+        Assert.true(home.is_the_current_page)
+        Assert.equal(home.default_selected_tab_text, 'Featured')
+        featured_extensions = home.click_all_featured_addons_link()
+
+        Assert.equal(featured_extensions.title, 'MOBILE ADD-ONS')
+        Assert.equal(featured_extensions.page_header, 'Featured Extensions')
+        Assert.contains('sort=featured', featured_extensions.get_url_current_page())
+
+    @pytest.mark.nondestructive
     def test_that_checks_the_search_box_and_button(self, mozwebqa):
         """
         Test for Litmus 15128.
@@ -69,8 +87,38 @@ class TestHome:
         https://litmus.mozilla.org/show_test.cgi?id=15128
         """
         home = Home(mozwebqa)
-        home.header.click()
-        Assert.true(home.is_dropdown_menu_visible)
+        home.header.click_header_menu()
+        Assert.true(home.header.is_dropdown_menu_visible)
 
-        menu_names = [str(menu.name) for menu in home.header.dropdown_menu_items]
+        menu_names = [menu.name for menu in home.header.dropdown_menu_items]
         Assert.equal(menu_names, self.expected_menu_items)
+
+    def test_that_checks_the_tabs(self, mozwebqa):
+        """
+        Test for Litmus 15128.
+        https://litmus.mozilla.org/show_test.cgi?id=15128
+        """
+        home = Home(mozwebqa)
+        Assert.true(home.is_the_current_page)
+
+        Assert.equal(3, len(home.tabs))
+
+        for tab in reversed(range(len(home.tabs))):
+            Assert.equal(self.expected_tabs[tab], home.tabs[tab].name)
+            home.tabs[tab].click()
+            Assert.true(home.tabs[tab].is_tab_selected)
+            Assert.true(home.tabs[tab].is_tab_content_visible)
+
+    @pytest.mark.nondestructive
+    def test_the_amo_logo_text_and_title(self, mozwebqa):
+        """
+        Test for Litmus 15128.
+        https://litmus.mozilla.org/show_test.cgi?id=15128
+        """
+        home = Home(mozwebqa)
+        Assert.true(home.is_the_current_page)
+
+        Assert.equal('Return to the Firefox Add-ons homepage', home.logo_title)
+        Assert.equal('FIREFOX ADD-ONS', home.logo_text)
+        Assert.contains('.org/media/img/zamboni/app_icons/firefox.png', home.logo_image_src)
+        Assert.equal('Easy ways to personalize.', home.subtitle)
