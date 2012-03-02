@@ -76,6 +76,7 @@ class TestAccounts:
 
     @pytest.mark.native
     @nondestructive
+    @xfail(reason="bugzilla 731880")
     def test_user_can_access_the_view_profile_page(self, mozwebqa):
         """
         Test for litmus 15400.
