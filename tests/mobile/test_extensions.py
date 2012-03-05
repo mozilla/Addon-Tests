@@ -11,6 +11,21 @@ from pages.mobile.home import Home
 
 class TestExtensions:
 
-    @py.mark.nondestructive
-    def test_dropdownmenu_functionality(self, mozwebqa):
+    sort_options = ['Featured', 'Most Users', 'Top Rated', 'Newest', 'Name', 'Weekly Downloads', 'Recently Updated', 'Up & Coming']
 
+    @pytest.mark.nondestructive
+    @pytest.mark.xfail(reason='selenium issue http://code.google.com/p/selenium/issues/detail?id=3492')
+    def test_sort_by_region(self, mozwebqa):
+
+        home = Home(mozwebqa)
+        extensions_page = home.click_all_featured_addons_link()
+        sort_menu = extensions_page.click_sort_by()
+        Assert.true(sort_menu.is_extensions_dropdown_visible)
+
+        actual_options = sort_menu.options
+        expected_options = self.sort_options
+        Assert.equal(len(actual_options), len(expected_options))
+
+        for i in range(len(actual_options)):
+            Assert.equal(actual_options[i].name, expected_options[i])
+            Assert.true(actual_options[i].is_option_visible)
