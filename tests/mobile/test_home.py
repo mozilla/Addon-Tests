@@ -15,6 +15,11 @@ class TestHome:
 
     expected_tabs = ['Featured', 'Popular', 'Categories']
 
+    expected_category_items = ['Alerts & Updates', 'Appearance', 'Bookmarks', 'Download Management',
+                               'Feeds, News & Blogging', 'Games & Entertainment', 'Language Support',
+                               'Photos, Music & Videos', 'Privacy & Security', 'Shopping', 'Social & Communication',
+                               'Tabs', 'Web Development', 'Other']
+
     @pytest.mark.nondestructive
     def test_that_checks_the_desktop_version_link(self, mozwebqa):
         home = Home(mozwebqa)
@@ -122,3 +127,15 @@ class TestHome:
         Assert.equal('FIREFOX ADD-ONS', home.logo_text)
         Assert.contains('.org/media/img/zamboni/app_icons/firefox.png', home.logo_image_src)
         Assert.equal('Easy ways to personalize.', home.subtitle)
+
+    @pytest.mark.nondestructive
+    def test_category_items(self, mozwebqa):
+        """
+        https://www.pivotaltracker.com/story/show/26074381
+        """
+        home = Home(mozwebqa)
+        home.tab('Categories').click()
+        Assert.true(home.is_categories_region_visible)
+
+        for i in range(len(home.categories)):
+            Assert.equal(home.categories[i].text, self.expected_category_items[i])
