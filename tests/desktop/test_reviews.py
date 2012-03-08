@@ -57,7 +57,6 @@ class TestReviews:
         Assert.equal(details_page.paginator.page_number, page_number + 1)
 
     @pytest.mark.native
-    @xfail(reason="bug 708970")
     @destructive
     def test_that_new_review_is_saved(self, mozwebqa):
         """
@@ -91,6 +90,13 @@ class TestReviews:
         date = date.replace(' 0', ' ')
         Assert.equal(review.date, date)
         Assert.equal(review.text, body)
+
+        review.delete()
+
+        details_page = Details(mozwebqa, 'Adblock Plus')
+        details_page.click_all_reviews_link()
+        review = review_page.reviews[0]
+        Assert.not_equal(review.text, body)
 
     @pytest.mark.native
     @xfail(reason="refactoring to compensate for purchased addons http://bit.ly/ucH6Ow")
