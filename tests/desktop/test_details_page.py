@@ -110,7 +110,7 @@ class TestDetails:
         """
         # Step 1 - Open AMO Home
         # Step 2 - Open Adblock Plus details page
-        details_page = Details(mozwebqa, 'Adblock Plus')
+        details_page = Details(mozwebqa, 'MemChaser')
         website_link = details_page.website
         Assert.true(website_link != '')
         # Step 3 - Follow external website link
