@@ -26,7 +26,7 @@ class TestHome:
         Assert.true(home_desktop.is_the_current_page)
 
     @pytest.mark.nondestructive
-    def test_that_checks_the_header_menu(self, mozwebqa):
+    def test_that_checks_header_text_and_page_title(self, mozwebqa):
         home = Home(mozwebqa)
         Assert.true(home.is_the_current_page)
 
