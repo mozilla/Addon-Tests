@@ -46,11 +46,11 @@ class Home(Base):
         return self.selenium.find_element(*self._header_statement_locator).text
 
     @property
-    def if_header_firefox_logo_visible(self):
+    def is_header_firefox_logo_visible(self):
         return self.selenium.find_element(*self._header_logo_locator).is_displayed()
 
     @property
-    def header_firefox_logo_src(self):
+    def firefox_header_logo_src(self):
         return self.selenium.find_element(*self._header_logo_locator).get_attribute('src')
 
     @property

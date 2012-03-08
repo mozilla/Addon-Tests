@@ -35,8 +35,6 @@ class TestHome:
         home = Home(mozwebqa)
         Assert.true(home.is_the_current_page)
 
-        Assert.true(home.if_header_firefox_logo_visible)
-        Assert.contains('firefox.png', home.header_firefox_logo_src)
         Assert.equal('FIREFOX ADD-ONS', home.header_text)
         Assert.equal('Return to the Firefox Add-ons homepage', home.header_title)
         Assert.equal('Easy ways to personalize.', home.header_statement_text)
@@ -47,6 +45,19 @@ class TestHome:
         Assert.true(home.is_learn_more_msg_visible)
         Assert.equal("Add-ons are applications that let you personalize Firefox with extra functionality and style. Whether you mistype the name of a website or can't read a busy page, there's an add-on to improve your on-the-go browsing.",
                      home.learn_more_msg_text)
+
+    @pytest.mark.nondestructive
+    def test_that_checks_the_firefox_logo(self, mozwebqa):
+        """
+        litmus 15128
+        https://litmus.mozilla.org/show_test.cgi?id=15128
+        """
+
+        home = Home(mozwebqa)
+        Assert.true(home.is_the_current_page)
+
+        Assert.true(home.is_header_firefox_logo_visible)
+        Assert.contains('firefox.png', home.firefox_header_logo_src)
 
     @pytest.mark.nondestructive
     def test_that_checks_the_footer_items(self, mozwebqa):
