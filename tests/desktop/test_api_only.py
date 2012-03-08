@@ -13,10 +13,11 @@ from pages.desktop.addons_api import AddOnsAPI
 #These tests should only call the api.
 #There should be no tests requiring selenium in this class.
 
-
+xfail = pytest.mark.xfail
 @pytest.mark.skip_selenium
 class TestAPIOnlyTests:
 
+    @xfail(reason="bug 733626")
     def test_that_firebug_is_listed_first_in_addons_search_for_fire(self, mozwebqa):
         """Test for Litmus 15314."""
         addons_xml = AddOnsAPI(mozwebqa, 'fire')
@@ -40,7 +41,7 @@ class TestAPIOnlyTests:
     def test_firebug_version_number(self, mozwebqa):
         """Test for Litmus 15317."""
         addon_xml = AddOnsAPI(mozwebqa)
-        Assert.equal("1.9.0", addon_xml.get_addon_version_number("Firebug"))
+        Assert.equal("1.9.1", addon_xml.get_addon_version_number("Firebug"))
 
     def test_that_firebug_status_id_is_4_and_fully_reviewed(self, mozwebqa):
         """Test for Litmus 15318."""

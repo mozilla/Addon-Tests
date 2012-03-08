@@ -11,6 +11,10 @@ from pages.mobile.home import Home
 
 class TestHome:
 
+    expected_menu_items = ['MOZILLA FIREFOX', 'FEATURES', 'DESKTOP', 'ADD-ONS', 'SUPPORT', 'VISIT MOZILLA']
+
+    expected_tabs = ['Featured', 'Popular', 'Categories']
+
     @pytest.mark.nondestructive
     def test_that_checks_the_desktop_version_link(self, mozwebqa):
         home = Home(mozwebqa)
@@ -82,3 +86,46 @@ class TestHome:
         Assert.true(home.is_search_box_visible)
         Assert.equal('search for add-ons', home.search_box_placeholder)
         Assert.true(home.is_search_button_visible)
+
+    @pytest.mark.nondestructive
+    def test_expandable_header(self, mozwebqa):
+        """
+        Litmus 15128
+        https://litmus.mozilla.org/show_test.cgi?id=15128
+        """
+        home = Home(mozwebqa)
+        home.header.click_header_menu()
+        Assert.true(home.header.is_dropdown_menu_visible)
+
+        menu_names = [menu.name for menu in home.header.dropdown_menu_items]
+        Assert.equal(menu_names, self.expected_menu_items)
+
+    def test_that_checks_the_tabs(self, mozwebqa):
+        """
+        Test for Litmus 15128.
+        https://litmus.mozilla.org/show_test.cgi?id=15128
+        """
+        home = Home(mozwebqa)
+        Assert.true(home.is_the_current_page)
+
+        Assert.equal(3, len(home.tabs))
+
+        for tab in reversed(range(len(home.tabs))):
+            Assert.equal(self.expected_tabs[tab], home.tabs[tab].name)
+            home.tabs[tab].click()
+            Assert.true(home.tabs[tab].is_tab_selected)
+            Assert.true(home.tabs[tab].is_tab_content_visible)
+
+    @pytest.mark.nondestructive
+    def test_the_amo_logo_text_and_title(self, mozwebqa):
+        """
+        Test for Litmus 15128.
+        https://litmus.mozilla.org/show_test.cgi?id=15128
+        """
+        home = Home(mozwebqa)
+        Assert.true(home.is_the_current_page)
+
+        Assert.equal('Return to the Firefox Add-ons homepage', home.logo_title)
+        Assert.equal('FIREFOX ADD-ONS', home.logo_text)
+        Assert.contains('.org/media/img/zamboni/app_icons/firefox.png', home.logo_image_src)
+        Assert.equal('Easy ways to personalize.', home.subtitle)
