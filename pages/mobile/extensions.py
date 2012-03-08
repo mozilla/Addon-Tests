@@ -6,12 +6,14 @@
 
 from selenium.webdriver.common.by import By
 from pages.mobile.base import Base
+from pages.page import Page
 
 
 class Extensions(Base):
 
     _page_title_locator = (By.CSS_SELECTOR, 'h1.site-title > a')
     _page_header_locator = (By.CSS_SELECTOR, '#content > h2')
+    _sort_by_locator = (By.CSS_SELECTOR, '.label > span')
 
     @property
     def page_header(self):
@@ -20,3 +22,8 @@ class Extensions(Base):
     @property
     def title(self):
         return str(self.selenium.find_element(*self._page_title_locator).text)
+
+    def click_sort_by(self):
+        self.selenium.find_element(*self._sort_by_locator).click()
+        from pages.mobile.regions.sorter import Sorter
+        return Sorter(self.testsetup)
