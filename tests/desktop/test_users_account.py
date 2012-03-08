@@ -21,6 +21,7 @@ destructive = pytest.mark.destructive
 class TestAccounts:
 
     @nondestructive
+    @pytest.mark.persona
     def test_user_can_login_and_logout(self, mozwebqa):
         """
         Test for Litmus 7857 and 4859.
@@ -37,6 +38,7 @@ class TestAccounts:
         Assert.false(home_page.header.is_user_logged_in)
 
     @nondestructive
+    @pytest.mark.persona
     def test_user_can_login_and_logout_using_browser_id(self, mozwebqa):
         """
         Test for Litmus 7857 and 4859.
@@ -54,6 +56,7 @@ class TestAccounts:
 
     @pytest.mark.native
     @nondestructive
+    @pytest.mark.persona
     def test_user_can_access_the_edit_profile_page(self, mozwebqa):
         """
         Test for Litmus 5039.
@@ -76,6 +79,7 @@ class TestAccounts:
 
     @pytest.mark.native
     @nondestructive
+    @pytest.mark.persona
     @xfail(reason="bugzilla 731880")
     def test_user_can_access_the_view_profile_page(self, mozwebqa):
         """
@@ -95,6 +99,7 @@ class TestAccounts:
     @pytest.mark.native
     @xfail(reason="https://www.pivotaltracker.com/story/show/23966893")
     @destructive
+    @pytest.mark.persona
     def test_hide_email_checkbox_works(self, mozwebqa):
         home_page = Home(mozwebqa)
         home_page.login("browserID")
@@ -132,6 +137,7 @@ class TestAccounts:
 
     @pytest.mark.native
     @destructive
+    @pytest.mark.persona
     def test_user_can_update_profile_information_in_account_settings_page(self, mozwebqa):
         """
         Test for Litmus 11563.
@@ -178,6 +184,7 @@ class TestAccounts:
 
     @pytest.mark.native
     @nondestructive
+    @pytest.mark.persona
     def test_user_my_collections_page(self, mozwebqa):
         """
         Test for litmus 15401.
@@ -196,6 +203,7 @@ class TestAccounts:
 
     @pytest.mark.native
     @destructive
+    @pytest.mark.persona
     def test_user_my_favorites_page(self, mozwebqa):
         """
         Test for Litmus 15402.

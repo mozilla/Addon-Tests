@@ -59,6 +59,7 @@ class TestReviews:
     @pytest.mark.native
     @xfail(reason="bug 708970")
     @destructive
+	@pytest.mark.persona
     def test_that_new_review_is_saved(self, mozwebqa):
         """
         Test for Litmus 22921.
