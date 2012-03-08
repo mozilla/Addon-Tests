@@ -117,16 +117,16 @@ class Home(Base):
 
     @property
     def categories(self):
-        return [self.Categories(self.testsetup, element)
-                for element in self.selenium.find_elements(*self._category_list_locator)]
+        return [self.Categories(self.testsetup, web_element)
+                for web_element in self.selenium.find_elements(*self._category_list_locator)]
 
-    def category(self, element):
-        return self.Categories(self.testsetup, element)
+    def category(self, web_element):
+        return self.Categories(self.testsetup, web_element)
 
     @property
     def most_popular_items(self):
-        return [self.MostPopularRegion(self.testsetup, element)
-                for element in self.selenium.find_elements(*self._most_popular_item_locator)]
+        return [self.MostPopularRegion(self.testsetup, web_element)
+                for web_element in self.selenium.find_elements(*self._most_popular_item_locator)]
 
     class Categories(Page):
         _link_locator = (By.CSS_SELECTOR, 'a')

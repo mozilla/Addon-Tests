@@ -80,8 +80,8 @@ class SearchHome(Base):
 
     @property
     def results(self):
-        return [self.SearchResult(self.testsetup, element)
-                for element in self.selenium.find_elements(*self._results_locator)]
+        return [self.SearchResult(self.testsetup, web_element)
+                for web_element in self.selenium.find_elements(*self._results_locator)]
 
     class SearchResult(Page):
         _name_locator = (By.CSS_SELECTOR, 'div.info > h3 > a')

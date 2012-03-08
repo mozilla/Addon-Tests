@@ -303,8 +303,8 @@ class Details(Base):
 
     @property
     def part_of_collections(self):
-        return [self.PartOfCollectionsSnippet(self.testsetup, element)
-                for element in self.selenium.find_elements(*self._part_of_collections_list_locator)]
+        return [self.PartOfCollectionsSnippet(self.testsetup, web_element)
+                for web_element in self.selenium.find_elements(*self._part_of_collections_list_locator)]
 
     def page_forward(self):
         self.selenium.find_element(*self._next_link_locator).click()
@@ -396,8 +396,8 @@ class Details(Base):
 
     @property
     def other_addons(self):
-        return [self.OtherAddons(self.testsetup, element)
-                for element in self.selenium.find_elements(*self._other_addons_by_author_locator)]
+        return [self.OtherAddons(self.testsetup, web_element)
+                for web_element in self.selenium.find_elements(*self._other_addons_by_author_locator)]
 
     def get_rating_counter(self, rating):
         elements = self.selenium.find_elements(*self._rating_counter_locator)
@@ -467,8 +467,8 @@ class Details(Base):
 
     @property
     def reviews(self):
-        return [self.DetailsReviewSnippet(self.testsetup, element)
-                for element in self.selenium.find_elements(*self._reviews_locator)]
+        return [self.DetailsReviewSnippet(self.testsetup, web_element)
+                for web_element in self.selenium.find_elements(*self._reviews_locator)]
 
     @property
     def version_info_link(self):

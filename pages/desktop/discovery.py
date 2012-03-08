@@ -114,8 +114,8 @@ class DiscoveryPane(Base):
 
     @property
     def sliders(self):
-        return [self.SliderRegion(self.testsetup, element)
-                for element in self.selenium.find_elements(*self._carousel_locator)]
+        return [self.SliderRegion(self.testsetup, web_element)
+                for web_element in self.selenium.find_elements(*self._carousel_locator)]
 
     class SliderRegion(Page):
         _header_text_locator = (By.CSS_SELECTOR, "h2")

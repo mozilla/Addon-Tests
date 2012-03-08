@@ -112,8 +112,8 @@ class EditProfile(Base):
 
     @property
     def profile_fields(self):
-        return [self.ProfileSection(self.testsetup, element)
-                        for element in self.selenium.find_elements(*self._profile_fields_locator)]
+        return [self.ProfileSection(self.testsetup, web_element)
+                        for web_element in self.selenium.find_elements(*self._profile_fields_locator)]
 
     @property
     def update_message(self):
