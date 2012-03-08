@@ -78,9 +78,9 @@ class Home(Base):
         if type(value) == int:
             return self.tabs[value]
         elif type(value) == str:
-            for el in self.tabs:
-                if el.name == value:
-                    return el
+            for tab in self.tabs:
+                if tab.name == value:
+                    return tab
 
     class Tabs(Page):
 
