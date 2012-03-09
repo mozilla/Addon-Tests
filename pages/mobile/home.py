@@ -27,8 +27,8 @@ class Home(Base):
 
     _all_featured_addons_locator = (By.CSS_SELECTOR, '#list-featured > li > a')
     _default_selected_tab_locator = (By.CSS_SELECTOR, 'li.selected a')
-    _categories_locator = (By.CSS_SELECTOR, '#listing-categories ul')
-    _category_items_locator = (By.CSS_SELECTOR, 'li')
+    _categories_list_locator = (By.CSS_SELECTOR, '#listing-categories ul')
+    _category_item_locator = (By.CSS_SELECTOR, 'li')
 
     def __init__(self, testsetup):
         Base.__init__(self, testsetup)
@@ -147,20 +147,20 @@ class Home(Base):
 
     @property
     def is_categories_region_visible(self):
-        return self.is_element_visible(*self._categories_locator)
+        return self.is_element_visible(*self._categories_list_locator)
 
     @property
     def categories(self):
-        return [self.Categories(self.testsetup, element)
-                for element in self.selenium.find_element(*self._categories_locator).find_elements(*self._category_items_locator)]
+        return [self.Category(self.testsetup, category_element)
+                for category_element in self.selenium.find_element(*self._categories_list_locator).find_elements(*self._category_item_locator)]
 
-    class Categories(Page):
+    class Category(Page):
 
         _link_locator = (By.TAG_NAME, 'a')
 
-        def __init__(self, testsetup, element):
+        def __init__(self, testsetup, category_element):
             Page.__init__(self, testsetup)
-            self._root_element = element
+            self._root_element = category_element
 
         @property
         def text(self):
