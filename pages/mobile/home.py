@@ -80,8 +80,8 @@ class Home(Base):
 
     @property
     def tabs(self):
-        return [self.Tabs(self.testsetup, element)
-                for element in self.selenium.find_elements(*self._tabs_locator)]
+        return [self.Tabs(self.testsetup, web_element)
+                for web_element in self.selenium.find_elements(*self._tabs_locator)]
 
     def tab(self, value):
         if type(value) == int:

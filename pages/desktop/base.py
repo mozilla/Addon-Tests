@@ -153,7 +153,7 @@ class Base(Page):
         def site_navigation_menus(self):
             #returns a list containing all the site navigation menus
             from pages.desktop.regions.header_menu import HeaderMenu
-            return [HeaderMenu(self.testsetup, element) for element in self.selenium.find_elements(*self._site_navigation_menus_locator)]
+            return [HeaderMenu(self.testsetup, web_element) for web_element in self.selenium.find_elements(*self._site_navigation_menus_locator)]
 
         def click_other_application(self, other_app):
             hover_locator = self.selenium.find_element(*self._other_applications_locator)

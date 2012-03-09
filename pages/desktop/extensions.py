@@ -33,8 +33,8 @@ class ExtensionsHome(Base):
 
     @property
     def extensions(self):
-        return [Extension(self.testsetup, element)
-                for element in self.selenium.find_elements(*self._extensions_locator)]
+        return [Extension(self.testsetup, web_element)
+                for web_element in self.selenium.find_elements(*self._extensions_locator)]
 
     @property
     def default_selected_tab(self):
@@ -75,7 +75,7 @@ class Extension(Page):
 
         @property
         def user_count(self):
-            return int(self._root_element.find_element(*self._user_count_locator).text.strip('user').replace(',','').rstrip())
+            return int(self._root_element.find_element(*self._user_count_locator).text.strip('user').replace(',', '').rstrip())
 
         def click(self):
             self._root_element.find_element(*self._name_locator).click()

@@ -60,8 +60,8 @@ class HeaderMenu(Page):
 
     @property
     def items(self):
-        return [self.HeaderMenuItem(self.testsetup, element, self)
-                for element in self._root_element.find_elements(*self._menu_items_locator)]
+        return [self.HeaderMenuItem(self.testsetup, web_element, self)
+                for web_element in self._root_element.find_elements(*self._menu_items_locator)]
 
     class HeaderMenuItem (Page):
 
