@@ -43,6 +43,11 @@ class TestHome:
         Assert.equal('Return to the Firefox Add-ons homepage', home.header_title)
         Assert.equal('Easy ways to personalize.', home.header_statement_text)
 
+    @pytest.mark.nondestructive
+    def test_that_checks_learn_more_link(self, mozwebqa):
+        home = Home(mozwebqa)
+        Assert.true(home.is_the_current_page)
+
         Assert.equal(u'Learn More\xbb', home.learn_more_text)
         home.click_learn_more()
 
