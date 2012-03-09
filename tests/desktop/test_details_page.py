@@ -109,7 +109,7 @@ class TestDetails:
         https://litmus.mozilla.org/show_test.cgi?id=11809
         """
         # Step 1 - Open AMO Home
-        # Step 2 - Open Adblock Plus details page
+        # Step 2 - Open MemChaser Plus details page
         details_page = Details(mozwebqa, 'MemChaser')
         website_link = details_page.website
         Assert.true(website_link != '')
