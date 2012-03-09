@@ -163,5 +163,5 @@ class Home(Base):
             self._root_element = category_element
 
         @property
-        def text(self):
+        def name(self):
             return self._root_element.text

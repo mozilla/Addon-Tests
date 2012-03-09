@@ -155,4 +155,4 @@ class TestHome:
         Assert.true(home.is_categories_region_visible)
 
         for i in range(len(home.categories)):
-            Assert.equal(home.categories[i].text, self.expected_category_items[i])
+            Assert.equal(home.categories[i].name, self.expected_category_items[i])
