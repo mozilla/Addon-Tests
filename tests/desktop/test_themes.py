@@ -194,3 +194,12 @@ class TestThemes:
                              theme.not_compatible_flag_text)
             else:
                 Assert.false(theme.is_incompatible_flag_present)
+
+    @nondestructive
+    def test_that_most_popular_link_is_default(self, mozwebqa):
+        """Test for Litmus 15348"""
+        home_page = Home(mozwebqa)
+        themes_page = home_page.header.site_navigation_menu("Themes").click()
+        url_current_page = themes_page.get_url_current_page()
+        Assert.true(url_current_page.endswith("/themes/"))
+        Assert.true(themes_page.is_selected_explore_link('most_popular'))
