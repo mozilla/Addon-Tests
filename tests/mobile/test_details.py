@@ -16,5 +16,4 @@ class TestDetails:
     def test_that_contribute_button_is_not_present_on_the_mobile_page(self, mozwebqa):
         details_page = Details(mozwebqa, 'Adblock Plus')
         Assert.true(details_page.is_the_current_page)
-        Assert.false('Contribute' in details_page.buttons)
-
+        Assert.false(details_page.is_contribute_button_present)

@@ -14,7 +14,7 @@ from pages.mobile.base import Base
 class Details(Base):
 
     _title_locator = (By.CSS_SELECTOR, 'div.infobox > h3')
-    _buttons_locator = (By.CSS_SELECTOR, '.button')
+    _contribute_button_locator = (By.XPATH, "//a[contains(.,'Contribute')]")
 
     def __init__(self, testsetup, addon_name=None):
         #formats name for url
@@ -34,5 +34,5 @@ class Details(Base):
         return self.selenium.find_element(*self._title_locator).text
 
     @property
-    def buttons(self):
-        return [element.text for element in self.selenium.find_elements(*self._buttons_locator)]
+    def is_contribute_button_present(self):
+        return self.is_element_present(*self._contribute_button_locator)
