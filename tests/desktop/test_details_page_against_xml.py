@@ -185,7 +185,7 @@ class TestDetailsAgainstXML:
         """Test for Litmus 15326."""
 
         #browser
-        initial_page = Details(mozwebqa, 'Adblock Plus')
+        initial_page = Details(mozwebqa, 'MemChaser')
 
         #api
         addons_xml = AddOnsAPI(mozwebqa)

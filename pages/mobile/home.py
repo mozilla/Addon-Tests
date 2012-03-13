@@ -14,6 +14,7 @@ class Home(Base):
     _page_title = 'Add-ons for Firefox'
 
     _header_locator = (By.CSS_SELECTOR, 'h1.site-title > a')
+    _header_logo_locator = (By.CSS_SELECTOR, '.site-title > a > img')
     _header_statement_locator = (By.CSS_SELECTOR, '#home-header > hgroup > h2')
     _learn_more_locator = (By.CSS_SELECTOR, '#learnmore')
     _learn_more_msg_locator = (By.CSS_SELECTOR, '#learnmore-msg')
@@ -26,7 +27,8 @@ class Home(Base):
 
     _all_featured_addons_locator = (By.CSS_SELECTOR, '#list-featured > li > a')
     _default_selected_tab_locator = (By.CSS_SELECTOR, 'li.selected a')
-
+    _categories_list_locator = (By.CSS_SELECTOR, '#listing-categories ul')
+    _category_item_locator = (By.CSS_SELECTOR, 'li')
 
     def __init__(self, testsetup):
         Base.__init__(self, testsetup)
@@ -43,6 +45,14 @@ class Home(Base):
     @property
     def header_statement_text(self):
         return self.selenium.find_element(*self._header_statement_locator).text
+
+    @property
+    def is_header_firefox_logo_visible(self):
+        return self.selenium.find_element(*self._header_logo_locator).is_displayed()
+
+    @property
+    def firefox_header_logo_src(self):
+        return self.selenium.find_element(*self._header_logo_locator).get_attribute('src')
 
     @property
     def learn_more_text(self):
@@ -70,8 +80,16 @@ class Home(Base):
 
     @property
     def tabs(self):
-        return [self.Tabs(self.testsetup, element)
-                for element in self.selenium.find_elements(*self._tabs_locator)]
+        return [self.Tabs(self.testsetup, web_element)
+                for web_element in self.selenium.find_elements(*self._tabs_locator)]
+
+    def tab(self, value):
+        if type(value) == int:
+            return self.tabs[value]
+        elif type(value) == str:
+            for tab in self.tabs:
+                if tab.name == value:
+                    return tab
 
     class Tabs(Page):
 
@@ -126,3 +144,24 @@ class Home(Base):
     @property
     def subtitle(self):
         return self.selenium.find_element(*self._subtitle_locator).text
+
+    @property
+    def is_categories_region_visible(self):
+        return self.is_element_visible(*self._categories_list_locator)
+
+    @property
+    def categories(self):
+        return [self.Category(self.testsetup, category_element)
+                for category_element in self.selenium.find_element(*self._categories_list_locator).find_elements(*self._category_item_locator)]
+
+    class Category(Page):
+
+        _link_locator = (By.TAG_NAME, 'a')
+
+        def __init__(self, testsetup, category_element):
+            Page.__init__(self, testsetup)
+            self._root_element = category_element
+
+        @property
+        def name(self):
+            return self._root_element.text

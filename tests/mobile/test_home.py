@@ -15,6 +15,11 @@ class TestHome:
 
     expected_tabs = ['Featured', 'Popular', 'Categories']
 
+    expected_category_items = ['Alerts & Updates', 'Appearance', 'Bookmarks', 'Download Management',
+                               'Feeds, News & Blogging', 'Games & Entertainment', 'Language Support',
+                               'Photos, Music & Videos', 'Privacy & Security', 'Shopping', 'Social & Communication',
+                               'Tabs', 'Web Development', 'Other']
+
     @pytest.mark.nondestructive
     def test_that_checks_the_desktop_version_link(self, mozwebqa):
         home = Home(mozwebqa)
@@ -26,7 +31,11 @@ class TestHome:
         Assert.true(home_desktop.is_the_current_page)
 
     @pytest.mark.nondestructive
-    def test_that_checks_the_header_menu(self, mozwebqa):
+    def test_that_checks_header_text_and_page_title(self, mozwebqa):
+        """
+        litmus 15128
+        https://litmus.mozilla.org/show_test.cgi?id=15128
+        """
         home = Home(mozwebqa)
         Assert.true(home.is_the_current_page)
 
@@ -34,12 +43,30 @@ class TestHome:
         Assert.equal('Return to the Firefox Add-ons homepage', home.header_title)
         Assert.equal('Easy ways to personalize.', home.header_statement_text)
 
+    @pytest.mark.nondestructive
+    def test_that_checks_learn_more_link(self, mozwebqa):
+        home = Home(mozwebqa)
+        Assert.true(home.is_the_current_page)
+
         Assert.equal(u'Learn More\xbb', home.learn_more_text)
         home.click_learn_more()
 
         Assert.true(home.is_learn_more_msg_visible)
         Assert.equal("Add-ons are applications that let you personalize Firefox with extra functionality and style. Whether you mistype the name of a website or can't read a busy page, there's an add-on to improve your on-the-go browsing.",
                      home.learn_more_msg_text)
+
+    @pytest.mark.nondestructive
+    def test_that_checks_the_firefox_logo(self, mozwebqa):
+        """
+        litmus 15128
+        https://litmus.mozilla.org/show_test.cgi?id=15128
+        """
+
+        home = Home(mozwebqa)
+        Assert.true(home.is_the_current_page)
+
+        Assert.true(home.is_header_firefox_logo_visible)
+        Assert.contains('firefox.png', home.firefox_header_logo_src)
 
     @pytest.mark.nondestructive
     def test_that_checks_the_footer_items(self, mozwebqa):
@@ -122,3 +149,15 @@ class TestHome:
         Assert.equal('FIREFOX ADD-ONS', home.logo_text)
         Assert.contains('.org/media/img/zamboni/app_icons/firefox.png', home.logo_image_src)
         Assert.equal('Easy ways to personalize.', home.subtitle)
+
+    @pytest.mark.nondestructive
+    def test_category_items(self, mozwebqa):
+        """
+        https://www.pivotaltracker.com/story/show/26074381
+        """
+        home = Home(mozwebqa)
+        home.tab('Categories').click()
+        Assert.true(home.is_categories_region_visible)
+
+        for i in range(len(home.categories)):
+            Assert.equal(home.categories[i].name, self.expected_category_items[i])
