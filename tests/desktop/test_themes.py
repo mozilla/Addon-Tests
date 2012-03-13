@@ -202,4 +202,4 @@ class TestThemes:
         themes_page = home_page.header.site_navigation_menu("Themes").click()
         url_current_page = themes_page.get_url_current_page()
         Assert.true(url_current_page.endswith("/themes/"))
-        Assert.equal(themes_page.selected_sorting, 'Most Users')
+        Assert.equal(themes_page.sorted_by, 'Most Users')

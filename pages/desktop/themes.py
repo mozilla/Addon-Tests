@@ -47,7 +47,7 @@ class Themes(Base):
             click().perform()
 
     @property
-    def selected_sorting(self):
+    def sorted_by(self):
         return self.selenium.find_element(*self._selected_sort_by_locator).text
 
     def click_on_first_addon(self):
