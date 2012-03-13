@@ -195,7 +195,7 @@ class TestThemes:
             else:
                 Assert.false(theme.is_incompatible_flag_present)
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_sorted_by_most_users_is_default(self, mozwebqa):
         """Test for Litmus 15346."""
         home_page = Home(mozwebqa)
