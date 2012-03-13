@@ -30,6 +30,7 @@ class Themes(Base):
     _next_link_locator = (By.CSS_SELECTOR, '.paginator .rel > a:nth-child(3)')
     _previous_link_locator = (By.CSS_SELECTOR, '.paginator .rel > a:nth-child(2)')
     _last_page_link_locator = (By.CSS_SELECTOR, '.rel > a:nth-child(4)')
+    _explore_filter_links_locators = (By.CSS_SELECTOR, '#side-nav a')
     _explore_most_popular_locator = (By.CSS_SELECTOR, '#side-explore li:nth-child(1) a')
     _explore_top_rated_locator = (By.CSS_SELECTOR, '#side-explore li:nth-child(2) a')
     _explore_newest_locator = (By.CSS_SELECTOR, '#side-explore li:nth-child(3) a')
@@ -48,13 +49,12 @@ class Themes(Base):
             move_to_element(click_target).\
             click().perform()
 
-    def is_selected_explore_link(self, lookup):
-        locator = self.selenium.find_element(*getattr(self, "_explore_%s_locator" % lookup))
-        selected = locator.value_of_css_property('font-weight')
-        if selected == 'bold':
-            return True
-        else:
-            return False
+    @property
+    def selected_explore_filter(self):
+        for link in self.selenium.find_elements(*self._explore_filter_links_locators):
+            selected = link.value_of_css_property('font-weight')
+            if selected == 'bold' or int(selected) > 400:
+                return link.text
 
     def click_on_first_addon(self):
         self._addons_root_element.find_element(*self._addon_name_locator).click()
