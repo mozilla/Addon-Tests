@@ -24,7 +24,7 @@ class TestPaypal:
     addon_name = 'Adblock Plus'
 
     @destructive
-    @pytest.mark.persona
+    @pytest.mark.login
     def test_that_user_can_contribute_to_an_addon(self, mozwebqa):
         """Test that checks the Contribute button for an addon using PayPal."""
 

@@ -81,7 +81,7 @@ class TestDiscoveryPane:
         Assert.equal(5, discovery_pane.up_and_coming_item_count)
 
     @nondestructive
-    @pytest.mark.persona
+    @pytest.mark.login
     def test_the_logout_link_for_logged_in_users(self, mozwebqa):
         """
         Test for Litmus 15110.
