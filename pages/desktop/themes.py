@@ -31,9 +31,6 @@ class Themes(Base):
     _previous_link_locator = (By.CSS_SELECTOR, '.paginator .rel > a:nth-child(2)')
     _last_page_link_locator = (By.CSS_SELECTOR, '.rel > a:nth-child(4)')
     _explore_filter_links_locators = (By.CSS_SELECTOR, '#side-nav a')
-    _explore_most_popular_locator = (By.CSS_SELECTOR, '#side-explore li:nth-child(1) a')
-    _explore_top_rated_locator = (By.CSS_SELECTOR, '#side-explore li:nth-child(2) a')
-    _explore_newest_locator = (By.CSS_SELECTOR, '#side-explore li:nth-child(3) a')
 
     @property
     def _addons_root_element(self):
