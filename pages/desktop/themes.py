@@ -47,6 +47,7 @@ class Themes(Base):
             move_to_element(click_target).\
             click().perform()
 
+    @property
     def sorted_by(self):
         return self.selenium.find_element(*self._selected_sort_by_locator).text
 
