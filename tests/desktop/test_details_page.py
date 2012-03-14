@@ -14,18 +14,16 @@ from pages.desktop.details import Details
 from pages.desktop.extensions import ExtensionsHome
 from pages.desktop.home import Home
 
-nondestructive = pytest.mark.nondestructive
-
 
 class TestDetails:
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_register_login_link_is_present_in_addon_details_page(self, mozwebqa):
         """Test for Litmus 9890."""
         details_page = Details(mozwebqa, "Firebug")
         Assert.equal(details_page.register_link, "Log in / Register", "Login / Register text does not match the expected one")
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_dropdown_menu_is_present_after_click_on_other_apps(self, mozwebqa):
         """Test for Litmus 9890."""
         details_page = Details(mozwebqa, "Firebug")
@@ -33,28 +31,28 @@ class TestDetails:
         details_page.header.hover_over_other_apps_menu()
         Assert.true(details_page.header.is_other_apps_dropdown_menu_visible)
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_addon_name_is_displayed(self, mozwebqa):
         """Test for Litmus 9890."""
         details_page = Details(mozwebqa, "Firebug")
         # check that the name is not empty
         Assert.not_none(details_page.title, "")
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_summary_is_displayed(self, mozwebqa):
         """Test for Litmus 9890."""
         details_page = Details(mozwebqa, "Firebug")
         # check that the summary is not empty
         Assert.not_none(re.match('(\w+\s*){3,}', details_page.summary))
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_about_this_addon_is_displayed(self, mozwebqa):
         """Test for Litmus 9890."""
         details_page = Details(mozwebqa, "Firebug")
         Assert.equal(details_page.about_addon, "About this Add-on")
         Assert.not_none(re.match('(\w+\s*){3,}', details_page.description))
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_version_information_is_displayed(self, mozwebqa):
         """Test for Litmus 9890."""
         details_page = Details(mozwebqa, 'Firebug')
@@ -74,7 +72,7 @@ class TestDetails:
         # check that the release number matches the version number at the top of the page
         Assert.equal('Version %s' % details_page.version_number, details_page.release_version)
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_reviews_are_displayed(self, mozwebqa):
         """Test for Litmus 9890."""
         details_page = Details(mozwebqa, "Firebug")
@@ -82,27 +80,27 @@ class TestDetails:
         Assert.true(details_page.has_reviews)
         Assert.not_none(re.search('(\w+\s*){1,}', details_page.review_details))
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_in_often_used_with_addons_are_displayed(self, mozwebqa):
         """Test for Litmus 9890."""
         details_page = Details(mozwebqa, "Firebug")
         Assert.equal(details_page.often_used_with_header, u"Often used with\u2026")
         Assert.true(details_page.is_often_used_with_list_visible)
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_tags_are_displayed(self, mozwebqa):
         """Test for Litmus 9890."""
         details_page = Details(mozwebqa, "Firebug")
         Assert.true(details_page.are_tags_visible)
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_part_of_collections_are_displayed(self, mozwebqa):
         """Test for Litmus 9890."""
         details_page = Details(mozwebqa, "Firebug")
         Assert.equal(details_page.part_of_collections_header, 'Part of these Collections')
         Assert.true(len(details_page.part_of_collections) > 0)
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_external_link_leads_to_addon_website(self, mozwebqa):
         """
         Test for Litmus 11809.
@@ -117,7 +115,7 @@ class TestDetails:
         details_page.click_website_link()
         Assert.true(website_link in details_page.get_url_current_page())
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_whats_this_link_for_source_license_links_to_an_answer_in_faq(self, mozwebqa):
         """Test for Litmus 11530."""
         details_page = Details(mozwebqa, "Firebug")
@@ -126,7 +124,7 @@ class TestDetails:
         Assert.not_none(re.match('(\w+\s*){3,}', user_faq_page.license_question))
         Assert.not_none(re.match('(\w+\s*){3,}', user_faq_page.license_answer))
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_other_addons_label_when_there_are_multiple_authors(self, mozwebqa):
         """
         Test for Litmus 11926.
@@ -138,7 +136,7 @@ class TestDetails:
         Assert.true(len(detail_page.authors) > 1)
         Assert.equal(detail_page.other_addons_by_authors_text, 'Other add-ons by these authors')
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_other_addons_label_when_there_is_only_one_author(self, mozwebqa):
         """
         Test for Litmus 11926.
@@ -150,7 +148,7 @@ class TestDetails:
         Assert.equal(len(detail_page.authors), 1)
         Assert.equal(detail_page.other_addons_by_authors_text, "Other add-ons by %s" % detail_page.authors[0])
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_navigating_to_other_addons(self, mozwebqa):
         """
         Test for Litmus 11926.
@@ -163,7 +161,7 @@ class TestDetails:
             Assert.contains(name, detail_page.title)
             Details(mozwebqa, 'firebug')
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_open_close_functionality_for_image_viewer(self, mozwebqa):
         """
         Test for Litmus 4846.
@@ -178,7 +176,7 @@ class TestDetails:
         image_viewer.close()
         Assert.false(image_viewer.is_visible)
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_navigation_buttons_for_image_viewer(self, mozwebqa):
         """
         Test for Litmus 4846.
@@ -239,7 +237,7 @@ class TestDetails:
             else:
                 Assert.false(image_viewer.is_previous_present)
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_review_usernames_are_clickable(self, mozwebqa):
         """
         Test for Litmus 4842.
@@ -254,7 +252,7 @@ class TestDetails:
             Assert.equal(username, amo_user_page.username)
             Details(mozwebqa, addon_name)
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_details_page_has_breadcrumb(self, mozwebqa):
         """
         Test for Litmus 11922.
@@ -265,7 +263,7 @@ class TestDetails:
         Assert.equal(detail_page.breadcrumbs[1].text, 'Extensions')
         Assert.equal(detail_page.breadcrumbs[2].text, 'Firebug')
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_clicking_info_link_slides_down_page_to_version_info(self, mozwebqa):
         """
         Test for Litmus 25725.
@@ -277,7 +275,7 @@ class TestDetails:
         Assert.true(details_page.is_version_information_section_expanded)
         Assert.true(details_page.is_version_information_section_in_view)
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_breadcrumb_links_in_details_page_work(self, mozwebqa):
         """
         Test for Litmus 11923.
@@ -307,7 +305,7 @@ class TestDetails:
 
         Assert.equal(detail_page.breadcrumbs[2].text, 'Firebug')
 
-    @nondestructive
+    @pytest.mark.nondestructive
     @pytest.mark.login
     def test_that_add_a_review_button_works(self, mozwebqa):
         """
@@ -326,7 +324,7 @@ class TestDetails:
         review_box = details_page.click_to_write_review()
         Assert.true(review_box.is_review_box_visible)
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_the_developers_comments_section(self, mozwebqa):
         """
         Test for Litmus 25724.
@@ -338,7 +336,7 @@ class TestDetails:
         Assert.true(details_page.is_devs_comments_section_expanded())
         Assert.not_none(re.match('(\w+\s*){3,}', details_page.devs_comments_message))
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_add_to_collection_flyout_for_anonymous_users(self, mozwebqa):
         """
         Test for Litmus 25711.
@@ -349,7 +347,7 @@ class TestDetails:
         Assert.equal(details_page.collection_widget_button, 'Create an Add-ons Account')
         Assert.equal(details_page.collection_widget_login_link, 'log in to your current account')
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_the_development_channel_expands(self, mozwebqa):
         """
         Test for Litmus 25711.
@@ -364,7 +362,7 @@ class TestDetails:
         details_page.click_development_channel()
         Assert.equal('', details_page.development_channel_content)
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_click_on_other_collections(self, mozwebqa):
         """
         Test for Litmus 25722.
@@ -378,7 +376,7 @@ class TestDetails:
             Assert.equal(name, collection_pg.collection_name, "Expected collection name does not match the page header")
             details_pg = Details(mozwebqa, 'Firebug')
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_the_development_channel_section(self, mozwebqa):
         """
         Test for Litmus 25732.
@@ -396,7 +394,7 @@ class TestDetails:
         # Verify experimental version (beta or pre)
         Assert.not_none(re.match('Version \d\.\d.\d(b|a|rc)[0-9]:', details_page.beta_version))
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_license_link_works(self, mozwebqa):
         """
         Test for Litmus 25726.
@@ -408,7 +406,7 @@ class TestDetails:
         license_link = details_page.license_site
         Assert.not_none(license_link)
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_clicking_user_reviews_slides_down_page_to_reviews_section(self, mozwebqa):
         """
         Test for Litmus 25708.
