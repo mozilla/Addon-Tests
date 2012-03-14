@@ -18,6 +18,7 @@ class Themes(Base):
     _sort_by_created_locator = (By.CSS_SELECTOR, 'div#sorter > ul > li:nth-child(3) > a')
     _sort_by_popular_locator = (By.CSS_SELECTOR, 'li.extras > ul > li:nth-child(3) > a')
     _sort_by_rating_locator = (By.CSS_SELECTOR, 'div#sorter > ul > li:nth-child(2) > a')
+    _selected_sort_by_locator = (By.CSS_SELECTOR, '#sorter > ul > li.selected a')
     _hover_more_locator = (By.CSS_SELECTOR, 'li.extras > a')
     _addons_root_locator = (By.CSS_SELECTOR, '.listing-grid li')
     _addon_name_locator = (By.CSS_SELECTOR, 'h3')
@@ -45,6 +46,9 @@ class Themes(Base):
             move_to_element(hover_element).\
             move_to_element(click_target).\
             click().perform()
+
+    def sorted_by(self):
+        return self.selenium.find_element(*self._selected_sort_by_locator).text
 
     @property
     def selected_explore_filter(self):

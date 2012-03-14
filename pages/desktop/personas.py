@@ -20,9 +20,9 @@ class Personas(Base):
     _featured_addons_locator = (By.CSS_SELECTOR, "#featured-addons.personas-home")
 
     _featured_personas_locator = (By.CSS_SELECTOR, ".personas-featured .persona.persona-small")
-    _recently_added_locator = (By.XPATH, "//div[@class='addons-column'][1]//div[@class='persona persona-small']")
-    _most_popular_locator = (By.XPATH, "//div[@class='addons-column'][2]//div[@class='persona persona-small']")
-    _top_rated_locator = (By.XPATH, "//div[@class='addons-column'][3]//div[@class='persona persona-small']")
+    _recently_added_locator = (By.XPATH, "//div[contains(@class, 'addons-column')][1]//div[@class='persona persona-small']")
+    _most_popular_locator = (By.XPATH, "//div[contains(@class, 'addons-column')][2]//div[@class='persona persona-small']")
+    _top_rated_locator = (By.XPATH, "//div[contains(@class, 'addons-column')][3]//div[@class='persona persona-small']")
 
     _persona_header_locator = (By.CSS_SELECTOR, ".featured-inner > h2")
 
