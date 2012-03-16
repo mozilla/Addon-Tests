@@ -58,6 +58,7 @@ class TestReviews:
 
     @pytest.mark.native
     @destructive
+    @pytest.mark.login
     def test_that_new_review_is_saved(self, mozwebqa):
         """
         Test for Litmus 22921.
@@ -101,6 +102,7 @@ class TestReviews:
     @pytest.mark.native
     @xfail(reason="refactoring to compensate for purchased addons http://bit.ly/ucH6Ow")
     @destructive
+    @pytest.mark.login
     def test_that_one_star_rating_increments(self, mozwebqa):
         """
         Test for Litmus 22916.
@@ -137,6 +139,7 @@ class TestReviews:
     @pytest.mark.native
     @xfail(reason="refactoring to compensate for purchased addons http://bit.ly/ucH6Ow")
     @destructive
+    @pytest.mark.login
     def test_that_two_star_rating_increments(self, mozwebqa):
         """
         Test for Litmus 22917.
@@ -173,6 +176,7 @@ class TestReviews:
     @pytest.mark.native
     @xfail(reason="refactoring to compensate for purchased addons http://bit.ly/ucH6Ow")
     @destructive
+    @pytest.mark.login
     def test_that_three_star_rating_increments(self, mozwebqa):
         """
         Test for Litmus 22918.
@@ -209,6 +213,7 @@ class TestReviews:
     @pytest.mark.native
     @xfail(reason="refactoring to compensate for purchased addons http://bit.ly/ucH6Ow")
     @destructive
+    @pytest.mark.login
     def test_that_four_star_rating_increments(self, mozwebqa):
         """
         Test for Litmus 22919.
@@ -245,6 +250,7 @@ class TestReviews:
     @pytest.mark.native
     @xfail(reason="refactoring to compensate for purchased addons http://bit.ly/ucH6Ow")
     @destructive
+    @pytest.mark.login
     def test_that_five_star_rating_increments(self, mozwebqa):
         """
         Test for Litmus 22920

@@ -308,6 +308,7 @@ class TestDetails:
         Assert.equal(detail_page.breadcrumbs[2].text, 'Firebug')
 
     @nondestructive
+    @pytest.mark.login
     def test_that_add_a_review_button_works(self, mozwebqa):
         """
         Test for Litmus 25729.

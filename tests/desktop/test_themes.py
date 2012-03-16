@@ -196,6 +196,15 @@ class TestThemes:
                 Assert.false(theme.is_incompatible_flag_present)
 
     @pytest.mark.nondestructive
+    def test_that_most_popular_link_is_default(self, mozwebqa):
+        """Test for Litmus 15348"""
+        home_page = Home(mozwebqa)
+        themes_page = home_page.header.site_navigation_menu("Themes").click()
+        url_current_page = themes_page.get_url_current_page()
+        Assert.true(url_current_page.endswith("/themes/"))
+        Assert.equal(themes_page.selected_explore_filter, 'Most Popular')
+
+    @pytest.mark.nondestructive
     def test_sorted_by_most_users_is_default(self, mozwebqa):
         """Test for Litmus 15346."""
         home_page = Home(mozwebqa)
