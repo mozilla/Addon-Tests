@@ -96,8 +96,8 @@ class TestReviews:
 
         details_page = Details(mozwebqa, 'Adblock Plus')
         details_page.click_all_reviews_link()
-        review = review_page.reviews[0]
-        Assert.not_equal(review.text, body)
+        all_review_text = [review.text for review in review_page.reviews]
+        Assert.false(body in all_review_text)
 
     @pytest.mark.native
     @xfail(reason="refactoring to compensate for purchased addons http://bit.ly/ucH6Ow")
