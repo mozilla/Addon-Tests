@@ -34,6 +34,18 @@ class Home(Base):
         Base.__init__(self, testsetup)
         self.selenium.get(self.base_url)
 
+    def search_for(self, search_string, click_button = True):
+        search_box = self.selenium.find_element(*self._search_box_locator)
+        search_box.send_keys(search_string)
+
+        if click_button:
+            self.selenium.find_element(*self._search_button_locator).click()
+        else:
+            search_box.submit()
+
+        from pages.mobile.search_results import SearchResults
+        return SearchResults(self.testsetup, search_term = search_string)
+
     @property
     def header_text(self):
         return self.selenium.find_element(*self._header_locator).text
