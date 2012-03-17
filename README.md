@@ -76,7 +76,12 @@ An example of running one test in a file:
 
 If running on a Mac, skip tests which require 'native' support:
 
-    py.test --driver=firegox --credentials=/credentials.yaml -m 'not native'
+    py.test --driver=firefox --credentials=/credentials.yaml -m 'not native'
+    
+Depending on the platform you're running the tests on, run only the tests in the mobile or desktop directories:
+
+    py.test --driver=firefox --credentials=/credentials.yaml ./tests/desktop
+    py.test --driver=firefox --credentials=/credentials.yaml ./tests/mobile
     
 For information about running tests against a Selenium Grid or moz-grid-config see the section in this document about setting up moz-grid-config.
 
