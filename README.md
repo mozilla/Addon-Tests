@@ -74,6 +74,10 @@ An example of running one test in a file:
 
 	py.test --driver=firefox --credentials=/credentials.yaml tests/test_details_page.py -k test_that_external_link_leads_to_addon_website
 
+If running on a Mac, skip tests which require 'native' support:
+
+    py.test --driver=firegox --credentials=/credentials.yaml -m 'not native'
+    
 For information about running tests against a Selenium Grid or moz-grid-config see the section in this document about setting up moz-grid-config.
 
 The mozwebqa plugin has advanced command line options for reporting and using browsers. See the documentation on [davehunt's pytest mozwebqa github][pymozwebqa]:
