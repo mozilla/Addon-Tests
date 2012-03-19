@@ -25,6 +25,7 @@ class TestDetails:
         details_page = Details(mozwebqa, "Firebug")
         Assert.equal(details_page.register_link, "Log in / Register", "Login / Register text does not match the expected one")
 
+    @pytest.mark.native
     @nondestructive
     def test_that_dropdown_menu_is_present_after_click_on_other_apps(self, mozwebqa):
         """Test for Litmus 9890."""
