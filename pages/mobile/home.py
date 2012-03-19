@@ -154,7 +154,7 @@ class Home(Base):
         return self.selenium.find_element(*self._logo_image_locator).get_attribute('src')
 
     @property
-    def subtitle(self):here I tihnk should be removed
+    def subtitle(self):
         return self.selenium.find_element(*self._subtitle_locator).text
 
     @property
