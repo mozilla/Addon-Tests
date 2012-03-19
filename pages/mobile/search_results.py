@@ -13,7 +13,7 @@ class SearchResults(Base):
 
     def __init__(self, testsetup, search_term):
         Base.__init__(self, testsetup)
-        self._page_titile = "%s :: Search :: Add-ons for Firefox" % search_term
+        self._page_title = "%s :: Search :: Add-ons for Firefox" % search_term
 
     @property
     def results(self):

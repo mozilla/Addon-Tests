@@ -44,7 +44,7 @@ class Home(Base):
             search_box.submit()
 
         from pages.mobile.search_results import SearchResults
-        return SearchResults(self.testsetup, search_term = search_string)
+        return SearchResults(self.testsetup, search_string)
 
     @property
     def header_text(self):
@@ -154,7 +154,7 @@ class Home(Base):
         return self.selenium.find_element(*self._logo_image_locator).get_attribute('src')
 
     @property
-    def subtitle(self):
+    def subtitle(self):here I tihnk should be removed
         return self.selenium.find_element(*self._subtitle_locator).text
 
     @property

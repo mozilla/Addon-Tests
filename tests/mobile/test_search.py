@@ -16,7 +16,7 @@ class TestSearch:
     @pytest.mark.nondestructive
     def test_that_search_returns_results(self, mozwebqa):
         home = Home(mozwebqa)
-        Assert.true(home.is_the_current_page)
+        home.is_the_current_page
 
         search_page = home.search_for(self.positive_search_term)
 
