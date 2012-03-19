@@ -95,9 +95,10 @@ class TestReviews:
         review.delete()
 
         details_page = Details(mozwebqa, 'Adblock Plus')
-        details_page.click_all_reviews_link()
-        all_review_text = [review.text for review in review_page.reviews]
-        Assert.false(body in all_review_text)
+        review_page = details_page.click_all_reviews_link()
+
+        for review in review_page.reviews:
+            Assert.false(body in review.text)
 
     @pytest.mark.native
     @xfail(reason="refactoring to compensate for purchased addons http://bit.ly/ucH6Ow")
