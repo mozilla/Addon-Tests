@@ -10,13 +10,10 @@ import random
 from unittestzero import Assert
 from pages.desktop.home import Home
 
-nondestructive = pytest.mark.nondestructive
-destructive = pytest.mark.destructive
-
 
 class TestCollections:
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_featured_tab_is_highlighted_by_default(self, mozwebqa):
         """
         Test for Litmus 29747.
@@ -26,7 +23,7 @@ class TestCollections:
         featured_collections_page = home_page.header.site_navigation_menu("Collections").click()
         Assert.equal(featured_collections_page.default_selected_tab, "Featured")
 
-    @destructive
+    @pytest.mark.destructive
     @pytest.mark.login
     def test_create_collection(self, mozwebqa):
 
