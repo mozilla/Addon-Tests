@@ -9,11 +9,9 @@ from unittestzero import Assert
 from pages.desktop.details import Details
 
 
-nondestructive = pytest.mark.nondestructive
-
 class TestStatistics:
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_verifies_the_url_of_the_statistics_page(self, mozwebqa):
         """ Test for Litmus 25710
         https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25710

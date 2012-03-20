@@ -13,8 +13,6 @@ from unittestzero import Assert
 from pages.desktop.discovery import DiscoveryPane
 from pages.desktop.home import Home
 
-nondestructive = pytest.mark.nondestructive
-
 
 class TestDiscoveryPane:
     """This only works with Firefox 4."""
@@ -22,7 +20,7 @@ class TestDiscoveryPane:
     #Need to get this info before run
     basepath = '/en-US/firefox/discovery/pane/4.0/Darwin'
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_users_with_less_than_3_addons_get_what_are_addons(self, mozwebqa):
         """
         Test for Litmus 15063.
@@ -37,7 +35,7 @@ class TestDiscoveryPane:
 
         Assert.equal(what_are_addons_expected, discovery_pane.what_are_addons_text)
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_mission_statement_is_on_addons_home_page(self, mozwebqa):
         """Test for Litmus 15065."""
         discovery_pane = DiscoveryPane(mozwebqa, self.basepath)
@@ -49,7 +47,7 @@ class TestDiscoveryPane:
         download_count_regex = "Add-ons downloaded: (.+)"
         Assert.true(re.search(download_count_regex, discovery_pane.download_count) != None)
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_featured_personas_is_present_and_has_5_item(self, mozwebqa):
         """Test for Litmus 15079, 15080."""
         discovery_pane = DiscoveryPane(mozwebqa, self.basepath)
@@ -58,7 +56,7 @@ class TestDiscoveryPane:
         Assert.true(discovery_pane.is_personas_see_all_link_visible)
 
     @pytest.mark.native
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_featured_personas_go_to_their_landing_page_when_clicked(self, mozwebqa):
         """Test for Litmus 15081."""
         discovery_pane = DiscoveryPane(mozwebqa, self.basepath)
@@ -66,7 +64,7 @@ class TestDiscoveryPane:
         persona = discovery_pane.click_on_first_persona()
         Assert.equal(first_persona, persona.persona_title)
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_more_ways_to_customize_section_is_available(self, mozwebqa):
         """Test for Litmus 15082."""
         discovery_pane = DiscoveryPane(mozwebqa, self.basepath)
@@ -74,13 +72,13 @@ class TestDiscoveryPane:
         Assert.equal("Browse all add-ons", discovery_pane.browse_all_addons)
         Assert.equal("See all themes", discovery_pane.see_all_themes)
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_up_and_coming_is_present_and_had_5_items(self, mozwebqa):
         """Test for Litmus 15074."""
         discovery_pane = DiscoveryPane(mozwebqa, self.basepath)
         Assert.equal(5, discovery_pane.up_and_coming_item_count)
 
-    @nondestructive
+    @pytest.mark.nondestructive
     @pytest.mark.login
     def test_the_logout_link_for_logged_in_users(self, mozwebqa):
         """
@@ -98,7 +96,7 @@ class TestDiscoveryPane:
         Assert.false(home_page.header.is_user_logged_in)
 
     @pytest.mark.native
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_carousel_works(self, mozwebqa):
         """
         Test for Litmus 15071.
@@ -124,7 +122,7 @@ class TestDiscoveryPane:
             slider2 = slider1
 
     @pytest.mark.native
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_extension_is_underlined_while_hover_and_text_not(self, mozwebqa):
         """
         Test for Litmus 15118.

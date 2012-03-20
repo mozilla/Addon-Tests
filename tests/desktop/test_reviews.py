@@ -13,13 +13,11 @@ from pages.desktop.home import Home
 from pages.desktop.details import Details
 
 xfail = pytest.mark.xfail
-nondestructive = pytest.mark.nondestructive
-destructive = pytest.mark.destructive
 
 
 class TestReviews:
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_all_reviews_hyperlink_works(self, mozwebqa):
         """
         Test for Litmus 4843.
@@ -58,7 +56,7 @@ class TestReviews:
 
     @pytest.mark.native
     @xfail(reason="bug 708970")
-    @destructive
+    @pytest.mark.destructive
     @pytest.mark.login
     def test_that_new_review_is_saved(self, mozwebqa):
         """
@@ -95,7 +93,7 @@ class TestReviews:
 
     @pytest.mark.native
     @xfail(reason="refactoring to compensate for purchased addons http://bit.ly/ucH6Ow")
-    @destructive
+    @pytest.mark.destructive
     @pytest.mark.login
     def test_that_one_star_rating_increments(self, mozwebqa):
         """
@@ -132,7 +130,7 @@ class TestReviews:
 
     @pytest.mark.native
     @xfail(reason="refactoring to compensate for purchased addons http://bit.ly/ucH6Ow")
-    @destructive
+    @pytest.mark.destructive
     @pytest.mark.login
     def test_that_two_star_rating_increments(self, mozwebqa):
         """
@@ -169,7 +167,7 @@ class TestReviews:
 
     @pytest.mark.native
     @xfail(reason="refactoring to compensate for purchased addons http://bit.ly/ucH6Ow")
-    @destructive
+    @pytest.mark.destructive
     @pytest.mark.login
     def test_that_three_star_rating_increments(self, mozwebqa):
         """
@@ -206,7 +204,7 @@ class TestReviews:
 
     @pytest.mark.native
     @xfail(reason="refactoring to compensate for purchased addons http://bit.ly/ucH6Ow")
-    @destructive
+    @pytest.mark.destructive
     @pytest.mark.login
     def test_that_four_star_rating_increments(self, mozwebqa):
         """
@@ -243,7 +241,7 @@ class TestReviews:
 
     @pytest.mark.native
     @xfail(reason="refactoring to compensate for purchased addons http://bit.ly/ucH6Ow")
-    @destructive
+    @pytest.mark.destructive
     @pytest.mark.login
     def test_that_five_star_rating_increments(self, mozwebqa):
         """
