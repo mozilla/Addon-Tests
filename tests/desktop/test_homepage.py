@@ -11,7 +11,6 @@ from unittestzero import Assert
 from pages.desktop.home import Home
 
 xfail = pytest.mark.xfail
-nondestructive = pytest.mark.nondestructive
 
 
 class HeaderMenu:
@@ -50,7 +49,7 @@ class TestHome:
         HeaderMenu(u'MORE\u2026', [
             "Add-ons for Mobile", "Dictionaries & Language Packs", "Search Tools", "Developer Hub"])]
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_checks_the_most_popular_section_exists(self, mozwebqa):
         """
         Test for Litmus 25807.
@@ -60,7 +59,7 @@ class TestHome:
         Assert.contains('MOST POPULAR', home_page.most_popular_list_heading)
         Assert.equal(home_page.most_popular_count, 10)
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_clicking_on_addon_name_loads_details_page(self, mozwebqa):
         """
         Test for Litmus 25812.
@@ -70,7 +69,7 @@ class TestHome:
         details_page = home_page.click_on_first_addon()
         Assert.true(details_page.is_the_current_page)
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_featured_personas_exist_on_the_home(self, mozwebqa):
         """
         Test for Litmus29698.
@@ -80,7 +79,7 @@ class TestHome:
         Assert.equal(home_page.featured_personas_title, u'Featured Personas See all \xbb', 'Featured Personas region title doesn\'t match')
         Assert.less_equal(home_page.featured_personas_count, 6)
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_clicking_see_all_personas_link_works(self, mozwebqa):
         """
         Test for Litmus 29699.
@@ -92,7 +91,7 @@ class TestHome:
         Assert.true(featured_persona_page.is_the_current_page)
         Assert.equal(featured_persona_page.persona_header, 'Personas')
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_extensions_link_loads_extensions_page(self, mozwebqa):
         """
         Test for Litmus 25746.
@@ -102,7 +101,7 @@ class TestHome:
         extensions_page = home_page.header.site_navigation_menu("EXTENSIONS").click()
         Assert.true(extensions_page.is_the_current_page)
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_most_popular_section_is_ordered_by_users(self, mozwebqa):
         """
         Test for Litmus 25808.
@@ -113,7 +112,7 @@ class TestHome:
         most_popular_items = home_page.most_popular_items
         Assert.is_sorted_descending([i.users_number for i in most_popular_items])
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_featured_collections_exist_on_the_home(self, mozwebqa):
         """
         Test for Litmus 25805.
@@ -123,7 +122,7 @@ class TestHome:
         Assert.equal(home_page.featured_collections_title, u'Featured Collections See all \xbb', 'Featured Collection region title doesn\'t match')
         Assert.equal(home_page.featured_collections_count, 4)
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_featured_extensions_exist_on_the_home(self, mozwebqa):
         """
         Test for Litmus 25800.
@@ -134,7 +133,7 @@ class TestHome:
         Assert.equal(home_page.featured_extensions_see_all, u'See all \xbb', 'Featured Extensions region see all link is not correct')
         Assert.equal(home_page.featured_extensions_count, 6)
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_clicking_see_all_collections_link_works(self, mozwebqa):
         """
         Test for Litmus 25806.
@@ -146,7 +145,7 @@ class TestHome:
         Assert.true(featured_collection_page.get_url_current_page().endswith('/collections/?sort=featured'))
 
     @pytest.mark.native
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_items_menu_fly_out_while_hovering(self, mozwebqa):
         """
         Test for Litmus 25754.
@@ -173,7 +172,7 @@ class TestHome:
         Assert.contains('sort=rating', extensions_page.get_url_current_page())
         Assert.equal('Top Rated', extensions_page.default_selected_tab)
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_clicking_most_popular_shows_addons_sorted_by_users(self, mozwebqa):
         """
         Test for Litmus 25790.
@@ -185,7 +184,7 @@ class TestHome:
         Assert.contains('sort=users', extensions_page.get_url_current_page())
         Assert.equal('Most Users', extensions_page.default_selected_tab)
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_clicking_featured_shows_addons_sorted_by_featured(self, mozwebqa):
         """
         Test for Litmus 25790.
@@ -197,7 +196,7 @@ class TestHome:
         Assert.contains('sort=featured', extensions_page.get_url_current_page())
         Assert.equal('Featured', extensions_page.default_selected_tab)
 
-    @nondestructive
+    @pytest.mark.nondestructive
     @pytest.mark.litmus(25744)
     def test_header_site_navigation_menus_are_correct(self, mozwebqa):
         home_page = Home(mozwebqa)
@@ -209,7 +208,7 @@ class TestHome:
         Assert.equal(expected_navigation_menu, actual_navigation_menus)
 
     @pytest.mark.native
-    @nondestructive
+    @pytest.mark.nondestructive
     @pytest.mark.litmus([25745, 25747, 25749, 25751, 25754, 25756, 25758, 25760, 25763, 25764])
     def test_the_name_of_each_site_navigation_menu_in_the_header(self, mozwebqa):
         home_page = Home(mozwebqa)
@@ -222,7 +221,7 @@ class TestHome:
 
             Assert.equal(expected_menu_items, actual_menu_items)
 
-    @nondestructive
+    @pytest.mark.nondestructive
     @pytest.mark.litmus([25747, 25751, 25756, 25760, 25764])
     def test_top_three_items_in_each_site_navigation_menu_are_featured(self, mozwebqa):
         home_page = Home(mozwebqa)

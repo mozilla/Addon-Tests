@@ -14,24 +14,23 @@ from pages.desktop.details import Details
 from pages.desktop.addons_api import AddOnsAPI
 
 xfail = pytest.mark.xfail
-nondestructive = pytest.mark.nondestructive
 
 
 class TestDetailsAgainstXML:
 
     firebug = "Firebug"
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_firebug_page_title_is_correct(self, mozwebqa):
         firebug_page = Details(mozwebqa, self.firebug)
         Assert.true(re.search(self.firebug, firebug_page.page_title) is not None)
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_firebug_version_number_is_correct(self, mozwebqa):
         firebug_page = Details(mozwebqa, self.firebug)
         Assert.true(len(str(firebug_page.version_number)) > 0)
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_firebug_authors_is_correct(self, mozwebqa):
         """Test for Litmus 15319."""
 
@@ -50,7 +49,7 @@ class TestDetailsAgainstXML:
         for i in range(len(xml_authors)):
             Assert.equal(xml_authors[i], browser_authors[i])
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_firebug_images_is_correct(self, mozwebqa):
         """Test for Litmus 15324."""
 
@@ -72,7 +71,7 @@ class TestDetailsAgainstXML:
         for i in range(len(xml_images)):
             Assert.equal(xml_images[i].replace('src=api&amp;', ''), browser_images[i])
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_firebug_summary_is_correct(self, mozwebqa):
         """Test for Litmus 15320."""
 
@@ -86,12 +85,12 @@ class TestDetailsAgainstXML:
 
         Assert.equal(xml_summary, browser_summary)
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_firebug_rating_is_correct(self, mozwebqa):
         firebug_page = Details(mozwebqa, self.firebug)
         Assert.equal("5", firebug_page.rating)
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_description_text_is_correct(self, mozwebqa):
         """Test for Litmus 15321."""
         #browser
@@ -119,7 +118,7 @@ class TestDetailsAgainstXML:
 
         Assert.equal(browser_icon, xml_icon)
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_support_url_is_correct(self, mozwebqa):
         """Test for Litmus 15337."""
 
@@ -133,7 +132,7 @@ class TestDetailsAgainstXML:
 
         Assert.equal(browser_support_url, xml_support_url)
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_rating_in_api_equals_rating_in_details_page(self, mozwebqa):
         """Test for Litmus 15325."""
 
@@ -147,7 +146,7 @@ class TestDetailsAgainstXML:
 
         Assert.equal(browser_rating, xml_rating)
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_compatible_applications_equal(self, mozwebqa):
         """Test for Litmus 15323."""
 
@@ -165,7 +164,7 @@ class TestDetailsAgainstXML:
         Assert.equal(browser_compatible_applications, 'Works with %s %s - %s' % (name, min_version, max_version))
 
     @pytest.mark.native
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_addon_number_of_total_downloads_is_correct(self, mozwebqa):
         """Test for Litmus 15331."""
 
@@ -180,7 +179,7 @@ class TestDetailsAgainstXML:
 
         Assert.equal(browser_downloads, xml_downloads)
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_learn_more_link_is_correct(self, mozwebqa):
         """Test for Litmus 15326."""
 
@@ -194,7 +193,7 @@ class TestDetailsAgainstXML:
 
         Assert.not_none(re.search(self.firebug, initial_page.page_title))
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_firebug_devs_comments_is_correct(self, mozwebqa):
         """Test for Litmus 15329."""
 
@@ -209,7 +208,7 @@ class TestDetailsAgainstXML:
 
         Assert.equal(xml_devs_comments, browser_devs_comments)
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_home_page_in_api_equals_home_page_in_details_page(self, mozwebqa):
         """Test for Litmus 15336."""
 
@@ -223,7 +222,7 @@ class TestDetailsAgainstXML:
 
         Assert.contains(xml_home_page, browser_home_page)
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_reviews_in_api_equals_reviews_in_details_page(self, mozwebqa):
         """Test for Litmus 15330."""
 
@@ -237,7 +236,7 @@ class TestDetailsAgainstXML:
 
         Assert.equal(browser_reviews, xml_reviews)
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_daily_users_in_api_equals_daily_users_in_details_page(self, mozwebqa):
         """Test for Litmus 15333."""
 

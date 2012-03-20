@@ -14,13 +14,12 @@ from pages.desktop.home import Home
 from pages.desktop.personas import Personas
 
 xfail = pytest.mark.xfail
-nondestructive = pytest.mark.nondestructive
 
 
 class TestPersonas:
 
     @xfail(reason="disabled until Selenium issue http://code.google.com/p/selenium/issues/detail?id=3182 is fixed")
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_start_exploring_link_in_the_promo_box(self, mozwebqa):
         """
         Test for Litmus 12037.
@@ -35,7 +34,7 @@ class TestPersonas:
         Assert.equal("up-and-coming", browse_personas_page.sort_key)
         Assert.equal("Up & Coming", browse_personas_page.sort_by)
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_page_title_for_personas_landing_page(self, mozwebqa):
         """
         Test for Litmus 15391.
@@ -45,7 +44,7 @@ class TestPersonas:
         personas_page = home_page.header.site_navigation_menu("Personas").click()
         Assert.true(personas_page.is_the_current_page)
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_the_featured_personas_section(self, mozwebqa):
         """
         Test for Litmus 15392.
@@ -56,7 +55,7 @@ class TestPersonas:
         Assert.true(personas_page.is_the_current_page)
         Assert.less_equal(personas_page.featured_personas_count, 6)
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_the_recently_added_section(self, mozwebqa):
         """
         Test for Litmus Litmus 15393.
@@ -69,7 +68,7 @@ class TestPersonas:
         recently_added_dates = personas_page.recently_added_dates
         Assert.is_sorted_descending(recently_added_dates)
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_the_most_popular_section(self, mozwebqa):
         """
         Test for Litmus 15394.
@@ -82,7 +81,7 @@ class TestPersonas:
         downloads = personas_page.most_popular_downloads
         Assert.is_sorted_descending(downloads)
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_the_top_rated_section(self, mozwebqa):
         """
         Test for Litmus 15395.
@@ -95,7 +94,7 @@ class TestPersonas:
         ratings = personas_page.top_rated_ratings
         Assert.is_sorted_descending(ratings)
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_breadcrumb_menu_in_persona_details_page(self, mozwebqa):
         """
         Test for Litmus Litmus 12046.
@@ -134,7 +133,7 @@ class TestPersonas:
         personas_detail_page.breadcrumbs[0].click()
         Assert.true(home_page.is_the_current_page)
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_breadcrumb_menu_for_rainbow_firefox_persona(self, mozwebqa):
         """
         Verify the breadcrumb menu for a known persona.
@@ -147,7 +146,7 @@ class TestPersonas:
         Assert.equal("Personas", rainbow_personas_detail_page.breadcrumbs[1].text)
         Assert.equal("rainbow firefox", rainbow_personas_detail_page.breadcrumbs[2].text)
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_personas_breadcrumb_format(self, mozwebqa):
         """
         Verify the breadcrumb format in personas page
