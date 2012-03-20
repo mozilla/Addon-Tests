@@ -33,10 +33,11 @@ class Home(Base):
     def __init__(self, testsetup):
         Base.__init__(self, testsetup)
         self.selenium.get(self.base_url)
+        self.is_the_current_page
 
-    def search_for(self, search_string, click_button = True):
+    def search_for(self, search_term, click_button=True):
         search_box = self.selenium.find_element(*self._search_box_locator)
-        search_box.send_keys(search_string)
+        search_box.send_keys(search_term)
 
         if click_button:
             self.selenium.find_element(*self._search_button_locator).click()
@@ -44,7 +45,7 @@ class Home(Base):
             search_box.submit()
 
         from pages.mobile.search_results import SearchResults
-        return SearchResults(self.testsetup, search_string)
+        return SearchResults(self.testsetup, search_term)
 
     @property
     def header_text(self):

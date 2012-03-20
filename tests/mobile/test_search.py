@@ -6,6 +6,7 @@
 
 import pytest
 from unittestzero import Assert
+
 from pages.mobile.home import Home
 
 
@@ -16,7 +17,6 @@ class TestSearch:
     @pytest.mark.nondestructive
     def test_that_search_returns_results(self, mozwebqa):
         home = Home(mozwebqa)
-        home.is_the_current_page
 
         search_page = home.search_for(self.positive_search_term)
 

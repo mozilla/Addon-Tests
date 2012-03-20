@@ -5,11 +5,12 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from selenium.webdriver.common.by import By
+
 from pages.mobile.base import Base
 
 class SearchResults(Base):
 
-    _results_locator = (By.CSS_SELECTOR, 'div.addon-listing > ul.listview > li.item')
+    _results_locator = (By.CSS_SELECTOR, '.addon-listing .item')
 
     def __init__(self, testsetup, search_term):
         Base.__init__(self, testsetup)
