@@ -26,7 +26,8 @@ class ExtensionsHome(Base):
     _sort_by_newest_locator = (By.CSS_SELECTOR, "div#sorter > ul > li:nth-child(4) > a")
     _sort_by_name_locator = (By.CSS_SELECTOR, "li.extras > ul > li:nth-child(1) > a")
     _sort_by_featured_locator = (By.CSS_SELECTOR, "div#sorter > ul > li:nth-child(1) > a")
-
+    _sort_by_up_and_coming_locator = (By.CSS_SELECTOR, "li.extras > ul > li:nth-child(4) > a")
+    
     _hover_more_locator = (By.CSS_SELECTOR, "li.extras > a")
 
     _updating_locator = (By.CSS_SELECTOR, "div.updating")
