@@ -15,7 +15,6 @@ from pages.desktop.details import Details
 
 xfail = pytest.mark.xfail
 nondestructive = pytest.mark.nondestructive
-destructive = pytest.mark.destructive
 
 
 class TestAccounts:
@@ -98,7 +97,6 @@ class TestAccounts:
 
     @pytest.mark.native
     @xfail(reason="https://www.pivotaltracker.com/story/show/23966893")
-    @destructive
     @pytest.mark.login
     def test_hide_email_checkbox_works(self, mozwebqa):
         home_page = Home(mozwebqa)
@@ -136,7 +134,6 @@ class TestAccounts:
             Assert.equal(view_profile_page.is_email_field_present, initial_state, 'Could not restore profile to initial state.')
 
     @pytest.mark.native
-    @destructive
     @pytest.mark.login
     def test_user_can_update_profile_information_in_account_settings_page(self, mozwebqa):
         """
@@ -202,7 +199,6 @@ class TestAccounts:
         Assert.equal('Collections by %s' % username, my_collections_page.my_collections_header_text)
 
     @pytest.mark.native
-    @destructive
     @pytest.mark.login
     def test_user_my_favorites_page(self, mozwebqa):
         """

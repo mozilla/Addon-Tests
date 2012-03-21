@@ -12,8 +12,6 @@ from unittestzero import Assert
 from pages.desktop.home import Home
 from pages.desktop.details import Details
 
-destructive = pytest.mark.destructive
-
 
 class TestPaypal:
     """
@@ -23,7 +21,6 @@ class TestPaypal:
 
     addon_name = 'Adblock Plus'
 
-    @destructive
     @pytest.mark.login
     def test_that_user_can_contribute_to_an_addon(self, mozwebqa):
         """Test that checks the Contribute button for an addon using PayPal."""
@@ -47,7 +44,6 @@ class TestPaypal:
         payment_popup.close_paypal_popup()
         Assert.true(addon_page.is_the_current_page)
 
-    @destructive
     def test_that_user_can_make_a_contribution_without_logging_into_amo(self, mozwebqa):
         """Test that checks if the user is able to make a contribution without logging in to AMO."""
         addon_page = Details(mozwebqa, 'Adblock Plus')

@@ -14,7 +14,6 @@ from pages.desktop.details import Details
 
 xfail = pytest.mark.xfail
 nondestructive = pytest.mark.nondestructive
-destructive = pytest.mark.destructive
 
 
 class TestReviews:
@@ -58,7 +57,6 @@ class TestReviews:
 
     @pytest.mark.native
     @xfail(reason="bug 708970")
-    @destructive
     @pytest.mark.login
     def test_that_new_review_is_saved(self, mozwebqa):
         """
@@ -95,7 +93,6 @@ class TestReviews:
 
     @pytest.mark.native
     @xfail(reason="refactoring to compensate for purchased addons http://bit.ly/ucH6Ow")
-    @destructive
     @pytest.mark.login
     def test_that_one_star_rating_increments(self, mozwebqa):
         """
@@ -132,7 +129,6 @@ class TestReviews:
 
     @pytest.mark.native
     @xfail(reason="refactoring to compensate for purchased addons http://bit.ly/ucH6Ow")
-    @destructive
     @pytest.mark.login
     def test_that_two_star_rating_increments(self, mozwebqa):
         """
@@ -169,7 +165,6 @@ class TestReviews:
 
     @pytest.mark.native
     @xfail(reason="refactoring to compensate for purchased addons http://bit.ly/ucH6Ow")
-    @destructive
     @pytest.mark.login
     def test_that_three_star_rating_increments(self, mozwebqa):
         """
@@ -206,7 +201,6 @@ class TestReviews:
 
     @pytest.mark.native
     @xfail(reason="refactoring to compensate for purchased addons http://bit.ly/ucH6Ow")
-    @destructive
     @pytest.mark.login
     def test_that_four_star_rating_increments(self, mozwebqa):
         """
@@ -243,7 +237,6 @@ class TestReviews:
 
     @pytest.mark.native
     @xfail(reason="refactoring to compensate for purchased addons http://bit.ly/ucH6Ow")
-    @destructive
     @pytest.mark.login
     def test_that_five_star_rating_increments(self, mozwebqa):
         """

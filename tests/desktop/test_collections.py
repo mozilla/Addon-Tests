@@ -11,7 +11,6 @@ from unittestzero import Assert
 from pages.desktop.home import Home
 
 nondestructive = pytest.mark.nondestructive
-destructive = pytest.mark.destructive
 
 
 class TestCollections:
@@ -26,7 +25,6 @@ class TestCollections:
         featured_collections_page = home_page.header.site_navigation_menu("Collections").click()
         Assert.equal(featured_collections_page.default_selected_tab, "Featured")
 
-    @destructive
     @pytest.mark.login
     def test_create_collection(self, mozwebqa):
 
