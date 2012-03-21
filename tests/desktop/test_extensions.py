@@ -190,7 +190,7 @@ class TestExtensions:
 
     @pytest.mark.native
     @pytest.mark.nondestructive
-    def test_up_and_coming_is_not_empty(self, mozwebqa):
+    def test_that_extensions_are_sorted_by_up_and_coming(self, mozwebqa):
         """
         Litmus 29729
         https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=29729
@@ -201,6 +201,4 @@ class TestExtensions:
         featured_extensions_page.sort_by('up and coming')
         Assert.equal(featured_extensions_page.default_selected_tab, "Up & Coming")
         Assert.contains("sort=hotness", featured_extensions_page.get_url_current_page())
-
-        extension_count = len(featured_extensions_page.extensions)
-        Assert.greater(extension_count, 0)
+        Assert.greater(len(featured_extensions_page.extensions), 0)
