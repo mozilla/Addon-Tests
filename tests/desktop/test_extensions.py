@@ -9,12 +9,10 @@ import pytest
 from unittestzero import Assert
 from pages.desktop.home import Home
 
-nondestructive = pytest.mark.nondestructive
-
 
 class TestExtensions:
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_featured_tab_is_highlighted_by_default(self, mozwebqa):
         """
         Test for Litmus 29706.
@@ -25,7 +23,7 @@ class TestExtensions:
         Assert.equal(featured_extensions_page.default_selected_tab, "Featured")
 
     @pytest.mark.native
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_pagination(self, mozwebqa):
         '''
         Test for Litmus 29708
@@ -51,7 +49,7 @@ class TestExtensions:
         Assert.true(featured_extensions_page.paginator.is_prev_page_disabled)
 
     @pytest.mark.native
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_previous_button_is_disabled_on_the_first_page(self, mozwebqa):
         """
         Test for Litmus 29709.
@@ -69,7 +67,7 @@ class TestExtensions:
         Assert.true(featured_extensions_page.paginator.is_prev_page_disabled)
 
     @pytest.mark.native
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_next_button_is_disabled_on_the_last_page(self, mozwebqa):
         """
         Test for Litmus 29710.
@@ -83,7 +81,7 @@ class TestExtensions:
         Assert.true(featured_extensions_page.paginator.is_next_page_disabled, 'Next button is available')
 
     @pytest.mark.native
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_checks_if_the_extensions_are_sorted_by_featured(self, mozwebqa):
         """
         Test for Litmus 29713
@@ -99,7 +97,7 @@ class TestExtensions:
             Assert.equal("FEATURED", extension.featured)
 
     @pytest.mark.native
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_checks_if_the_extensions_are_sorted_by_top_rated(self, mozwebqa):
         """
         Test for Litmus 29717
@@ -112,7 +110,7 @@ class TestExtensions:
         Assert.contains("sort=rating", featured_extensions_page.get_url_current_page())
 
     @pytest.mark.native
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_checks_if_the_extensions_are_sorted_by_most_user(self, mozwebqa):
         """
         Test for Litmus 29715
@@ -127,7 +125,7 @@ class TestExtensions:
         Assert.is_sorted_descending(user_counts)
 
     @pytest.mark.native
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_checks_if_the_extensions_are_sorted_by_newest(self, mozwebqa):
         """
         Test for Litmus 29719
@@ -147,7 +145,7 @@ class TestExtensions:
         Assert.is_sorted_descending(added_dates)
 
     @pytest.mark.native
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_checks_the_extensions_are_sorted_by_name(self, mozwebqa):
         """
         Litmus 29723
@@ -170,7 +168,7 @@ class TestExtensions:
         Assert.true(names[:] == sorted_names[:])
 
     @pytest.mark.native
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_checks_if_the_extensions_are_sorted_by_recently_updated(self, mozwebqa):
         """
         Litmus 29727

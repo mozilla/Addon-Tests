@@ -10,12 +10,10 @@ import random
 from unittestzero import Assert
 from pages.desktop.home import Home
 
-nondestructive = pytest.mark.nondestructive
-
 
 class TestCollections:
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_featured_tab_is_highlighted_by_default(self, mozwebqa):
         """
         Test for Litmus 29747.

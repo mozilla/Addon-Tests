@@ -14,12 +14,11 @@ from pages.desktop.home import Home
 from pages.desktop.details import Details
 
 xfail = pytest.mark.xfail
-nondestructive = pytest.mark.nondestructive
 
 
 class TestAccounts:
 
-    @nondestructive
+    @pytest.mark.nondestructive
     @pytest.mark.login
     def test_user_can_login_and_logout(self, mozwebqa):
         """
@@ -36,7 +35,7 @@ class TestAccounts:
         home_page.header.click_logout()
         Assert.false(home_page.header.is_user_logged_in)
 
-    @nondestructive
+    @pytest.mark.nondestructive
     @pytest.mark.login
     def test_user_can_login_and_logout_using_browser_id(self, mozwebqa):
         """
@@ -54,7 +53,7 @@ class TestAccounts:
         Assert.false(home_page.header.is_user_logged_in)
 
     @pytest.mark.native
-    @nondestructive
+    @pytest.mark.nondestructive
     @pytest.mark.login
     def test_user_can_access_the_edit_profile_page(self, mozwebqa):
         """
@@ -77,7 +76,7 @@ class TestAccounts:
         Assert.equal("Notifications", amo_user_edit_page.notification_header_text)
 
     @pytest.mark.native
-    @nondestructive
+    @pytest.mark.nondestructive
     @pytest.mark.login
     @xfail(reason="bugzilla 731880")
     def test_user_can_access_the_view_profile_page(self, mozwebqa):
@@ -180,7 +179,7 @@ class TestAccounts:
             user_edit_page.click_update_account()
 
     @pytest.mark.native
-    @nondestructive
+    @pytest.mark.nondestructive
     @pytest.mark.login
     def test_user_my_collections_page(self, mozwebqa):
         """

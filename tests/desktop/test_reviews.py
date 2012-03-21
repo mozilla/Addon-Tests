@@ -13,12 +13,11 @@ from pages.desktop.home import Home
 from pages.desktop.details import Details
 
 xfail = pytest.mark.xfail
-nondestructive = pytest.mark.nondestructive
 
 
 class TestReviews:
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_all_reviews_hyperlink_works(self, mozwebqa):
         """
         Test for Litmus 4843.
