@@ -13,8 +13,6 @@ from unittestzero import Assert
 from pages.desktop.home import Home
 from pages.desktop.details import Details
 
-xfail = pytest.mark.xfail
-
 
 class TestAccounts:
 
@@ -78,7 +76,7 @@ class TestAccounts:
     @pytest.mark.native
     @pytest.mark.nondestructive
     @pytest.mark.login
-    @xfail(reason="bugzilla 731880")
+    @pytest.mark.xfail(reason="bugzilla 731880")
     def test_user_can_access_the_view_profile_page(self, mozwebqa):
         """
         Test for litmus 15400.
@@ -95,7 +93,7 @@ class TestAccounts:
         Assert.equal(view_profile_page.about_me, 'About me')
 
     @pytest.mark.native
-    @xfail(reason="https://www.pivotaltracker.com/story/show/23966893")
+    @pytest.mark.xfail(reason="https://www.pivotaltracker.com/story/show/23966893")
     @pytest.mark.destructive
     @pytest.mark.login
     def test_hide_email_checkbox_works(self, mozwebqa):

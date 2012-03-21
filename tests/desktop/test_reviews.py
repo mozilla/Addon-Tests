@@ -12,8 +12,6 @@ from unittestzero import Assert
 from pages.desktop.home import Home
 from pages.desktop.details import Details
 
-xfail = pytest.mark.xfail
-
 
 class TestReviews:
 
@@ -55,7 +53,7 @@ class TestReviews:
         Assert.equal(details_page.paginator.page_number, page_number + 1)
 
     @pytest.mark.native
-    @xfail(reason="bug 708970")
+    @pytest.mark.xfail(reason="bug 708970")
     @pytest.mark.destructive
     @pytest.mark.login
     def test_that_new_review_is_saved(self, mozwebqa):
@@ -92,7 +90,7 @@ class TestReviews:
         Assert.equal(review.text, body)
 
     @pytest.mark.native
-    @xfail(reason="refactoring to compensate for purchased addons http://bit.ly/ucH6Ow")
+    @pytest.mark.xfail(reason="refactoring to compensate for purchased addons http://bit.ly/ucH6Ow")
     @pytest.mark.destructive
     @pytest.mark.login
     def test_that_one_star_rating_increments(self, mozwebqa):
@@ -129,7 +127,7 @@ class TestReviews:
         Assert.equal(new_rating_counter, 1)
 
     @pytest.mark.native
-    @xfail(reason="refactoring to compensate for purchased addons http://bit.ly/ucH6Ow")
+    @pytest.mark.xfail(reason="refactoring to compensate for purchased addons http://bit.ly/ucH6Ow")
     @pytest.mark.destructive
     @pytest.mark.login
     def test_that_two_star_rating_increments(self, mozwebqa):
@@ -166,7 +164,7 @@ class TestReviews:
         Assert.equal(new_rating_counter, 1)
 
     @pytest.mark.native
-    @xfail(reason="refactoring to compensate for purchased addons http://bit.ly/ucH6Ow")
+    @pytest.mark.xfail(reason="refactoring to compensate for purchased addons http://bit.ly/ucH6Ow")
     @pytest.mark.destructive
     @pytest.mark.login
     def test_that_three_star_rating_increments(self, mozwebqa):
@@ -203,7 +201,7 @@ class TestReviews:
         Assert.equal(new_rating_counter, 1)
 
     @pytest.mark.native
-    @xfail(reason="refactoring to compensate for purchased addons http://bit.ly/ucH6Ow")
+    @pytest.mark.xfail(reason="refactoring to compensate for purchased addons http://bit.ly/ucH6Ow")
     @pytest.mark.destructive
     @pytest.mark.login
     def test_that_four_star_rating_increments(self, mozwebqa):
@@ -240,7 +238,7 @@ class TestReviews:
         Assert.equal(new_rating_counter, 1)
 
     @pytest.mark.native
-    @xfail(reason="refactoring to compensate for purchased addons http://bit.ly/ucH6Ow")
+    @pytest.mark.xfail(reason="refactoring to compensate for purchased addons http://bit.ly/ucH6Ow")
     @pytest.mark.destructive
     @pytest.mark.login
     def test_that_five_star_rating_increments(self, mozwebqa):

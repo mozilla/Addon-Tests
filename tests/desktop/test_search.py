@@ -11,8 +11,6 @@ from unittestzero import Assert
 
 from pages.desktop.home import Home
 
-xfail = pytest.mark.xfail
-
 
 class TestSearch:
 
@@ -201,7 +199,7 @@ class TestSearch:
         Assert.is_sorted_descending([i.created_date for i in search_page.results])
 
     @pytest.mark.native
-    @xfail(reason="Bugzilla 698165")
+    @pytest.mark.xfail(reason="Bugzilla 698165")
     @pytest.mark.nondestructive
     def test_sorting_by_most_recently_updated(self, mozwebqa):
         """
@@ -245,7 +243,7 @@ class TestSearch:
         Assert.greater_equal(result_count, search_page.filter.results_count)
 
     @pytest.mark.nondestructive
-    @xfail(reason="Bugzilla 722647")
+    @pytest.mark.xfail(reason="Bugzilla 722647")
     def test_that_search_results_return_20_results_per_page(self, mozwebqa):
         """
         Test for Litmus 17346.

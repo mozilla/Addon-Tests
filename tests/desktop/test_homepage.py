@@ -10,8 +10,6 @@ from unittestzero import Assert
 
 from pages.desktop.home import Home
 
-xfail = pytest.mark.xfail
-
 
 class HeaderMenu:
 
