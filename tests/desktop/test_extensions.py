@@ -187,3 +187,18 @@ class TestExtensions:
 
         updated_dates.extend([i.updated_date for i in featured_extensions_page.extensions])
         Assert.is_sorted_descending(updated_dates)
+
+    @pytest.mark.native
+    @pytest.mark.nondestructive
+    def test_that_extensions_are_sorted_by_up_and_coming(self, mozwebqa):
+        """
+        Litmus 29729
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=29729
+        """
+        home_page = Home(mozwebqa)
+        featured_extensions_page = home_page.header.site_navigation_menu("Extensions").click()
+
+        featured_extensions_page.sort_by('up and coming')
+        Assert.equal(featured_extensions_page.default_selected_tab, "Up & Coming")
+        Assert.contains("sort=hotness", featured_extensions_page.get_url_current_page())
+        Assert.greater(len(featured_extensions_page.extensions), 0)
