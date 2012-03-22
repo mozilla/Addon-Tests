@@ -13,12 +13,10 @@ from unittestzero import Assert
 from pages.desktop.home import Home
 from pages.desktop.personas import Personas
 
-xfail = pytest.mark.xfail
-
 
 class TestPersonas:
 
-    @xfail(reason="disabled until Selenium issue http://code.google.com/p/selenium/issues/detail?id=3182 is fixed")
+    @pytest.mark.xfail(reason="disabled until Selenium issue http://code.google.com/p/selenium/issues/detail?id=3182 is fixed")
     @pytest.mark.nondestructive
     def test_start_exploring_link_in_the_promo_box(self, mozwebqa):
         """
