@@ -13,8 +13,6 @@ from urllib2 import urlparse
 from pages.desktop.details import Details
 from pages.desktop.addons_api import AddOnsAPI
 
-xfail = pytest.mark.xfail
-
 
 class TestDetailsAgainstXML:
 
@@ -103,7 +101,7 @@ class TestDetailsAgainstXML:
 
         Assert.equal(browser_description.replace('\n', ''), xml_description.replace('\n', ''))
 
-    @xfail(reason="https://www.pivotaltracker.com/story/show/17471931")
+    @pytest.mark.xfail(reason="https://www.pivotaltracker.com/story/show/17471931")
     def test_that_icon_is_correct(self, mozwebqa):
         """Test for Litmus 15322."""
 
