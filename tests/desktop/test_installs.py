@@ -15,12 +15,9 @@ from pages.desktop.home import Home
 class TestInstalls:
 
     @pytest.mark.nondestructive
+    @pytest.mark.litmus(15115)
     def test_could_install_theme(self, mozwebqa):
-        """
-        Test for Litmus 15115
-        https://litmus.mozilla.org/show_test.cgi?id=15115
-        note that this test does not actually *install* the theme
-        """
+        """note that this test does not actually *install* the theme"""
 
         home_page = Home(mozwebqa)
         themes_page = home_page.header.site_navigation_menu("Themes").click()
@@ -29,12 +26,9 @@ class TestInstalls:
         
         
     @pytest.mark.nondestructive
+    @pytest.mark.litmus(17355)
     def test_could_install_jetpack(self, mozwebqa):
-        """
-        Test for Litmus 17355
-        https://litmus.mozilla.org/show_test.cgi?id=17355
-        note that this test does not actually *install* the jetpack
-        """
+        """note that this test does not actually *install* the jetpack"""
         
         home_page = Home(mozwebqa)
         search_page = home_page.header.search_for("jetpack")
