@@ -55,7 +55,7 @@ class Details(Base):
     _icon_locator = (By.CSS_SELECTOR, "img.icon")
     _support_link_locator = (By.CSS_SELECTOR, "a.support")
     _review_details_locator = (By.CSS_SELECTOR, ".review .description")
-    _all_reviews_link_locator = (By.CSS_SELECTOR, "a.more-info")
+    _all_reviews_link_locator = (By.CSS_SELECTOR, "#reviews a.more-info")
     _review_locator = (By.CSS_SELECTOR, "div.review:not(.reply)")
     _info_link_locator = (By.CSS_SELECTOR, "li > a.scrollto")
     _rating_counter_locator = (By.CSS_SELECTOR, ".grouped_ratings .num_ratings")
@@ -129,6 +129,9 @@ class Details(Base):
 
     def click_all_reviews_link(self):
         self.selenium.find_element(*self._all_reviews_link_locator).click()
+
+        from pages.desktop.addons_site import ViewReviews
+        return ViewReviews(self.testsetup)
 
     @property
     def review_count(self):

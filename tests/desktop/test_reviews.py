@@ -53,7 +53,6 @@ class TestReviews:
         Assert.equal(details_page.paginator.page_number, page_number + 1)
 
     @pytest.mark.native
-    @pytest.mark.xfail(reason="bug 708970")
     @pytest.mark.login
     def test_that_new_review_is_saved(self, mozwebqa):
         """
@@ -67,7 +66,7 @@ class TestReviews:
         Assert.true(home_page.header.is_user_logged_in)
 
         # Step 2 - Load any addon detail page
-        details_page = Details(mozwebqa, 'Adblock Plus')
+        details_page = Details(mozwebqa, 'Memchaser')
 
         # Step 3 - Click on "Write review" button
         write_review_block = details_page.click_to_write_review()
@@ -87,6 +86,14 @@ class TestReviews:
         date = date.replace(' 0', ' ')
         Assert.equal(review.date, date)
         Assert.equal(review.text, body)
+
+        review.delete()
+
+        details_page = Details(mozwebqa, 'Memchaser')
+        review_page = details_page.click_all_reviews_link()
+
+        for review in review_page.reviews:
+            Assert.false(body in review.text)
 
     @pytest.mark.native
     @pytest.mark.xfail(reason="refactoring to compensate for purchased addons http://bit.ly/ucH6Ow")

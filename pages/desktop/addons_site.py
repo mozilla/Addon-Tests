@@ -50,9 +50,11 @@ class ViewReviews(Base):
     class ReviewSnippet(Base):
 
         _review_text_locator = (By.CSS_SELECTOR, ".description")
-        _review_rating_locator = (By.CSS_SELECTOR, "span[itemprop=rating]")
+        _review_rating_locator = (By.CSS_SELECTOR, "span.stars")
         _review_author_locator = (By.CSS_SELECTOR, "a:not(.permalink)")
         _review_date_locator = (By.CSS_SELECTOR, ".byline")
+        _delete_review_locator = (By.CSS_SELECTOR, '.delete-review')
+        _delete_review_mark_locator = (By.CSS_SELECTOR, '.item-actions > li:nth-child(2)')
 
         def __init__(self, testsetup, element):
             Base.__init__(self, testsetup)
@@ -64,7 +66,7 @@ class ViewReviews(Base):
 
         @property
         def rating(self):
-            return int(self._root_element.find_element(*self._review_rating_locator).text)
+            return int(self._root_element.find_element(*self._review_rating_locator).text.split()[1])
 
         @property
         def author(self):
@@ -77,6 +79,8 @@ class ViewReviews(Base):
             date = re.match('^(.+on\s)([A-Za-z]+\s[\d]+,\s[\d]+)', date)
             return date.group(2)
 
+        def delete(self):
+            self._root_element.find_element(*self._delete_review_locator).click()
 
 class UserFAQ(Base):
 
