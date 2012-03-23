@@ -53,7 +53,6 @@ class TestReviews:
         Assert.equal(details_page.paginator.page_number, page_number + 1)
 
     @pytest.mark.native
-    @pytest.mark.xfail(reason="bug 708970")
     @pytest.mark.destructive
     @pytest.mark.login
     def test_that_new_review_is_saved(self, mozwebqa):
