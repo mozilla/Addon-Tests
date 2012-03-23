@@ -123,7 +123,7 @@ class TestDiscoveryPane:
 
     @pytest.mark.native
     @pytest.mark.nondestructive
-    @pytest.mark.xfail(reason="suspected flake due to native events")
+    @pytest.mark.xfail(reason="waiting for the release of selenium 2.21")
     def test_that_extension_is_underlined_while_hover_and_text_not(self, mozwebqa):
         """
         Test for Litmus 15118.

@@ -25,7 +25,7 @@ class TestDetails:
 
     @pytest.mark.native
     @pytest.mark.nondestructive
-    @pytest.mark.xfail(reason="suspected flake due to native events")
+    @pytest.mark.xfail(reason="waiting for the release of selenium 2.21")
     def test_that_dropdown_menu_is_present_after_click_on_other_apps(self, mozwebqa):
         """Test for Litmus 9890."""
         details_page = Details(mozwebqa, "Firebug")
