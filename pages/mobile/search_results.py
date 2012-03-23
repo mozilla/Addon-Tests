@@ -8,6 +8,7 @@ from selenium.webdriver.common.by import By
 
 from pages.mobile.base import Base
 
+
 class SearchResults(Base):
 
     _results_locator = (By.CSS_SELECTOR, '.addon-listing .item')
