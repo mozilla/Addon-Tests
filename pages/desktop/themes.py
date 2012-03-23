@@ -152,12 +152,16 @@ class Themes(Base):
 class Theme(Base):
 
     _addon_title = (By.CSS_SELECTOR, "h1.addon")
+    _install_button = (By.CSS_SELECTOR, "p.install-button > a")
 
     @property
     def addon_title(self):
         return self.selenium.find_element(*self._addon_title).text
 
-
+    @property 
+    def install_button_exists(self):
+        return self.is_element_visible(*self._install_button)
+    
 class ThemesCategory(Base):
 
     _title_locator = (By.CSS_SELECTOR, "section.primary > h1")
