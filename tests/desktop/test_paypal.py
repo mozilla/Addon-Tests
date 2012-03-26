@@ -19,7 +19,7 @@ class TestPaypal:
     Until Selenium issue http://code.google.com/p/selenium/issues/detail?id=2067 is fixed.
     """
 
-    addon_name = 'Adblock Plus'
+    addon_name = 'MemChaser'
 
     @pytest.mark.login
     def test_that_user_can_contribute_to_an_addon(self, mozwebqa):
