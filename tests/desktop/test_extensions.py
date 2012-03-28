@@ -25,10 +25,10 @@ class TestExtensions:
     @pytest.mark.native
     @pytest.mark.nondestructive
     def test_pagination(self, mozwebqa):
-        '''
+        """
         Test for Litmus 29708
         https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=29708
-        '''
+        """
         home_page = Home(mozwebqa)
         featured_extensions_page = home_page.header.site_navigation_menu("Extensions").click()
         featured_extensions_page.sort_by('most_users')
@@ -202,3 +202,18 @@ class TestExtensions:
         Assert.equal(featured_extensions_page.default_selected_tab, "Up & Coming")
         Assert.contains("sort=hotness", featured_extensions_page.get_url_current_page())
         Assert.greater(len(featured_extensions_page.extensions), 0)
+
+    @pytest.mark.nondestructive
+    def test_that_checks_the_extensions_bredcrumbs(self, mozwebqa):
+        """
+        Litmus 29812
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=29812
+        """
+
+        home_page = Home(mozwebqa)
+        featured_extensions_page = home_page.header.site_navigation_menu("Extensions").click()
+
+        breadcrumbs = featured_extensions_page.breadcrumbs
+
+        Assert.equal(breadcrumbs[0].text, 'Add-ons for Firefox')
+        Assert.equal(breadcrumbs[1].text, 'Extensions')
