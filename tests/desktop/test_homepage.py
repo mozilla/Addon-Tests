@@ -236,3 +236,10 @@ class TestHome:
                 # first 3 are featured, the others are not
                 [Assert.true(item.is_featured) for item in actual_menu.items[:3]]
                 [Assert.false(item.is_featured) for item in actual_menu.items[3:]]
+
+    @pytest.mark.nondestructive
+    def test_that_checks_the_up_and_coming_extensions(self, mozwebqa):
+
+        home_page = Home(mozwebqa)
+        Assert.equal(home_page.up_and_coming_title, u'Up & Coming Extensions See all \xbb')
+        Assert.equal(home_page.up_and_coming_addon_count, 6)
