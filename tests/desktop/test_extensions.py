@@ -25,10 +25,10 @@ class TestExtensions:
     @pytest.mark.native
     @pytest.mark.nondestructive
     def test_pagination(self, mozwebqa):
-        '''
+        """
         Test for Litmus 29708
         https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=29708
-        '''
+        """
         home_page = Home(mozwebqa)
         featured_extensions_page = home_page.header.site_navigation_menu("Extensions").click()
         featured_extensions_page.sort_by('most_users')
@@ -202,3 +202,29 @@ class TestExtensions:
         Assert.equal(featured_extensions_page.default_selected_tab, "Up & Coming")
         Assert.contains("sort=hotness", featured_extensions_page.get_url_current_page())
         Assert.greater(len(featured_extensions_page.extensions), 0)
+
+    @pytest.mark.nondestructive
+    def test_that_extensions_page_contains_addons_and_the_pagination_works(self, mozwebqa):
+        """
+        Litmus 29729
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=29729
+        """
+        home_page = Home(mozwebqa)
+        featured_extensions_page = home_page.header.site_navigation_menu("Extensions").click()
+
+        Assert.equal(len(featured_extensions_page.extensions), 20)
+        Assert.true(featured_extensions_page.paginator.is_prev_page_disabled)
+        Assert.false(featured_extensions_page.paginator.is_next_page_disabled)
+
+        featured_extensions_page.paginator.click_next_page()
+
+        Assert.false(featured_extensions_page.paginator.is_prev_page_disabled)
+        Assert.false(featured_extensions_page.paginator.is_next_page_disabled)
+
+        Assert.equal(len(featured_extensions_page.extensions), 20)
+
+        featured_extensions_page.paginator.click_prev_page()
+
+        Assert.equal(len(featured_extensions_page.extensions), 20)
+        Assert.true(featured_extensions_page.paginator.is_prev_page_disabled)
+        Assert.false(featured_extensions_page.paginator.is_next_page_disabled)

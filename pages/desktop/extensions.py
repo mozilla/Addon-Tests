@@ -17,7 +17,7 @@ from pages.desktop.base import Base
 class ExtensionsHome(Base):
 
     _page_title = 'Featured Extensions :: Add-ons for Firefox'
-    _extensions_locator = (By.CSS_SELECTOR, "div.items div.item")
+    _extensions_locator = (By.CSS_SELECTOR, "div.items div.item.addon")
     _default_selected_tab_locator = (By.CSS_SELECTOR, "#sorter li.selected")
 
     _sort_by_most_users_locator = (By.CSS_SELECTOR, "div#sorter > ul > li:nth-child(2) > a")
