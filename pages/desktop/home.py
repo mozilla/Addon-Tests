@@ -160,3 +160,42 @@ class Home(Base):
         def users_number(self):
             users_text = self._root_element.find_element(*self._users_locator).text
             return int(users_text.split(' ')[0].replace(',', ''))
+
+    @property
+    def first_addon(self):
+        addon = self.selenium.find_element(*self._first_addon_locator)
+        ActionChains(self.selenium).\
+            move_to_element(addon).\
+            perform()
+        return self.FirstAddon(self.testsetup)
+
+    class FirstAddon(Page):
+
+        _star_rating_locator = (By.CSS_SELECTOR, 'div.summary > div.vital > span.rating > span.stars')
+        _total_review_count_locator = (By.CSS_SELECTOR, 'div.summary > div.vital > span.rating > a')
+        _author_locator = (By.CSS_SELECTOR, 'div.addon > div.more > div.byline > a')
+        _number_of_users_locator = (By.CSS_SELECTOR, 'div.more > div.vitals > div.vital > span.adu')
+        _summary_locator = (By.CSS_SELECTOR, 'div.addon > div.more')
+
+        def __init__(self, testsetup):
+            Page.__init__(self, testsetup)
+
+        @property
+        def star_rating(self):
+            return self.selenium.find_element(*self._star_rating_locator).text
+
+        @property
+        def total_review_count(self):
+            return self.selenium.find_element(*self._total_review_count_locator).text
+
+        @property
+        def author_name(self):
+            return self.selenium.find_element(*self._author_locator).text
+
+        @property
+        def number_of_users(self):
+            return self.selenium.find_element(*self._number_of_users_locator).text
+
+        @property
+        def summary(self):
+            return self.selenium.find_element(*self._summary_locator).text
