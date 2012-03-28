@@ -236,3 +236,17 @@ class TestHome:
                 # first 3 are featured, the others are not
                 [Assert.true(item.is_featured) for item in actual_menu.items[:3]]
                 [Assert.false(item.is_featured) for item in actual_menu.items[3:]]
+
+    @pytest.mark.nondestructive
+    def test_addons_author_link(self, mozwebqa):
+        """
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25815
+        """
+
+        home_page = Home(mozwebqa)
+
+        first_author = home_page.first_addon_author()
+        user_page = home_page.hover_over_first_addon_and_click_author_link()
+
+        Assert.equal(user_page.username, first_author)
+        Assert.contains('user', user_page.get_url_current_page())
