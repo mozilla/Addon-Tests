@@ -98,8 +98,6 @@ class Details(Base):
     _contribute_button_locator = (By.ID, 'contribute-button')
     _paypal_login_dialog_locator = (By.ID, 'wrapper')
 
-
-
     def __init__(self, testsetup, addon_name=None):
         #formats name for url
         Base.__init__(self, testsetup)
