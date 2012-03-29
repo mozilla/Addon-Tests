@@ -428,4 +428,4 @@ class TestDetails:
         https://www.pivotaltracker.com/story/show/27212263
         """
         details_page = Details(mozwebqa, 'firebug')
-        Assert.contains("active", details_page.click_install_button())
+        Assert.contains("active", details_page.click_and_hold_install_button_returns_class_value())

@@ -258,7 +258,7 @@ class Details(Base):
     def is_version_information_install_button_visible(self):
         return self.is_element_visible(*self._install_button_locator)
 
-    def click_install_button(self):
+    def click_and_hold_install_button_returns_class_value(self):
         click_element = self.selenium.find_element(*self._install_button_locator)
         ActionChains(self.selenium).\
             click_and_hold(click_element).\
