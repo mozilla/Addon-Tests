@@ -420,6 +420,8 @@ class TestDetails:
         Assert.true(details_page.is_reviews_section_visible)
         Assert.true(details_page.is_reviews_section_in_view)
 
+    @pytest.mark.smoke
+    @pytest.mark.native
     @pytest.mark.nondestructive
     def test_that_install_button_is_clickable(self, mozwebqa):
         """
