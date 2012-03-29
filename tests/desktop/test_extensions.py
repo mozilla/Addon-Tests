@@ -204,7 +204,7 @@ class TestExtensions:
         Assert.greater(len(featured_extensions_page.extensions), 0)
 
     @pytest.mark.nondestructive
-    def test_that_checks_the_extensions_bredcrumbs(self, mozwebqa):
+    def test_breadcrumb_menu_in_extensions_page(self, mozwebqa):
         """
         Litmus 29812
         https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=29812
