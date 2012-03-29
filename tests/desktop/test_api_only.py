@@ -17,7 +17,6 @@ from pages.desktop.addons_api import AddOnsAPI
 class TestAPIOnlyTests:
 
     @pytest.mark.xfail(reason="bug 733626")
-    @pytest.mark.smoke
     @pytest.mark.nondestructive
     def test_that_firebug_is_listed_first_in_addons_search_for_fire(self, mozwebqa):
         """Test for Litmus 15314."""
