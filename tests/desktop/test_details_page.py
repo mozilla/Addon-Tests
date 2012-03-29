@@ -168,7 +168,6 @@ class TestDetails:
         """
         Test for Litmus 4846.
         https://litmus.mozilla.org/show_test.cgi?id=4846
-        https://bugzilla.mozilla.org/show_bug.cgi?id=721921
         """
 
         detail_page = Details(mozwebqa, 'firebug')
