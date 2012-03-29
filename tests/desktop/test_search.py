@@ -303,8 +303,8 @@ class TestSearch:
     @pytest.mark.nondestructive
     def test_searching_for_theme_returns_results(self, mozwebqa):
         """
-        Test for Litmus 17350.
-        https: // li​tmus.mozil​la.org / sho​w_test.cgi​?id = 17350
+        Test for Litmus 17350
+        https://litmus.mozilla.org/show_test.cgi?id=17350
         """
         amo_home_page = Home(mozwebqa)
         amo_themes_page = amo_home_page.header.site_navigation_menu("Themes").click()
