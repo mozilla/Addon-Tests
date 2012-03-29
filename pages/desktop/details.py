@@ -27,6 +27,7 @@ class Details(Base):
     _authors_locator = (By.XPATH, "//h4[@class='author']/a")
     _summary_locator = (By.ID, "addon-summary")
     _install_button_locator = (By.CSS_SELECTOR, "p[class='install-button'] > a")
+    _install_button_attribute_locator = (By.CSS_SELECTOR, '.install-wrapper .install-shell .install.clickHijack')
     _rating_locator = (By.CSS_SELECTOR, "span[itemprop='ratingValue']")
     _license_link_locator = (By.CSS_SELECTOR, ".source-license > a")
     _whats_this_license_locator = (By.CSS_SELECTOR, ".license-faq")
@@ -96,6 +97,8 @@ class Details(Base):
     # contribute to addon
     _contribute_button_locator = (By.ID, 'contribute-button')
     _paypal_login_dialog_locator = (By.ID, 'wrapper')
+
+
 
     def __init__(self, testsetup, addon_name=None):
         #formats name for url
@@ -256,6 +259,13 @@ class Details(Base):
     @property
     def is_version_information_install_button_visible(self):
         return self.is_element_visible(*self._install_button_locator)
+
+    def click_install_button(self):
+        click_element = self.selenium.find_element(*self._install_button_locator)
+        ActionChains(self.selenium).\
+            click_and_hold(click_element).\
+            perform()
+        return self.selenium.find_element(*self._install_button_attribute_locator).get_attribute("class")
 
     @property
     def is_whats_this_license_visible(self):
