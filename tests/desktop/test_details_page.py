@@ -74,6 +74,7 @@ class TestDetails:
         # check that the release number matches the version number at the top of the page
         Assert.equal('Version %s' % details_page.version_number, details_page.release_version)
 
+    @pytest.mark.smoke
     @pytest.mark.nondestructive
     def test_that_reviews_are_displayed(self, mozwebqa):
         """Test for Litmus 9890."""
@@ -337,6 +338,7 @@ class TestDetails:
         Assert.true(details_page.is_devs_comments_section_expanded())
         Assert.not_none(re.match('(\w+\s*){3,}', details_page.devs_comments_message))
 
+    @pytest.mark.smoke
     @pytest.mark.nondestructive
     def test_that_add_to_collection_flyout_for_anonymous_users(self, mozwebqa):
         """

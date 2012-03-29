@@ -120,6 +120,7 @@ class TestSearch:
         expected_title = '%s :: Search :: Add-ons for Firefox' % search_keyword
         Assert.equal(expected_title, search_page.page_title)
 
+    @pytest.mark.smoke
     @pytest.mark.nondestructive
     def test_that_searching_for_fire_returns_firebug(self, mozwebqa):
         """
@@ -276,6 +277,7 @@ class TestSearch:
         else:
             Assert.equal(search_page.result_count, number)
 
+    @pytest.mark.smoke
     @pytest.mark.nondestructive
     def test_searching_for_collections_returns_results(self, mozwebqa):
         """
@@ -288,6 +290,7 @@ class TestSearch:
 
         Assert.true(amo_search_results_page.result_count > 0)
 
+    @pytest.mark.smoke
     @pytest.mark.nondestructive
     def test_searching_for_personas_returns_results(self, mozwebqa):
         """

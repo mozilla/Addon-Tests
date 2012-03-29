@@ -95,6 +95,7 @@ class TestDiscoveryPane:
         Assert.true(home_page.is_the_current_page)
         Assert.false(home_page.header.is_user_logged_in)
 
+    @pytest.mark.smoke
     @pytest.mark.native
     @pytest.mark.nondestructive
     def test_that_carousel_works(self, mozwebqa):
