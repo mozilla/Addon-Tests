@@ -211,4 +211,4 @@ class TestExtensions:
         """
         home_page = Home(mozwebqa)
         featured_extensions_page = home_page.header.site_navigation_menu("Extensions").click()
-        Assert.contains("Subscribe", featured_extensions_page.subscribe_link)
+        Assert.contains("Subscribe", featured_extensions_page.subscribe_link_text)
