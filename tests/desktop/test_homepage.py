@@ -57,6 +57,7 @@ class TestHome:
         Assert.contains('MOST POPULAR', home_page.most_popular_list_heading)
         Assert.equal(home_page.most_popular_count, 10)
 
+    @pytest.mark.smoke
     @pytest.mark.nondestructive
     def test_that_clicking_on_addon_name_loads_details_page(self, mozwebqa):
         """
@@ -67,6 +68,7 @@ class TestHome:
         details_page = home_page.click_on_first_addon()
         Assert.true(details_page.is_the_current_page)
 
+    @pytest.mark.smoke
     @pytest.mark.nondestructive
     def test_that_featured_personas_exist_on_the_home(self, mozwebqa):
         """
@@ -99,6 +101,7 @@ class TestHome:
         extensions_page = home_page.header.site_navigation_menu("EXTENSIONS").click()
         Assert.true(extensions_page.is_the_current_page)
 
+    @pytest.mark.smoke
     @pytest.mark.nondestructive
     def test_that_most_popular_section_is_ordered_by_users(self, mozwebqa):
         """
@@ -110,6 +113,7 @@ class TestHome:
         most_popular_items = home_page.most_popular_items
         Assert.is_sorted_descending([i.users_number for i in most_popular_items])
 
+    @pytest.mark.smoke
     @pytest.mark.nondestructive
     def test_that_featured_collections_exist_on_the_home(self, mozwebqa):
         """
@@ -160,6 +164,8 @@ class TestHome:
             home_page.hover_over_addons_home_title()
             Assert.false(menu_item.is_menu_dropdown_visible)
 
+    @pytest.mark.smoke
+    @pytest.mark.nondestructive
     def test_that_clicking_top_rated_shows_addons_sorted_by_rating(self, mozwebqa):
         """
         Test for Litmus 25791.

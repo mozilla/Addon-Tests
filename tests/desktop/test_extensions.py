@@ -228,3 +228,19 @@ class TestExtensions:
         Assert.equal(len(featured_extensions_page.extensions), 20)
         Assert.true(featured_extensions_page.paginator.is_prev_page_disabled)
         Assert.false(featured_extensions_page.paginator.is_next_page_disabled)
+
+
+    @pytest.mark.nondestructive
+    def test_breadcrumb_menu_in_extensions_page(self, mozwebqa):
+        """
+        Litmus 29812
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=29812
+        """
+
+        home_page = Home(mozwebqa)
+        featured_extensions_page = home_page.header.site_navigation_menu("Extensions").click()
+
+        breadcrumbs = featured_extensions_page.breadcrumbs
+
+        Assert.equal(breadcrumbs[0].text, 'Add-ons for Firefox')
+        Assert.equal(breadcrumbs[1].text, 'Extensions')

@@ -168,7 +168,6 @@ class TestDetails:
         """
         Test for Litmus 4846.
         https://litmus.mozilla.org/show_test.cgi?id=4846
-        https://bugzilla.mozilla.org/show_bug.cgi?id=721921
         """
 
         detail_page = Details(mozwebqa, 'firebug')
@@ -419,3 +418,12 @@ class TestDetails:
 
         Assert.true(details_page.is_reviews_section_visible)
         Assert.true(details_page.is_reviews_section_in_view)
+
+    @pytest.mark.native
+    @pytest.mark.nondestructive
+    def test_that_install_button_is_clickable(self, mozwebqa):
+        """
+        https://www.pivotaltracker.com/story/show/27212263
+        """
+        details_page = Details(mozwebqa, 'firebug')
+        Assert.contains("active", details_page.click_and_hold_install_button_returns_class_value())
