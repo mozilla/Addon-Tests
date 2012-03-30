@@ -68,7 +68,7 @@ class TestPaypal:
         contribution_snippet = addon_page.click_contribute_button()
 
         Assert.true(contribution_snippet.is_make_contribution_button_visible)
-        Assert.equal("Make Contribution", contribution_snippet.make_contribution_button)
+        Assert.equal("Make Contribution", contribution_snippet.make_contribution_button_name)
 
         contribution_snippet.click_make_contribution_button()
         Assert.true(addon_page.is_paypal_login_dialog_visible)

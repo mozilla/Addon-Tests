@@ -570,7 +570,7 @@ class Details(Base):
             return self.is_element_visible(*self._make_contribution_button_locator)
 
         @property
-        def make_contribution_button(self):
+        def make_contribution_button_name(self):
             return self.selenium.find_element(*self._make_contribution_button_locator).text
 
     def click_contribute_button(self):
