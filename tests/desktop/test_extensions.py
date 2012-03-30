@@ -244,6 +244,7 @@ class TestExtensions:
         Assert.equal(breadcrumbs[0].text, 'Add-ons for Firefox')
         Assert.equal(breadcrumbs[1].text, 'Extensions')
 
+    @pytest.mark.nondestructive
     def test_that_checks_if_the_subscribe_link_exists(self, mozwebqa):
         """
         Test for Litmus 29812
@@ -252,4 +253,3 @@ class TestExtensions:
         home_page = Home(mozwebqa)
         featured_extensions_page = home_page.header.site_navigation_menu("Extensions").click()
         Assert.contains("Subscribe", featured_extensions_page.subscribe_link_text)
-
