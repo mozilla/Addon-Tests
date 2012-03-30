@@ -202,3 +202,14 @@ class TestExtensions:
         Assert.equal(featured_extensions_page.default_selected_tab, "Up & Coming")
         Assert.contains("sort=hotness", featured_extensions_page.get_url_current_page())
         Assert.greater(len(featured_extensions_page.extensions), 0)
+
+    @pytest.mark.native
+    @pytest.mark.nondestructive
+    def test_that_checks_if_the_subscribe_link_exists(self, mozwebqa):
+        """
+        Test for Litmus 29812
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=29812
+        """
+        home_page = Home(mozwebqa)
+        featured_extensions_page = home_page.header.site_navigation_menu("Extensions").click()
+        Assert.contains("Subscribe", featured_extensions_page.subscribe_link)
