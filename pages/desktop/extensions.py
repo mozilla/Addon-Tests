@@ -31,6 +31,7 @@ class ExtensionsHome(Base):
     _hover_more_locator = (By.CSS_SELECTOR, "li.extras > a")
 
     _updating_locator = (By.CSS_SELECTOR, "div.updating")
+    _subscribe_link_locator = (By.CSS_SELECTOR, "a#subscribe")
 
     @property
     def extensions(self):
@@ -40,6 +41,10 @@ class ExtensionsHome(Base):
     @property
     def default_selected_tab(self):
         return self.selenium.find_element(*self._default_selected_tab_locator).text
+
+    @property
+    def subscribe_link(self):
+        return self.selenium.find_element(*self._subscribe_link_locator).text
 
     def _wait_for_results_refresh(self):
         WebDriverWait(self.selenium, 10).until(lambda s: not self.is_element_present(*self._updating_locator))
