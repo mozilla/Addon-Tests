@@ -419,8 +419,8 @@ class TestDetails:
         Assert.true(details_page.is_reviews_section_visible)
         Assert.true(details_page.is_reviews_section_in_view)
 
-
     @pytest.mark.nondestructive
+    @pytest.mark.native
     def test_addon_information_in_flyout_matches_to_its_details_page(self, mozwebqa):
         """
         Test for Litmus 25816.
@@ -436,10 +436,10 @@ class TestDetails:
 
         details_page = home.click_on_first_addon()
 
-        Assert.contains(details_page.rating, expected_star_rating)
-        Assert.contains(details_page.total_review_count, expected_total_review_count)
+        Assert.equal(details_page.rating, expected_star_rating)
+        Assert.equal(details_page.total_review_count, expected_total_review_count)
         Assert.contains(details_page.summary, expected_summary)
-        Assert.contains(expected_author_names, details_page.authors)
+        Assert.equal(expected_author_names, details_page.authors)
         Assert.equal(expected_number_of_users, details_page.daily_users_number)
 
     @pytest.mark.native

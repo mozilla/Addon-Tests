@@ -4,6 +4,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import re
+
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
 
@@ -173,7 +175,7 @@ class Home(Base):
 
         _star_rating_locator = (By.CSS_SELECTOR, 'div.summary > div.vital > span.rating > span.stars')
         _total_review_count_locator = (By.CSS_SELECTOR, 'div.summary > div.vital > span.rating > a')
-        _author_locator = (By.CSS_SELECTOR, 'div.addon > div.more > div.byline > a')
+        _author_locator = (By.CSS_SELECTOR, '#featured-extensions > ul.listing-grid > section:nth-child(1) > li:nth-child(1) > div.addon > div.more > div.byline > a')
         _number_of_users_locator = (By.CSS_SELECTOR, 'div.more > div.vitals > div.vital > span.adu')
         _summary_locator = (By.CSS_SELECTOR, 'div.addon > div.more')
 
@@ -182,19 +184,22 @@ class Home(Base):
 
         @property
         def star_rating(self):
-            return self.selenium.find_element(*self._star_rating_locator).text
+            rating = self.selenium.find_element(*self._star_rating_locator).text
+            return re.search('\d', rating).group(0)
 
         @property
         def total_review_count(self):
-            return self.selenium.find_element(*self._total_review_count_locator).text
+            count = self.selenium.find_element(*self._total_review_count_locator).text
+            return count.replace("(", "").replace(")", "")
 
         @property
         def author_name(self):
-            return self.selenium.find_element(*self._author_locator).text
+            return [element.text for element in self.selenium.find_elements(*self._author_locator)]
 
         @property
         def number_of_users(self):
-            return self.selenium.find_element(*self._number_of_users_locator).text
+            users_no = self.selenium.find_element(*self._number_of_users_locator).text
+            return int(users_no.split()[0].replace(',', ''))
 
         @property
         def summary(self):
