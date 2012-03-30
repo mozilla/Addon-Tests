@@ -203,7 +203,6 @@ class TestExtensions:
         Assert.contains("sort=hotness", featured_extensions_page.get_url_current_page())
         Assert.greater(len(featured_extensions_page.extensions), 0)
 
-    @pytest.mark.native
     @pytest.mark.nondestructive
     def test_that_checks_if_the_subscribe_link_exists(self, mozwebqa):
         """

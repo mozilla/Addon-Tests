@@ -43,7 +43,7 @@ class ExtensionsHome(Base):
         return self.selenium.find_element(*self._default_selected_tab_locator).text
 
     @property
-    def subscribe_link(self):
+    def subscribe_link_text(self):
         return self.selenium.find_element(*self._subscribe_link_locator).text
 
     def _wait_for_results_refresh(self):
