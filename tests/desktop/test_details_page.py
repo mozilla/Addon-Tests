@@ -168,7 +168,6 @@ class TestDetails:
         """
         Test for Litmus 4846.
         https://litmus.mozilla.org/show_test.cgi?id=4846
-        https://bugzilla.mozilla.org/show_bug.cgi?id=721921
         """
 
         detail_page = Details(mozwebqa, 'firebug')
@@ -420,6 +419,7 @@ class TestDetails:
         Assert.true(details_page.is_reviews_section_visible)
         Assert.true(details_page.is_reviews_section_in_view)
 
+
     @pytest.mark.nondestructive
     def test_addon_information_in_flyout_matches_to_its_details_page(self, mozwebqa):
         """
@@ -441,3 +441,12 @@ class TestDetails:
         Assert.contains(details_page.summary, expected_summary)
         Assert.contains(expected_author_names, details_page.authors)
         Assert.equal(expected_number_of_users, details_page.daily_users_number)
+
+    @pytest.mark.native
+    @pytest.mark.nondestructive
+    def test_that_install_button_is_clickable(self, mozwebqa):
+        """
+        https://www.pivotaltracker.com/story/show/27212263
+        """
+        details_page = Details(mozwebqa, 'firebug')
+        Assert.contains("active", details_page.click_and_hold_install_button_returns_class_value())
