@@ -229,7 +229,6 @@ class TestExtensions:
         Assert.true(featured_extensions_page.paginator.is_prev_page_disabled)
         Assert.false(featured_extensions_page.paginator.is_next_page_disabled)
 
-
     @pytest.mark.nondestructive
     def test_breadcrumb_menu_in_extensions_page(self, mozwebqa):
         """
@@ -244,3 +243,13 @@ class TestExtensions:
 
         Assert.equal(breadcrumbs[0].text, 'Add-ons for Firefox')
         Assert.equal(breadcrumbs[1].text, 'Extensions')
+
+    def test_that_checks_if_the_subscribe_link_exists(self, mozwebqa):
+        """
+        Test for Litmus 29812
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=29812
+        """
+        home_page = Home(mozwebqa)
+        featured_extensions_page = home_page.header.site_navigation_menu("Extensions").click()
+        Assert.contains("Subscribe", featured_extensions_page.subscribe_link_text)
+
