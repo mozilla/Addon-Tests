@@ -574,6 +574,14 @@ class Details(Base):
             from pages.desktop.regions.paypal_frame import PayPalFrame
             return PayPalFrame(self.testsetup)
 
+        @property
+        def is_make_contribution_button_visible(self):
+            return self.is_element_visible(*self._make_contribution_button_locator)
+
+        @property
+        def make_contribution_button_name(self):
+            return self.selenium.find_element(*self._make_contribution_button_locator).text
+
     def click_contribute_button(self):
         self.selenium.find_element(*self._contribute_button_locator).click()
         return self.ContributionSnippet(self.testsetup)
