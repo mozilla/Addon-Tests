@@ -427,14 +427,15 @@ class TestDetails:
         https://litmus.mozilla.org/show_test.cgi?id=25816
         """
         home = Home(mozwebqa)
+        first_addon = home.featured_extensions[0]
 
-        expected_star_rating = home.first_addon.star_rating
-        expected_total_review_count = home.first_addon.total_review_count
-        expected_summary = home.first_addon.summary
-        expected_author_names = home.first_addon.author_name
-        expected_number_of_users = home.first_addon.number_of_users
+        expected_star_rating = first_addon.star_rating
+        expected_total_review_count = first_addon.total_review_count
+        expected_summary = first_addon.summary
+        expected_author_names = first_addon.author_name
+        expected_number_of_users = first_addon.number_of_users
 
-        details_page = home.click_on_first_addon()
+        details_page = first_addon.click_on_addon()
 
         Assert.equal(details_page.rating, expected_star_rating)
         Assert.equal(details_page.total_review_count, expected_total_review_count)

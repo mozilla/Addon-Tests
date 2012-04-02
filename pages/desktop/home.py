@@ -164,43 +164,56 @@ class Home(Base):
             return int(users_text.split(' ')[0].replace(',', ''))
 
     @property
-    def first_addon(self):
-        addon = self.selenium.find_element(*self._first_addon_locator)
-        ActionChains(self.selenium).\
-            move_to_element(addon).\
-            perform()
-        return self.FirstAddon(self.testsetup)
+    def featured_extensions(self):
+        return [self.FeaturedExtensions(self.testsetup, web_element)
+                for web_element in self.selenium.find_elements(*self._featured_extensions_elements_locator)]
 
-    class FirstAddon(Page):
+    class FeaturedExtensions(Page):
 
         _star_rating_locator = (By.CSS_SELECTOR, 'div.summary > div.vital > span.rating > span.stars')
         _total_review_count_locator = (By.CSS_SELECTOR, 'div.summary > div.vital > span.rating > a')
-        _author_locator = (By.CSS_SELECTOR, '#featured-extensions > ul.listing-grid > section:nth-child(1) > li:nth-child(1) > div.addon > div.more > div.byline > a')
+        _author_locator = (By.CSS_SELECTOR, 'div.addon > div.more > div.byline > a')
         _number_of_users_locator = (By.CSS_SELECTOR, 'div.more > div.vitals > div.vital > span.adu')
         _summary_locator = (By.CSS_SELECTOR, 'div.addon > div.more')
 
-        def __init__(self, testsetup):
+        def __init__(self, testsetup, web_element):
             Page.__init__(self, testsetup)
+            self._root_element = web_element
 
         @property
         def star_rating(self):
-            rating = self.selenium.find_element(*self._star_rating_locator).text
+            self._move_to_addon_flyout()
+            rating = self._root_element.find_element(*self._star_rating_locator).text
             return re.search('\d', rating).group(0)
 
         @property
         def total_review_count(self):
-            count = self.selenium.find_element(*self._total_review_count_locator).text
+            self._move_to_addon_flyout()
+            count = self._root_element.find_element(*self._total_review_count_locator).text
             return count.replace("(", "").replace(")", "")
 
         @property
         def author_name(self):
-            return [element.text for element in self.selenium.find_elements(*self._author_locator)]
+            self._move_to_addon_flyout()
+            return [element.text for element in self._root_element.find_elements(*self._author_locator)]
 
         @property
         def number_of_users(self):
-            users_no = self.selenium.find_element(*self._number_of_users_locator).text
+            self._move_to_addon_flyout()
+            users_no = self._root_element.find_element(*self._number_of_users_locator).text
             return int(users_no.split()[0].replace(',', ''))
 
         @property
         def summary(self):
-            return self.selenium.find_element(*self._summary_locator).text
+            self._move_to_addon_flyout()
+            return self._root_element.find_element(*self._summary_locator).text
+
+        def click_on_addon(self):
+            self._root_element.click()
+            from pages.desktop.details import Details
+            return Details(self.testsetup)
+
+        def _move_to_addon_flyout(self):
+            ActionChains(self.selenium).\
+                move_to_element(self._root_element).\
+                perform()
