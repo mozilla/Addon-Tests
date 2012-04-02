@@ -427,3 +427,24 @@ class TestDetails:
         """
         details_page = Details(mozwebqa, 'firebug')
         Assert.contains("active", details_page.click_and_hold_install_button_returns_class_value())
+
+    @pytest.mark.nondestructive
+    def test_what_is_this_in_the_version_information(self, mozwebqa):
+        """
+        https://litmus.mozilla.org/show_test.cgi?id=7906
+        """
+        details_page = Details(mozwebqa, 'Adblock Plus')
+        Assert.equal(details_page.version_information_heading, 'Version Information')
+        details_page.click_version_information_header()
+        Assert.equal("What's this?", details_page.license_faq_text)
+        details_page.license_faq_click()
+        Assert.contains('/faq#license', details_page.get_url_current_page())
+
+    @pytest.mark.nondestructive
+    def test_view_the_source_in_the_version_information(self, mozwebqa):
+        details_page = Details(mozwebqa, 'Adblock Plus')
+        Assert.equal(details_page.version_information_heading, 'Version Information')
+        details_page.click_version_information_header()
+        Assert.equal('View the source' , details_page.view_source_code_text)
+        details_page.view_source_code_click()
+        Assert.contains('/files/browse/', details_page.get_url_current_page())
