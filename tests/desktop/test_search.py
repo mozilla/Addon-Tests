@@ -13,7 +13,7 @@ from pages.desktop.home import Home
 
 
 class TestSearch:
-
+    '''
     @pytest.mark.nondestructive
     def test_that_search_all_add_ons_results_have_pagination_that_moves_through_results(self, mozwebqa):
         """
@@ -299,7 +299,7 @@ class TestSearch:
         amo_personas_page.header.search_for('fox')
 
         Assert.true(amo_personas_page.persona_count > 0)
-
+    '''
     @pytest.mark.nondestructive
     def test_searching_for_theme_returns_results(self, mozwebqa):
         """
@@ -311,3 +311,8 @@ class TestSearch:
         search_results = amo_themes_page.header.search_for('nasa')
 
         Assert.true(search_results.result_count > 0)
+
+        for i in range(search_results.result_count):
+            addon = search_results.result(i).click_result()
+            Assert.contains('Themes', addon.breadcrumb)
+            addon.return_to_previous_page()
