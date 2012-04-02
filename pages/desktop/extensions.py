@@ -32,7 +32,7 @@ class ExtensionsHome(Base):
 
     _updating_locator = (By.CSS_SELECTOR, "div.updating")
     _subscribe_link_locator = (By.CSS_SELECTOR, "a#subscribe")
-    _addon_island_title_locator = (By.CSS_SELECTOR, "div#page > section.primary > h1")
+    _addon_island_title_locator = (By.CSS_SELECTOR, "#page > .primary > h1")
 
 
     @property

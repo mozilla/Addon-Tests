@@ -221,4 +221,4 @@ class TestExtensions:
         """
         home_page = Home(mozwebqa)
         featured_extensions_page = home_page.header.site_navigation_menu("Extensions").click()
-        Assert.contains("Featured Extensions", featured_extensions_page.addon_island_title_text)
+        Assert.equal("Featured Extensions", featured_extensions_page.addon_island_title_text)
