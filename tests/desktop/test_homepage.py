@@ -242,3 +242,17 @@ class TestHome:
                 # first 3 are featured, the others are not
                 [Assert.true(item.is_featured) for item in actual_menu.items[:3]]
                 [Assert.false(item.is_featured) for item in actual_menu.items[3:]]
+
+    @pytest.mark.nondestructive
+    @pytest.mark.litmus([25788])
+    def test_that_checks_explore_side_navigation(self, mozwebqa):
+        """
+        Test for Litmus 25788.
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25788
+        """
+        home_page = Home(mozwebqa)
+
+        Assert.equal('EXPLORE', home_page.explore_side_navigation_header_text)
+        Assert.equal('Featured', home_page.explore_featured_link_text)
+        Assert.equal('Most Popular', home_page.explore_popular_link_text)
+        Assert.equal('Top Rated', home_page.explore_top_rated_link_text)
