@@ -32,7 +32,7 @@ class ExtensionsHome(Base):
 
     _updating_locator = (By.CSS_SELECTOR, "div.updating")
     _subscribe_link_locator = (By.CSS_SELECTOR, "a#subscribe")
-    _addon_island_title_locator = (By.CSS_SELECTOR, "#page > .primary > h1")
+    _featured_extensions_header_locator = (By.CSS_SELECTOR, "#page > .primary > h1")
 
 
     @property
@@ -49,8 +49,8 @@ class ExtensionsHome(Base):
         return self.selenium.find_element(*self._subscribe_link_locator).text
 
     @property
-    def addon_island_title_text(self):
-        return self.selenium.find_element(*self._addon_island_title_locator).text
+    def featured_extensions_header_text(self):
+        return self.selenium.find_element(*self._featured_extensions_header_locator).text
 
     def _wait_for_results_refresh(self):
         WebDriverWait(self.selenium, 10).until(lambda s: not self.is_element_present(*self._updating_locator))

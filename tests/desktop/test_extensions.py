@@ -214,11 +214,11 @@ class TestExtensions:
         Assert.contains("Subscribe", featured_extensions_page.subscribe_link_text)
 
     @pytest.mark.nondestructive
-    def test_that_checks_addon_island_title(self, mozwebqa):
+    def test_that_checks_featured_extensions_header(self, mozwebqa):
         """
         Test for Litmus 29812
         https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=29812
         """
         home_page = Home(mozwebqa)
         featured_extensions_page = home_page.header.site_navigation_menu("Extensions").click()
-        Assert.equal("Featured Extensions", featured_extensions_page.addon_island_title_text)
+        Assert.equal("Featured Extensions", featured_extensions_page.featured_extensions_header_text)
