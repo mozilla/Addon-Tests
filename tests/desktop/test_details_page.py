@@ -17,6 +17,7 @@ from pages.desktop.home import Home
 
 class TestDetails:
 
+    @pytest.mark.login
     @pytest.mark.nondestructive
     def test_that_register_login_link_is_present_in_addon_details_page(self, mozwebqa):
         """Test for Litmus 9890."""
