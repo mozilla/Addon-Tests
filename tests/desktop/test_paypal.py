@@ -59,3 +59,16 @@ class TestPaypal:
         Assert.true(payment_popup.is_payment_successful)
         payment_popup.close_paypal_popup()
         Assert.true(addon_page.is_the_current_page)
+
+    @pytest.mark.smoke
+    @pytest.mark.nondestructive
+    def test_that_make_contribution_button_is_clickable_and_loads_paypal_frame(self, mozwebqa):
+        addon_page = Details(mozwebqa, self.addon_name)
+
+        contribution_snippet = addon_page.click_contribute_button()
+
+        Assert.true(contribution_snippet.is_make_contribution_button_visible)
+        Assert.equal("Make Contribution", contribution_snippet.make_contribution_button_name)
+
+        contribution_snippet.click_make_contribution_button()
+        Assert.true(addon_page.is_paypal_login_dialog_visible)

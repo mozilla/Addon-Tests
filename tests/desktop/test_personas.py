@@ -42,6 +42,7 @@ class TestPersonas:
         personas_page = home_page.header.site_navigation_menu("Personas").click()
         Assert.true(personas_page.is_the_current_page)
 
+    @pytest.mark.smoke
     @pytest.mark.nondestructive
     def test_the_featured_personas_section(self, mozwebqa):
         """
@@ -53,6 +54,7 @@ class TestPersonas:
         Assert.true(personas_page.is_the_current_page)
         Assert.less_equal(personas_page.featured_personas_count, 6)
 
+    @pytest.mark.smoke
     @pytest.mark.nondestructive
     def test_the_recently_added_section(self, mozwebqa):
         """
@@ -66,6 +68,7 @@ class TestPersonas:
         recently_added_dates = personas_page.recently_added_dates
         Assert.is_sorted_descending(recently_added_dates)
 
+    @pytest.mark.smoke
     @pytest.mark.nondestructive
     def test_the_most_popular_section(self, mozwebqa):
         """
