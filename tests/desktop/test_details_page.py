@@ -17,6 +17,7 @@ from pages.desktop.home import Home
 
 class TestDetails:
 
+    @pytest.mark.login
     @pytest.mark.nondestructive
     def test_that_register_login_link_is_present_in_addon_details_page(self, mozwebqa):
         """Test for Litmus 9890."""
@@ -178,6 +179,7 @@ class TestDetails:
         Assert.false(image_viewer.is_visible)
 
     @pytest.mark.nondestructive
+    @pytest.mark.xfail(reason="waiting for the release of selenium 2.21")
     def test_navigation_buttons_for_image_viewer(self, mozwebqa):
         """
         Test for Litmus 4846.
