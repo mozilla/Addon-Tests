@@ -19,7 +19,7 @@ class TestPaypal:
     Until Selenium issue http://code.google.com/p/selenium/issues/detail?id=2067 is fixed.
     """
 
-    addon_name = 'Adblock Plus'
+    addon_name = 'Firebug'
 
     @pytest.mark.login
     def test_that_user_can_contribute_to_an_addon(self, mozwebqa):
@@ -46,7 +46,7 @@ class TestPaypal:
 
     def test_that_user_can_make_a_contribution_without_logging_into_amo(self, mozwebqa):
         """Test that checks if the user is able to make a contribution without logging in to AMO."""
-        addon_page = Details(mozwebqa, 'Adblock Plus')
+        addon_page = Details(mozwebqa, self.addon_name)
         Assert.false(addon_page.header.is_user_logged_in)
 
         contribution_snippet = addon_page.click_contribute_button()
