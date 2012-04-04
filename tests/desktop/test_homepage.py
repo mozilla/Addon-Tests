@@ -244,8 +244,23 @@ class TestHome:
                 [Assert.false(item.is_featured) for item in actual_menu.items[3:]]
 
     @pytest.mark.nondestructive
-    def test_that_checks_the_up_and_coming_extensions(self, mozwebqa):
+    def test_that_checks_the_up_and_coming_extensions_island(self, mozwebqa):
 
         home_page = Home(mozwebqa)
-        Assert.equal(home_page.up_and_coming_title, u'Up & Coming Extensions See all \xbb')
-        Assert.equal(home_page.up_and_coming_addon_count, 6)
+
+        up_and_coming_island = home_page.up_and_coming_island
+
+        Assert.equal(up_and_coming_island.title, 'Up & Coming Extensions')
+        Assert.equal(up_and_coming_island.see_all_text, u'See all \xbb')
+
+        for idx in range(up_and_coming_island.pager.dot_count):
+            Assert.equal(idx, up_and_coming_island.visible_section)
+            Assert.equal(idx, up_and_coming_island.pager.selected_dot)
+            Assert.equal(len(up_and_coming_island.items), 6)
+            up_and_coming_island.pager.next()
+
+        for idx in range(up_and_coming_island.pager.dot_count - 1, -1, -1):
+            Assert.equal(idx, up_and_coming_island.visible_section)
+            Assert.equal(idx, up_and_coming_island.pager.selected_dot)
+            Assert.equal(len(up_and_coming_island.items), 6)
+            up_and_coming_island.pager.prev()

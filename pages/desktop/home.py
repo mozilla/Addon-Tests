@@ -40,8 +40,7 @@ class Home(Base):
 
     _extensions_menu_link = (By.CSS_SELECTOR, "#extensions > a")
 
-    _up_and_coming_addons_locator = (By.CSS_SELECTOR, "#upandcoming .listing-grid.c.cols-2 > section:nth-child(1) > li > div.addon.hovercard")
-    _up_and_coming_title_locator = (By.CSS_SELECTOR, "#upandcoming > h2")
+    _up_and_coming_locator = (By.CSS_SELECTOR, "#upandcoming")
 
     def __init__(self, testsetup, open_url=True):
         """Creates a new instance of the class and gets the page ready for testing."""
@@ -109,12 +108,9 @@ class Home(Base):
         return len(self.selenium.find_elements(*self._featured_extensions_elements_locator))
 
     @property
-    def up_and_coming_addon_count(self):
-        return len(self.selenium.find_elements(*self._up_and_coming_addons_locator))
-
-    @property
-    def up_and_coming_title(self):
-        return self.selenium.find_element(*self._up_and_coming_title_locator).text
+    def up_and_coming_island(self):
+        from pages.desktop.regions.island import Island
+        return Island(self.testsetup, self.selenium.find_element(*self._up_and_coming_locator))
 
     def click_on_first_addon(self):
         self.selenium.find_element(*self._first_addon_locator).click()
