@@ -24,13 +24,17 @@ class Base(Page):
 
     _footer_locator = (By.CSS_SELECTOR, "#footer")
 
-    def login(self, type="normal", user="default"):
-        if type == "normal":
+    def login(self, method="normal", user="default"):
+        from pages.desktop.user import Login
+
+        if not self.header.is_browserid_login_available:
+            login = self.header.click_login_normal()
+            login.login_when_browser_id_is_unavailable(user)
+        elif method == "normal":
             self.selenium.get(self.base_url + "/en-US/firefox/users/login")
-            from pages.desktop.user import Login
             login = Login(self.testsetup)
             login.login_user_normal(user)
-        elif type == "browserID":
+        elif method == "browserID":
             login = self.header.click_login_browser_id()
             login.login_user_browser_id(user)
 
@@ -134,6 +138,7 @@ class Base(Page):
         #Not LoggedIn
         _login_browser_id_locator = (By.CSS_SELECTOR, "a.browserid-login")
         _register_locator = (By.CSS_SELECTOR, "#aux-nav li.account a:nth-child(1)")
+        _login_normal_locator = (By.CSS_SELECTOR, "#aux-nav li.account a:nth-child(2)")
 
         #LoggedIn
         _account_controller_locator = (By.CSS_SELECTOR, "#aux-nav .account a.user")
@@ -196,6 +201,15 @@ class Base(Page):
             self.selenium.find_element(*self._login_browser_id_locator).click()
             from pages.desktop.user import Login
             return Login(self.testsetup)
+
+        def click_login_normal(self):
+            self.selenium.find_element(*self._login_normal_locator).click()
+            from pages.desktop.user import Login
+            return Login(self.testsetup)
+
+        @property
+        def is_browserid_login_available(self):
+            return self.is_element_visible(*self._login_browser_id_locator)
 
         def click_logout(self):
             self.selenium.find_element(*self._logout_locator).click()
