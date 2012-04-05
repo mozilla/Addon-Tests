@@ -21,6 +21,7 @@ class Home(Base):
     _most_popular_item_locator = (By.CSS_SELECTOR, "ol.toplist li")
     _most_popular_list_heading_locator = (By.CSS_SELECTOR, "#homepage > .secondary h2")
 
+    _explore_side_navigation_header_locator = (By.CSS_SELECTOR, "#side-nav > h2:nth-child(1)")
     _explore_featured_link_locator = (By.CSS_SELECTOR, "#side-nav .s-featured a")
     _explore_popular_link_locator = (By.CSS_SELECTOR, "#side-nav .s-users a")
     _explore_top_rated_link_locator = (By.CSS_SELECTOR, "#side-nav .s-rating a")
@@ -111,6 +112,22 @@ class Home(Base):
     def up_and_coming_island(self):
         from pages.desktop.regions.island import Island
         return Island(self.testsetup, self.selenium.find_element(*self._up_and_coming_locator))
+
+    @property
+    def explore_side_navigation_header_text(self):
+        return self.selenium.find_element(*self._explore_side_navigation_header_locator).text
+
+    @property
+    def explore_featured_link_text(self):
+        return self.selenium.find_element(*self._explore_featured_link_locator).text
+
+    @property
+    def explore_popular_link_text(self):
+        return self.selenium.find_element(*self._explore_popular_link_locator).text
+
+    @property
+    def explore_top_rated_link_text(self):
+        return self.selenium.find_element(*self._explore_top_rated_link_locator).text
 
     def click_on_first_addon(self):
         self.selenium.find_element(*self._first_addon_locator).click()
