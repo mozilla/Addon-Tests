@@ -430,6 +430,7 @@ class TestDetails:
         details_page = Details(mozwebqa, 'firebug')
         Assert.contains("active", details_page.click_and_hold_install_button_returns_class_value())
 
+    @pytest.mark.xfail(reason="https://github.com/mozilla/Addon-Tests/pull/431")
     @pytest.mark.nondestructive
     def test_what_is_this_in_the_version_information(self, mozwebqa):
         """
@@ -443,6 +444,7 @@ class TestDetails:
         Assert.equal('Frequently Asked Questions' , details_page.freq_asked_question)
 
     @pytest.mark.nondestructive
+    @pytest.mark.xfail(reason="https://github.com/mozilla/Addon-Tests/pull/431")
     def test_view_the_source_in_the_version_information(self, mozwebqa):
         details_page = Details(mozwebqa, 'MemChaser')
         Assert.equal(details_page.version_information_heading, 'Version Information')
