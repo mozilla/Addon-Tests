@@ -41,7 +41,7 @@ class Home(Base):
 
     _extensions_menu_link = (By.CSS_SELECTOR, "#extensions > a")
 
-    _up_and_coming_locator = (By.CSS_SELECTOR, "#upandcoming")
+    _up_and_coming_locator = (By.ID, "upandcoming")
 
     def __init__(self, testsetup, open_url=True):
         """Creates a new instance of the class and gets the page ready for testing."""
