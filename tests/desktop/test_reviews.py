@@ -22,7 +22,7 @@ class TestReviews:
         https://litmus.mozilla.org/show_test.cgi?id=4843
         """
         #Open details page for MemChaser
-        details_page = Details(mozwebqa, 'MemChaser')
+        details_page = Details(mozwebqa, "Firebug")
         Assert.true(details_page.has_reviews)
 
         details_page.click_all_reviews_link()

@@ -98,6 +98,10 @@ class Details(Base):
     _contribute_button_locator = (By.ID, 'contribute-button')
     _paypal_login_dialog_locator = (By.ID, 'wrapper')
 
+    _version_license_faq = (By.CSS_SELECTOR, 'div.info .license-faq')
+    _view_the_source_code = (By.CSS_SELECTOR, 'div.info .source-code')
+    _frequently_asked_question_locator = (By.CSS_SELECTOR, '.prose > header > h2')
+
     def __init__(self, testsetup, addon_name=None):
         #formats name for url
         Base.__init__(self, testsetup)
@@ -600,3 +604,15 @@ class Details(Base):
     def is_addon_marked_as_favorite(self):
         is_favorite = self.selenium.find_element(*self._add_to_favorites_widget_locator).text
         return 'Remove from favorites' in is_favorite
+
+    @property
+    def license_faq(self):
+        return self.selenium.find_element(*self._version_license_faq)
+
+    @property
+    def view_source_code(self):
+        return self.selenium.find_element(*self._view_the_source_code)
+
+    @property
+    def freq_asked_question(self):
+        return self.selenium.find_element(*self._frequently_asked_question_locator).text

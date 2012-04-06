@@ -138,7 +138,7 @@ class TestAccounts:
         https://litmus.mozilla.org/show_test.cgi?id=11563
         """
         home_page = Home(mozwebqa)
-        home_page.login(type="browserID", user="user.edit")
+        home_page.login(method="browserID", user="user.edit")
 
         Assert.true(home_page.is_the_current_page)
         Assert.true(home_page.header.is_user_logged_in)
