@@ -498,6 +498,12 @@ class Details(Base):
 
     def click_version_information_header(self):
         self.selenium.find_element(*self._version_information_heading_link_locator).click()
+        WebDriverWait(self.selenium, 10).until(lambda s: not (self.is_version_information_expanded))
+
+    @property
+    def is_version_information_expanded(self):
+        is_expanded = self.selenium.find_element(*self._development_channel_locator).get_attribute('class')
+        return "expanded" in is_expanded
 
     def click_devs_comments(self):
         self.selenium.find_element(*self._devs_comments_toggle_locator).click()
