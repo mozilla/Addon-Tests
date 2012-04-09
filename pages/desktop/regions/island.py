@@ -62,11 +62,11 @@ class Island(Page):
                 return idx
 
     @property
-    def items(self):
-        return [self.Item(self.testsetup, item)
-                for item in self.root.find_elements(*self._sections_locator)[self.pager.selected_dot].find_elements(*self._item_locator)]
+    def addons(self):
+        return [self.Addon(self.testsetup, element)
+                for element in self.root.find_elements(*self._sections_locator)[self.pager.selected_dot].find_elements(*self._item_locator)]
 
-    class Item(Page):
+    class Addon(Page):
         def __init__(self, testsetup, element):
             Page.__init__(self, testsetup)
             self.root = element

@@ -256,13 +256,13 @@ class TestHome:
         for idx in range(up_and_coming_island.pager.dot_count):
             Assert.equal(idx, up_and_coming_island.visible_section)
             Assert.equal(idx, up_and_coming_island.pager.selected_dot)
-            Assert.equal(len(up_and_coming_island.items), 6)
+            Assert.equal(len(up_and_coming_island.addons), 6)
             up_and_coming_island.pager.next()
 
         for idx in range(up_and_coming_island.pager.dot_count - 1, -1, -1):
             Assert.equal(idx, up_and_coming_island.visible_section)
             Assert.equal(idx, up_and_coming_island.pager.selected_dot)
-            Assert.equal(len(up_and_coming_island.items), 6)
+            Assert.equal(len(up_and_coming_island.addons), 6)
             up_and_coming_island.pager.prev()
 
     @pytest.mark.litmus([25788])
