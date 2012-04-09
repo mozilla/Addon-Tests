@@ -191,7 +191,7 @@ class Home(Base):
         _total_review_count_locator = (By.CSS_SELECTOR, 'div.summary > div.vital > span.rating > a')
         _author_locator = (By.CSS_SELECTOR, 'div.addon > div.more > div.byline > a')
         _number_of_users_locator = (By.CSS_SELECTOR, 'div.more > div.vitals > div.vital > span.adu')
-        _summary_locator = (By.CSS_SELECTOR, 'div.addon > div.more')
+        _summary_locator = (By.CSS_SELECTOR, 'div.addon > div.more > .addon-summary')
 
         def __init__(self, testsetup, web_element):
             Page.__init__(self, testsetup)

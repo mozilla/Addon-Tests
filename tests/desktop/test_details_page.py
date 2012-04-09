@@ -441,7 +441,7 @@ class TestDetails:
 
         Assert.equal(details_page.rating, expected_star_rating)
         Assert.equal(details_page.total_review_count, expected_total_review_count)
-        Assert.contains(details_page.summary, expected_summary)
+        Assert.equal(details_page.summary, expected_summary)
         Assert.equal(expected_author_names, details_page.authors)
         Assert.equal(expected_number_of_users, details_page.daily_users_number)
 
