@@ -18,8 +18,6 @@ class Home(Base):
     _page_title = "Add-ons for Firefox"
     _first_addon_locator = (By.CSS_SELECTOR, ".summary > a > h3")
     _other_applications_link_locator = (By.ID, "other-apps")
-    _addons_locator = (By.CSS_SELECTOR, '.addon.hovercard')
-    _authors_link_locator = (By.CSS_SELECTOR, '.byline > a')
 
     #Most Popular List
     _most_popular_item_locator = (By.CSS_SELECTOR, "ol.toplist li")
@@ -50,24 +48,6 @@ class Home(Base):
         Base.__init__(self, testsetup)
         if open_url:
             self.selenium.get(self.base_url)
-
-    def hover_over_first_addon_and_click_author_link(self):
-        addon_item = self.selenium.find_element(*self._addons_locator)
-        author_item = self.selenium.find_element(*self._authors_link_locator)
-        ActionChains(self.selenium).\
-            move_to_element(addon_item).\
-            move_to_element(author_item).click().\
-            perform()
-        from pages.desktop.user import User
-        return User(self.testsetup)
-
-    def first_addon_author(self):
-        addons = self.selenium.find_element(*self._addons_locator)
-        item = self.selenium.find_element(*self._authors_link_locator)
-        ActionChains(self.selenium).\
-            move_to_element(addons).\
-            perform()
-        return item.text
 
     def hover_over_addons_home_title(self):
         home_item = self.selenium.find_element(*self._amo_logo_link_locator)
@@ -254,3 +234,11 @@ class Home(Base):
             ActionChains(self.selenium).\
                 move_to_element(self._root_element).\
                 perform()
+
+        def click_first_author(self):
+            author_item = self.selenium.find_element(*self._author_locator)
+            ActionChains(self.selenium).\
+                move_to_element(author_item).click().\
+                perform()
+            from pages.desktop.user import User
+            return User(self.testsetup)
