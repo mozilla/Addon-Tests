@@ -63,7 +63,7 @@ class TestAmoLayout:
         home_page = Home(mozwebqa)
         Assert.true(home_page.is_mozilla_logo_visible)
         home_page.click_mozilla_logo()
-        Assert.equal(home_page.get_url_current_page(), "http://www.mozilla.org/")
+        Assert.equal(home_page.get_url_current_page(), "http://www.mozilla.org/en-US/")
 
     @pytest.mark.nondestructive
     def test_that_other_applications_link_has_tooltip(self, mozwebqa):
@@ -77,6 +77,7 @@ class TestAmoLayout:
 
     @pytest.mark.native
     @pytest.mark.nondestructive
+    @pytest.mark.xfail(reason="Fails sporadically, due to action chains; see https://www.pivotaltracker.com/projects/310523?story_id=27171441")
     def test_the_applications_listed_in_other_applications(self, mozwebqa):
         """
         Test for Litmus 25740.

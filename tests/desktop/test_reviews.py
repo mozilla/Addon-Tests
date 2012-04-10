@@ -21,8 +21,8 @@ class TestReviews:
         Test for Litmus 4843.
         https://litmus.mozilla.org/show_test.cgi?id=4843
         """
-        #Open details page for Adblock Plus
-        details_page = Details(mozwebqa, 'Adblock Plus')
+        #Open details page for MemChaser
+        details_page = Details(mozwebqa, "Firebug")
         Assert.true(details_page.has_reviews)
 
         details_page.click_all_reviews_link()

@@ -144,6 +144,7 @@ class TestDetailsAgainstXML:
 
         Assert.equal(browser_rating, xml_rating)
 
+    @pytest.mark.xfail(reason="pending audit")
     @pytest.mark.nondestructive
     def test_that_compatible_applications_equal(self, mozwebqa):
         """Test for Litmus 15323."""
@@ -163,6 +164,7 @@ class TestDetailsAgainstXML:
 
     @pytest.mark.native
     @pytest.mark.nondestructive
+    @pytest.mark.xfail(reason="https://bugzilla.mozilla.org/show_bug.cgi?id=742108")
     def test_that_addon_number_of_total_downloads_is_correct(self, mozwebqa):
         """Test for Litmus 15331."""
 

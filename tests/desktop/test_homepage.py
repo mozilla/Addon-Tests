@@ -57,6 +57,7 @@ class TestHome:
         Assert.contains('MOST POPULAR', home_page.most_popular_list_heading)
         Assert.equal(home_page.most_popular_count, 10)
 
+    @pytest.mark.smoke
     @pytest.mark.nondestructive
     def test_that_clicking_on_addon_name_loads_details_page(self, mozwebqa):
         """
@@ -67,6 +68,7 @@ class TestHome:
         details_page = home_page.click_on_first_addon()
         Assert.true(details_page.is_the_current_page)
 
+    @pytest.mark.smoke
     @pytest.mark.nondestructive
     def test_that_featured_personas_exist_on_the_home(self, mozwebqa):
         """
@@ -99,6 +101,7 @@ class TestHome:
         extensions_page = home_page.header.site_navigation_menu("EXTENSIONS").click()
         Assert.true(extensions_page.is_the_current_page)
 
+    @pytest.mark.smoke
     @pytest.mark.nondestructive
     def test_that_most_popular_section_is_ordered_by_users(self, mozwebqa):
         """
@@ -110,6 +113,7 @@ class TestHome:
         most_popular_items = home_page.most_popular_items
         Assert.is_sorted_descending([i.users_number for i in most_popular_items])
 
+    @pytest.mark.smoke
     @pytest.mark.nondestructive
     def test_that_featured_collections_exist_on_the_home(self, mozwebqa):
         """
@@ -160,6 +164,8 @@ class TestHome:
             home_page.hover_over_addons_home_title()
             Assert.false(menu_item.is_menu_dropdown_visible)
 
+    @pytest.mark.smoke
+    @pytest.mark.nondestructive
     def test_that_clicking_top_rated_shows_addons_sorted_by_rating(self, mozwebqa):
         """
         Test for Litmus 25791.
@@ -250,3 +256,16 @@ class TestHome:
 
         Assert.equal(user_page.username, first_author)
         Assert.contains('user', user_page.get_url_current_page())
+
+    @pytest.mark.litmus([25788])
+    def test_that_checks_explore_side_navigation(self, mozwebqa):
+        """
+        Test for Litmus 25788.
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25788
+        """
+        home_page = Home(mozwebqa)
+
+        Assert.equal('EXPLORE', home_page.explore_side_navigation_header_text)
+        Assert.equal('Featured', home_page.explore_featured_link_text)
+        Assert.equal('Most Popular', home_page.explore_popular_link_text)
+        Assert.equal('Top Rated', home_page.explore_top_rated_link_text)
