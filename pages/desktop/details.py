@@ -29,6 +29,7 @@ class Details(Base):
     _install_button_locator = (By.CSS_SELECTOR, "p[class='install-button'] > a")
     _install_button_attribute_locator = (By.CSS_SELECTOR, '.install-wrapper .install-shell .install.clickHijack')
     _rating_locator = (By.CSS_SELECTOR, "span[itemprop='ratingValue']")
+    _total_review_count_locator = (By.CSS_SELECTOR, '#reviews-link > span')
     _license_link_locator = (By.CSS_SELECTOR, ".source-license > a")
     _whats_this_license_locator = (By.CSS_SELECTOR, ".license-faq")
     _view_the_source_locator = (By.CSS_SELECTOR, ".source-code")
@@ -498,11 +499,11 @@ class Details(Base):
 
     def click_version_information_header(self):
         self.selenium.find_element(*self._version_information_heading_link_locator).click()
-        WebDriverWait(self.selenium, 10).until(lambda s: not (self.is_version_information_expanded))
+        WebDriverWait(self.selenium, 10).until(lambda s: self.is_version_information_expanded)
 
     @property
     def is_version_information_expanded(self):
-        is_expanded = self.selenium.find_element(*self._development_channel_locator).get_attribute('class')
+        is_expanded = self.selenium.find_element(*self._version_information_locator).get_attribute('class')
         return "expanded" in is_expanded
 
     def click_devs_comments(self):
@@ -610,6 +611,10 @@ class Details(Base):
     def is_addon_marked_as_favorite(self):
         is_favorite = self.selenium.find_element(*self._add_to_favorites_widget_locator).text
         return 'Remove from favorites' in is_favorite
+
+    @property
+    def total_review_count(self):
+        return self.selenium.find_element(*self._total_review_count_locator).text
 
     @property
     def license_faq(self):

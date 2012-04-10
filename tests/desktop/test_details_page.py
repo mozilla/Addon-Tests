@@ -421,6 +421,31 @@ class TestDetails:
         Assert.true(details_page.is_reviews_section_visible)
         Assert.true(details_page.is_reviews_section_in_view)
 
+    @pytest.mark.xfail(reason="needs a wait https://www.pivotaltracker.com/story/show/27724123")
+    @pytest.mark.nondestructive
+    @pytest.mark.native
+    def test_addon_information_in_flyout_matches_to_its_details_page(self, mozwebqa):
+        """
+        Test for Litmus 25816.
+        https://litmus.mozilla.org/show_test.cgi?id=25816
+        """
+        home = Home(mozwebqa)
+        first_addon = home.featured_extensions[0]
+
+        expected_star_rating = first_addon.star_rating
+        expected_total_review_count = first_addon.total_review_count
+        expected_summary = first_addon.summary
+        expected_author_names = first_addon.author_name
+        expected_number_of_users = first_addon.number_of_users
+
+        details_page = first_addon.click_on_addon()
+
+        Assert.equal(details_page.rating, expected_star_rating)
+        Assert.equal(details_page.total_review_count, expected_total_review_count)
+        Assert.equal(details_page.summary, expected_summary)
+        Assert.equal(expected_author_names, details_page.authors)
+        Assert.equal(expected_number_of_users, details_page.daily_users_number)
+
     @pytest.mark.native
     @pytest.mark.nondestructive
     def test_that_install_button_is_clickable(self, mozwebqa):
@@ -430,6 +455,7 @@ class TestDetails:
         details_page = Details(mozwebqa, 'firebug')
         Assert.contains("active", details_page.click_and_hold_install_button_returns_class_value())
 
+    @pytest.mark.xfail(reason="https://github.com/mozilla/Addon-Tests/pull/431")
     @pytest.mark.nondestructive
     def test_what_is_this_in_the_version_information(self, mozwebqa):
         """
@@ -443,6 +469,7 @@ class TestDetails:
         Assert.equal("Frequently Asked Questions", details_page.freq_asked_question)
 
     @pytest.mark.nondestructive
+    @pytest.mark.xfail(reason="https://github.com/mozilla/Addon-Tests/pull/431")
     def test_view_the_source_in_the_version_information(self, mozwebqa):
         details_page = Details(mozwebqa, "MemChaser")
         Assert.equal(details_page.version_information_heading, "Version Information")
