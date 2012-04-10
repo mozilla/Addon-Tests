@@ -421,6 +421,7 @@ class TestDetails:
         Assert.true(details_page.is_reviews_section_visible)
         Assert.true(details_page.is_reviews_section_in_view)
 
+    @pytest.mark.xfail(reason="needs a wait https://www.pivotaltracker.com/story/show/27724123")
     @pytest.mark.nondestructive
     @pytest.mark.native
     def test_addon_information_in_flyout_matches_to_its_details_page(self, mozwebqa):
