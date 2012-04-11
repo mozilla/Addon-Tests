@@ -244,6 +244,20 @@ class TestHome:
                 [Assert.false(item.is_featured) for item in actual_menu.items[3:]]
 
     @pytest.mark.nondestructive
+    def test_addons_author_link(self, mozwebqa):
+        """
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25815
+        """
+
+        home_page = Home(mozwebqa)
+        first_addon = home_page.featured_extensions[0]
+
+        first_author = first_addon.author_name
+        user_page = first_addon.click_first_author()
+
+        Assert.equal(user_page.username, first_author[0])
+        Assert.contains('user', user_page.get_url_current_page())
+
     @pytest.mark.litmus([25788])
     def test_that_checks_explore_side_navigation(self, mozwebqa):
         """
