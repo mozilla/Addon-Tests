@@ -19,26 +19,26 @@ class Island(Page):
 
     def __init__(self, testsetup, element):
         Page.__init__(self, testsetup)
-        self.root = element
+        self._root = element
 
     @property
     def pager(self):
         try:
-            return self.Pager(self.testsetup, self.root.find_element(*self._pager_locator))
+            return self.Pager(self.testsetup, self._root.find_element(*self._pager_locator))
         except NoSuchElementException:
             Assert.fail('Paginator is not available')
 
     @property
     def see_all_text(self):
-        return self.root.find_element(*self._see_all_locator).text
+        return self._root.find_element(*self._see_all_locator).text
 
     @property
     def see_all_link(self):
-        return self.root.find_element(*self._see_all_locator).get_attribute('href')
+        return self._root.find_element(*self._see_all_locator).get_attribute('href')
 
     def click_see_all(self):
         see_all_url = self.see_all_link
-        self.root.find_element(*self._see_all_locator).click()
+        self._root.find_element(*self._see_all_locator).click()
 
         if 'extensions' in see_all_url:
             from pages.desktop.extensions import ExtensionsHome
@@ -52,24 +52,24 @@ class Island(Page):
 
     @property
     def title(self):
-        text = self.root.find_element(*self._title_locator).text
+        text = self._root.find_element(*self._title_locator).text
         return text.replace(self.see_all_text, '').strip()
 
     @property
     def visible_section(self):
-        for idx, section in enumerate(self.root.find_elements(*self._sections_locator)):
+        for idx, section in enumerate(self._root.find_elements(*self._sections_locator)):
             if section.is_displayed():
                 return idx
 
     @property
     def addons(self):
         return [self.Addon(self.testsetup, element)
-                for element in self.root.find_elements(*self._sections_locator)[self.pager.selected_dot].find_elements(*self._item_locator)]
+                for element in self._root.find_elements(*self._sections_locator)[self.pager.selected_dot].find_elements(*self._item_locator)]
 
     class Addon(Page):
         def __init__(self, testsetup, element):
             Page.__init__(self, testsetup)
-            self.root = element
+            self._root = element
 
     class Pager(Page):
         _next_locator = (By.CSS_SELECTOR, 'a.next')
@@ -78,23 +78,23 @@ class Island(Page):
 
         def __init__(self, testsetup, elment):
             Page.__init__(self, testsetup)
-            self.root = elment
+            self._root = elment
 
         def next(self):
-            self.root.find_element(*self._next_locator).click()
+            self._root.find_element(*self._next_locator).click()
 
         def prev(self):
-            self.root.find_element(*self._prev_locator).click()
+            self._root.find_element(*self._prev_locator).click()
 
         @property
         def dot_count(self):
-            return len(self.root.find_elements(*self._dot_locator))
+            return len(self._root.find_elements(*self._dot_locator))
 
         @property
         def selected_dot(self):
-            for idx, dot in enumerate(self.root.find_elements(*self._dot_locator)):
+            for idx, dot in enumerate(self._root.find_elements(*self._dot_locator)):
                 if 'selected' in dot.get_attribute('class'):
                     return idx
 
         def click_dot(self, idx):
-            self.root.find_elements(*self._dot_locator)[idx].click()
+            self._root.find_elements(*self._dot_locator)[idx].click()
