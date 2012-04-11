@@ -421,6 +421,7 @@ class TestDetails:
         Assert.true(details_page.is_reviews_section_visible)
         Assert.true(details_page.is_reviews_section_in_view)
 
+    @pytest.mark.xfail(reason="needs a wait https://www.pivotaltracker.com/story/show/27724123")
     @pytest.mark.nondestructive
     @pytest.mark.native
     def test_addon_information_in_flyout_matches_to_its_details_page(self, mozwebqa):
@@ -460,19 +461,19 @@ class TestDetails:
         """
         https://litmus.mozilla.org/show_test.cgi?id=7906
         """
-        details_page = Details(mozwebqa, 'MemChaser')
-        Assert.equal(details_page.version_information_heading, 'Version Information')
+        details_page = Details(mozwebqa, "MemChaser")
+        Assert.equal(details_page.version_information_heading, "Version Information")
         details_page.click_version_information_header()
         Assert.equal("What's this?", details_page.license_faq.text)
         details_page.license_faq.click()
-        Assert.equal('Frequently Asked Questions' , details_page.freq_asked_question)
+        Assert.equal("Frequently Asked Questions", details_page.freq_asked_question)
 
     @pytest.mark.nondestructive
     @pytest.mark.xfail(reason="https://github.com/mozilla/Addon-Tests/pull/431")
     def test_view_the_source_in_the_version_information(self, mozwebqa):
-        details_page = Details(mozwebqa, 'MemChaser')
-        Assert.equal(details_page.version_information_heading, 'Version Information')
+        details_page = Details(mozwebqa, "MemChaser")
+        Assert.equal(details_page.version_information_heading, "Version Information")
         details_page.click_version_information_header()
-        Assert.equal('View the source' , details_page.view_source_code.text)
+        Assert.equal("View the source", details_page.view_source_code.text)
         details_page.view_source_code.click()
         Assert.contains('/files/browse/', details_page.get_url_current_page())
