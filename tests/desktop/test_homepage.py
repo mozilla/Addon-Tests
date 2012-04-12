@@ -244,6 +244,42 @@ class TestHome:
                 [Assert.false(item.is_featured) for item in actual_menu.items[3:]]
 
     @pytest.mark.nondestructive
+    def test_that_checks_the_up_and_coming_extensions_island(self, mozwebqa):
+
+        home_page = Home(mozwebqa)
+
+        up_and_coming_island = home_page.up_and_coming_island
+
+        Assert.equal(up_and_coming_island.title, 'Up & Coming Extensions')
+        Assert.equal(up_and_coming_island.see_all_text, u'See all \xbb')
+
+        for idx in range(up_and_coming_island.pager.dot_count):
+            Assert.equal(idx, up_and_coming_island.visible_section)
+            Assert.equal(idx, up_and_coming_island.pager.selected_dot)
+            Assert.equal(len(up_and_coming_island.addons), 6)
+            up_and_coming_island.pager.next()
+
+        for idx in range(up_and_coming_island.pager.dot_count - 1, -1, -1):
+            Assert.equal(idx, up_and_coming_island.visible_section)
+            Assert.equal(idx, up_and_coming_island.pager.selected_dot)
+            Assert.equal(len(up_and_coming_island.addons), 6)
+            up_and_coming_island.pager.prev()
+
+    @pytest.mark.nondestructive
+    def test_addons_author_link(self, mozwebqa):
+        """
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25815
+        """
+
+        home_page = Home(mozwebqa)
+        first_addon = home_page.featured_extensions[0]
+
+        first_author = first_addon.author_name
+        user_page = first_addon.click_first_author()
+
+        Assert.equal(user_page.username, first_author[0])
+        Assert.contains('user', user_page.get_url_current_page())
+
     @pytest.mark.litmus([25788])
     def test_that_checks_explore_side_navigation(self, mozwebqa):
         """

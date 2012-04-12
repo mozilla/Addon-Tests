@@ -16,7 +16,7 @@ from pages.desktop.base import Base
 class Home(Base):
 
     _page_title = "Add-ons for Firefox"
-    _first_addon_locator = (By.CSS_SELECTOR, "div.summary > a > h3")
+    _first_addon_locator = (By.CSS_SELECTOR, ".summary > a > h3")
     _other_applications_link_locator = (By.ID, "other-apps")
 
     #Most Popular List
@@ -42,6 +42,8 @@ class Home(Base):
     _category_list_locator = (By.CSS_SELECTOR, "ul#side-categories li")
 
     _extensions_menu_link = (By.CSS_SELECTOR, "#extensions > a")
+
+    _up_and_coming_locator = (By.ID, "upandcoming")
 
     def __init__(self, testsetup, open_url=True):
         """Creates a new instance of the class and gets the page ready for testing."""
@@ -107,6 +109,11 @@ class Home(Base):
     @property
     def featured_extensions_count(self):
         return len(self.selenium.find_elements(*self._featured_extensions_elements_locator))
+
+    @property
+    def up_and_coming_island(self):
+        from pages.desktop.regions.island import Island
+        return Island(self.testsetup, self.selenium.find_element(*self._up_and_coming_locator))
 
     @property
     def explore_side_navigation_header_text(self):
@@ -234,3 +241,11 @@ class Home(Base):
             ActionChains(self.selenium).\
                 move_to_element(self._root_element).\
                 perform()
+
+        def click_first_author(self):
+            author_item = self.selenium.find_element(*self._author_locator)
+            ActionChains(self.selenium).\
+                move_to_element(author_item).click().\
+                perform()
+            from pages.desktop.user import User
+            return User(self.testsetup)
