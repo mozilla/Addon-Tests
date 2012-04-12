@@ -70,7 +70,7 @@ class Details(Base):
     #more about this addon
     _website_locator = (By.CSS_SELECTOR, ".links a.home")
     #other_addons
-    _other_addons_by_author_locator = (By.CSS_SELECTOR, "#author-addons > ul.listing-grid > section li")
+    _other_addons_by_author_locator = (By.CSS_SELECTOR, "#author-addons > ul.listing-grid > section li > div.addon")
     _other_addons_by_author_text_locator = (By.CSS_SELECTOR, '#author-addons > h2')
     _reviews_section_header_locator = (By.CSS_SELECTOR, '#reviews > h2')
     _reviews_locator = (By.CSS_SELECTOR, "section#reviews div")
@@ -412,8 +412,8 @@ class Details(Base):
 
     @property
     def other_addons(self):
-        return [self.OtherAddons(self.testsetup, web_element)
-                for web_element in self.selenium.find_elements(*self._other_addons_by_author_locator)]
+        return [self.OtherAddons(self.testsetup, other_addon_web_element)
+                for other_addon_web_element in self.selenium.find_elements(*self._other_addons_by_author_locator)]
 
     def get_rating_counter(self, rating):
         elements = self.selenium.find_elements(*self._rating_counter_locator)
