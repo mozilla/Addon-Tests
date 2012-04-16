@@ -199,6 +199,7 @@ class Home(Base):
         _author_locator = (By.CSS_SELECTOR, 'div.addon > div.more > div.byline > a')
         _number_of_users_locator = (By.CSS_SELECTOR, 'div.more > div.vitals > div.vital > span.adu')
         _summary_locator = (By.CSS_SELECTOR, 'div.addon > div.more > .addon-summary')
+        _link_locator = (By.CSS_SELECTOR, 'div.addon > .summary')
 
         def __init__(self, testsetup, web_element):
             Page.__init__(self, testsetup)
@@ -233,7 +234,7 @@ class Home(Base):
             return self._root_element.find_element(*self._summary_locator).text
 
         def click_on_addon(self):
-            self._root_element.click()
+            self._root_element.find_element(*self._link_locator).click()
             from pages.desktop.details import Details
             return Details(self.testsetup)
 
