@@ -20,7 +20,7 @@ class Themes(Base):
     _sort_by_rating_locator = (By.CSS_SELECTOR, 'div#sorter > ul > li:nth-child(2) > a')
     _selected_sort_by_locator = (By.CSS_SELECTOR, '#sorter > ul > li.selected a')
     _hover_more_locator = (By.CSS_SELECTOR, 'li.extras > a')
-    _addons_root_locator = (By.CSS_SELECTOR, '.listing-grid li')
+    _addons_root_locator = (By.CSS_SELECTOR, '.listing-grid > li')
     _addon_name_locator = (By.CSS_SELECTOR, 'h3')
     _addons_metadata_locator = (By.CSS_SELECTOR, '.vital .updated')
     _addons_download_locator = (By.CSS_SELECTOR, '.downloads.adu')
@@ -158,10 +158,10 @@ class Theme(Base):
     def addon_title(self):
         return self.selenium.find_element(*self._addon_title).text
 
-    @property 
+    @property
     def install_button_exists(self):
         return self.is_element_visible(*self._install_button)
-    
+
 class ThemesCategory(Base):
 
     _title_locator = (By.CSS_SELECTOR, "section.primary > h1")
