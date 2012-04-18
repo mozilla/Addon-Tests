@@ -72,6 +72,7 @@ class TestDiscoveryPane:
         Assert.equal("Browse all add-ons", discovery_pane.browse_all_addons)
         Assert.equal("See all themes", discovery_pane.see_all_themes)
 
+    @pytest.mark.xfail(reason="Bug 746516")
     @pytest.mark.nondestructive
     def test_that_up_and_coming_is_present_and_had_5_items(self, mozwebqa):
         """Test for Litmus 15074."""
