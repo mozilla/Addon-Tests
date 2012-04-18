@@ -38,6 +38,7 @@ class Page(object):
         return True
 
     def get_url_current_page(self):
+        WebDriverWait(self.selenium, 10).until(lambda s: self.selenium.title)
         return self.selenium.current_url
 
     def is_element_present(self, *locator):
