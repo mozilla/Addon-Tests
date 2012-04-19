@@ -75,13 +75,15 @@ class TestDetails:
         # check that the release number matches the version number at the top of the page
         Assert.equal('Version %s' % details_page.version_number, details_page.release_version)
 
+    @pytest.mark.smoke
     @pytest.mark.nondestructive
     def test_that_reviews_are_displayed(self, mozwebqa):
         """Test for Litmus 9890."""
         details_page = Details(mozwebqa, "Firebug")
         Assert.equal(details_page.review_title, "Reviews")
         Assert.true(details_page.has_reviews)
-        Assert.not_none(re.search('(\w+\s*){1,}', details_page.review_details))
+        for review in details_page.review_details:
+            Assert.not_none(re.search('(\w+\s*){1,}', review))
 
     @pytest.mark.nondestructive
     def test_that_in_often_used_with_addons_are_displayed(self, mozwebqa):
