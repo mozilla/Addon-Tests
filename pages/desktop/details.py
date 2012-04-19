@@ -39,7 +39,7 @@ class Details(Base):
     _login_link_locator = (By.CSS_SELECTOR, "li.account > a:nth-child(2)")
     _other_applications_locator = (By.ID, "other-apps")
     _compatibility_locator = (By.CSS_SELECTOR, '.meta.compat')
-    _review_link_locator = (By.CSS_SELECTOR, '#reviews-link.scrollto')
+    _review_link_locator = (By.ID, 'reviews-link')
     _daily_users_link_locator = (By.ID, 'daily-users')
 
     _about_addon_locator = (By.CSS_SELECTOR, "section.primary > h2")
