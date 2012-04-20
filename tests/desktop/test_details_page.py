@@ -83,7 +83,7 @@ class TestDetails:
         Assert.equal(details_page.review_title, "Reviews")
         Assert.true(details_page.has_reviews)
         for review in details_page.review_details:
-            Assert.not_none(re.search('(\w+\s*){1,}', review))
+            Assert.not_none(review)
 
     @pytest.mark.nondestructive
     def test_that_in_often_used_with_addons_are_displayed(self, mozwebqa):
