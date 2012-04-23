@@ -233,7 +233,7 @@ class Details(Base):
 
     @property
     def review_details(self):
-        return self.selenium.find_element(*self._review_details_locator).text
+        return [review.text for review in self.selenium.find_elements(*self._review_details_locator)]
 
     @property
     def often_used_with_header(self):

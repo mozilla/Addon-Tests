@@ -75,13 +75,15 @@ class TestDetails:
         # check that the release number matches the version number at the top of the page
         Assert.equal('Version %s' % details_page.version_number, details_page.release_version)
 
+    @pytest.mark.smoke
     @pytest.mark.nondestructive
     def test_that_reviews_are_displayed(self, mozwebqa):
         """Test for Litmus 9890."""
         details_page = Details(mozwebqa, "Firebug")
         Assert.equal(details_page.review_title, "Reviews")
         Assert.true(details_page.has_reviews)
-        Assert.not_none(re.search('(\w+\s*){1,}', details_page.review_details))
+        for review in details_page.review_details:
+            Assert.not_none(review)
 
     @pytest.mark.nondestructive
     def test_that_in_often_used_with_addons_are_displayed(self, mozwebqa):
@@ -421,7 +423,6 @@ class TestDetails:
         Assert.true(details_page.is_reviews_section_visible)
         Assert.true(details_page.is_reviews_section_in_view)
 
-    @pytest.mark.xfail(reason="needs a wait https://www.pivotaltracker.com/story/show/27724123")
     @pytest.mark.nondestructive
     @pytest.mark.native
     def test_addon_information_in_flyout_matches_to_its_details_page(self, mozwebqa):
@@ -439,6 +440,7 @@ class TestDetails:
         expected_number_of_users = first_addon.number_of_users
 
         details_page = first_addon.click_on_addon()
+        Assert.true(details_page.is_the_current_page)
 
         Assert.equal(details_page.rating, expected_star_rating)
         Assert.equal(details_page.total_review_count, expected_total_review_count)
