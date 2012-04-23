@@ -415,13 +415,6 @@ class Details(Base):
         return [self.OtherAddons(self.testsetup, other_addon_web_element)
                 for other_addon_web_element in self.selenium.find_elements(*self._other_addons_by_author_locator)]
 
-    def get_rating_counter(self, rating):
-        elements = self.selenium.find_elements(*self._rating_counter_locator)
-        try:
-            return int(elements[5 - rating].text)
-        except IndexError:
-            return 0
-
     @property
     def previewer(self):
         return self.ImagePreviewer(self.testsetup)
