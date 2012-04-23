@@ -26,7 +26,7 @@ class Details(Base):
     _no_restart_locator = (By.CSS_SELECTOR, "span.no-restart")
     _authors_locator = (By.XPATH, "//h4[@class='author']/a")
     _summary_locator = (By.ID, "addon-summary")
-    _install_button_locator = (By.CSS_SELECTOR, ".button.prominent.add.installer")
+    _install_button_locator = (By.CSS_SELECTOR, '.button.prominent.add.installer')
     _install_button_attribute_locator = (By.CSS_SELECTOR, '.install-wrapper .install-shell .install.clickHijack')
     _rating_locator = (By.CSS_SELECTOR, "span[itemprop='ratingValue']")
     _total_review_count_locator = (By.CSS_SELECTOR, '#reviews-link > span')
