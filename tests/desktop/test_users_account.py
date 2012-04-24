@@ -11,7 +11,6 @@ from copy import deepcopy
 from unittestzero import Assert
 
 from pages.desktop.home import Home
-from pages.desktop.details import Details
 
 
 class TestAccounts:
@@ -175,45 +174,3 @@ class TestAccounts:
                 user_edit_page.profile_fields[i].type_value(initial_value[i])
 
             user_edit_page.click_update_account()
-
-    @pytest.mark.native
-    @pytest.mark.nondestructive
-    @pytest.mark.login
-    def test_user_my_collections_page(self, mozwebqa):
-        """
-        Test for litmus 15401.
-        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=15401
-        """
-
-        home_page = Home(mozwebqa)
-        home_page.login("browserID")
-        Assert.true(home_page.is_the_current_page)
-        Assert.true(home_page.header.is_user_logged_in)
-
-        username = mozwebqa.credentials['default']['name']
-        my_collections_page = home_page.header.click_my_collections()
-        Assert.equal('Collections by %s :: Add-ons for Firefox' % username, home_page.page_title)
-        Assert.equal('Collections by %s' % username, my_collections_page.my_collections_header_text)
-
-    @pytest.mark.native
-    @pytest.mark.login
-    def test_user_my_favorites_page(self, mozwebqa):
-        """
-        Test for Litmus 15402.
-        https://litmus.mozilla.org/show_test.cgi?id=15402
-        """
-        home_page = Home(mozwebqa)
-        home_page.login('browserID')
-        Assert.true(home_page.is_the_current_page)
-        Assert.true(home_page.header.is_user_logged_in)
-
-        # mark an add-on as favorite if there is none
-        if not home_page.header.is_my_favorites_menu_present:
-            details_page = Details(mozwebqa, 'Firebug')
-            details_page.click_add_to_favorites()
-            Assert.true(details_page.is_addon_marked_as_favorite)
-            home_page = Home(mozwebqa)
-
-        my_favorites_page = home_page.header.click_my_favorites()
-        Assert.true(my_favorites_page.is_the_current_page)
-        Assert.equal('My Favorite Add-ons', my_favorites_page.my_favorites_header_text)
