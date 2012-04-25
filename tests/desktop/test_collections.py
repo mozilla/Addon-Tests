@@ -5,7 +5,7 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import pytest
-import random
+import time
 
 from unittestzero import Assert
 from pages.desktop.home import Home
@@ -31,18 +31,18 @@ class TestCollections:
         create_collection_page = collections_page.click_create_collection_button()
         home_page.login('browserID')
 
-        random_name = 'random number following%s' % random.randrange(1, 100)
+        collection_name = 'collection timestamp %s' % time.time()
 
-        create_collection_page.type_name(random_name)
-        create_collection_page.type_description(random_name)
+        create_collection_page.type_name(collection_name)
+        create_collection_page.type_description(collection_name)
         collection = create_collection_page.click_create_collection()
 
         Assert.equal(collection.notification, 'Collection created!')
-        Assert.equal(collection.collection_name, random_name)
+        Assert.equal(collection.collection_name, collection_name)
         collection.delete()
         user_collections = collection.delete_confirmation()
         if len(user_collections.collections) > 0:
             for collection_element in range(len(user_collections.collections)):  # If the condition is satisfied, iterate through the collections items on the page
-                Assert.true(random_name not in user_collections.collections[collection_element].text)  # Check for each collection that the name is not the same as the deleted collections name
+                Assert.true(collection_name not in user_collections.collections[collection_element].text)  # Check for each collection that the name is not the same as the deleted collections name
         else:
             Assert.equal(user_collections.collection_text, 'No collections found.')  # It means the collection has been deleted and we test for that
