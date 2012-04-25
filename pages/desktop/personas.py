@@ -8,6 +8,7 @@ import re
 from unittestzero import Assert
 
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
 
 from pages.desktop.base import Base
 
@@ -93,6 +94,8 @@ class PersonasDetail(Base):
     @property
     def is_the_current_page(self):
         # This overrides the method in the Page super class.
+        WebDriverWait(self.selenium, 10).until(lambda s: self.selenium.title)
+        
         Assert.not_none(re.match(self._page_title_regex, self.selenium.title), 'Expected the current page to be the personas detail page.')
         return True
 
