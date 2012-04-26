@@ -86,6 +86,11 @@ class UserFAQ(Base):
 
     _license_question_locator = (By.CSS_SELECTOR, '#license')
     _license_answer_locator = (By.CSS_SELECTOR, '#license + dd')
+    _page_header_locator = (By.CSS_SELECTOR, '.prose > header > h2')
+
+    @property
+    def header_text(self):
+        return self.selenium.find_element(*self._page_header_locator).text
 
     @property
     def license_question(self):
@@ -94,3 +99,7 @@ class UserFAQ(Base):
     @property
     def license_answer(self):
         return self.selenium.find_element(*self._license_answer_locator).text
+
+class ViewAddonSource(Base):
+    
+    pass

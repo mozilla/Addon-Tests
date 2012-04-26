@@ -124,7 +124,7 @@ class TestDetails:
     def test_that_whats_this_link_for_source_license_links_to_an_answer_in_faq(self, mozwebqa):
         """Test for Litmus 11530."""
         details_page = Details(mozwebqa, "Firebug")
-        details_page.click_version_information_heading()
+        details_page.click_version_information_header()
         user_faq_page = details_page.click_whats_this_license()
         Assert.not_none(re.match('(\w+\s*){3,}', user_faq_page.license_question))
         Assert.not_none(re.match('(\w+\s*){3,}', user_faq_page.license_answer))
@@ -458,7 +458,6 @@ class TestDetails:
         details_page = Details(mozwebqa, 'firebug')
         Assert.contains("active", details_page.click_and_hold_install_button_returns_class_value())
 
-    @pytest.mark.xfail(reason="https://github.com/mozilla/Addon-Tests/pull/431")
     @pytest.mark.nondestructive
     def test_what_is_this_in_the_version_information(self, mozwebqa):
         """
@@ -467,16 +466,15 @@ class TestDetails:
         details_page = Details(mozwebqa, "MemChaser")
         Assert.equal(details_page.version_information_heading, "Version Information")
         details_page.click_version_information_header()
-        Assert.equal("What's this?", details_page.license_faq.text)
-        details_page.license_faq.click()
-        Assert.equal("Frequently Asked Questions", details_page.freq_asked_question)
+        Assert.equal("What's this?", details_page.license_faq_text)
+        license_faq = details_page.click_whats_this_license()
+        Assert.equal("Frequently Asked Questions", license_faq.header_text)
 
     @pytest.mark.nondestructive
-    @pytest.mark.xfail(reason="https://github.com/mozilla/Addon-Tests/pull/431")
     def test_view_the_source_in_the_version_information(self, mozwebqa):
         details_page = Details(mozwebqa, "MemChaser")
         Assert.equal(details_page.version_information_heading, "Version Information")
         details_page.click_version_information_header()
-        Assert.equal("View the source", details_page.view_source_code.text)
-        details_page.view_source_code.click()
-        Assert.contains('/files/browse/', details_page.get_url_current_page())
+        Assert.equal("View the source", details_page.view_source_code_text)
+        view_source = details_page.click_view_source_code()
+        Assert.contains('/files/browse/', view_source.get_url_current_page())

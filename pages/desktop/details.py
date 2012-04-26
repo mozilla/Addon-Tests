@@ -31,8 +31,8 @@ class Details(Base):
     _rating_locator = (By.CSS_SELECTOR, "span[itemprop='ratingValue']")
     _total_review_count_locator = (By.CSS_SELECTOR, '#reviews-link > span')
     _license_link_locator = (By.CSS_SELECTOR, ".source-license > a")
-    _whats_this_license_locator = (By.CSS_SELECTOR, ".license-faq")
-    _view_the_source_locator = (By.CSS_SELECTOR, ".source-code")
+    _whats_this_license_locator = (By.CSS_SELECTOR, "a.license-faq")
+    _view_the_source_locator = (By.CSS_SELECTOR, "a.source-code")
     _complete_version_history_locator = (By.CSS_SELECTOR, "p.more > a")
     _description_locator = (By.CSS_SELECTOR, "div.prose")
     _register_link_locator = (By.CSS_SELECTOR, "li.account")
@@ -43,7 +43,7 @@ class Details(Base):
     _daily_users_link_locator = (By.ID, 'daily-users')
 
     _about_addon_locator = (By.CSS_SELECTOR, "section.primary > h2")
-    _version_information_locator = (By.CSS_SELECTOR, "#detail-relnotes")
+    _version_information_locator = (By.ID, "detail-relnotes")
     _version_information_heading_locator = (By.CSS_SELECTOR, "#detail-relnotes > h2")
     _version_information_heading_link_locator = (By.CSS_SELECTOR, "#detail-relnotes > h2 > a")
     _release_version_locator = (By.CSS_SELECTOR, "div.info > h3 > a")
@@ -98,10 +98,6 @@ class Details(Base):
     # contribute to addon
     _contribute_button_locator = (By.ID, 'contribute-button')
     _paypal_login_dialog_locator = (By.ID, 'wrapper')
-
-    _version_license_faq = (By.CSS_SELECTOR, 'div.info .license-faq')
-    _view_the_source_code = (By.CSS_SELECTOR, 'div.info .source-code')
-    _frequently_asked_question_locator = (By.CSS_SELECTOR, '.prose > header > h2')
 
     def __init__(self, testsetup, addon_name=None):
         #formats name for url
@@ -251,14 +247,6 @@ class Details(Base):
     def compatible_applications(self):
         return self.selenium.find_element(*self._compatibility_locator).text
 
-    def click_version_information_heading(self):
-        return self.selenium.find_element(*self._version_information_heading_link_locator).click()
-
-    @property
-    def is_version_information_section_expanded(self):
-        expand_info = self.selenium.find_element(*self._version_information_locator).get_attribute("class")
-        return ("expanded" in expand_info)
-
     @property
     def is_version_information_install_button_visible(self):
         return self.is_element_visible(*self._install_button_locator)
@@ -273,6 +261,10 @@ class Details(Base):
     @property
     def is_whats_this_license_visible(self):
         return self.is_element_visible(*self._whats_this_license_locator)
+    
+    @property
+    def license_faq_text(self):
+        return self.selenium.find_element(*self._whats_this_license_locator).text
 
     @property
     def is_source_code_license_information_visible(self):
@@ -281,6 +273,15 @@ class Details(Base):
     @property
     def is_view_the_source_link_visible(self):
         return self.is_element_visible(*self._view_the_source_locator)
+
+    def click_view_source_code(self):
+        self.selenium.find_element(*self._view_the_source_locator).click()
+        from pages.desktop.addons_site import ViewAddonSource
+        return ViewAddonSource(self.testsetup)
+
+    @property
+    def view_source_code_text(self):
+        return self.selenium.find_element(*self._view_the_source_locator).text
 
     @property
     def is_complete_version_history_visible(self):
@@ -492,12 +493,12 @@ class Details(Base):
 
     def click_version_information_header(self):
         self.selenium.find_element(*self._version_information_heading_link_locator).click()
-        WebDriverWait(self.selenium, 10).until(lambda s: self.is_version_information_expanded)
+        WebDriverWait(self.selenium, 10).until(lambda s: self.is_version_information_section_expanded)
 
     @property
-    def is_version_information_expanded(self):
-        is_expanded = self.selenium.find_element(*self._version_information_locator).get_attribute('class')
-        return "expanded" in is_expanded
+    def is_version_information_section_expanded(self):
+        element_class = self.selenium.find_element(*self._version_information_locator).get_attribute("class")
+        return "expanded" in element_class
 
     def click_devs_comments(self):
         self.selenium.find_element(*self._devs_comments_toggle_locator).click()
@@ -608,15 +609,3 @@ class Details(Base):
     @property
     def total_review_count(self):
         return self.selenium.find_element(*self._total_review_count_locator).text
-
-    @property
-    def license_faq(self):
-        return self.selenium.find_element(*self._version_license_faq)
-
-    @property
-    def view_source_code(self):
-        return self.selenium.find_element(*self._view_the_source_code)
-
-    @property
-    def freq_asked_question(self):
-        return self.selenium.find_element(*self._frequently_asked_question_locator).text
