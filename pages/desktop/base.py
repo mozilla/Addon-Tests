@@ -82,7 +82,7 @@ class Base(Page):
     def breadcrumbs(self):
         from pages.desktop.regions.breadcrumbs import Breadcrumbs
         return Breadcrumbs(self.testsetup).breadcrumbs
-
+    
     @property
     def paginator(self):
         from pages.desktop.regions.paginator import Paginator
