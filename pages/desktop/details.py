@@ -261,7 +261,7 @@ class Details(Base):
     @property
     def is_whats_this_license_visible(self):
         return self.is_element_visible(*self._whats_this_license_locator)
-    
+
     @property
     def license_faq_text(self):
         return self.selenium.find_element(*self._whats_this_license_locator).text

@@ -82,6 +82,7 @@ class ViewReviews(Base):
         def delete(self):
             self._root_element.find_element(*self._delete_review_locator).click()
 
+
 class UserFAQ(Base):
 
     _license_question_locator = (By.CSS_SELECTOR, '#license')
@@ -100,6 +101,7 @@ class UserFAQ(Base):
     def license_answer(self):
         return self.selenium.find_element(*self._license_answer_locator).text
 
+
 class ViewAddonSource(Base):
-    
+
     pass
