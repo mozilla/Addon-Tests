@@ -24,15 +24,15 @@ class SearchHome(Base):
     _search_results_title_locator = (By.CSS_SELECTOR, "section.primary>h1")
     _results_locator = (By.CSS_SELECTOR, "div.items div.item.addon")
 
-    _sort_by_relevance_locator = (By.CSS_SELECTOR, "div#sorter > ul > li:nth-child(1) > a")
-    _sort_by_most_users_locator = (By.CSS_SELECTOR, "div#sorter > ul > li:nth-child(2) > a")
-    _sort_by_top_rated_locator = (By.CSS_SELECTOR, "div#sorter > ul > li:nth-child(3) > a")
-    _sort_by_newest_locator = (By.CSS_SELECTOR, "div#sorter > ul > li:nth-child(4) > a")
+    _sort_by_relevance_locator = (By.LINK_TEXT, 'Relevance')
+    _sort_by_most_users_locator = (By.LINK_TEXT, 'Most Users')
+    _sort_by_top_rated_locator = (By.LINK_TEXT, 'Top Rated')
+    _sort_by_newest_locator = (By.LINK_TEXT, 'Newest')
 
-    _sort_by_name_locator = (By.CSS_SELECTOR, "li.extras > ul > li:nth-child(1) > a")
-    _sort_by_weekly_downloads_locator = (By.CSS_SELECTOR, "li.extras > ul > li:nth-child(2) > a")
-    _sort_by_recently_updated_locator = (By.CSS_SELECTOR, "li.extras > ul > li:nth-child(4) > a")
-    _sort_by_up_and_coming_locator = (By.CSS_SELECTOR, "li.extras > ul > li:nth-child(5) > a")
+    _sort_by_name_locator = (By.XPATH, "//div[@id='sorter']//li/a[normalize-space(text())='Name']")
+    _sort_by_weekly_downloads_locator = (By.XPATH, "//div[@id='sorter']//li/a[normalize-space(text())='Weekly Downloads']")
+    _sort_by_recently_updated_locator = (By.XPATH, "//div[@id='sorter']//li/a[normalize-space(text())='Recently Updated']")
+    _sort_by_up_and_coming_locator = (By.XPATH, "//div[@id='sorter']//li/a[normalize-space(text())='Up & Coming']")
 
     _hover_more_locator = (By.CSS_SELECTOR, "li.extras > a")
 

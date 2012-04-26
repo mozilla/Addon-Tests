@@ -8,6 +8,7 @@ import re
 from unittestzero import Assert
 
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
 
 from pages.desktop.base import Base
 
@@ -34,7 +35,9 @@ class Personas(Base):
     def click_persona(self, index):
         """Clicks on the persona with the given index in the page."""
         self.selenium.find_elements(*self._personas_locator)[index].click()
-        return PersonasDetail(self.testsetup)
+        persona_detail = PersonasDetail(self.testsetup)
+        WebDriverWait(self.selenium, 10).until(lambda s: persona_detail.is_title_visible)
+        return persona_detail
 
     def open_persona_detail_page(self, persona_key):
         self.selenium.get(self.base_url + "/addon/%s" % persona_key)
@@ -93,8 +96,13 @@ class PersonasDetail(Base):
     @property
     def is_the_current_page(self):
         # This overrides the method in the Page super class.
-        Assert.not_none(re.match(self._page_title_regex, self.selenium.title), 'Expected the current page to be the personas detail page.')
+        actual_page_title = self.selenium.title
+        Assert.not_none(re.match(self._page_title_regex, actual_page_title), 'Expected the current page to be the personas detail page.\n Actual title: %s' % actual_page_title)
         return True
+
+    @property
+    def is_title_visible(self):
+        return self.is_element_visible(*self._personas_title_locator)
 
     @property
     def title(self):

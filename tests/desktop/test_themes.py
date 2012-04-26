@@ -174,7 +174,7 @@ class TestThemes:
         Assert.greater_equal(themes_page.addon_count, 1)
 
     @pytest.mark.nondestructive
-    def test_that_check_the_flag_for_featured_addons(self, mozwebqa):
+    def test_the_displayed_message_for_incompatible_themes(self, mozwebqa):
         """
         Test for Litmus 15361
         https://litmus.mozilla.org/show_test.cgi?id=15361
