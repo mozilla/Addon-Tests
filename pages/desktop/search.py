@@ -83,6 +83,12 @@ class SearchHome(Base):
         return [self.SearchResult(self.testsetup, web_element)
                 for web_element in self.selenium.find_elements(*self._results_locator)]
 
+    @property
+    def paginator(self):
+        from pages.desktop.regions.paginator import Paginator
+        return Paginator(self.testsetup)
+
+
     class SearchResult(Page):
         _name_locator = (By.CSS_SELECTOR, 'div.info > h3 > a')
         _created_date = (By.CSS_SELECTOR, 'div.info > div.vitals > div.updated')
