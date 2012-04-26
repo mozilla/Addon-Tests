@@ -181,7 +181,6 @@ class TestDetails:
         Assert.false(image_viewer.is_visible)
 
     @pytest.mark.nondestructive
-    @pytest.mark.xfail(reason="waiting for the release of selenium 2.21")
     def test_navigation_buttons_for_image_viewer(self, mozwebqa):
         """
         Test for Litmus 4846.

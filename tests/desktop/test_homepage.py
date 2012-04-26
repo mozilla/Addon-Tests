@@ -148,7 +148,6 @@ class TestHome:
 
     @pytest.mark.native
     @pytest.mark.nondestructive
-    @pytest.mark.xfail(reason="waiting for the release of selenium 2.21")
     def test_that_items_menu_fly_out_while_hovering(self, mozwebqa):
         """
         Test for Litmus 25754.

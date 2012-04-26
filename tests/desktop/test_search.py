@@ -244,7 +244,6 @@ class TestSearch:
         Assert.greater_equal(result_count, search_page.filter.results_count)
 
     @pytest.mark.nondestructive
-    @pytest.mark.xfail(reason="Bugzilla 722647")
     def test_that_search_results_return_20_results_per_page(self, mozwebqa):
         """
         Test for Litmus 17346.
