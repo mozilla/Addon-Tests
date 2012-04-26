@@ -20,37 +20,42 @@ class TestSearch:
         Test for Litmus 4839 and 17339.
         https://litmus.mozilla.org/show_test.cgi?id=4839
         https://litmus.mozilla.org/show_test.cgi?id=17339
+        Open a page with search results.
+        1. On the first page, check that "<<" and "previous are not active, but "next" and ">>" are active.
+        2. Move forward one page by clicking next, all buttons are active
+        3. Click ">>" to go to last page.  Check that "<<" and "previous" are clickable but "next" and ">>" are not.
+        4. Click "previous", all buttons are highlighted.
         """
         home_page = Home(mozwebqa)
         search_page = home_page.header.search_for('addon')
-        first_expected = 1
-        second_expected = 20
 
-        # Go Forward 10 times
-        for i in range(10):
-            search_page.paginator.click_next_page()
-            search_page.wait_for_results_refresh()
+        # On the first page, "<<" and "previous" are not active, but "next" and ">>" are active.
+        Assert.true(search_page.paginator.is_prev_page_disabled)
+        Assert.true(search_page.paginator.is_first_page_disabled)
+        Assert.false(search_page.paginator.is_next_page_disabled)
+        Assert.false(search_page.paginator.is_last_page_disabled)
 
-            first_count = search_page.paginator.start_item
-            second_count = search_page.paginator.end_item
+        # Move forward one page by clicking next, all buttons should be active.
+        search_page.paginator.click_next_page()
+        search_page.wait_for_results_refresh()
 
-            first_expected += 20
-            second_expected += 20
-            Assert.equal(first_expected, first_count)
-            Assert.equal(second_expected, second_count)
+        Assert.false(search_page.paginator.is_prev_page_disabled)
+        Assert.false(search_page.paginator.is_first_page_disabled)
+        Assert.false(search_page.paginator.is_next_page_disabled)
+        Assert.false(search_page.paginator.is_last_page_disabled)
 
-        # Go Back 10 Times
-        for i in range(10):
-            search_page.paginator.click_prev_page()
-            search_page.wait_for_results_refresh()
+        # Click ">>" to go to last page. "<<" and "previous" are active, but "next" and ">>" are not.
+        search_page.paginator.click_last_page()
+        search_page.wait_for_results_refresh()
 
-            first_count = search_page.paginator.start_item
-            second_count = search_page.paginator.end_item
+        # Click "previous", all buttons are active.
+        search_page.paginator.click_prev_page()
+        search_page.wait_for_results_refresh()
 
-            first_expected -= 20
-            second_expected -= 20
-            Assert.equal(first_expected, first_count)
-            Assert.equal(second_expected, second_count)
+        Assert.false(search_page.paginator.is_prev_page_disabled)
+        Assert.false(search_page.paginator.is_first_page_disabled)
+        Assert.false(search_page.paginator.is_next_page_disabled)
+        Assert.false(search_page.paginator.is_last_page_disabled)
 
     @pytest.mark.nondestructive
     def test_that_entering_a_long_string_returns_no_results(self, mozwebqa):

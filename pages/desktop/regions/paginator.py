@@ -40,6 +40,14 @@ class Paginator(Page):
     def is_prev_page_disabled(self):
         return 'disabled' in self.selenium.find_element(*self._prev_locator).get_attribute('class')
 
+    @property
+    def is_first_page_disabled(self):
+        return 'disabled' in self.selenium.find_element(*self._first_page_locator).get_attribute('class')
+
+    @property
+    def is_last_page_disabled(self):
+        return 'disabled' in self.selenium.find_element(*self._last_page_locator).get_attribute('class')
+
     def click_next_page(self):
         self.selenium.find_element(*self._next_locator).click()
 
