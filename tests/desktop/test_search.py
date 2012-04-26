@@ -53,20 +53,6 @@ class TestSearch:
             Assert.equal(second_expected, second_count)
 
     @pytest.mark.nondestructive
-    def test_that_entering_a_long_string_returns_no_results(self, mozwebqa):
-        """
-        Test for Litmus 4856.
-        https://litmus.mozilla.org/show_test.cgi?id=4856
-        """
-        home_page = Home(mozwebqa)
-        search_page = home_page.header.search_for('a' * 255)
-
-        Assert.true(search_page.is_no_results_present)
-        Assert.equal('No results found.', search_page.no_results_text)
-
-        Assert.true('0 matching results' in search_page.number_of_results_text)
-
-    @pytest.mark.nondestructive
     def test_that_searching_with_unicode_characters_returns_results(self, mozwebqa):
         """
         Test for Litmus 9575.
