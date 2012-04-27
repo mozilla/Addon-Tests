@@ -168,7 +168,6 @@ class TestSearch:
         downloads = [i.downloads for i in search_page.results]
         Assert.is_sorted_descending(downloads)
         search_page.paginator.click_next_page()
-        search_page.wait_for_results_refresh()
 
         downloads.extend([i.downloads for i in search_page.results])
         Assert.is_sorted_descending(downloads)
