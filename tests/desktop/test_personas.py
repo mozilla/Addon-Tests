@@ -135,19 +135,6 @@ class TestPersonas:
         Assert.true(home_page.is_the_current_page)
 
     @pytest.mark.nondestructive
-    def test_breadcrumb_menu_for_rainbow_firefox_persona(self, mozwebqa):
-        """
-        Verify the breadcrumb menu for a known persona.
-        https://preview.addons.mozilla.org/en-us/firefox/addon/rainbow-firefox/
-        """
-        personas_page = Personas(mozwebqa)
-        rainbow_personas_detail_page = personas_page.open_persona_detail_page("rainbow-firefox")
-        Assert.equal("rainbow firefox", rainbow_personas_detail_page.title)
-        Assert.equal("Add-ons for Firefox", rainbow_personas_detail_page.breadcrumbs[0].text)
-        Assert.equal("Personas", rainbow_personas_detail_page.breadcrumbs[1].text)
-        Assert.equal("rainbow firefox", rainbow_personas_detail_page.breadcrumbs[2].text)
-
-    @pytest.mark.nondestructive
     def test_personas_breadcrumb_format(self, mozwebqa):
         """
         Verify the breadcrumb format in personas page
