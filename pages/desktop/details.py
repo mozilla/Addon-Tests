@@ -88,11 +88,6 @@ class Details(Base):
     _development_channel_content_locator = (By.CSS_SELECTOR, "#beta-channel > div.content")
     _development_version_locator = (By.CSS_SELECTOR, '.beta-version')
 
-    _next_link_locator = (By.CSS_SELECTOR, ".paginator .rel > a:nth-child(3)")
-    _previous_link_locator = (By.CSS_SELECTOR, ".paginator .rel > a:nth-child(2)")
-    _last_page_link_locator = (By.CSS_SELECTOR, ".paginator .rel > a:nth-child(4)")
-    _first_page_link_locator = (By.CSS_SELECTOR, ".paginator .rel > a:nth-child(1)")
-
     _add_to_favorites_updating_locator = (By.CSS_SELECTOR, "a.ajax-loading")
 
     # contribute to addon
@@ -321,36 +316,6 @@ class Details(Base):
     def part_of_collections(self):
         return [self.PartOfCollectionsSnippet(self.testsetup, web_element)
                 for web_element in self.selenium.find_elements(*self._part_of_collections_list_locator)]
-
-    def page_forward(self):
-        self.selenium.find_element(*self._next_link_locator).click()
-
-    def page_back(self):
-        self.selenium.find_element(*self._previous_link_locator).click()
-
-    def go_to_last_page(self):
-        self.selenium.find_element(*self._last_page_link_locator).click()
-
-    def go_to_first_page(self):
-        self.selenium.find_element(*self._first_page_link_locator).click()
-
-    @property
-    def is_prev_link_enabled(self):
-        button = self.selenium.find_element(*self._previous_link_locator).get_attribute('class')
-        return not ("disabled" in button)
-
-    @property
-    def is_prev_link_visible(self):
-        return self.is_element_visible(*self._previous_link_locator)
-
-    @property
-    def is_next_link_enabled(self):
-        button = self.selenium.find_element(*self._next_link_locator).get_attribute('class')
-        return not("disabled" in button)
-
-    @property
-    def is_next_link_visible(self):
-        return self.is_element_visible(*self._next_link_locator)
 
     @property
     def is_reviews_section_in_view(self):

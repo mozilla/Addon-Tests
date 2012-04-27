@@ -83,11 +83,6 @@ class Base(Page):
         from pages.desktop.regions.breadcrumbs import Breadcrumbs
         return Breadcrumbs(self.testsetup).breadcrumbs
 
-    @property
-    def paginator(self):
-        from pages.desktop.regions.paginator import Paginator
-        return Paginator(self.testsetup)
-
     def _extract_iso_dates(self, date_format, *locator):
         """
         Returns a list of iso formatted date strings extracted from
