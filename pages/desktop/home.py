@@ -43,7 +43,7 @@ class Home(Base):
 
     _extensions_menu_link = (By.CSS_SELECTOR, "#extensions > a")
     
-    _promo_box_locator = (By.CSS_SELECTOR, "#site-welcome.site-balloon > h3")
+    _promo_box_locator = (By.CSS_SELECTOR, "section#promos")
     
     _up_and_coming_locator = (By.ID, "upandcoming")
 
