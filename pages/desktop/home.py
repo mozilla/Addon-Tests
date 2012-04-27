@@ -42,9 +42,9 @@ class Home(Base):
     _category_list_locator = (By.CSS_SELECTOR, "ul#side-categories li")
 
     _extensions_menu_link = (By.CSS_SELECTOR, "#extensions > a")
-    
+
     _promo_box_locator = (By.CSS_SELECTOR, "section#promos")
-    
+
     _up_and_coming_locator = (By.ID, "upandcoming")
 
     def __init__(self, testsetup, open_url=True):
@@ -142,7 +142,7 @@ class Home(Base):
         name = name.lower().replace(" ", "_")
         locator = getattr(self, "_%s_link_locator" % name)
         return self.selenium.find_element(*locator).get_attribute('title')
-    
+
     @property
     def promo_box_present(self):
         return self.is_element_visible(*self._promo_box_locator)
