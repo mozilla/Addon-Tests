@@ -25,12 +25,7 @@ class ResultSort(Page):
     _sort_by_up_and_coming_locator = (By.XPATH, "//div[@id='sorter']//li/a[normalize-space(text())='Up & Coming']")
 
     _hover_more_locator = (By.CSS_SELECTOR, "li.extras > a")
-
     _updating_locator = (By.CSS_SELECTOR, "div.updating")
-    #
-    #def __init__(self, testsetup):
-    #    Page.__init__(self, testsetup)
-
 
     def sort_by(self, type):
         hover_element = self.selenium.find_element(*self._hover_more_locator)

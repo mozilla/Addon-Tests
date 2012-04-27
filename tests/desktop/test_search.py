@@ -37,7 +37,6 @@ class TestSearch:
 
         # Move forward one page by clicking next, all buttons should be active.
         search_page.paginator.click_next_page()
-        search_page.wait_for_results_refresh()
 
         Assert.false(search_page.paginator.is_prev_page_disabled)
         Assert.false(search_page.paginator.is_first_page_disabled)
@@ -46,11 +45,9 @@ class TestSearch:
 
         # Click ">>" to go to last page. "<<" and "previous" are active, but "next" and ">>" are not.
         search_page.paginator.click_last_page()
-        search_page.wait_for_results_refresh()
 
         # Click "previous", all buttons are active.
         search_page.paginator.click_prev_page()
-        search_page.wait_for_results_refresh()
 
         Assert.false(search_page.paginator.is_prev_page_disabled)
         Assert.false(search_page.paginator.is_first_page_disabled)
