@@ -52,7 +52,6 @@ class ViewReviews(Base):
         from pages.desktop.regions.paginator import Paginator
         return Paginator(self.testsetup)
 
-
     class ReviewSnippet(Base):
 
         _review_text_locator = (By.CSS_SELECTOR, ".description")
@@ -87,6 +86,7 @@ class ViewReviews(Base):
 
         def delete(self):
             self._root_element.find_element(*self._delete_review_locator).click()
+
 
 class UserFAQ(Base):
 
