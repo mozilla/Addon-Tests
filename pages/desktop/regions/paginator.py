@@ -13,7 +13,8 @@ from pages.page import Page
 class Paginator(Page):
 
     #Numbering
-    _page_number_locator = (By.CSS_SELECTOR, 'nav.paginator .num >a:nth-child(1)')
+    _page_number_locator = (By.CSS_SELECTOR, 'nav.paginator .num > a:nth-child(1)')
+    _total_page_number_locator = (By.CSS_SELECTOR, 'nav.paginator .num > a:nth-child(2)')
 
     #Navigation
     _first_page_locator = (By.CSS_SELECTOR, 'nav.paginator .rel a:nth-child(1)')
@@ -29,6 +30,10 @@ class Paginator(Page):
     @property
     def page_number(self):
         return int(self.selenium.find_element(*self._page_number_locator).text)
+
+    @property
+    def total_page_number(self):
+        return int(self.selenium.find_element(*self._total_page_number_locator).text)
 
     def click_first_page(self):
         self.selenium.find_element(*self._first_page_locator).click()
