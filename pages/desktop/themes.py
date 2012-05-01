@@ -30,7 +30,7 @@ class Themes(Base):
     def _addons_root_element(self):
         return self.selenium.find_element(*self._addons_root_locator)
 
-    def sort_by(self, type):
+    def click_sort_by(self, type):
         from pages.desktop.regions.result_sort import Sorter
         Sorter(self.testsetup).sort_by(type)
 

@@ -39,7 +39,7 @@ class ExtensionsHome(Base):
     def featured_extensions_header_text(self):
         return self.selenium.find_element(*self._featured_extensions_header_locator).text
 
-    def sort_by(self, type):
+    def click_sort_by(self, type):
         from pages.desktop.regions.result_sort import Sorter
         Sorter(self.testsetup).sort_by(type)
 

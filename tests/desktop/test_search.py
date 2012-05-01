@@ -183,7 +183,7 @@ class TestSearch:
         https://litmus.mozilla.org/show_test.cgi?id=17342
         """
         search_page = Home(mozwebqa).header.search_for('firebug')
-        search_page.sort_by('Weekly Downloads')
+        search_page.click_sort_by('Weekly Downloads')
         Assert.true('sort=downloads' in search_page.get_url_current_page())
         downloads = [i.downloads for i in search_page.results]
         Assert.is_sorted_descending(downloads)
@@ -200,7 +200,7 @@ class TestSearch:
         https://litmus.mozilla.org/show_test.cgi?id=17343
         """
         search_page = Home(mozwebqa).header.search_for('firebug')
-        search_page.sort_by('Newest')
+        search_page.click_sort_by('Newest')
         Assert.true('sort=created' in search_page.get_url_current_page())
         Assert.is_sorted_descending([i.created_date for i in search_page.results])
 
@@ -213,7 +213,7 @@ class TestSearch:
         https://litmus.mozilla.org/show_test.cgi?id=17345
         """
         search_page = Home(mozwebqa).header.search_for('firebug')
-        search_page.sort_by('Recently Updated')
+        search_page.click_sort_by('Recently Updated')
         Assert.contains('sort=updated', search_page.get_url_current_page())
         results = [i.updated_date for i in search_page.results]
         Assert.is_sorted_descending(results)
@@ -229,7 +229,7 @@ class TestSearch:
         https://litmus.mozilla.org/show_test.cgi?id=24867
         """
         search_page = Home(mozwebqa).header.search_for('firebug')
-        search_page.sort_by('Most Users')
+        search_page.click_sort_by('Most Users')
         Assert.contains('sort=users', search_page.get_url_current_page())
         Assert.is_sorted_descending([i.users for i in search_page.results])
 
