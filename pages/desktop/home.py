@@ -43,6 +43,8 @@ class Home(Base):
 
     _extensions_menu_link = (By.CSS_SELECTOR, "#extensions > a")
 
+    _promo_box_locator = (By.CSS_SELECTOR, "section#promos")
+
     _up_and_coming_locator = (By.ID, "upandcoming")
 
     def __init__(self, testsetup, open_url=True):
@@ -142,6 +144,10 @@ class Home(Base):
         return self.selenium.find_element(*locator).get_attribute('title')
 
     @property
+    def promo_box_present(self):
+        return self.is_element_visible(*self._promo_box_locator)
+
+    @property
     def categories(self):
         return [self.Categories(self.testsetup, web_element)
                 for web_element in self.selenium.find_elements(*self._category_list_locator)]
@@ -194,10 +200,7 @@ class Home(Base):
 
     class FeaturedExtensions(Page):
 
-        _star_rating_locator = (By.CSS_SELECTOR, 'div.summary > div.vital > span.rating > span.stars')
-        _total_review_count_locator = (By.CSS_SELECTOR, 'div.summary > div.vital > span.rating > a')
         _author_locator = (By.CSS_SELECTOR, 'div.addon > div.more > div.byline > a')
-        _number_of_users_locator = (By.CSS_SELECTOR, 'div.more > div.vitals > div.vital > span.adu')
         _summary_locator = (By.CSS_SELECTOR, 'div.addon > div.more > .addon-summary')
         _link_locator = (By.CSS_SELECTOR, 'div.addon > .summary')
 
@@ -206,37 +209,14 @@ class Home(Base):
             self._root_element = web_element
 
         @property
-        def star_rating(self):
-            self._move_to_addon_flyout()
-            rating = self._root_element.find_element(*self._star_rating_locator).text
-            return re.search('\d', rating).group(0)
-
-        @property
-        def total_review_count(self):
-            self._move_to_addon_flyout()
-            count = self._root_element.find_element(*self._total_review_count_locator).text
-            return count.replace("(", "").replace(")", "")
-
-        @property
         def author_name(self):
             self._move_to_addon_flyout()
             return [element.text for element in self._root_element.find_elements(*self._author_locator)]
 
         @property
-        def number_of_users(self):
-            self._move_to_addon_flyout()
-            users_no = self._root_element.find_element(*self._number_of_users_locator).text
-            return int(users_no.split()[0].replace(',', ''))
-
-        @property
         def summary(self):
             self._move_to_addon_flyout()
             return self._root_element.find_element(*self._summary_locator).text
-
-        def click_on_addon(self):
-            self._root_element.find_element(*self._link_locator).click()
-            from pages.desktop.details import Details
-            return Details(self.testsetup)
 
         def _move_to_addon_flyout(self):
             ActionChains(self.selenium).\

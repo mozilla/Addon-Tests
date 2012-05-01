@@ -25,34 +25,3 @@ class TestCategory:
             Assert.contains(category_name, category_page.page_title)
             Assert.equal(category_name, category_page.category_header_title)
             home_page = Home(mozwebqa)
-
-    @pytest.mark.nondestructive
-    def test_that_category_names_are_correct(self, mozwebqa):
-        """Test for Litmus 25795."""
-
-        expected_categories = [
-            "Alerts & Updates",
-            "Appearance",
-            "Bookmarks",
-            "Download Management",
-            "Feeds, News & Blogging",
-            "Games & Entertainment",
-            "Language Support",
-            "Photos, Music & Videos",
-            "Privacy & Security",
-            "Shopping",
-            "Social & Communication",
-            "Tabs",
-            "Web Development",
-            "Other"]
-
-        # Get actual categories
-        home_page = Home(mozwebqa)
-        categories = home_page.categories
-
-        # Catch extra/missing categories with a simple count check
-        Assert.equal(len(categories), len(expected_categories))
-
-        # Check the categories that are there against the expected list
-        for category in categories:
-            Assert.contains(category.name, expected_categories)

@@ -29,7 +29,6 @@ class Details(Base):
     _install_button_locator = (By.CSS_SELECTOR, '.button.prominent.add.installer')
     _install_button_attribute_locator = (By.CSS_SELECTOR, '.install-wrapper .install-shell .install.clickHijack')
     _rating_locator = (By.CSS_SELECTOR, "span[itemprop='ratingValue']")
-    _total_review_count_locator = (By.CSS_SELECTOR, '#reviews-link > span')
     _license_link_locator = (By.CSS_SELECTOR, ".source-license > a")
     _whats_this_license_locator = (By.CSS_SELECTOR, "a.license-faq")
     _view_the_source_locator = (By.CSS_SELECTOR, "a.source-code")
@@ -277,7 +276,9 @@ class Details(Base):
     def click_view_source_code(self):
         self.selenium.find_element(*self._view_the_source_locator).click()
         from pages.desktop.addons_site import ViewAddonSource
-        return ViewAddonSource(self.testsetup)
+        addon_source = ViewAddonSource(self.testsetup)
+        WebDriverWait(self.selenium, 10).until(lambda s: addon_source.is_file_viewer_visible)
+        return addon_source
 
     @property
     def view_source_code_text(self):

@@ -181,7 +181,6 @@ class TestDetails:
         Assert.false(image_viewer.is_visible)
 
     @pytest.mark.nondestructive
-    @pytest.mark.xfail(reason="waiting for the release of selenium 2.21")
     def test_navigation_buttons_for_image_viewer(self, mozwebqa):
         """
         Test for Litmus 4846.
@@ -423,31 +422,6 @@ class TestDetails:
 
         Assert.true(details_page.is_reviews_section_visible)
         Assert.true(details_page.is_reviews_section_in_view)
-
-    @pytest.mark.nondestructive
-    @pytest.mark.native
-    def test_addon_information_in_flyout_matches_to_its_details_page(self, mozwebqa):
-        """
-        Test for Litmus 25816.
-        https://litmus.mozilla.org/show_test.cgi?id=25816
-        """
-        home = Home(mozwebqa)
-        first_addon = home.featured_extensions[0]
-
-        expected_star_rating = first_addon.star_rating
-        expected_total_review_count = first_addon.total_review_count
-        expected_summary = first_addon.summary
-        expected_author_names = first_addon.author_name
-        expected_number_of_users = first_addon.number_of_users
-
-        details_page = first_addon.click_on_addon()
-        Assert.true(details_page.is_the_current_page)
-
-        Assert.equal(details_page.rating, expected_star_rating)
-        Assert.equal(details_page.total_review_count, expected_total_review_count)
-        Assert.equal(details_page.summary, expected_summary)
-        Assert.equal(expected_author_names, details_page.authors)
-        Assert.equal(expected_number_of_users, details_page.daily_users_number)
 
     @pytest.mark.native
     @pytest.mark.nondestructive

@@ -47,6 +47,11 @@ class ViewReviews(Base):
         """Returns review object with index."""
         return [self.ReviewSnippet(self.testsetup, web_element) for web_element in self.selenium.find_elements(*self._review_locator)]
 
+    @property
+    def paginator(self):
+        from pages.desktop.regions.paginator import Paginator
+        return Paginator(self.testsetup)
+
     class ReviewSnippet(Base):
 
         _review_text_locator = (By.CSS_SELECTOR, ".description")
@@ -104,4 +109,8 @@ class UserFAQ(Base):
 
 class ViewAddonSource(Base):
 
-    pass
+    _file_viewer_locator = (By.ID, 'file-viewer')
+
+    @property
+    def is_file_viewer_visible(self):
+        return self.is_element_visible(*self._file_viewer_locator)

@@ -20,51 +20,57 @@ class TestSearch:
         Test for Litmus 4839 and 17339.
         https://litmus.mozilla.org/show_test.cgi?id=4839
         https://litmus.mozilla.org/show_test.cgi?id=17339
+        Open a page with search results.
+        1. On the first page, check that "<<" and "previous are not active, but "next" and ">>" are active.
+        2. Move forward one page by clicking next, all buttons are active
+        3. Click ">>" to go to last page.  Check that "<<" and "previous" are clickable but "next" and ">>" are not.
+        4. Assert the page number has incremented or decreased
+        5. Click "previous", all buttons are highlighted.
         """
         home_page = Home(mozwebqa)
         search_page = home_page.header.search_for('addon')
-        first_expected = 1
-        second_expected = 20
+        
+        expected_page = 1
 
-        # Go Forward 10 times
-        for i in range(10):
-            search_page.paginator.click_next_page()
-            search_page.wait_for_results_refresh()
+        # On the first page, "<<" and "previous" are not active, but "next" and ">>" are active.
+        Assert.true(search_page.paginator.is_prev_page_disabled)
+        Assert.true(search_page.paginator.is_first_page_disabled)
+        Assert.false(search_page.paginator.is_next_page_disabled)
+        Assert.false(search_page.paginator.is_last_page_disabled)
+        Assert.equal(search_page.paginator.page_number, expected_page)
 
-            first_count = search_page.paginator.start_item
-            second_count = search_page.paginator.end_item
+        # Move forward one page by clicking next, all buttons should be active.
+        search_page.paginator.click_next_page()
+        search_page.wait_for_results_refresh()
+        expected_page += 1
 
-            first_expected += 20
-            second_expected += 20
-            Assert.equal(first_expected, first_count)
-            Assert.equal(second_expected, second_count)
+        Assert.false(search_page.paginator.is_prev_page_disabled)
+        Assert.false(search_page.paginator.is_first_page_disabled)
+        Assert.false(search_page.paginator.is_next_page_disabled)
+        Assert.false(search_page.paginator.is_last_page_disabled)
+        Assert.equal(search_page.paginator.page_number, expected_page)
 
-        # Go Back 10 Times
-        for i in range(10):
-            search_page.paginator.click_prev_page()
-            search_page.wait_for_results_refresh()
+        # Click ">>" to go to last page. "<<" and "previous" are active, but "next" and ">>" are not.
+        search_page.paginator.click_last_page()
+        search_page.wait_for_results_refresh()
+        expected_page = search_page.paginator.total_page_number
+        
+        Assert.false(search_page.paginator.is_prev_page_disabled)
+        Assert.false(search_page.paginator.is_first_page_disabled)
+        Assert.true(search_page.paginator.is_next_page_disabled)
+        Assert.true(search_page.paginator.is_last_page_disabled)
+        Assert.equal(search_page.paginator.page_number, expected_page)
 
-            first_count = search_page.paginator.start_item
-            second_count = search_page.paginator.end_item
+        # Click "previous", all buttons are active.
+        search_page.paginator.click_prev_page()
+        search_page.wait_for_results_refresh()
+        expected_page -= 1
 
-            first_expected -= 20
-            second_expected -= 20
-            Assert.equal(first_expected, first_count)
-            Assert.equal(second_expected, second_count)
-
-    @pytest.mark.nondestructive
-    def test_that_entering_a_long_string_returns_no_results(self, mozwebqa):
-        """
-        Test for Litmus 4856.
-        https://litmus.mozilla.org/show_test.cgi?id=4856
-        """
-        home_page = Home(mozwebqa)
-        search_page = home_page.header.search_for('a' * 255)
-
-        Assert.true(search_page.is_no_results_present)
-        Assert.equal('No results found.', search_page.no_results_text)
-
-        Assert.true('0 matching results' in search_page.number_of_results_text)
+        Assert.false(search_page.paginator.is_prev_page_disabled)
+        Assert.false(search_page.paginator.is_first_page_disabled)
+        Assert.false(search_page.paginator.is_next_page_disabled)
+        Assert.false(search_page.paginator.is_last_page_disabled)
+        Assert.equal(search_page.paginator.page_number, expected_page)
 
     @pytest.mark.nondestructive
     def test_that_searching_with_unicode_characters_returns_results(self, mozwebqa):
@@ -244,7 +250,6 @@ class TestSearch:
         Assert.greater_equal(result_count, search_page.filter.results_count)
 
     @pytest.mark.nondestructive
-    @pytest.mark.xfail(reason="Bugzilla 722647")
     def test_that_search_results_return_20_results_per_page(self, mozwebqa):
         """
         Test for Litmus 17346.
