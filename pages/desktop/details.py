@@ -29,7 +29,6 @@ class Details(Base):
     _install_button_locator = (By.CSS_SELECTOR, '.button.prominent.add.installer')
     _install_button_attribute_locator = (By.CSS_SELECTOR, '.install-wrapper .install-shell .install.clickHijack')
     _rating_locator = (By.CSS_SELECTOR, "span[itemprop='ratingValue']")
-    _total_review_count_locator = (By.CSS_SELECTOR, '#reviews-link > span')
     _license_link_locator = (By.CSS_SELECTOR, ".source-license > a")
     _whats_this_license_locator = (By.CSS_SELECTOR, ".license-faq")
     _view_the_source_locator = (By.CSS_SELECTOR, ".source-code")
@@ -604,10 +603,6 @@ class Details(Base):
     def is_addon_marked_as_favorite(self):
         is_favorite = self.selenium.find_element(*self._add_to_favorites_widget_locator).text
         return 'Remove from favorites' in is_favorite
-
-    @property
-    def total_review_count(self):
-        return self.selenium.find_element(*self._total_review_count_locator).text
 
     @property
     def license_faq(self):
