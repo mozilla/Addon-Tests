@@ -57,6 +57,15 @@ class TestHome:
         Assert.contains('MOST POPULAR', home_page.most_popular_list_heading)
         Assert.equal(home_page.most_popular_count, 10)
 
+    @pytest.mark.nondestructive
+    def test_that_checks_the_promo_box_exists(self, mozwebqa):
+        """
+        Test for Litmus 25797.
+        https://litmus.mozilla.org/show_test.cgi?id=25797
+        """
+        home_page = Home(mozwebqa)
+        Assert.true(home_page.promo_box_present)
+
     @pytest.mark.smoke
     @pytest.mark.nondestructive
     def test_that_clicking_on_addon_name_loads_details_page(self, mozwebqa):
