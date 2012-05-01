@@ -12,7 +12,6 @@ from pages.desktop.details import Details
 class TestStatistics:
 
     @pytest.mark.nondestructive
-    @pytest.mark.xfail(reason="https://bugzilla.mozilla.org/show_bug.cgi?id=742108")
     def test_that_verifies_the_url_of_the_statistics_page(self, mozwebqa):
         """ Test for Litmus 25710
         https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25710
