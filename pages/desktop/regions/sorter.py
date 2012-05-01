@@ -12,7 +12,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 from pages.page import Page
 
 
-class ResultSort(Page):
+class Sorter(Page):
 
     _sort_by_relevance_locator = (By.LINK_TEXT, 'Relevance')
     _sort_by_most_users_locator = (By.LINK_TEXT, 'Most Users')

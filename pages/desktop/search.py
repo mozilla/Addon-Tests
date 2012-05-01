@@ -43,8 +43,8 @@ class SearchHome(Base):
         return len(self.selenium.find_elements(*self._results_locator))
 
     def sort_by(self, type):
-        from pages.desktop.regions.result_sort import ResultSort
-        ResultSort(self.testsetup).sort_by(type)
+        from pages.desktop.regions.result_sort import Sorter
+        Sorter(self.testsetup).sort_by(type)
 
     def result(self, lookup):
         elements = self.selenium.find_elements(*self._results_locator)

@@ -40,8 +40,8 @@ class ExtensionsHome(Base):
         return self.selenium.find_element(*self._featured_extensions_header_locator).text
 
     def sort_by(self, type):
-        from pages.desktop.regions.result_sort import ResultSort
-        ResultSort(self.testsetup).sort_by(type)
+        from pages.desktop.regions.result_sort import Sorter
+        Sorter(self.testsetup).sort_by(type)
 
     @property
     def paginator(self):
