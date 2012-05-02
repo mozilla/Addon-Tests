@@ -122,6 +122,11 @@ class Themes(Base):
     def themes(self):
         return [self.Theme(self.testsetup, theme)for theme in self.selenium.find_elements(*self._addons_root_locator)]
 
+    @property
+    def paginator(self):
+        from pages.desktop.regions.paginator import Paginator
+        return Paginator(self.testsetup)
+
     class Theme(Page):
 
         _not_compatible_locator = (By.CSS_SELECTOR, "div.hovercard > span.notavail")
