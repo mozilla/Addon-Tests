@@ -6,6 +6,7 @@
 
 
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
 
 from pages.page import Page
 
@@ -27,6 +28,12 @@ class Paginator(Page):
     _end_item_number_locator = (By.CSS_SELECTOR, 'nav.paginator .pos b:nth-child(2)')
     _total_item_number = (By.CSS_SELECTOR, 'nav.paginator .pos b:nth-child(3)')
 
+    _updating_locator = (By.CSS_SELECTOR, "div.updating")
+
+    def _wait_for_results_refresh(self):
+        # On pages that do not have ajax refresh this wait will have no effect.
+        WebDriverWait(self.selenium, 10).until(lambda s: not self.is_element_present(*self._updating_locator))
+
     @property
     def page_number(self):
         return int(self.selenium.find_element(*self._page_number_locator).text)
@@ -37,9 +44,11 @@ class Paginator(Page):
 
     def click_first_page(self):
         self.selenium.find_element(*self._first_page_locator).click()
+        self._wait_for_results_refresh()
 
     def click_prev_page(self):
         self.selenium.find_element(*self._prev_locator).click()
+        self._wait_for_results_refresh()
 
     @property
     def is_prev_page_disabled(self):
@@ -51,6 +60,7 @@ class Paginator(Page):
 
     def click_next_page(self):
         self.selenium.find_element(*self._next_locator).click()
+        self._wait_for_results_refresh()
 
     @property
     def is_next_page_disabled(self):
@@ -58,6 +68,7 @@ class Paginator(Page):
 
     def click_last_page(self):
         self.selenium.find_element(*self._last_page_locator).click()
+        self._wait_for_results_refresh()
 
     @property
     def is_last_page_disabled(self):

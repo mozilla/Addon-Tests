@@ -34,7 +34,6 @@ class ExtensionsHome(Base):
     _subscribe_link_locator = (By.CSS_SELECTOR, "a#subscribe")
     _featured_extensions_header_locator = (By.CSS_SELECTOR, "#page > .primary > h1")
 
-
     @property
     def extensions(self):
         return [Extension(self.testsetup, web_element)
@@ -65,6 +64,11 @@ class ExtensionsHome(Base):
             move_to_element(click_element).\
             click().perform()
         self._wait_for_results_refresh()
+
+    @property
+    def paginator(self):
+        from pages.desktop.regions.paginator import Paginator
+        return Paginator(self.testsetup)
 
 
 class Extension(Page):
