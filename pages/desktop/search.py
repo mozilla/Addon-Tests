@@ -60,7 +60,6 @@ class SearchHome(Base):
         from pages.desktop.regions.paginator import Paginator
         return Paginator(self.testsetup)
 
-
     class SearchResult(Page):
         _name_locator = (By.CSS_SELECTOR, 'div.info > h3 > a')
         _created_date = (By.CSS_SELECTOR, 'div.info > div.vitals > div.updated')
