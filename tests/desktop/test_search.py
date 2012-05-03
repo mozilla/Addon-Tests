@@ -205,7 +205,6 @@ class TestSearch:
         Assert.is_sorted_descending([i.created_date for i in search_page.results])
 
     @pytest.mark.native
-    @pytest.mark.xfail(reason="Bugzilla 698165")
     @pytest.mark.nondestructive
     def test_sorting_by_most_recently_updated(self, mozwebqa):
         """
