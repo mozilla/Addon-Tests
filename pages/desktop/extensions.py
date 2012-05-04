@@ -7,8 +7,6 @@
 from time import strptime, mktime
 
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.common.action_chains import ActionChains
 
 from pages.page import Page
 from pages.desktop.base import Base
@@ -40,7 +38,7 @@ class ExtensionsHome(Base):
         return self.selenium.find_element(*self._featured_extensions_header_locator).text
 
     def click_sort_by(self, type):
-        from pages.desktop.regions.result_sort import Sorter
+        from pages.desktop.regions.sorter import Sorter
         Sorter(self.testsetup).sort_by(type)
 
     @property
