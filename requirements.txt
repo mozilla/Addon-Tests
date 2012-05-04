@@ -8,5 +8,6 @@ pytest-xdist==1.8
 PyYAML==3.10
 execnet==1.0.9
 BeautifulSoup==3.2.0
-pytest-mozwebqa==0.9
+pytest-mozwebqa==0.10
 UnittestZero
+requests==0.11.2
