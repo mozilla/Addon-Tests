@@ -190,8 +190,8 @@ class Details(Base):
         return self.selenium.find_element(*self._description_locator).text
 
     @property
-    def register_link(self):
-        return self.selenium.find_element(*self._register_link_locator).text
+    def is_register_link_visible(self):
+        return self.is_element_visible(*self._register_link_locator)
 
     @property
     def login_link(self):
