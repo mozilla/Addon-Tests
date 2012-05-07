@@ -13,6 +13,7 @@ from pages.desktop.addons_api import AddOnsAPI
 #These tests should only call the api.
 #There should be no tests requiring selenium in this class.
 
+
 @pytest.mark.skip_selenium
 class TestAPIOnlyTests:
 
