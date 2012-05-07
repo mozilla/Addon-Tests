@@ -22,7 +22,11 @@ class TestDetails:
     def test_that_register_login_link_is_present_in_addon_details_page(self, mozwebqa):
         """Test for Litmus 9890."""
         details_page = Details(mozwebqa, "Firebug")
-        Assert.true(details_page.is_register_link_visible, "Register and Login links are not visibile")
+        if details_page.header.is_browserid_login_available:
+            Assert.true(details_page.header.is_browserid_login_available)
+        else:
+            Assert.true(details_page.header.is_register_link_visible, "Register link is not visibile")
+            Assert.true(details_page.header.is_register_link_visible, "Login links is not visibile")
 
     @pytest.mark.native
     @pytest.mark.nondestructive

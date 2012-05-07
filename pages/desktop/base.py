@@ -206,6 +206,14 @@ class Base(Page):
         def is_browserid_login_available(self):
             return self.is_element_visible(*self._login_browser_id_locator)
 
+        @property
+        def is_login_link_visible(self):
+            return self.is_element_visible(*self._login_normal_locator)
+
+        @property
+        def is_register_link_visible(self):
+            return self.is_element_visible(*self._register_locator)
+
         def click_logout(self):
             self.selenium.find_element(*self._logout_locator).click()
 

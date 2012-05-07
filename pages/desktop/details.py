@@ -34,8 +34,6 @@ class Details(Base):
     _view_the_source_locator = (By.CSS_SELECTOR, "a.source-code")
     _complete_version_history_locator = (By.CSS_SELECTOR, "p.more > a")
     _description_locator = (By.CSS_SELECTOR, "div.prose")
-    _register_link_locator = (By.CSS_SELECTOR, "li.account")
-    _login_link_locator = (By.CSS_SELECTOR, "li.account > a:nth-child(2)")
     _other_applications_locator = (By.ID, "other-apps")
     _compatibility_locator = (By.CSS_SELECTOR, '.meta.compat')
     _review_link_locator = (By.ID, 'reviews-link')
@@ -188,14 +186,6 @@ class Details(Base):
     @property
     def description(self):
         return self.selenium.find_element(*self._description_locator).text
-
-    @property
-    def is_register_link_visible(self):
-        return self.is_element_visible(*self._register_link_locator)
-
-    @property
-    def login_link(self):
-        return self.selenium.find_element(*self._login_link_locator).text
 
     @property
     def other_apps(self):
