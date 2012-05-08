@@ -14,6 +14,7 @@ from pages.page import Page
 
 class Sorter(Page):
 
+    _sort_by_featured_locator = (By.LINK_TEXT, "Featured")
     _sort_by_relevance_locator = (By.LINK_TEXT, 'Relevance')
     _sort_by_most_users_locator = (By.LINK_TEXT, 'Most Users')
     _sort_by_top_rated_locator = (By.LINK_TEXT, 'Top Rated')
