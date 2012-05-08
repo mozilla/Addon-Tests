@@ -25,8 +25,8 @@ class TestDetails:
         if details_page.header.is_browserid_login_available:
             Assert.true(details_page.header.is_browserid_login_available)
         else:
-            Assert.true(details_page.header.is_register_link_visible, "Register link is not visibile")
-            Assert.true(details_page.header.is_register_link_visible, "Login links is not visibile")
+            Assert.true(details_page.header.is_register_link_visible, "Register link is not visible")
+            Assert.true(details_page.header.is_login_link_visible, "Login links is not visible")
 
     @pytest.mark.native
     @pytest.mark.nondestructive
