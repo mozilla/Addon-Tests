@@ -184,7 +184,7 @@ class TestDetailsAgainstXML:
         """Test for Litmus 15326."""
 
         #browser
-        initial_page = Details(mozwebqa, 'MemChaser')
+        initial_page = Details(mozwebqa, self.firebug)
 
         #api
         addons_xml = AddOnsAPI(mozwebqa)

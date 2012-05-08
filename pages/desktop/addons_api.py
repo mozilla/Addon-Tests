@@ -177,7 +177,8 @@ class AddOnsAPI:
         print('The addon is not in the search results.')
 
     def goto_url_from_xml(self, url):
-        self.selenium.get(url)
+        url_req = urllib2.Request(url)
+        urllib2.urlopen(url_req)
 
     def get_install_link(self, addon_name):
         try:
