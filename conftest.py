@@ -4,11 +4,11 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import mozwebqa
-
+import py
 
 def pytest_runtest_setup(item):
-    mozwebqa.TestSetup.api_base_url = item.config.option.api_base_url
+    pytest_mozwebqa = py.test.config.pluginmanager.getplugin("mozwebqa")
+    pytest_mozwebqa.TestSetup.api_base_url = item.config.option.api_base_url
 
 
 def pytest_addoption(parser):
@@ -21,4 +21,5 @@ def pytest_addoption(parser):
 
 
 def pytest_funcarg__mozwebqa(request):
-    return mozwebqa.TestSetup(request)
+    pytest_mozwebqa = py.test.config.pluginmanager.getplugin("mozwebqa")
+    return pytest_mozwebqa.TestSetup(request)
