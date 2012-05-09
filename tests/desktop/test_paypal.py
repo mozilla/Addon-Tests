@@ -64,8 +64,26 @@ class TestPaypal:
 
     @pytest.mark.smoke
     @pytest.mark.nondestructive
-    def test_that_make_contribution_button_is_clickable_and_loads_paypal_frame(self, mozwebqa):
+    def test_that_make_contribution_button_is_clickable_and_loads_paypal_frame_while_user_is_logged_out(self, mozwebqa):
         addon_page = Details(mozwebqa, self.addon_name)
+        Assert.false(addon_page.header.is_user_logged_in)
+
+        contribution_snippet = addon_page.click_contribute_button()
+
+        Assert.true(contribution_snippet.is_make_contribution_button_visible)
+        Assert.equal("Make Contribution", contribution_snippet.make_contribution_button_name)
+
+        contribution_snippet.click_make_contribution_button()
+        Assert.true(addon_page.is_paypal_login_dialog_visible)
+
+    @pytest.mark.smoke
+    @pytest.mark.nondestructive
+    @pytest.mark.login
+    def test_that_make_contribution_button_is_clickable_and_loads_paypal_frame_while_user_is_logged_in(self, mozwebqa):
+        addon_page = Details(mozwebqa, self.addon_name)
+        addon_page.login('browserID')
+        Assert.true(addon_page.is_the_current_page)
+        Assert.true(addon_page.header.is_user_logged_in)
 
         contribution_snippet = addon_page.click_contribute_button()
 
