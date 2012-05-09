@@ -187,7 +187,7 @@ class TestThemes:
         for theme in themes:
             if theme.is_incompatible:
                 Assert.true(theme.is_incompatible_flag_present)
-                Assert.equal('This theme is incompatible with your version of Firefox',
+                Assert.contains('Not available',
                              theme.not_compatible_flag_text)
             else:
                 Assert.false(theme.is_incompatible_flag_present)
