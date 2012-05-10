@@ -130,7 +130,7 @@ class Themes(Base):
     class Theme(Page):
 
         _not_compatible_locator = (By.CSS_SELECTOR, "div.hovercard > span.notavail")
-        _incompatibily_locator = (By.CSS_SELECTOR, "div.hovercard div.extra span.notavail")
+        _incompatibility_locator = (By.CSS_SELECTOR, "div.hovercard div.extra span.notavail")
         _hovercard_locator = (By.CSS_SELECTOR, "div.hovercard")
 
         def __init__(self, testsetup, element):
@@ -150,7 +150,7 @@ class Themes(Base):
         @property
         def not_compatible_flag_text(self):
             self._move_to_theme_flyout()
-            return self._root_element.find_element(*self._incompatibily_locator).text
+            return self._root_element.find_element(*self._incompatibility_locator).text
 
         @property
         def is_incompatible_flag_present(self):
