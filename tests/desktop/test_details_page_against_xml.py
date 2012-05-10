@@ -183,15 +183,15 @@ class TestDetailsAgainstXML:
     def test_that_learn_more_link_is_correct(self, mozwebqa):
         """Test for Litmus 15326."""
 
-        #browser
-        initial_page = Details(mozwebqa, 'MemChaser')
-
         #api
         addons_xml = AddOnsAPI(mozwebqa)
         learn_more_url = addons_xml.get_learn_more_url(self.firebug)
-        addons_xml.goto_url_from_xml(learn_more_url)
 
-        Assert.not_none(re.search(self.firebug, initial_page.page_title))
+        #browser
+        details_page = Details(mozwebqa)
+        details_page.get_url(learn_more_url)
+
+        Assert.contains(self.firebug, details_page.page_title)
 
     @pytest.mark.nondestructive
     def test_that_firebug_devs_comments_is_correct(self, mozwebqa):

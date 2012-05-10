@@ -28,6 +28,9 @@ class Page(object):
         self.selenium = testsetup.selenium
         self.timeout = testsetup.timeout
 
+    def get_url(self, url):
+        self.selenium.get(url)
+
     @property
     def is_the_current_page(self):
         if self._page_title:
