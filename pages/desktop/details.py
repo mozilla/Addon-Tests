@@ -344,13 +344,11 @@ class Details(Base):
 
     @property
     def website(self):
-        # unquote is used to replace %xx escapes by their single-character equivalent.
         url = self.selenium.find_element(*self._website_locator).get_attribute('href')
-        return unquote(url)
+        return self._extract_url_from_link(url)
 
     def click_website_link(self):
         self.selenium.find_element(*self._website_locator).click()
-        WebDriverWait(self.selenium, 10).until(lambda s: self.selenium.title)
 
     @property
     def support_url(self):
