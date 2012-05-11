@@ -139,7 +139,9 @@ class Details(Base):
     def click_view_statistics(self):
         self.selenium.find_element(*self._daily_users_link_locator).click()
         from pages.desktop.statistics import Statistics
-        return Statistics(self.testsetup)
+        stats_page = Statistics(self.testsetup)
+        WebDriverWait(self.selenium, self.timeout).until(lambda s: stats_page.is_chart_loaded) 
+        return stats_page
 
     @property
     def daily_users_number(self):
