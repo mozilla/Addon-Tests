@@ -7,6 +7,7 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
 
+from pages.desktop.regions.sorter import Sorter
 from pages.desktop.base import Base
 from pages.page import Page
 
@@ -31,12 +32,11 @@ class Themes(Base):
         return self.selenium.find_element(*self._addons_root_locator)
 
     def click_sort_by(self, type):
-        from pages.desktop.regions.sorter import Sorter
         Sorter(self.testsetup).sort_by(type)
 
     @property
     def sorted_by(self):
-        return self.selenium.find_element(*self._selected_sort_by_locator).text
+        return Sorter(self.testsetup).sorted_by
 
     @property
     def selected_explore_filter(self):

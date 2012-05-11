@@ -25,6 +25,8 @@ class Sorter(Page):
     _sort_by_recently_updated_locator = (By.XPATH, "//div[@id='sorter']//li/a[normalize-space(text())='Recently Updated']")
     _sort_by_up_and_coming_locator = (By.XPATH, "//div[@id='sorter']//li/a[normalize-space(text())='Up & Coming']")
 
+    _selected_sort_by_locator = (By.CSS_SELECTOR, '#sorter > ul > li.selected a')
+
     _hover_more_locator = (By.CSS_SELECTOR, "li.extras > a")
     _updating_locator = (By.CSS_SELECTOR, "div.updating")
 
@@ -35,3 +37,7 @@ class Sorter(Page):
             move_to_element(click_element).\
             click().perform()
         WebDriverWait(self.selenium, 10).until(lambda s: not self.is_element_present(*self._updating_locator))
+
+    @property
+    def sorted_by(self):
+        return self.selenium.find_element(*self._selected_sort_by_locator).text
