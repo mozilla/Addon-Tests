@@ -117,28 +117,40 @@ class Themes(Base):
     class Theme(Page):
 
         _not_compatible_locator = (By.CSS_SELECTOR, "div.hovercard > span.notavail")
+        _incompatibility_locator = (By.CSS_SELECTOR, "div.hovercard div.extra span.notavail")
         _hovercard_locator = (By.CSS_SELECTOR, "div.hovercard")
 
         def __init__(self, testsetup, element):
             Page.__init__(self, testsetup)
             self._root_element = element
 
+        def _move_to_theme_flyout(self):
+            ActionChains(self.selenium).\
+                move_to_element(self._root_element).\
+                perform()
+
         @property
         def is_incompatible(self):
+            self._move_to_theme_flyout()
             return 'incompatible' in self._root_element.find_element(*self._hovercard_locator).get_attribute('class')
 
         @property
         def not_compatible_flag_text(self):
-            return self._root_element.find_element(*self._not_compatible_locator).text
+            self._move_to_theme_flyout()
+            return self._root_element.find_element(*self._incompatibility_locator).text
 
         @property
         def is_incompatible_flag_present(self):
             from selenium.common.exceptions import NoSuchElementException
+            self.selenium.implicitly_wait(0)
             try:
                 self._root_element.find_element(*self._not_compatible_locator)
                 return True
             except NoSuchElementException:
                 return False
+            finally:
+                # set back to where you once belonged
+                self.selenium.implicitly_wait(self.testsetup.default_implicit_wait)
 
 
 class Theme(Base):
@@ -153,6 +165,7 @@ class Theme(Base):
     @property
     def install_button_exists(self):
         return self.is_element_visible(*self._install_button)
+
 
 class ThemesCategory(Base):
 

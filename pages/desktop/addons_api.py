@@ -9,13 +9,10 @@ import urllib2
 
 from BeautifulSoup import BeautifulStoneSoup
 
-from pages.desktop.base import Base
 
-
-class AddOnsAPI(Base):
+class AddOnsAPI:
 
     def __init__(self, testsetup, search_extension='firebug'):
-        Base.__init__(self, testsetup)
         self.search_url = '%s/en-us/firefox/api/1.5/search/%s' % (testsetup.api_base_url, search_extension)
         self.parsed_xml = BeautifulStoneSoup(urllib2.urlopen(self.search_url))
 
@@ -178,9 +175,6 @@ class AddOnsAPI(Base):
 
     def _print_search_error(self):
         print('The addon is not in the search results.')
-
-    def goto_url_from_xml(self, url):
-        self.selenium.get(url)
 
     def get_install_link(self, addon_name):
         try:

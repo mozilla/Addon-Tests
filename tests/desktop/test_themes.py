@@ -173,6 +173,7 @@ class TestThemes:
         themes_page.paginator.click_last_page()
         Assert.greater_equal(themes_page.addon_count, 1)
 
+    @pytest.mark.native
     @pytest.mark.nondestructive
     def test_the_displayed_message_for_incompatible_themes(self, mozwebqa):
         """
@@ -187,7 +188,7 @@ class TestThemes:
         for theme in themes:
             if theme.is_incompatible:
                 Assert.true(theme.is_incompatible_flag_present)
-                Assert.equal('This theme is incompatible with your version of Firefox',
+                Assert.contains('Not available',
                              theme.not_compatible_flag_text)
             else:
                 Assert.false(theme.is_incompatible_flag_present)
