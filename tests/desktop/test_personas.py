@@ -108,7 +108,7 @@ class TestPersonas:
         Assert.true(personas_page.is_the_current_page)
 
         # Step 3: Click on any persona.
-        random_persona_index = random.randint(1, personas_page.persona_count)
+        random_persona_index = random.randint(0, personas_page.persona_count - 1)
 
         personas_detail_page = personas_page.click_persona(random_persona_index)
         Assert.true(personas_detail_page.is_the_current_page)
