@@ -110,6 +110,7 @@ class TestDetails:
         Assert.true(len(details_page.part_of_collections) > 0)
 
     @pytest.mark.nondestructive
+    @pytest.mark.xfail(reason="Being fixed in https://github.com/mozilla/Addon-Tests/pull/477")
     def test_that_external_link_leads_to_addon_website(self, mozwebqa):
         """
         Test for Litmus 11809.
