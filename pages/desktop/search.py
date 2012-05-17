@@ -8,8 +8,6 @@
 from time import strptime, mktime
 
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.common.action_chains import ActionChains
 
 from pages.page import Page
 from pages.desktop.base import Base
@@ -23,23 +21,6 @@ class SearchHome(Base):
     _no_results_locator = (By.CSS_SELECTOR, "p.no-results")
     _search_results_title_locator = (By.CSS_SELECTOR, "section.primary>h1")
     _results_locator = (By.CSS_SELECTOR, "div.items div.item.addon")
-
-    _sort_by_relevance_locator = (By.LINK_TEXT, 'Relevance')
-    _sort_by_most_users_locator = (By.LINK_TEXT, 'Most Users')
-    _sort_by_top_rated_locator = (By.LINK_TEXT, 'Top Rated')
-    _sort_by_newest_locator = (By.LINK_TEXT, 'Newest')
-
-    _sort_by_name_locator = (By.XPATH, "//div[@id='sorter']//li/a[normalize-space(text())='Name']")
-    _sort_by_weekly_downloads_locator = (By.XPATH, "//div[@id='sorter']//li/a[normalize-space(text())='Weekly Downloads']")
-    _sort_by_recently_updated_locator = (By.XPATH, "//div[@id='sorter']//li/a[normalize-space(text())='Recently Updated']")
-    _sort_by_up_and_coming_locator = (By.XPATH, "//div[@id='sorter']//li/a[normalize-space(text())='Up & Coming']")
-
-    _hover_more_locator = (By.CSS_SELECTOR, "li.extras > a")
-
-    _updating_locator = (By.CSS_SELECTOR, "div.updating")
-
-    def wait_for_results_refresh(self):
-        WebDriverWait(self.selenium, 10).until(lambda s: not self.is_element_present(*self._updating_locator))
 
     @property
     def is_no_results_present(self):
@@ -61,14 +42,9 @@ class SearchHome(Base):
     def result_count(self):
         return len(self.selenium.find_elements(*self._results_locator))
 
-    def sort_by(self, type):
-        hover_element = self.selenium.find_element(*self._hover_more_locator)
-        click_element = self.selenium.find_element(*getattr(self, '_sort_by_%s_locator' % type.replace(' ', '_').lower()))
-        ActionChains(self.selenium).move_to_element(hover_element).\
-            move_to_element(click_element).\
-            click().perform()
-        self.wait_for_results_refresh()
-        return SearchHome(self.testsetup)
+    def click_sort_by(self, type):
+        from pages.desktop.regions.sorter import Sorter
+        Sorter(self.testsetup).sort_by(type)
 
     def result(self, lookup):
         elements = self.selenium.find_elements(*self._results_locator)

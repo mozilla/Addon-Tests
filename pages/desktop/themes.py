@@ -7,19 +7,13 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
 
+from pages.desktop.regions.sorter import Sorter
 from pages.desktop.base import Base
 from pages.page import Page
 
 
 class Themes(Base):
 
-    _sort_by_name_locator = (By.CSS_SELECTOR, 'li.extras > ul > li:nth-child(1) > a')
-    _sort_by_updated_locator = (By.CSS_SELECTOR, 'li.extras > ul > li:nth-child(4) > a')
-    _sort_by_created_locator = (By.CSS_SELECTOR, 'div#sorter > ul > li:nth-child(3) > a')
-    _sort_by_popular_locator = (By.CSS_SELECTOR, 'li.extras > ul > li:nth-child(3) > a')
-    _sort_by_rating_locator = (By.CSS_SELECTOR, 'div#sorter > ul > li:nth-child(2) > a')
-    _selected_sort_by_locator = (By.CSS_SELECTOR, '#sorter > ul > li.selected a')
-    _hover_more_locator = (By.CSS_SELECTOR, 'li.extras > a')
     _addons_root_locator = (By.CSS_SELECTOR, '.listing-grid > li')
     _addon_name_locator = (By.CSS_SELECTOR, 'h3')
     _addons_metadata_locator = (By.CSS_SELECTOR, '.vital .updated')
@@ -37,19 +31,12 @@ class Themes(Base):
     def _addons_root_element(self):
         return self.selenium.find_element(*self._addons_root_locator)
 
-    def click_sort_by(self, type_):
-        click_target = self.selenium.find_element(*getattr(self, "_sort_by_%s_locator" % type_))
-        hover_element = self.selenium.find_element(*self._hover_more_locator)
-        footer = self.selenium.find_element(*self._footer_locator)
-        ActionChains(self.selenium).\
-            move_to_element(footer).\
-            move_to_element(hover_element).\
-            move_to_element(click_target).\
-            click().perform()
+    def click_sort_by(self, type):
+        Sorter(self.testsetup).sort_by(type)
 
     @property
     def sorted_by(self):
-        return self.selenium.find_element(*self._selected_sort_by_locator).text
+        return Sorter(self.testsetup).sorted_by
 
     @property
     def selected_explore_filter(self):

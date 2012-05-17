@@ -40,7 +40,7 @@ class TestThemes:
         """Test for Litmus 11638."""
         home_page = Home(mozwebqa)
         themes_page = home_page.header.site_navigation_menu("Themes").click()
-        themes_page.click_sort_by("updated")
+        themes_page.click_sort_by("recently updated")
         addons = themes_page.addon_names
         addons_set = set(addons)
         Assert.equal(len(addons), len(addons_set), "There are duplicates in the names")
@@ -56,7 +56,7 @@ class TestThemes:
         """Test for Litmus 11638."""
         home_page = Home(mozwebqa)
         themes_page = home_page.header.site_navigation_menu("Themes").click()
-        themes_page.click_sort_by("created")
+        themes_page.click_sort_by("newest")
         addons = themes_page.addon_names
         addons_set = set(addons)
         Assert.equal(len(addons), len(addons_set), "There are duplicates in the names")
@@ -72,7 +72,7 @@ class TestThemes:
         """Test for Litmus 11638."""
         home_page = Home(mozwebqa)
         themes_page = home_page.header.site_navigation_menu("Themes").click()
-        themes_page.click_sort_by("popular")
+        themes_page.click_sort_by("weekly downloads")
         addons = themes_page.addon_names
         addons_set = set(addons)
         Assert.equal(len(addons), len(addons_set), "There are duplicates in the names")
