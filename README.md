@@ -58,8 +58,9 @@ Before you will be able to run these tests you will need to have [Python 2.6][Py
 
 #### Before you begin
 Before you dive into running tests you will want to register for an account on 
-[Addons Dev]: https://addons-dev.allizom.org/en-US/firefox/.  For security reasons you may want to create
+[Addons-Dev][AddonsDev].  For security reasons you may want to create
 this account with a different username and password than you may have on the production addons site.
+[AddonsDev]: https://addons-dev.allizom.org/en-US/firefox/
 
 #### Running tests locally
 
