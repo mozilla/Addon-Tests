@@ -57,7 +57,7 @@ class TestExtensions:
         """
         home_page = Home(mozwebqa)
         featured_extensions_page = home_page.header.site_navigation_menu("Extensions").click()
-        featured_extensions_page.sorter.sort_by('most_users')
+        featured_extensions_page.sorter.sort_by('Most Users')
 
         Assert.true(featured_extensions_page.paginator.is_prev_page_disabled)
 

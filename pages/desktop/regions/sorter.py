@@ -15,7 +15,6 @@ from pages.page import Page
 class Sorter(Page):
 
     _sort_by_featured_locator = (By.XPATH, "//div[@id='sorter']//li/a[normalize-space(text())='Featured']")
-    _sort_by_relevance_locator = (By.XPATH, "//div[@id='sorter']//li/a[normalize-space(text())='Relevance']")
     _sort_by_most_users_locator = (By.XPATH, "//div[@id='sorter']//li/a[normalize-space(text())='Most Users']")
     _sort_by_top_rated_locator = (By.XPATH, "//div[@id='sorter']//li/a[normalize-space(text())='Top Rated']")
     _sort_by_newest_locator = (By.XPATH, "//div[@id='sorter']//li/a[normalize-space(text())='Newest']")
@@ -38,7 +37,7 @@ class Sorter(Page):
         footer_element = self.selenium.find_element(*self._footer_locator)
         ActionChains(self.selenium).move_to_element(footer_element).perform()
         click_element = self.selenium.find_element(*getattr(self, '_sort_by_%s_locator' % type.replace(' ', '_').lower()))
-        if type.replace(' ', '_').lower() in ["featured", "relevance", "most_users", "top_rated", "newest"]:
+        if type.replace(' ', '_').lower() in ["featured", "most_users", "top_rated", "newest"]:
             click_element.click()
         else:
             hover_element = self.selenium.find_element(*self._hover_more_locator)
