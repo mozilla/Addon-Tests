@@ -56,6 +56,12 @@ GitHub has excellent guides for [Windows][GitWin], [MacOSX][GitMacOSX] and [Linu
 Before you will be able to run these tests you will need to have [Python 2.6][Python] installed.
 [Python]: http://www.python.org/download/releases/2.6.6/
 
+#### Before you begin
+Before you dive into running tests you will want to register for an account on 
+[Addons-Dev][AddonsDev].  For security reasons you may want to create
+this account with a different username and password than you may have on the production addons site.
+[AddonsDev]: https://addons-dev.allizom.org/en-US/firefox/
+
 #### Running tests locally
 
 Tests are run using the py.test library. You will find examples here for running all of the tests, tests in one file and running a single test.
@@ -64,24 +70,24 @@ WebDriver does not need a Selenium Server or Grid to run so these examples bypas
 
 An example of running all tests without a Selenium Server:
 
-	py.test --driver=firefox --credentials=/credentials.yaml
+	py.test --driver=firefox --credentials=./credentials.yaml
 	
 An example of running all of the tests in one file:
 
-	py.test --driver=firefox --credentials=/credentials.yaml tests/test_details_page.py
+	py.test --driver=firefox --credentials=./credentials.yaml tests/desktop/test_details_page.py
 	
 An example of running one test in a file:
 
-	py.test --driver=firefox --credentials=/credentials.yaml tests/test_details_page.py -k test_that_external_link_leads_to_addon_website
+	py.test --driver=firefox --credentials=./credentials.yaml tests/desktop/test_details_page.py -k test_that_external_link_leads_to_addon_website
 
 If running on a Mac, skip tests which require 'native' support:
 
-    py.test --driver=firefox --credentials=/credentials.yaml -m 'not native'
+    py.test --driver=firefox --credentials=./credentials.yaml -m 'not native'
     
 Depending on the platform you're running the tests on, run only the tests in the mobile or desktop directories:
 
-    py.test --driver=firefox --credentials=/credentials.yaml ./tests/desktop
-    py.test --driver=firefox --credentials=/credentials.yaml ./tests/mobile
+    py.test --driver=firefox --credentials=./credentials.yaml ./tests/desktop
+    py.test --driver=firefox --credentials=./credentials.yaml ./tests/mobile
     
 For information about running tests against a Selenium Grid or moz-grid-config see the section in this document about setting up moz-grid-config.
 
