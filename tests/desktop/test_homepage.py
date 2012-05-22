@@ -183,7 +183,7 @@ class TestHome:
         extensions_page = home_page.click_to_explore('top_rated')
 
         Assert.contains('sort=rating', extensions_page.get_url_current_page())
-        Assert.equal('Top Rated', extensions_page.default_selected_tab)
+        Assert.equal('Top Rated', extensions_page.sorter.sorted_by)
 
     @pytest.mark.nondestructive
     def test_that_clicking_most_popular_shows_addons_sorted_by_users(self, mozwebqa):
@@ -195,7 +195,7 @@ class TestHome:
         extensions_page = home_page.click_to_explore('popular')
 
         Assert.contains('sort=users', extensions_page.get_url_current_page())
-        Assert.equal('Most Users', extensions_page.default_selected_tab)
+        Assert.equal('Most Users', extensions_page.sorter.sorted_by)
 
     @pytest.mark.nondestructive
     def test_that_clicking_featured_shows_addons_sorted_by_featured(self, mozwebqa):
@@ -207,7 +207,7 @@ class TestHome:
         extensions_page = home_page.click_to_explore('featured')
 
         Assert.contains('sort=featured', extensions_page.get_url_current_page())
-        Assert.equal('Featured', extensions_page.default_selected_tab)
+        Assert.equal('Featured', extensions_page.sorter.sorted_by)
 
     @pytest.mark.nondestructive
     @pytest.mark.litmus(25744)
