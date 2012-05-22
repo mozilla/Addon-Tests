@@ -14,11 +14,11 @@ from pages.page import Page
 
 class Sorter(Page):
 
-    _sort_by_featured_locator = (By.LINK_TEXT, "Featured")
-    _sort_by_relevance_locator = (By.LINK_TEXT, 'Relevance')
-    _sort_by_most_users_locator = (By.LINK_TEXT, 'Most Users')
-    _sort_by_top_rated_locator = (By.LINK_TEXT, 'Top Rated')
-    _sort_by_newest_locator = (By.LINK_TEXT, 'Newest')
+    _sort_by_featured_locator = (By.XPATH, "//div[@id='sorter']//li/a[normalize-space(text())='Featured']")
+    _sort_by_relevance_locator = (By.XPATH, "//div[@id='sorter']//li/a[normalize-space(text())='Relevance']")
+    _sort_by_most_users_locator = (By.XPATH, "//div[@id='sorter']//li/a[normalize-space(text())='Most Users']")
+    _sort_by_top_rated_locator = (By.XPATH, "//div[@id='sorter']//li/a[normalize-space(text())='Top Rated']")
+    _sort_by_newest_locator = (By.XPATH, "//div[@id='sorter']//li/a[normalize-space(text())='Newest']")
 
     _sort_by_name_locator = (By.XPATH, "//div[@id='sorter']//li/a[normalize-space(text())='Name']")
     _sort_by_weekly_downloads_locator = (By.XPATH, "//div[@id='sorter']//li/a[normalize-space(text())='Weekly Downloads']")
@@ -29,13 +29,22 @@ class Sorter(Page):
 
     _hover_more_locator = (By.CSS_SELECTOR, "li.extras > a")
     _updating_locator = (By.CSS_SELECTOR, "div.updating")
+    _footer_locator = (By.ID, 'footer')
 
     def sort_by(self, type):
-        hover_element = self.selenium.find_element(*self._hover_more_locator)
+        """This is done because sometimes the hover menus remains open so we move the focus to footer to close the menu
+        We go to footer because all the menus open a window under them so moving the mouse from down to up will not leave any menu
+        open over the desired element"""
+        footer_element = self.selenium.find_element(*self._footer_locator)
+        ActionChains(self.selenium).move_to_element(footer_element).perform()
         click_element = self.selenium.find_element(*getattr(self, '_sort_by_%s_locator' % type.replace(' ', '_').lower()))
-        ActionChains(self.selenium).move_to_element(hover_element).\
-            move_to_element(click_element).\
-            click().perform()
+        if type.replace(' ', '_').lower() in ["featured", "relevance", "most_users", "top_rated", "newest"]:
+            click_element.click()
+        else:
+            hover_element = self.selenium.find_element(*self._hover_more_locator)
+            ActionChains(self.selenium).move_to_element(hover_element).\
+                move_to_element(click_element).\
+                click().perform()
         WebDriverWait(self.selenium, 10).until(lambda s: not self.is_element_present(*self._updating_locator))
 
     @property

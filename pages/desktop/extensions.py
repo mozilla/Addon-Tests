@@ -26,10 +26,6 @@ class ExtensionsHome(Base):
                 for web_element in self.selenium.find_elements(*self._extensions_locator)]
 
     @property
-    def default_selected_tab(self):
-        return self.selenium.find_element(*self._default_selected_tab_locator).text
-
-    @property
     def subscribe_link_text(self):
         return self.selenium.find_element(*self._subscribe_link_locator).text
 
@@ -37,9 +33,10 @@ class ExtensionsHome(Base):
     def featured_extensions_header_text(self):
         return self.selenium.find_element(*self._featured_extensions_header_locator).text
 
-    def click_sort_by(self, type):
+    @property
+    def sorter(self):
         from pages.desktop.regions.sorter import Sorter
-        Sorter(self.testsetup).sort_by(type)
+        return Sorter(self.testsetup)
 
     @property
     def paginator(self):

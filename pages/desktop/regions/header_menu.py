@@ -23,6 +23,7 @@ class HeaderMenu(Page):
 
     _menu_items_locator = (By.CSS_SELECTOR, 'ul > li')
     _name_locator = (By.CSS_SELECTOR, 'a')
+    _footer_locator = (By.ID, 'footer')
 
     def __init__(self, testsetup, element):
         Page.__init__(self, testsetup)
@@ -35,6 +36,12 @@ class HeaderMenu(Page):
     def click(self):
         name = self.name
         self._root_element.find_element(*self._name_locator).click()
+
+        """This is done because sometimes the header menu drop down remains open so we move the focus to footer to close the menu
+        We go to footer because all the menus open a window under them so moving the mouse from down to up will not leave any menu
+        open over the desired element"""
+        footer_element = self.selenium.find_element(*self._footer_locator)
+        ActionChains(self.selenium).move_to_element(footer_element).perform()
 
         if "EXTENSIONS" in name:
             from pages.desktop.extensions import ExtensionsHome
