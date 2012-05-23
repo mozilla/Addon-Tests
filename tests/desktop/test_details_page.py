@@ -123,7 +123,7 @@ class TestDetails:
         Assert.true(website_link != '')
         # Step 3 - Follow external website link
         details_page.click_website_link()
-        Assert.true(website_link in details_page.get_url_current_page())
+        Assert.contains(details_page.get_url_current_page(), website_link)
 
     @pytest.mark.nondestructive
     def test_that_whats_this_link_for_source_license_links_to_an_answer_in_faq(self, mozwebqa):
