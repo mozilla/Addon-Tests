@@ -29,7 +29,7 @@ class TestSearch:
         """
         home_page = Home(mozwebqa)
         search_page = home_page.header.search_for('addon')
-        
+
         expected_page = 1
 
         # On the first page, "<<" and "previous" are not active, but "next" and ">>" are active.
@@ -54,7 +54,7 @@ class TestSearch:
         search_page.paginator.click_last_page()
 
         expected_page = search_page.paginator.total_page_number
-        
+
         Assert.false(search_page.paginator.is_prev_page_disabled)
         Assert.false(search_page.paginator.is_first_page_disabled)
         Assert.true(search_page.paginator.is_next_page_disabled)
@@ -173,7 +173,7 @@ class TestSearch:
         search_page = Home(mozwebqa).header.search_for('1')
 
         Assert.greater(search_page.result_count, 0)
-        Assert.true(int(search_page.number_of_results_text.split()[0]) > 0)
+        Assert.greater(int(search_page.number_of_results_text.replace(',', '').split()[0]), 0)
 
     @pytest.mark.native
     @pytest.mark.nondestructive
