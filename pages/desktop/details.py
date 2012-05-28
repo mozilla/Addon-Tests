@@ -28,7 +28,7 @@ class Details(Base):
     _summary_locator = (By.ID, "addon-summary")
     _install_button_locator = (By.CSS_SELECTOR, '.button.prominent.add.installer')
     _install_button_attribute_locator = (By.CSS_SELECTOR, '.install-wrapper .install-shell .install.clickHijack')
-    _rating_locator = (By.CSS_SELECTOR, "span[itemprop='ratingValue']")
+    _rating_locator = (By.CSS_SELECTOR, "span.stars.large")
     _license_link_locator = (By.CSS_SELECTOR, ".source-license > a")
     _whats_this_license_locator = (By.CSS_SELECTOR, "a.license-faq")
     _view_the_source_locator = (By.CSS_SELECTOR, "a.source-code")
@@ -170,7 +170,7 @@ class Details(Base):
 
     @property
     def rating(self):
-        return self.selenium.find_element(*self._rating_locator).text
+        return re.findall("\d", self.selenium.find_element(*self._rating_locator).text)[0]
 
     def click_whats_this_license(self):
         self.selenium.find_element(*self._whats_this_license_locator).click()
