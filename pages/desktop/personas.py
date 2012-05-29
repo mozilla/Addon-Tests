@@ -96,7 +96,7 @@ class PersonasDetail(Base):
     @property
     def is_the_current_page(self):
         # This overrides the method in the Page super class.
-        actual_page_title = self.selenium.title
+        actual_page_title = self.page_title
         Assert.not_none(re.match(self._page_title_regex, actual_page_title), 'Expected the current page to be the personas detail page.\n Actual title: %s' % actual_page_title)
         return True
 
