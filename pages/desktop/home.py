@@ -8,7 +8,6 @@ import re
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.support.ui import WebDriverWait
 
 from pages.page import Page
 from pages.desktop.base import Base
@@ -135,7 +134,7 @@ class Home(Base):
         return self.selenium.find_element(*self._explore_top_rated_link_locator).text
 
     def click_on_first_addon(self):
-        WebDriverWait(self.selenium, 10).until(lambda s: self.selenium.find_element(*self._first_addon_locator)).click()
+        self.selenium.find_element(*self._first_addon_locator).click()
         from pages.desktop.details import Details
         return Details(self.testsetup)
 
