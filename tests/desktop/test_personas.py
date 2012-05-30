@@ -32,6 +32,7 @@ class TestPersonas:
         Assert.equal("up-and-coming", browse_personas_page.sort_key)
         Assert.equal("Up & Coming", browse_personas_page.sort_by)
 
+    @pytest.mark.native
     @pytest.mark.nondestructive
     def test_page_title_for_personas_landing_page(self, mozwebqa):
         """
@@ -42,6 +43,7 @@ class TestPersonas:
         personas_page = home_page.header.site_navigation_menu("Personas").click()
         Assert.true(personas_page.is_the_current_page)
 
+    @pytest.mark.native
     @pytest.mark.smoke
     @pytest.mark.nondestructive
     def test_the_featured_personas_section(self, mozwebqa):
@@ -54,6 +56,7 @@ class TestPersonas:
         Assert.true(personas_page.is_the_current_page)
         Assert.less_equal(personas_page.featured_personas_count, 6)
 
+    @pytest.mark.native
     @pytest.mark.smoke
     @pytest.mark.nondestructive
     def test_the_recently_added_section(self, mozwebqa):
@@ -68,6 +71,7 @@ class TestPersonas:
         recently_added_dates = personas_page.recently_added_dates
         Assert.is_sorted_descending(recently_added_dates)
 
+    @pytest.mark.native
     @pytest.mark.smoke
     @pytest.mark.nondestructive
     def test_the_most_popular_section(self, mozwebqa):
@@ -82,6 +86,7 @@ class TestPersonas:
         downloads = personas_page.most_popular_downloads
         Assert.is_sorted_descending(downloads)
 
+    @pytest.mark.native
     @pytest.mark.nondestructive
     def test_the_top_rated_section(self, mozwebqa):
         """
@@ -95,6 +100,7 @@ class TestPersonas:
         ratings = personas_page.top_rated_ratings
         Assert.is_sorted_descending(ratings)
 
+    @pytest.mark.native
     @pytest.mark.nondestructive
     def test_breadcrumb_menu_in_persona_details_page(self, mozwebqa):
         """
@@ -134,6 +140,7 @@ class TestPersonas:
         personas_detail_page.breadcrumbs[0].click()
         Assert.true(home_page.is_the_current_page)
 
+    @pytest.mark.native
     @pytest.mark.nondestructive
     def test_personas_breadcrumb_format(self, mozwebqa):
         """

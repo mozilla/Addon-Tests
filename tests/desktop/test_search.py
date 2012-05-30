@@ -279,6 +279,7 @@ class TestSearch:
         else:
             Assert.equal(search_page.result_count, number)
 
+    @pytest.mark.native
     @pytest.mark.smoke
     @pytest.mark.nondestructive
     def test_searching_for_collections_returns_results(self, mozwebqa):
@@ -292,6 +293,7 @@ class TestSearch:
 
         Assert.true(amo_search_results_page.result_count > 0)
 
+    @pytest.mark.native
     @pytest.mark.smoke
     @pytest.mark.nondestructive
     def test_searching_for_personas_returns_results(self, mozwebqa):
@@ -305,6 +307,7 @@ class TestSearch:
 
         Assert.true(amo_personas_page.persona_count > 0)
 
+    @pytest.mark.native
     @pytest.mark.nondestructive
     def test_searching_for_theme_returns_results(self, mozwebqa):
         """
