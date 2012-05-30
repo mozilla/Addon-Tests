@@ -16,7 +16,6 @@ from pages.desktop.personas import Personas
 
 class TestPersonas:
 
-    @pytest.mark.xfail(reason="disabled until Selenium issue http://code.google.com/p/selenium/issues/detail?id=3182 is fixed")
     @pytest.mark.nondestructive
     def test_start_exploring_link_in_the_promo_box(self, mozwebqa):
         """
