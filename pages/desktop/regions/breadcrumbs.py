@@ -10,7 +10,7 @@ from pages.page import Page
 
 
 class Breadcrumbs(Page):
-    _breadcrumbs_locator = (By.CSS_SELECTOR, "#breadcrumbs  > li")
+    _breadcrumbs_locator = (By.CSS_SELECTOR, "#breadcrumbs>li")
 
     @property
     def breadcrumbs(self):
