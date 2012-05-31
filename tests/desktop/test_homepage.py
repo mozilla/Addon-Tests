@@ -100,6 +100,7 @@ class TestHome:
         Assert.true(featured_persona_page.is_the_current_page)
         Assert.equal(featured_persona_page.persona_header, 'Personas')
 
+    @pytest.mark.native
     @pytest.mark.nondestructive
     def test_that_extensions_link_loads_extensions_page(self, mozwebqa):
         """

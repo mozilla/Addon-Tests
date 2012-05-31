@@ -12,6 +12,7 @@ from pages.desktop.home import Home
 
 class TestExtensions:
 
+    @pytest.mark.native
     @pytest.mark.nondestructive
     def test_featured_tab_is_highlighted_by_default(self, mozwebqa):
         """
@@ -203,6 +204,7 @@ class TestExtensions:
         Assert.contains("sort=hotness", featured_extensions_page.get_url_current_page())
         Assert.greater(len(featured_extensions_page.extensions), 0)
 
+    @pytest.mark.native
     @pytest.mark.nondestructive
     def test_that_extensions_page_contains_addons_and_the_pagination_works(self, mozwebqa):
         """
@@ -229,6 +231,7 @@ class TestExtensions:
         Assert.true(featured_extensions_page.paginator.is_prev_page_disabled)
         Assert.false(featured_extensions_page.paginator.is_next_page_disabled)
 
+    @pytest.mark.native
     @pytest.mark.nondestructive
     def test_breadcrumb_menu_in_extensions_page(self, mozwebqa):
         """
@@ -244,6 +247,7 @@ class TestExtensions:
         Assert.equal(breadcrumbs[0].text, 'Add-ons for Firefox')
         Assert.equal(breadcrumbs[1].text, 'Extensions')
 
+    @pytest.mark.native
     @pytest.mark.nondestructive
     def test_that_checks_if_the_subscribe_link_exists(self, mozwebqa):
         """
@@ -254,6 +258,7 @@ class TestExtensions:
         featured_extensions_page = home_page.header.site_navigation_menu("Extensions").click()
         Assert.contains("Subscribe", featured_extensions_page.subscribe_link_text)
 
+    @pytest.mark.native
     @pytest.mark.nondestructive
     def test_that_checks_featured_extensions_header(self, mozwebqa):
         """

@@ -14,6 +14,7 @@ from pages.desktop.home import Home
 
 class TestInstalls:
 
+    @pytest.mark.native
     @pytest.mark.nondestructive
     @pytest.mark.litmus(15115)
     def test_could_install_theme(self, mozwebqa):
@@ -23,7 +24,6 @@ class TestInstalls:
         themes_page = home_page.header.site_navigation_menu("Themes").click()
         theme_page = themes_page.click_on_first_addon()
         Assert.true(theme_page.install_button_exists)
-
 
     @pytest.mark.nondestructive
     @pytest.mark.litmus(17355)

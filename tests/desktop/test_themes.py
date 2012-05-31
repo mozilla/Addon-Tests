@@ -82,6 +82,7 @@ class TestThemes:
         downloads.extend(themes_page.addon_download_number)
         Assert.is_sorted_descending(downloads)
 
+    @pytest.mark.native
     @pytest.mark.nondestructive
     def test_that_themes_loads_themes_landing_page(self, mozwebqa):
         """Test for Litmus 15339."""
@@ -90,6 +91,7 @@ class TestThemes:
         url_current_page = themes_page.get_url_current_page()
         Assert.true(url_current_page.endswith("/themes/"))
 
+    @pytest.mark.native
     @pytest.mark.nondestructive
     def test_that_clicking_on_theme_name_loads_its_detail_page(self, mozwebqa):
         """Test for Litmus 15363."""
@@ -99,6 +101,7 @@ class TestThemes:
         theme_page = themes_page.click_on_first_addon()
         Assert.contains(theme_name, theme_page.addon_title)
 
+    @pytest.mark.native
     @pytest.mark.nondestructive
     def test_that_themes_page_has_correct_title(self, mozwebqa):
         """Test for Litmus 15340."""
@@ -107,6 +110,7 @@ class TestThemes:
         expected_title = "Most Popular Themes :: Add-ons for Firefox"
         Assert.equal(expected_title, themes_page.page_title)
 
+    @pytest.mark.native
     @pytest.mark.nondestructive
     def test_themes_page_breadcrumb(self, mozwebqa):
         """Test for Litmus 15344."""
@@ -115,6 +119,7 @@ class TestThemes:
         expected_breadcrumb = "Themes"
         Assert.equal(expected_breadcrumb, themes_page.breadcrumbs[1].text)
 
+    @pytest.mark.native
     @pytest.mark.nondestructive
     def test_that_clicking_on_a_subcategory_loads_expected_page(self, mozwebqa):
         """Test for Litmus 15949."""
@@ -124,6 +129,7 @@ class TestThemes:
         amo_category_page = themes_page.click_on_first_category()
         Assert.equal(selected_category, amo_category_page.title)
 
+    @pytest.mark.native
     @pytest.mark.nondestructive
     def test_themes_subcategory_page_breadcrumb(self, mozwebqa):
         home_page = Home(mozwebqa)
@@ -134,6 +140,7 @@ class TestThemes:
 
         [Assert.equal(expected_breadcrumbs[i], amo_category_page.breadcrumbs[i].text) for i in range(len(amo_category_page.breadcrumbs))]
 
+    @pytest.mark.native
     @pytest.mark.nondestructive
     def test_that_themes_categories_are_listed_on_left_hand_side(self, mozwebqa):
         """Test for Litmus 15342."""
@@ -149,6 +156,7 @@ class TestThemes:
             current_category = themes_page.get_category(count)
             Assert.equal(category, current_category)
 
+    @pytest.mark.native
     @pytest.mark.nondestructive
     def test_that_themes_categories_are_not_extensions_categories(self, mozwebqa):
         """Test for Litmus 15343."""
@@ -162,6 +170,7 @@ class TestThemes:
         Assert.not_equal(len(themes_categories), len(extensions_categories))
         Assert.equal(list(set(themes_categories) & set(extensions_categories)), [])
 
+    @pytest.mark.native
     @pytest.mark.nondestructive
     def test_that_last_themes_page_is_not_empty(self, mozwebqa):
         """
@@ -193,6 +202,7 @@ class TestThemes:
             else:
                 Assert.false(theme.is_incompatible_flag_present)
 
+    @pytest.mark.native
     @pytest.mark.nondestructive
     def test_that_most_popular_link_is_default(self, mozwebqa):
         """Test for Litmus 15348"""
@@ -202,6 +212,7 @@ class TestThemes:
         Assert.true(url_current_page.endswith("/themes/"))
         Assert.equal(themes_page.selected_explore_filter, 'Most Popular')
 
+    @pytest.mark.native
     @pytest.mark.nondestructive
     def test_sorted_by_most_users_is_default(self, mozwebqa):
         """Test for Litmus 15346."""
