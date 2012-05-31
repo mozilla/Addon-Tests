@@ -16,6 +16,7 @@ from pages.desktop.personas import Personas
 
 class TestPersonas:
 
+    @pytest.mark.native
     @pytest.mark.nondestructive
     def test_start_exploring_link_in_the_promo_box(self, mozwebqa):
         """
