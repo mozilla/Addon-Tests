@@ -117,7 +117,7 @@ class Themes(Base):
     class Theme(Page):
 
         _not_compatible_locator = (By.CSS_SELECTOR, "div.hovercard > span.notavail")
-        _incompatibility_locator = (By.CSS_SELECTOR, "div.hovercard div.extra span.notavail")
+        _incompatibility_locator = (By.CSS_SELECTOR, "div.hovercard.incompatible > div.more > div.install-shell > div.extra > span.notavail")
         _hovercard_locator = (By.CSS_SELECTOR, "div.hovercard")
 
         def __init__(self, testsetup, element):
