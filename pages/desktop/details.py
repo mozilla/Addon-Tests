@@ -533,6 +533,10 @@ class Details(Base):
         def __init__(self, testsetup):
             Page.__init__(self, testsetup)
 
+            WebDriverWait(self.selenium, self.timeout).until(
+                lambda s: s.find_element(*self._make_contribution_button_locator),
+                "Timeout waiting for 'make contribution' button.")
+
         def click_make_contribution_button(self):
             self.selenium.find_element(*self._make_contribution_button_locator).click()
             from pages.desktop.regions.paypal_frame import PayPalFrame
