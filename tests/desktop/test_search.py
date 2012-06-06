@@ -279,7 +279,6 @@ class TestSearch:
         else:
             Assert.equal(search_page.result_count, number)
 
-    @pytest.mark.xfail(reason="bug 761590")
     @pytest.mark.native
     @pytest.mark.smoke
     @pytest.mark.nondestructive
