@@ -76,7 +76,7 @@ class TestDiscoveryPane:
     def test_that_up_and_coming_is_present_and_had_5_items(self, mozwebqa):
         """Test for Litmus 15074."""
         discovery_pane = DiscoveryPane(mozwebqa, self.basepath)
-        Assert.equal(5, discovery_pane.up_and_coming_item_count)
+        Assert.equal(4, discovery_pane.up_and_coming_item_count)
 
     @pytest.mark.nondestructive
     @pytest.mark.login
