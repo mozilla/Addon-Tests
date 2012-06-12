@@ -15,6 +15,7 @@ class TestAmoLayout:
 
     @pytest.mark.native
     @pytest.mark.nondestructive
+    @pytest.mark.xfail(reason="Fails sporadically; see https://www.pivotaltracker.com/story/show/23906697")
     def test_other_applications_thunderbird(self, mozwebqa):
         """
         Test for Litmus 5037.
