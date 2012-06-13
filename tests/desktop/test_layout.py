@@ -79,19 +79,16 @@ class TestAmoLayout:
     @pytest.mark.native
     @pytest.mark.nondestructive
     @pytest.mark.xfail(reason="Fails sporadically, due to action chains; see https://www.pivotaltracker.com/projects/310523?story_id=27171441")
-    def test_the_applications_listed_in_other_applications(self, mozwebqa):
+    @pytest.mark.parametrize('expected_app', ["Thunderbird", "Mobile", "SeaMonkey"])
+    def test_the_applications_listed_in_other_applications(self, mozwebqa, expected_app):
         """
         Test for Litmus 25740.
         https://litmus.mozilla.org/show_test.cgi?id=25740
         """
-        expected_apps = [
-            "Thunderbird",
-            "Mobile",
-            "SeaMonkey"]
         home_page = Home(mozwebqa)
 
-        for app in expected_apps:
-            Assert.true(home_page.header.is_other_application_visible(app), "%s link not found in Other Applications menu" % app)
+        Assert.true(home_page.header.is_other_application_visible(expected_app), 
+                "%s link not found in the Other Applications menu" % expected_app)
 
     @pytest.mark.nondestructive
     def test_the_search_field_placeholder_and_serch_button(self, mozwebqa):
