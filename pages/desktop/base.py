@@ -141,6 +141,7 @@ class Base(Page):
         _logout_locator = (By.CSS_SELECTOR, "li.nomenu.logout > a")
 
         _site_navigation_menus_locator = (By.CSS_SELECTOR, "#site-nav > ul > li")
+        _site_navigation_min_number_menus = 5
 
         def site_navigation_menu(self, value):
             #used to access one specific menu
@@ -152,6 +153,9 @@ class Base(Page):
         @property
         def site_navigation_menus(self):
             #returns a list containing all the site navigation menus
+            WebDriverWait(self.selenium, self.timeout).until(
+                lambda s: len(s.find_elements(*self._site_navigation_menus_locator)) >= 
+                self._site_navigation_min_number_menus)
             from pages.desktop.regions.header_menu import HeaderMenu
             return [HeaderMenu(self.testsetup, web_element) for web_element in self.selenium.find_elements(*self._site_navigation_menus_locator)]
 
