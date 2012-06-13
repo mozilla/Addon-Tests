@@ -72,6 +72,7 @@ class TestCollections:
 
     @pytest.mark.native
     @pytest.mark.login
+    @pytest.mark.xfail(reason="flakey because of ActionChains")
     def test_user_my_favorites_page(self, mozwebqa):
         """
         Test for Litmus 15402.
@@ -85,8 +86,12 @@ class TestCollections:
         # mark an add-on as favorite if there is none
         if not home_page.header.is_my_favorites_menu_present:
             details_page = Details(mozwebqa, 'Firebug')
-            details_page.click_add_to_favorites()
-            Assert.true(details_page.is_addon_marked_as_favorite)
+            # sometimes the call to is_my_favorites_menu_present lies
+            # and clicking the add to favorites locator when it's already favorited
+            # makes things worse
+            if not details_page.is_addon_marked_as_favorite:
+                details_page.click_add_to_favorites() 
+                Assert.true(details_page.is_addon_marked_as_favorite)
             home_page = Home(mozwebqa)
 
         my_favorites_page = home_page.header.click_my_favorites()
