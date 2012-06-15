@@ -158,7 +158,7 @@ class TestSearch:
                 devs_comments = ''
                 details_page = search_page.results[i].click_result()
                 if details_page.is_devs_comments_section_present:
-                    details_page.click_devs_comments()
+                    details_page.expand_devs_comments()
                     devs_comments = details_page.devs_comments_message
                 search_range = details_page.description + devs_comments
                 Assert.contains(search_term, search_range.lower())
