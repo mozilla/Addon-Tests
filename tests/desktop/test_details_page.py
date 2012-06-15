@@ -68,7 +68,7 @@ class TestDetails:
         https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25721
         """
 
-        details_page.click_version_information_header()
+        details_page.expand_version_information()
         Assert.true(details_page.is_version_information_section_expanded)
         Assert.true(details_page.is_source_code_license_information_visible)
         Assert.true(details_page.is_whats_this_license_visible)
@@ -127,7 +127,7 @@ class TestDetails:
     def test_that_whats_this_link_for_source_license_links_to_an_answer_in_faq(self, mozwebqa):
         """Test for Litmus 11530."""
         details_page = Details(mozwebqa, "Firebug")
-        details_page.click_version_information_header()
+        details_page.expand_version_information()
         user_faq_page = details_page.click_whats_this_license()
         Assert.not_none(re.match('(\w+\s*){3,}', user_faq_page.license_question))
         Assert.not_none(re.match('(\w+\s*){3,}', user_faq_page.license_answer))
@@ -339,8 +339,8 @@ class TestDetails:
         """
         details_page = Details(mozwebqa, 'Firebug')
         Assert.equal(details_page.devs_comments_title, u"Developer\u2019s Comments")
-        details_page.click_devs_comments()
-        Assert.true(details_page.is_devs_comments_section_expanded())
+        details_page.expand_devs_comments()
+        Assert.true(details_page.is_devs_comments_section_expanded)
         Assert.not_none(re.match('(\w+\s*){3,}', details_page.devs_comments_message))
 
     @pytest.mark.smoke
@@ -442,7 +442,7 @@ class TestDetails:
         """
         details_page = Details(mozwebqa, "MemChaser")
         Assert.equal(details_page.version_information_heading, "Version Information")
-        details_page.click_version_information_header()
+        details_page.expand_version_information()
         Assert.equal("What's this?", details_page.license_faq_text)
         license_faq = details_page.click_whats_this_license()
         Assert.equal("Frequently Asked Questions", license_faq.header_text)
@@ -451,7 +451,7 @@ class TestDetails:
     def test_view_the_source_in_the_version_information(self, mozwebqa):
         details_page = Details(mozwebqa, "MemChaser")
         Assert.equal(details_page.version_information_heading, "Version Information")
-        details_page.click_version_information_header()
+        details_page.expand_version_information()
         Assert.equal("View the source", details_page.view_source_code_text)
         view_source = details_page.click_view_source_code()
         Assert.contains('/files/browse/', view_source.get_url_current_page())

@@ -151,7 +151,7 @@ class TestDetailsAgainstXML:
 
         #browser
         firebug_page = Details(mozwebqa, self.firebug)
-        firebug_page.click_version_information_header()
+        firebug_page.expand_version_information()
         browser_compatible_applications = firebug_page.compatible_applications
 
         #api
@@ -198,7 +198,7 @@ class TestDetailsAgainstXML:
 
         #browser
         firebug_page = Details(mozwebqa, self.firebug)
-        firebug_page.click_devs_comments()
+        firebug_page.expand_devs_comments()
         browser_devs_comments = firebug_page.devs_comments_message
 
         #api
