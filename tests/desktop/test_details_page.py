@@ -244,6 +244,7 @@ class TestDetails:
             else:
                 Assert.false(image_viewer.is_previous_present)
 
+    @pytest.mark.xfail(reason="bug 766108")
     @pytest.mark.nondestructive
     def test_that_review_usernames_are_clickable(self, mozwebqa):
         """
