@@ -1,13 +1,18 @@
 # This pulls in all the libraries needed to run Selenium tests
 # on Mozilla WebQA projects
 
-selenium
-py==1.4.7
-pytest==2.2.3
-pytest-xdist==1.8
+BeautifulSoup==3.2.1
 PyYAML==3.10
-execnet==1.0.9
-BeautifulSoup==3.2.0
-pytest-mozwebqa==0.10
 UnittestZero
-requests==0.11.2
+certifi==0.0.8
+chardet==1.0.1
+execnet==1.1
+oauthlib==0.1.3
+py==1.4.9
+pyasn1==0.1.3
+pytest==2.2.4
+pytest-mozwebqa==1.0
+pytest-xdist==1.8
+requests==0.13.1
+rsa==3.1.1
+selenium
