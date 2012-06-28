@@ -14,7 +14,6 @@ from selenium.webdriver.support.ui import WebDriverWait
 class PayPalFrame(Page):
 
     _iframe_id = 'PPDGFrame'
-    _logo_locator = (By.CSS_SELECTOR, '#launcher .logo img')
     _paypal_login_button = (By.CSS_SELECTOR, 'div.logincnt > p > a.button')
 
     def __init__(self, testsetup):
