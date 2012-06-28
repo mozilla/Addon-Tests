@@ -90,7 +90,7 @@ class Details(Base):
 
     # contribute to addon
     _contribute_button_locator = (By.ID, 'contribute-button')
-    _paypal_login_dialog_locator = (By.ID, 'wrapper')
+    _paypal_login_dialog_locator = (By.CSS_SELECTOR, '.rightWrapper.corners .content')
 
     def __init__(self, testsetup, addon_name=None):
         #formats name for url
