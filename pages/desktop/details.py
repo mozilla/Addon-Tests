@@ -113,9 +113,9 @@ class Details(Base):
 
     @property
     def no_restart(self):
-        try:
+        if self.is_element_present(*self._no_restart_locator):
             return self.selenium.find_element(*self._no_restart_locator).text
-        except:
+        else:
             return ""
 
     @property
