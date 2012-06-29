@@ -14,7 +14,7 @@ class PayPalPopup(Page):
     _pop_up_id = '_popupFlow'
     _email_locator = (By.ID, 'email')
     _password_locator = (By.ID, 'password')
-    _login_locator = (By.CSS_SELECTOR, 'p.buttons > input')
+    _login_locator = (By.CSS_SELECTOR, '.buttonGroup #login')  # Bug 769251 - Duplicate ID login in Paypal login sandbox frame
     _log_out_locator = (By.ID, 'logOutLink')
 
     _pay_button_locator = (By.NAME, '_eventId_submit')
