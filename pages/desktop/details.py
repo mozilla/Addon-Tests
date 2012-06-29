@@ -90,7 +90,7 @@ class Details(Base):
 
     # contribute to addon
     _contribute_button_locator = (By.ID, 'contribute-button')
-    _paypal_login_dialog_locator = (By.ID, 'wrapper')
+    _paypal_login_dialog_locator = (By.CSS_SELECTOR, '#page .content')
 
     def __init__(self, testsetup, addon_name=None):
         #formats name for url
@@ -141,7 +141,7 @@ class Details(Base):
         self.selenium.find_element(*self._daily_users_link_locator).click()
         from pages.desktop.statistics import Statistics
         stats_page = Statistics(self.testsetup)
-        WebDriverWait(self.selenium, self.timeout).until(lambda s: stats_page.is_chart_loaded) 
+        WebDriverWait(self.selenium, self.timeout).until(lambda s: stats_page.is_chart_loaded)
         return stats_page
 
     @property
