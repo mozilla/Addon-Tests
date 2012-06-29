@@ -31,6 +31,6 @@ class TestInstalls:
         """note that this test does not actually *install* the jetpack"""
 
         home_page = Home(mozwebqa)
-        search_page = home_page.header.search_for("jetpack")
+        search_page = home_page.search_for("jetpack")
         details_page = search_page.results.pop().click_result()
         Assert.true(details_page.is_version_information_install_button_visible)
