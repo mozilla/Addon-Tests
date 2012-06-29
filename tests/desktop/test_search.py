@@ -28,7 +28,7 @@ class TestSearch:
         5. Click "previous", all buttons are highlighted.
         """
         home_page = Home(mozwebqa)
-        search_page = home_page.header.search_for('addon')
+        search_page = home_page.search_for('addon')
 
         expected_page = 1
 
@@ -80,7 +80,7 @@ class TestSearch:
         """
         home_page = Home(mozwebqa)
         search_str = u'\u0421\u043b\u043e\u0432\u0430\u0440\u0438 \u042f\u043d\u0434\u0435\u043a\u0441'
-        search_page = home_page.header.search_for(search_str)
+        search_page = home_page.search_for(search_str)
 
         Assert.contains(search_str, search_page.search_results_title)
         Assert.false('0 matching results' in search_page.number_of_results_text)
@@ -92,7 +92,7 @@ class TestSearch:
         https://litmus.mozilla.org/show_test.cgi?id=9561
         """
         home_page = Home(mozwebqa)
-        search_page = home_page.header.search_for('fox')
+        search_page = home_page.search_for('fox')
 
         Assert.false(search_page.is_no_results_present, 'No results were found')
 
@@ -108,7 +108,7 @@ class TestSearch:
         https://litmus.mozilla.org/show_test.cgi?id=11759
         """
         home_page = Home(mozwebqa)
-        search_page = home_page.header.search_for("")
+        search_page = home_page.search_for("")
 
         Assert.false(search_page.is_no_results_present)
         Assert.greater(search_page.result_count, 0)
@@ -121,7 +121,7 @@ class TestSearch:
         """
         home_page = Home(mozwebqa)
         search_keyword = 'Search term'
-        search_page = home_page.header.search_for(search_keyword)
+        search_page = home_page.search_for(search_keyword)
 
         expected_title = '%s :: Search :: Add-ons for Firefox' % search_keyword
         Assert.equal(expected_title, search_page.page_title)
@@ -134,7 +134,7 @@ class TestSearch:
         https://litmus.mozilla.org/show_test.cgi?id=15314
         """
         home_page = Home(mozwebqa)
-        search_page = home_page.header.search_for('fire')
+        search_page = home_page.search_for('fire')
 
         results = [result.name  for result in search_page.results]
 
@@ -148,7 +148,7 @@ class TestSearch:
         """
         home_page = Home(mozwebqa)
         search_term = 'cool'
-        search_page = home_page.header.search_for(search_term)
+        search_page = home_page.search_for(search_term)
         Assert.false(search_page.is_no_results_present)
 
         for i in range(0, len(search_page.results)):
@@ -170,7 +170,7 @@ class TestSearch:
         Test for Litmus 17347.
         https://litmus.mozilla.org/show_test.cgi?id=17347
         """
-        search_page = Home(mozwebqa).header.search_for('1')
+        search_page = Home(mozwebqa).search_for('1')
 
         Assert.greater(search_page.result_count, 0)
         Assert.greater(int(search_page.number_of_results_text.replace(',', '').split()[0]), 0)
@@ -182,7 +182,7 @@ class TestSearch:
         Test for Litmus 17342.
         https://litmus.mozilla.org/show_test.cgi?id=17342
         """
-        search_page = Home(mozwebqa).header.search_for('firebug')
+        search_page = Home(mozwebqa).search_for('firebug')
         search_page.click_sort_by('Weekly Downloads')
         Assert.true('sort=downloads' in search_page.get_url_current_page())
         downloads = [i.downloads for i in search_page.results]
@@ -199,7 +199,7 @@ class TestSearch:
         Test for Litmus 17343.
         https://litmus.mozilla.org/show_test.cgi?id=17343
         """
-        search_page = Home(mozwebqa).header.search_for('firebug')
+        search_page = Home(mozwebqa).search_for('firebug')
         search_page.click_sort_by('Newest')
         Assert.true('sort=created' in search_page.get_url_current_page())
         Assert.is_sorted_descending([i.created_date for i in search_page.results])
@@ -211,7 +211,7 @@ class TestSearch:
         Test for Litmus 17345.
         https://litmus.mozilla.org/show_test.cgi?id=17345
         """
-        search_page = Home(mozwebqa).header.search_for('firebug')
+        search_page = Home(mozwebqa).search_for('firebug')
         search_page.click_sort_by('Recently Updated')
         Assert.contains('sort=updated', search_page.get_url_current_page())
         results = [i.updated_date for i in search_page.results]
@@ -227,7 +227,7 @@ class TestSearch:
         Test for Litmus 24867.
         https://litmus.mozilla.org/show_test.cgi?id=24867
         """
-        search_page = Home(mozwebqa).header.search_for('firebug')
+        search_page = Home(mozwebqa).search_for('firebug')
         search_page.click_sort_by('Most Users')
         Assert.contains('sort=users', search_page.get_url_current_page())
         Assert.is_sorted_descending([i.users for i in search_page.results])
@@ -240,7 +240,7 @@ class TestSearch:
         """
 
         home_page = Home(mozwebqa)
-        search_page = home_page.header.search_for('development')
+        search_page = home_page.search_for('development')
         result_count = search_page.filter.results_count
         Assert.greater(result_count, 0)
 
@@ -254,7 +254,7 @@ class TestSearch:
         https://litmus.mozilla.org/show_test.cgi?id=17346
         """
         home_page = Home(mozwebqa)
-        search_page = home_page.header.search_for('deutsch')
+        search_page = home_page.search_for('deutsch')
 
         first_expected = 1
         second_expected = 20
@@ -303,7 +303,7 @@ class TestSearch:
         """
         amo_home_page = Home(mozwebqa)
         amo_personas_page = amo_home_page.header.site_navigation_menu("Personas").click()
-        amo_personas_page.header.search_for('fox')
+        amo_personas_page.search_for('fox')
 
         Assert.true(amo_personas_page.persona_count > 0)
 
@@ -316,7 +316,7 @@ class TestSearch:
         """
         amo_home_page = Home(mozwebqa)
         amo_themes_page = amo_home_page.header.site_navigation_menu("Themes").click()
-        search_results = amo_themes_page.header.search_for('nasa')
+        search_results = amo_themes_page.search_for('nasa')
 
         Assert.true(search_results.result_count > 0)
 

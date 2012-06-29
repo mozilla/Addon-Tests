@@ -78,6 +78,19 @@ class Base(Page):
     def header(self):
         return Base.HeaderRegion(self.testsetup)
 
+    def search_for(self, search_term):
+        self.header.search_for(search_term)
+        from pages.desktop.collections import Collections, CollectionSearchResultList
+        from pages.desktop.personas import Personas, PersonasSearchResultList
+        if isinstance(self, (Collections, CollectionSearchResultList)):
+            return CollectionSearchResultList(self.testsetup)
+        elif isinstance(self, (Personas, PersonasSearchResultList)):
+            return PersonasSearchResultList(self.testsetup)
+        else:
+            from pages.desktop.search import SearchResultList
+            return SearchResultList(self.testsetup)
+
+
     @property
     def breadcrumbs(self):
         from pages.desktop.regions.breadcrumbs import Breadcrumbs
@@ -177,8 +190,6 @@ class Base(Page):
             search_box = self.selenium.find_element(*self._search_textbox_locator)
             search_box.send_keys(search_term)
             self.selenium.find_element(*self._search_button_locator).click()
-            from pages.desktop.search import SearchHome
-            return SearchHome(self.testsetup)
 
         @property
         def search_field_placeholder(self):
