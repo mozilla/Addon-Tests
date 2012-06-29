@@ -84,3 +84,6 @@ class Collection(Base):
 
 class CollectionSearchResultList(SearchResultList):
     _results_locator = (By.CSS_SELECTOR, "div.featured-inner div.item")
+
+    class SearchResultItem(SearchResultList.SearchResultItem):
+        _name_locator = (By.CSS_SELECTOR, 'h3 > a')

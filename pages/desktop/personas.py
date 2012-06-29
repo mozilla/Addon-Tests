@@ -135,3 +135,7 @@ class PersonasBrowse(Base):
 
 class PersonasSearchResultList(SearchResultList):
     _results_locator = (By.CSS_SELECTOR, "ul.personas-grid div.persona-small")
+
+    class SearchResultItem(SearchResultList.SearchResultItem):
+        _name_locator = (By.CSS_SELECTOR, 'h6 > a')
+

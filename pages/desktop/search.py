@@ -23,12 +23,12 @@ class SearchResultList(Base):
 
     def __init__(self, testsetup):
         Base.__init__(self, testsetup)
-        # try: # the result could legitimately be zero, but give it time to make sure
-        WebDriverWait(self.selenium, self.timeout).until(lambda s:
-            len(s.find_elements(*self._results_locator)) > 0
-        )
-        # except Exception:
-        #     pass
+        try: # the result could legitimately be zero, but give it time to make sure
+            WebDriverWait(self.selenium, self.timeout).until(lambda s:
+                len(s.find_elements(*self._results_locator)) > 0
+            )
+        except Exception:
+            pass
 
     @property
     def is_no_results_present(self):
@@ -61,8 +61,9 @@ class SearchResultList(Base):
 
     @property
     def results(self):
-        return [self.SearchResultItem(self.testsetup, web_element)
-                for web_element in self.selenium.find_elements(*self._results_locator)]
+        elements = self.selenium.find_elements(*self._results_locator)
+        return [self.SearchResultItem(
+            self.testsetup, web_element) for web_element in elements]
 
     @property
     def paginator(self):
