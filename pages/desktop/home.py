@@ -39,15 +39,13 @@ class Home(Base):
     _featured_extensions_see_all_locator = (By.CSS_SELECTOR, '#featured-extensions > h2 > a')
     _featured_extensions_elements_locator = (By.CSS_SELECTOR, '#featured-extensions section:nth-child(1) > li')
 
-    _category_list_locator = (By.CSS_SELECTOR, "ul#side-categories li")
-
     _extensions_menu_link = (By.CSS_SELECTOR, "#extensions > a")
 
     _promo_box_locator = (By.CSS_SELECTOR, "section#promos")
 
     _up_and_coming_locator = (By.ID, "upandcoming")
 
-    def __init__(self, testsetup, open_url=True):
+    def __init__(self, testsetup, open_url = True):
         """Creates a new instance of the class and gets the page ready for testing."""
         Base.__init__(self, testsetup)
         if open_url:
@@ -148,33 +146,9 @@ class Home(Base):
         return self.is_element_visible(*self._promo_box_locator)
 
     @property
-    def categories(self):
-        return [self.Categories(self.testsetup, web_element)
-                for web_element in self.selenium.find_elements(*self._category_list_locator)]
-
-    def category(self, web_element):
-        return self.Categories(self.testsetup, web_element)
-
-    @property
     def most_popular_items(self):
         return [self.MostPopularRegion(self.testsetup, web_element)
                 for web_element in self.selenium.find_elements(*self._most_popular_item_locator)]
-
-    class Categories(Page):
-        _link_locator = (By.CSS_SELECTOR, 'a')
-
-        def __init__(self, testsetup, element):
-            Page.__init__(self, testsetup)
-            self._root_element = element
-
-        @property
-        def name(self):
-            return self._root_element.text
-
-        def click_link(self):
-            self._root_element.find_element(*self._link_locator).click()
-            from pages.desktop.category import Category
-            return Category(self.testsetup)
 
     class MostPopularRegion(Page):
         _name_locator = (By.TAG_NAME, "span")
