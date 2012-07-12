@@ -215,21 +215,26 @@ class TestExtensions:
         featured_extensions_page = home_page.header.site_navigation_menu("Extensions").click()
 
         Assert.equal(len(featured_extensions_page.extensions), 20)
-        Assert.true(featured_extensions_page.paginator.is_prev_page_disabled)
-        Assert.false(featured_extensions_page.paginator.is_next_page_disabled)
 
-        featured_extensions_page.paginator.click_next_page()
+        while not featured_extensions_page.is_paginator_present:
+            try:
+                Assert.false(featured_extensions_page.is_paginator_present)
+            except:
+                Assert.true(featured_extensions_page.paginator.is_prev_page_disabled)
+                Assert.false(featured_extensions_page.paginator.is_next_page_disabled)
 
-        Assert.false(featured_extensions_page.paginator.is_prev_page_disabled)
-        Assert.false(featured_extensions_page.paginator.is_next_page_disabled)
+                featured_extensions_page.paginator.click_next_page()
 
-        Assert.equal(len(featured_extensions_page.extensions), 20)
+                Assert.false(featured_extensions_page.paginator.is_prev_page_disabled)
+                Assert.false(featured_extensions_page.paginator.is_next_page_disabled)
 
-        featured_extensions_page.paginator.click_prev_page()
+                Assert.equal(len(featured_extensions_page.extensions), 20)
 
-        Assert.equal(len(featured_extensions_page.extensions), 20)
-        Assert.true(featured_extensions_page.paginator.is_prev_page_disabled)
-        Assert.false(featured_extensions_page.paginator.is_next_page_disabled)
+                featured_extensions_page.paginator.click_prev_page()
+
+                Assert.equal(len(featured_extensions_page.extensions), 20)
+                Assert.true(featured_extensions_page.paginator.is_prev_page_disabled)
+                Assert.false(featured_extensions_page.paginator.is_next_page_disabled)
 
     @pytest.mark.native
     @pytest.mark.nondestructive
