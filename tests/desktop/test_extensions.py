@@ -216,25 +216,24 @@ class TestExtensions:
 
         Assert.equal(len(featured_extensions_page.extensions), 20)
 
-        while not featured_extensions_page.is_paginator_present:
-            try:
-                Assert.false(featured_extensions_page.is_paginator_present)
-            except:
-                Assert.true(featured_extensions_page.paginator.is_prev_page_disabled)
-                Assert.false(featured_extensions_page.paginator.is_next_page_disabled)
+        if not featured_extensions_page.is_paginator_present:
+            Assert.false(featured_extensions_page.is_paginator_present)
+        else:
+            Assert.true(featured_extensions_page.paginator.is_prev_page_disabled)
+            Assert.false(featured_extensions_page.paginator.is_next_page_disabled)
 
-                featured_extensions_page.paginator.click_next_page()
+            featured_extensions_page.paginator.click_next_page()
 
-                Assert.false(featured_extensions_page.paginator.is_prev_page_disabled)
-                Assert.false(featured_extensions_page.paginator.is_next_page_disabled)
+            Assert.false(featured_extensions_page.paginator.is_prev_page_disabled)
+            Assert.false(featured_extensions_page.paginator.is_next_page_disabled)
 
-                Assert.equal(len(featured_extensions_page.extensions), 20)
+            Assert.equal(len(featured_extensions_page.extensions), 20)
 
-                featured_extensions_page.paginator.click_prev_page()
+            featured_extensions_page.paginator.click_prev_page()
 
-                Assert.equal(len(featured_extensions_page.extensions), 20)
-                Assert.true(featured_extensions_page.paginator.is_prev_page_disabled)
-                Assert.false(featured_extensions_page.paginator.is_next_page_disabled)
+            Assert.equal(len(featured_extensions_page.extensions), 20)
+            Assert.true(featured_extensions_page.paginator.is_prev_page_disabled)
+            Assert.false(featured_extensions_page.paginator.is_next_page_disabled)
 
     @pytest.mark.native
     @pytest.mark.nondestructive

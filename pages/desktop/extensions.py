@@ -46,7 +46,7 @@ class ExtensionsHome(Base):
 
     @property
     def is_paginator_present(self):
-        return self.is_element_present(self._paginator_locator)
+        return self.is_element_present(*self._paginator_locator)
 
 
 class Extension(Page):
