@@ -8,18 +8,14 @@ from selenium.webdriver.common.by import By
 
 from pages.desktop.base import Base
 from pages.page import Page
+from pages.desktop.search import SearchResultList
 
 
 class Collections(Base):
 
     _page_title = "Featured Collections :: Add-ons for Firefox"
     _default_selected_tab_locator = (By.CSS_SELECTOR, "#sorter li.selected")
-
-    #Search box
-    _search_button_locator = (By.CSS_SELECTOR, "button.search-button")
-    _search_textbox_locator = (By.NAME, "q")
     _collection_name = (By.CSS_SELECTOR, "h2.collection > span")
-
     _create_a_collection_locator = (By.CSS_SELECTOR, "#side-nav .button")
 
     @property
@@ -29,12 +25,6 @@ class Collections(Base):
     @property
     def default_selected_tab(self):
         return self.selenium.find_element(*self._default_selected_tab_locator).text
-
-    def search_for(self, search_term):
-        search_box = self.selenium.find_element(*self._search_textbox_locator)
-        search_box.send_keys(search_term)
-        self.selenium.find_element(*self._search_button_locator).click()
-        return CollectionsSearch(self.testsetup)
 
     def click_create_collection_button(self):
         self.selenium.find_element(*self._create_a_collection_locator).click()
@@ -92,11 +82,8 @@ class Collection(Base):
         self.selenium.find_element(*self._delete_confirmation_locator).click()
         return Collections.UserCollections(self.testsetup)
 
-
-class CollectionsSearch(Base):
-
+class CollectionSearchResultList(SearchResultList):
     _results_locator = (By.CSS_SELECTOR, "div.featured-inner div.item")
 
-    @property
-    def result_count(self):
-        return len(self.selenium.find_elements(*self._results_locator))
+    class SearchResultItem(SearchResultList.SearchResultItem):
+        _name_locator = (By.CSS_SELECTOR, 'h3 > a')

@@ -8,19 +8,27 @@
 from time import strptime, mktime
 
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
 
 from pages.page import Page
 from pages.desktop.base import Base
-from pages.desktop.regions.search_filter import FilterBase
 
-
-class SearchHome(Base):
+class SearchResultList(Base):
 
     _number_of_results_found = (By.CSS_SELECTOR, "#search-facets > p")
 
     _no_results_locator = (By.CSS_SELECTOR, "p.no-results")
     _search_results_title_locator = (By.CSS_SELECTOR, "section.primary>h1")
     _results_locator = (By.CSS_SELECTOR, "div.items div.item.addon")
+
+    def __init__(self, testsetup):
+        Base.__init__(self, testsetup)
+        try: # the result could legitimately be zero, but give it time to make sure
+            WebDriverWait(self.selenium, self.timeout).until(lambda s:
+                len(s.find_elements(*self._results_locator)) > 0
+            )
+        except Exception:
+            pass
 
     @property
     def is_no_results_present(self):
@@ -36,6 +44,7 @@ class SearchHome(Base):
 
     @property
     def filter(self):
+        from pages.desktop.regions.search_filter import FilterBase
         return FilterBase(self.testsetup)
 
     @property
@@ -48,19 +57,20 @@ class SearchHome(Base):
 
     def result(self, lookup):
         elements = self.selenium.find_elements(*self._results_locator)
-        return self.SearchResult(self.testsetup, elements[lookup])
+        return self.SearchResultItem(self.testsetup, elements[lookup])
 
     @property
     def results(self):
-        return [self.SearchResult(self.testsetup, web_element)
-                for web_element in self.selenium.find_elements(*self._results_locator)]
+        elements = self.selenium.find_elements(*self._results_locator)
+        return [self.SearchResultItem(
+            self.testsetup, web_element) for web_element in elements]
 
     @property
     def paginator(self):
         from pages.desktop.regions.paginator import Paginator
         return Paginator(self.testsetup)
 
-    class SearchResult(Page):
+    class SearchResultItem(Page):
         _name_locator = (By.CSS_SELECTOR, 'div.info > h3 > a')
         _created_date = (By.CSS_SELECTOR, 'div.info > div.vitals > div.updated')
         _sort_criteria = (By.CSS_SELECTOR, 'div.info > div.vitals > div.adu')

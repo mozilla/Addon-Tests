@@ -11,6 +11,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 
 from pages.desktop.base import Base
+from pages.desktop.search import SearchResultList
 
 
 class Personas(Base):
@@ -131,3 +132,10 @@ class PersonasBrowse(Base):
     def sort_by(self):
         """Returns the label of the currently selected sort option."""
         return self.selenium.find_element(*self._selected_sort_by_locator).text
+
+class PersonasSearchResultList(SearchResultList):
+    _results_locator = (By.CSS_SELECTOR, 'ul.personas-grid div.persona-small')
+
+    class SearchResultItem(SearchResultList.SearchResultItem):
+        _name_locator = (By.CSS_SELECTOR, 'h6 > a')
+
