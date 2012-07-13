@@ -83,22 +83,6 @@ class TestExtensions:
 
     @pytest.mark.native
     @pytest.mark.nondestructive
-    def test_that_checks_if_the_extensions_are_sorted_by_featured(self, mozwebqa):
-        """
-        Test for Litmus 29713
-        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=29713
-        """
-        home_page = Home(mozwebqa)
-        featured_extensions_page = home_page.header.site_navigation_menu("Extensions").click()
-        featured_extensions_page.sorter.sort_by('most users')
-        featured_extensions_page.sorter.sort_by('featured')
-
-        Assert.contains("sort=featured", featured_extensions_page.get_url_current_page())
-        for extension in featured_extensions_page.extensions:
-            Assert.equal("FEATURED", extension.featured)
-
-    @pytest.mark.native
-    @pytest.mark.nondestructive
     def test_that_checks_if_the_extensions_are_sorted_by_top_rated(self, mozwebqa):
         """
         Test for Litmus 29717
@@ -215,21 +199,25 @@ class TestExtensions:
         featured_extensions_page = home_page.header.site_navigation_menu("Extensions").click()
 
         Assert.equal(len(featured_extensions_page.extensions), 20)
-        Assert.true(featured_extensions_page.paginator.is_prev_page_disabled)
-        Assert.false(featured_extensions_page.paginator.is_next_page_disabled)
 
-        featured_extensions_page.paginator.click_next_page()
+        if not featured_extensions_page.is_paginator_present:
+            Assert.false(featured_extensions_page.is_paginator_present)
+        else:
+            Assert.true(featured_extensions_page.paginator.is_prev_page_disabled)
+            Assert.false(featured_extensions_page.paginator.is_next_page_disabled)
 
-        Assert.false(featured_extensions_page.paginator.is_prev_page_disabled)
-        Assert.false(featured_extensions_page.paginator.is_next_page_disabled)
+            featured_extensions_page.paginator.click_next_page()
 
-        Assert.equal(len(featured_extensions_page.extensions), 20)
+            Assert.false(featured_extensions_page.paginator.is_prev_page_disabled)
+            Assert.false(featured_extensions_page.paginator.is_next_page_disabled)
 
-        featured_extensions_page.paginator.click_prev_page()
+            Assert.equal(len(featured_extensions_page.extensions), 20)
 
-        Assert.equal(len(featured_extensions_page.extensions), 20)
-        Assert.true(featured_extensions_page.paginator.is_prev_page_disabled)
-        Assert.false(featured_extensions_page.paginator.is_next_page_disabled)
+            featured_extensions_page.paginator.click_prev_page()
+
+            Assert.equal(len(featured_extensions_page.extensions), 20)
+            Assert.true(featured_extensions_page.paginator.is_prev_page_disabled)
+            Assert.false(featured_extensions_page.paginator.is_next_page_disabled)
 
     @pytest.mark.native
     @pytest.mark.nondestructive

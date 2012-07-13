@@ -19,6 +19,7 @@ class ExtensionsHome(Base):
     _default_selected_tab_locator = (By.CSS_SELECTOR, "#sorter li.selected")
     _subscribe_link_locator = (By.CSS_SELECTOR, "a#subscribe")
     _featured_extensions_header_locator = (By.CSS_SELECTOR, "#page > .primary > h1")
+    _paginator_locator = (By.CSS_SELECTOR, ".paginator.c.pjax-trigger")
 
     @property
     def extensions(self):
@@ -42,6 +43,10 @@ class ExtensionsHome(Base):
     def paginator(self):
         from pages.desktop.regions.paginator import Paginator
         return Paginator(self.testsetup)
+
+    @property
+    def is_paginator_present(self):
+        return self.is_element_present(*self._paginator_locator)
 
 
 class Extension(Page):
