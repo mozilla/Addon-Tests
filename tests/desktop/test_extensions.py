@@ -188,6 +188,7 @@ class TestExtensions:
         Assert.contains("sort=hotness", featured_extensions_page.get_url_current_page())
         Assert.greater(len(featured_extensions_page.extensions), 0)
 
+    @pytest.mark.xfail(reason="https://www.pivotaltracker.com/story/show/32782605 - refactor")
     @pytest.mark.native
     @pytest.mark.nondestructive
     def test_that_extensions_page_contains_addons_and_the_pagination_works(self, mozwebqa):
