@@ -28,26 +28,7 @@ class TestCollections:
         Assert.equal(featured_collections_page.default_selected_tab, "Featured")
 
     @pytest.mark.login
-    def test_create_collection(self, mozwebqa):
-
-        home_page = Home(mozwebqa)
-        collections_page = home_page.header.site_navigation_menu('Collections').click()
-        create_collection_page = collections_page.click_create_collection_button()
-        home_page.login('browserID')
-
-        collection_uuid = uuid.uuid4().hex
-        collection_time = repr(time.time())
-        collection_name = collection_uuid[:30 - len(collection_time):] + collection_time
-
-        create_collection_page.type_name(collection_name)
-        create_collection_page.type_description(collection_name)
-        collection = create_collection_page.click_create_collection()
-
-        Assert.equal(collection.notification, 'Collection created!')
-        Assert.equal(collection.collection_name, collection_name)
-
-    @pytest.mark.login
-    def test_delete_collection(self, mozwebqa):
+    def test_create_and_delete_collection(self, mozwebqa):
 
         home_page = Home(mozwebqa)
         collections_page = home_page.header.site_navigation_menu('Collections').click()
