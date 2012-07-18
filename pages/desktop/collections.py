@@ -32,16 +32,16 @@ class Collections(Base):
 
     class UserCollections(Page):
 
-        _collections_locator = (By.CSS_SELECTOR, ".featured-inner")
-        _collection_text_locator = (By.CSS_SELECTOR, ".item > h3 > a")
-
-        @property
-        def collection_text(self):
-            return self.selenium.find_element(*self._collections_locator).text
+        _collections_locator = (By.CSS_SELECTOR, ".featured-inner div.item")
+        _no_results_locator = (By.CSS_SELECTOR, ".featured-inner > p.no-results")
 
         @property
         def collections(self):
             return self.selenium.find_elements(*self._collections_locator)
+
+        @property
+        def has_no_results(self):
+            return self.is_element_present(*self._no_results_locator)
 
     class CreateNewCollection(Page):
 
