@@ -27,16 +27,21 @@ class Base(Page):
     def login(self, method="normal", user="default"):
         from pages.desktop.user import Login
 
-        if not self.header.is_browserid_login_available:
+        if method == "normal":
             login = self.header.click_login_normal()
-            login.login_when_browser_id_is_unavailable(user)
-        elif method == "normal":
-            self.selenium.get(self.base_url + "/en-US/firefox/users/login")
-            login = Login(self.testsetup)
             login.login_user_normal(user)
+
         elif method == "browserID":
-            login = self.header.click_login_browser_id()
-            login.login_user_browser_id(user)
+            self.selenium.implicitly_wait(0)
+            is_browserid_login_available = self.header.is_browserid_login_available
+            self.selenium.implicitly_wait(self.testsetup.default_implicit_wait)
+
+            if is_browserid_login_available :
+                login = self.header.click_login_browser_id()
+                login.login_user_browser_id(user)
+            else:
+                login = self.header.click_login_normal()
+                login.login_user_normal(user)
 
     @property
     def page_title(self):

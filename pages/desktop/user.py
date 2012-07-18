@@ -27,7 +27,6 @@ class Login(Base):
 
     def login_user_normal(self, user):
         credentials = self.testsetup.credentials[user]
-        self.selenium.find_element(*self._normal_login_locator).click()
 
         email = self.selenium.find_element(*self._email_locator)
         email.send_keys(credentials['email'])
@@ -43,16 +42,6 @@ class Login(Base):
         pop_up = BrowserID(self.selenium, self.timeout)
         pop_up.sign_in(credentials['email'], credentials['password'])
         WebDriverWait(self.selenium, 20).until(lambda s: s.find_element(*self._logout_locator))
-
-    def login_when_browser_id_is_unavailable(self, user):
-        credentials = self.testsetup.credentials[user]
-        email = self.selenium.find_element(*self._email_locator)
-        email.send_keys(credentials['email'])
-
-        password = self.selenium.find_element(*self._password_locator)
-        password.send_keys(credentials['password'])
-
-        password.send_keys(Keys.RETURN)
 
 class ViewProfile(Base):
 
