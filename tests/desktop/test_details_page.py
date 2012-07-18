@@ -325,7 +325,7 @@ class TestDetails:
         home_page = Home(mozwebqa)
 
         #Step 2:user logs in to submit a review
-        home_page.login("browserID")
+        home_page.login()
         Assert.true(home_page.header.is_user_logged_in)
 
         #Step 3: user loads an addon details page and clicks write a review button

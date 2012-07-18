@@ -28,7 +28,7 @@ class TestPaypal:
 
         addon_page = Home(mozwebqa)
 
-        addon_page.login('browserID')
+        addon_page.login()
         Assert.true(addon_page.is_the_current_page)
         Assert.true(addon_page.header.is_user_logged_in)
 
@@ -81,7 +81,7 @@ class TestPaypal:
     @pytest.mark.login
     def test_that_make_contribution_button_is_clickable_and_loads_paypal_frame_while_user_is_logged_in(self, mozwebqa):
         addon_page = Details(mozwebqa, self.addon_name)
-        addon_page.login('browserID')
+        addon_page.login()
         Assert.true(addon_page.is_the_current_page)
         Assert.true(addon_page.header.is_user_logged_in)
 
