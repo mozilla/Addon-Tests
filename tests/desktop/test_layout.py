@@ -15,7 +15,6 @@ class TestAmoLayout:
 
     @pytest.mark.native
     @pytest.mark.nondestructive
-    @pytest.mark.xfail(reason="Fails sporadically; see https://www.pivotaltracker.com/story/show/23906697")
     def test_other_applications_thunderbird(self, mozwebqa):
         """
         Test for Litmus 5037.
@@ -78,7 +77,6 @@ class TestAmoLayout:
 
     @pytest.mark.native
     @pytest.mark.nondestructive
-    @pytest.mark.xfail(reason="Fails sporadically, due to action chains; see https://www.pivotaltracker.com/projects/310523?story_id=27171441")
     @pytest.mark.parametrize('expected_app', ["Thunderbird", "Mobile", "SeaMonkey"])
     def test_the_applications_listed_in_other_applications(self, mozwebqa, expected_app):
         """
@@ -87,7 +85,7 @@ class TestAmoLayout:
         """
         home_page = Home(mozwebqa)
 
-        Assert.true(home_page.header.is_other_application_visible(expected_app), 
+        Assert.true(home_page.header.is_other_application_visible(expected_app),
                 "%s link not found in the Other Applications menu" % expected_app)
 
     @pytest.mark.nondestructive
