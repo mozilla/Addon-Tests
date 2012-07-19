@@ -168,8 +168,8 @@ class TestDetailsAgainstXML:
         # E.g.: Works with Firefox 1.0 - 16.0a1
         meta_compat_full = "%s- %s" % (meta_compat_prefix, max_version)
         
-        assert (browser_compatible_application == meta_compat_full or
-                browser_compatible_application == meta_compat_abbrev or
+        assert (browser_compatible_applications == meta_compat_full or
+                browser_compatible_applications == meta_compat_abbrev or
                 browser_compatible_applications.startswith(meta_compat_prefix)
                 ), "Listed compat. versions don't match versions listed in API."
 
