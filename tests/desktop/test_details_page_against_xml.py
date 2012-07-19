@@ -187,7 +187,7 @@ class TestDetailsAgainstXML:
         learn_more_url = addons_xml.get_learn_more_url(self.firebug)
 
         #browser
-        details_page = Details(mozwebqa)
+        details_page = Details(mozwebqa, self.firebug)
         details_page.get_url(learn_more_url)
 
         Assert.contains(self.firebug, details_page.page_title)
