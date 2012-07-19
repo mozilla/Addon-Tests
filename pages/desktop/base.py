@@ -32,9 +32,7 @@ class Base(Page):
             login.login_user_normal(user)
 
         elif method == "browserID":
-            self.selenium.implicitly_wait(0)
             is_browserid_login_available = self.header.is_browserid_login_available
-            self.selenium.implicitly_wait(self.testsetup.default_implicit_wait)
 
             if is_browserid_login_available :
                 login = self.header.click_login_browser_id()
@@ -224,7 +222,7 @@ class Base(Page):
 
         @property
         def is_browserid_login_available(self):
-            return self.is_element_visible(*self._login_browser_id_locator)
+            return self.is_element_present(*self._login_browser_id_locator)
 
         @property
         def is_login_link_visible(self):
