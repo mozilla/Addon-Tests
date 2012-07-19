@@ -182,7 +182,6 @@ class TestThemes:
         themes_page.paginator.click_last_page()
         Assert.greater_equal(themes_page.addon_count, 1)
 
-    @pytest.mark.xfail(reason="https://www.pivotaltracker.com/story/show/30542103")
     @pytest.mark.native
     @pytest.mark.nondestructive
     def test_the_displayed_message_for_incompatible_themes(self, mozwebqa):
