@@ -160,7 +160,18 @@ class TestDetailsAgainstXML:
         name = xml_compatible_applications[0]
         min_version = xml_compatible_applications[1]
         max_version = xml_compatible_applications[2]
-        Assert.equal(browser_compatible_applications, 'Works with %s %s - %s' % (name, min_version, max_version))
+        
+        # E.g.: Works with Firefox 1.0
+        meta_compat_prefix = 'Works with %s %s ' % (name, min_version)
+        # E.g.: Works with Firefox 1.0 and later
+        meta_compat_abbrev = meta_compat_prefix + 'and later'
+        # E.g.: Works with Firefox 1.0 - 16.0a1
+        meta_compat_full = "%s- %s" % (meta_compat_prefix, max_version)
+        
+        assert (browser_compatible_application == meta_compat_full or
+                browser_compatible_application == meta_compat_abbrev or
+                browser_compatible_applications.startswith(meta_compat_prefix)
+                ), "Listed compat. versions don't match versions listed in API."
 
     @pytest.mark.native
     @pytest.mark.nondestructive
