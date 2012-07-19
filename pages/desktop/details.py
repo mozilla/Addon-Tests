@@ -107,6 +107,8 @@ class Details(Base):
 
     @property
     def title(self):
+        WebDriverWait(self.selenium, self.timeout).until(
+            lambda s: self.is_element_visible(*self._title_locator))
         base = self.selenium.find_element(*self._title_locator).text
         '''base = "firebug 1.8.9" we will have to remove version number for it'''
         return base.replace(self.version_number, '').replace(self.no_restart, '').strip()
