@@ -123,7 +123,6 @@ class TestDetails:
         details_page.click_website_link()
         Assert.contains(details_page.get_url_current_page(), website_link)
 
-    @pytest.mark.xfail(reason="bug 770858")
     @pytest.mark.nondestructive
     def test_that_whats_this_link_for_source_license_links_to_an_answer_in_faq(self, mozwebqa):
         """Test for Litmus 11530."""
@@ -245,7 +244,6 @@ class TestDetails:
             else:
                 Assert.false(image_viewer.is_previous_present)
 
-    @pytest.mark.xfail(reason="bug 766108")
     @pytest.mark.nondestructive
     def test_that_review_usernames_are_clickable(self, mozwebqa):
         """
