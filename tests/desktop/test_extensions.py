@@ -188,8 +188,6 @@ class TestExtensions:
         Assert.contains("sort=hotness", featured_extensions_page.get_url_current_page())
         Assert.greater(len(featured_extensions_page.extensions), 0)
 
-    @pytest.mark.xfail(reason="https://www.pivotaltracker.com/story/show/32782605 - refactor")
-    @pytest.mark.native
     @pytest.mark.nondestructive
     def test_that_extensions_page_contains_addons_and_the_pagination_works(self, mozwebqa):
         """
@@ -199,11 +197,15 @@ class TestExtensions:
         home_page = Home(mozwebqa)
         featured_extensions_page = home_page.header.site_navigation_menu("Extensions").click()
 
-        Assert.equal(len(featured_extensions_page.extensions), 20)
+        # Assert that at least one addon is displayed
+        Assert.greater(len(featured_extensions_page.extensions), 0)
 
-        if not featured_extensions_page.is_paginator_present:
+        if len(featured_extensions_page.extensions) < 20:
+            # Assert that the paginator is not present if fewer than 20 extensions are displayed
             Assert.false(featured_extensions_page.is_paginator_present)
         else:
+            # Assert that the paginator is present if 20 extensions are displayed
+            Assert.true(featured_extensions_page.is_paginator_present)
             Assert.true(featured_extensions_page.paginator.is_prev_page_disabled)
             Assert.false(featured_extensions_page.paginator.is_next_page_disabled)
 
@@ -211,8 +213,6 @@ class TestExtensions:
 
             Assert.false(featured_extensions_page.paginator.is_prev_page_disabled)
             Assert.false(featured_extensions_page.paginator.is_next_page_disabled)
-
-            Assert.equal(len(featured_extensions_page.extensions), 20)
 
             featured_extensions_page.paginator.click_prev_page()
 
