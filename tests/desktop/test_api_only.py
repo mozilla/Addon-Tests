@@ -22,7 +22,9 @@ class TestAPIOnlyTests:
     def test_that_firebug_is_listed_first_in_addons_search_for_fire(self, mozwebqa):
         """Test for Litmus 15314."""
         addons_xml = AddOnsAPI(mozwebqa, 'fire')
-        Assert.equal("Firebug", addons_xml.get_name_of_first_addon())
+        assert any("Firebug" in name for name in
+                   addons_xml.get_name_of_top_addons(count=5)
+                   ), "Firebug was not found in the top 5 search results for 'fire'."
 
     @pytest.mark.nondestructive
     def test_that_firebug_is_listed_first_in_addons_search_for_firebug(self, mozwebqa):
