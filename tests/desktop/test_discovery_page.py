@@ -86,7 +86,7 @@ class TestDiscoveryPane:
         https://litmus.mozilla.org/show_test.cgi?id=15110
         """
         home_page = Home(mozwebqa)
-        home_page.login("browserID")
+        home_page.login()
         Assert.true(home_page.is_the_current_page)
         Assert.true(home_page.header.is_user_logged_in)
 

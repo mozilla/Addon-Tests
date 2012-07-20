@@ -17,7 +17,7 @@ class TestAccounts:
 
     @pytest.mark.nondestructive
     @pytest.mark.login
-    def test_user_can_login_and_logout(self, mozwebqa):
+    def test_user_can_login_and_logout_using_normal_login(self, mozwebqa):
         """
         Test for Litmus 7857 and 4859.
         https://litmus.mozilla.org/show_test.cgi?id=7857
@@ -59,7 +59,7 @@ class TestAccounts:
         """
 
         home_page = Home(mozwebqa)
-        home_page.login("browserID")
+        home_page.login()
         Assert.true(home_page.is_the_current_page)
         Assert.true(home_page.header.is_user_logged_in)
 
@@ -83,7 +83,7 @@ class TestAccounts:
         """
 
         home_page = Home(mozwebqa)
-        home_page.login("browserID")
+        home_page.login()
         Assert.true(home_page.is_the_current_page)
         Assert.true(home_page.header.is_user_logged_in)
 
@@ -96,7 +96,7 @@ class TestAccounts:
     @pytest.mark.xfail(reason="bug 770858")
     def test_hide_email_checkbox_works(self, mozwebqa):
         home_page = Home(mozwebqa)
-        home_page.login("browserID")
+        home_page.login()
 
         Assert.true(home_page.is_the_current_page)
         Assert.true(home_page.header.is_user_logged_in)
@@ -137,7 +137,7 @@ class TestAccounts:
         https://litmus.mozilla.org/show_test.cgi?id=11563
         """
         home_page = Home(mozwebqa)
-        home_page.login(method="browserID", user="user.edit")
+        home_page.login(user="user.edit")
 
         Assert.true(home_page.is_the_current_page)
         Assert.true(home_page.header.is_user_logged_in)
