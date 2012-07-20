@@ -28,7 +28,19 @@ class AddOnsAPI:
             name_of_first_addon_listed = self.parsed_xml.searchresults.addon.nameTag.contents[0]
             return name_of_first_addon_listed
         except:
-            print 'Check that searchresults returned valid xml'
+            print 'Check that search results returned valid xml'
+
+    def get_name_of_top_addons(self, count=5):
+        try:
+            c = 0
+            for addon in filter(lambda s: not isinstance(s, (str, unicode)),
+                                self.parsed_xml.searchresults.contents):
+                yield addon.nameTag.contents[0]
+                c += 1
+                if c == count:
+                    return
+        except:
+            print 'Check that search results returned valid xml'
 
     def get_addon_type_name(self, addon_name):
         try:
