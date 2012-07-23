@@ -34,7 +34,7 @@ class Base(Page):
         elif method == "browserID":
             is_browserid_login_available = self.header.is_browserid_login_available
 
-            if is_browserid_login_available :
+            if is_browserid_login_available:
                 login = self.header.click_login_browser_id()
                 login.login_user_browser_id(user)
             else:
@@ -85,14 +85,16 @@ class Base(Page):
         self.header.search_for(search_term)
         from pages.desktop.collections import Collections, CollectionSearchResultList
         from pages.desktop.personas import Personas, PersonasSearchResultList
+        from pages.desktop.themes import Themes, ThemesSearchResultList
         if isinstance(self, (Collections, CollectionSearchResultList)):
             return CollectionSearchResultList(self.testsetup)
         elif isinstance(self, (Personas, PersonasSearchResultList)):
             return PersonasSearchResultList(self.testsetup)
+        elif isinstance(self, (Themes, ThemesSearchResultList)):
+            return ThemesSearchResultList(self.testsetup)
         else:
             from pages.desktop.search import SearchResultList
             return SearchResultList(self.testsetup)
-
 
     @property
     def breadcrumbs(self):
@@ -169,9 +171,7 @@ class Base(Page):
         @property
         def site_navigation_menus(self):
             #returns a list containing all the site navigation menus
-            WebDriverWait(self.selenium, self.timeout).until(
-                lambda s: len(s.find_elements(*self._site_navigation_menus_locator)) >= 
-                self._site_navigation_min_number_menus)
+            WebDriverWait(self.selenium, self.timeout).until(lambda s: len(s.find_elements(*self._site_navigation_menus_locator)) >= self._site_navigation_min_number_menus)
             from pages.desktop.regions.header_menu import HeaderMenu
             return [HeaderMenu(self.testsetup, web_element) for web_element in self.selenium.find_elements(*self._site_navigation_menus_locator)]
 
@@ -277,7 +277,7 @@ class Base(Page):
             ActionChains(self.selenium).move_to_element(hover_element).\
                 move_to_element(click_element).\
                 click().perform()
-            
+
             from pages.desktop.user import MyFavorites
             return MyFavorites(self.testsetup)
 
