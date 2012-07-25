@@ -110,7 +110,9 @@ class TestSearch:
     @pytest.mark.nondestructive
     def test_that_searching_for_firebug_returns_firebug_as_first_result(self, mozwebqa):
         """
-        Test for Pivotal 28492671
+        Test for Litmus 15314.
+        https://litmus.mozilla.org/show_test.cgi?id=15314
+        Modified for Pivotal 28492671.
         https://www.pivotaltracker.com/projects/477093#!/stories/28492671
         """
         home_page = Home(mozwebqa)
