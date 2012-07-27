@@ -303,3 +303,14 @@ class TestHome:
         Assert.equal('Featured', home_page.explore_featured_link_text)
         Assert.equal('Most Popular', home_page.explore_popular_link_text)
         Assert.equal('Top Rated', home_page.explore_top_rated_link_text)
+
+    @pytest.mark.nondestructive
+    def test_that_clicking_see_all_extensions_link_works(self, mozwebqa):
+        """
+        Test for Litmus 25801.
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25801
+        """
+        home_page = Home(mozwebqa)
+        featured_extension_page = home_page.click_featured_extensions_see_all_link()
+        Assert.true(featured_extension_page.is_the_current_page)
+        Assert.true(featured_extension_page.get_url_current_page().endswith('/extensions/?sort=featured'))

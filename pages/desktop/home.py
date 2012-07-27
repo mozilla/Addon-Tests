@@ -150,6 +150,11 @@ class Home(Base):
         return [self.MostPopularRegion(self.testsetup, web_element)
                 for web_element in self.selenium.find_elements(*self._most_popular_item_locator)]
 
+    def click_featured_extensions_see_all_link(self):
+        self.selenium.find_element(*self._featured_extensions_see_all_locator).click()
+        from pages.desktop.extensions import ExtensionsHome
+        return ExtensionsHome(self.testsetup)
+
     class MostPopularRegion(Page):
         _name_locator = (By.TAG_NAME, "span")
         _users_locator = (By.CSS_SELECTOR, "small")
