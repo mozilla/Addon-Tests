@@ -131,29 +131,6 @@ class TestExtensions:
 
     @pytest.mark.native
     @pytest.mark.nondestructive
-    def test_that_checks_the_extensions_are_sorted_by_name(self, mozwebqa):
-        """
-        Litmus 29723
-        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=29723
-        """
-        home_page = Home(mozwebqa)
-        featured_extensions_page = home_page.header.site_navigation_menu("Extensions").click()
-        featured_extensions_page.sorter.sort_by('name')
-
-        Assert.contains("sort=name", featured_extensions_page.get_url_current_page())
-
-        names = [i.name for i in featured_extensions_page.extensions]
-        sorted_names = sorted(names, key=unicode.lower)
-        Assert.true(names[:] == sorted_names[:])
-
-        featured_extensions_page.paginator.click_next_page()
-
-        names.extend([i.name for i in featured_extensions_page.extensions])
-        sorted_names = sorted(names, key=unicode.lower)
-        Assert.true(names[:] == sorted_names[:])
-
-    @pytest.mark.native
-    @pytest.mark.nondestructive
     def test_that_checks_if_the_extensions_are_sorted_by_recently_updated(self, mozwebqa):
         """
         Litmus 29727
