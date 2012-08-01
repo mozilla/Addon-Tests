@@ -18,7 +18,7 @@ from pages.desktop.addons_api import AddOnsAPI
 class TestAPIOnlyTests:
 
     @pytest.mark.nondestructive
-    def test_that_firebug_is_listed_first_in_addons_search_for_fire(self, mozwebqa):
+    def test_that_firebug_is_listed_in_top_five_search_results_for_fire(self, mozwebqa):
         """Test for Litmus 15314."""
         addons_xml = AddOnsAPI(mozwebqa, 'fire')
         assert any("Firebug" in name for name in
