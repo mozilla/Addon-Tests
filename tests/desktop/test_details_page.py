@@ -402,7 +402,7 @@ class TestDetails:
         Assert.true(details_page.is_development_channel_install_button_visible)
 
         # Verify experimental version (beta or pre)
-        Assert.not_none(re.match('Version \d\.\d.\d(b|a|rc)[0-9]:', details_page.beta_version))
+        Assert.not_none(re.match('Version\s\d+\.\d+\.\d+[a|b|rc]\d+\:', details_page.beta_version))
 
     @pytest.mark.nondestructive
     def test_that_license_link_works(self, mozwebqa):
