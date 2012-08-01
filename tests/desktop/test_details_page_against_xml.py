@@ -6,9 +6,10 @@
 
 import re
 import pytest
+from HTMLParser import HTMLParser
+from urllib2 import urlparse
 
 from unittestzero import Assert
-from urllib2 import urlparse
 
 from pages.desktop.details import Details
 from pages.desktop.addons_api import AddOnsAPI
@@ -99,7 +100,7 @@ class TestDetailsAgainstXML:
         addons_xml = AddOnsAPI(mozwebqa)
         xml_description = addons_xml.get_addon_description(self.firebug)
 
-        Assert.equal(browser_description.replace('\n', ''), xml_description.replace('\n', ''))
+        Assert.equal(browser_description.replace('\n', ''), HTMLParser().unescape(xml_description.replace('\n', '')))
 
     @pytest.mark.nondestructive
     def test_that_icon_is_correct(self, mozwebqa):
