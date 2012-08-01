@@ -10,6 +10,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 from pages.desktop.regions.sorter import Sorter
 from pages.desktop.base import Base
 from pages.page import Page
+from pages.desktop.search import SearchResultList
 
 
 class Themes(Base):
@@ -157,6 +158,7 @@ class Theme(Base):
 
     _addon_title = (By.CSS_SELECTOR, "h1.addon")
     _install_button = (By.CSS_SELECTOR, "p.install-button > a")
+    _breadcrumb_locator = (By.ID, "breadcrumbs")
 
     @property
     def addon_title(self):
@@ -165,6 +167,10 @@ class Theme(Base):
     @property
     def install_button_exists(self):
         return self.is_element_visible(*self._install_button)
+
+    @property
+    def breadcrumb(self):
+        return self.selenium.find_element(*self._breadcrumb_locator).text
 
 
 class ThemesCategory(Base):
@@ -175,3 +181,10 @@ class ThemesCategory(Base):
     @property
     def title(self):
         return self.selenium.find_element(*self._title_locator).text
+
+
+class ThemesSearchResultList(SearchResultList):
+    _results_locator = (By.CSS_SELECTOR, '.items .item')
+
+    class ThemesSearchResultItem(SearchResultList.SearchResultItem):
+        _name_locator = (By.CSS_SELECTOR, 'h3 > a')

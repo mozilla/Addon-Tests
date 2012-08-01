@@ -93,6 +93,7 @@ class PersonasDetail(Base):
     _page_title_regex = '.+ :: Add-ons for Firefox'
 
     _personas_title_locator = (By.CSS_SELECTOR, 'h2.addon')
+    _breadcrumb_locator = (By.ID, "breadcrumbs")
 
     @property
     def is_the_current_page(self):
@@ -108,6 +109,10 @@ class PersonasDetail(Base):
     @property
     def title(self):
         return self.selenium.find_element(*self._personas_title_locator).text
+
+    @property
+    def breadcrumb(self):
+        return self.selenium.find_element(*self._breadcrumb_locator).text
 
 
 class PersonasBrowse(Base):
@@ -136,6 +141,6 @@ class PersonasBrowse(Base):
 class PersonasSearchResultList(SearchResultList):
     _results_locator = (By.CSS_SELECTOR, 'ul.personas-grid div.persona-small')
 
-    class SearchResultItem(SearchResultList.SearchResultItem):
+    class PersonasSearchResultItem(SearchResultList.SearchResultItem):
         _name_locator = (By.CSS_SELECTOR, 'h6 > a')
 

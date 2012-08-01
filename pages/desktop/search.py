@@ -13,6 +13,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from pages.page import Page
 from pages.desktop.base import Base
 
+
 class SearchResultList(Base):
 
     _number_of_results_found = (By.CSS_SELECTOR, "#search-facets > p")
@@ -23,7 +24,7 @@ class SearchResultList(Base):
 
     def __init__(self, testsetup):
         Base.__init__(self, testsetup)
-        try: # the result could legitimately be zero, but give it time to make sure
+        try:  # the result could legitimately be zero, but give it time to make sure
             WebDriverWait(self.selenium, self.timeout).until(lambda s:
                 len(s.find_elements(*self._results_locator)) > 0
             )
@@ -57,7 +58,17 @@ class SearchResultList(Base):
 
     def result(self, lookup):
         elements = self.selenium.find_elements(*self._results_locator)
-        return self.SearchResultItem(self.testsetup, elements[lookup])
+        from pages.desktop.collections import Collections, CollectionSearchResultList
+        from pages.desktop.personas import PersonasSearchResultList, Personas
+        from pages.desktop.themes import Themes, ThemesSearchResultList
+        if isinstance(self, (Collections, CollectionSearchResultList)):
+            return self.CollectionsSearchResultItem(self.testsetup,  elements[lookup])
+        elif isinstance(self, (Personas, PersonasSearchResultList)):
+            return self.PersonasSearchResultItem(self.testsetup,  elements[lookup])
+        elif isinstance(self, (Themes, ThemesSearchResultList)):
+            return self.ThemesSearchResultItem(self.testsetup,  elements[lookup])
+        else:
+            return self.SearchResultItem(self.testsetup, elements[lookup])
 
     @property
     def results(self):
@@ -115,5 +126,15 @@ class SearchResultList(Base):
 
         def click_result(self):
             self._root_element.find_element(*self._name_locator).click()
+            from pages.desktop.collections import Collection, CollectionSearchResultList
+            from pages.desktop.personas import PersonasDetail, PersonasSearchResultList
+            from pages.desktop.themes import Theme, ThemesSearchResultList
             from pages.desktop.details import Details
-            return Details(self.testsetup)
+            if isinstance(self, CollectionSearchResultList.CollectionsSearchResultItem):
+                return Collection(self.testsetup)
+            elif isinstance(self, PersonasSearchResultList.PersonasSearchResultItem):
+                return PersonasDetail(self.testsetup)
+            elif isinstance(self, ThemesSearchResultList.ThemesSearchResultItem):
+                return Theme(self.testsetup)
+            else:
+                return Details(self.testsetup)
