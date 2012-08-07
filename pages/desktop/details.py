@@ -412,8 +412,10 @@ class Details(Base):
         def click_image(self, image_no=0):
             images = self.selenium.find_elements(*self._image_locator)
             images[image_no].find_element(*self._link_locator).click()
+
             from pages.desktop.regions.image_viewer import ImageViewer
             image_viewer = ImageViewer(self.testsetup)
+            WebDriverWait(self.selenium, 10).until(lambda s: image_viewer.is_visible)
             return image_viewer
 
         def image_title(self, image_no):
