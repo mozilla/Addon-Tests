@@ -8,6 +8,7 @@ import re
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.support.ui import WebDriverWait
 
 from pages.page import Page
 from pages.desktop.base import Base
@@ -41,7 +42,7 @@ class Home(Base):
 
     _extensions_menu_link = (By.CSS_SELECTOR, "#extensions > a")
 
-    _promo_box_locator = (By.CSS_SELECTOR, "section#promos")
+    _promo_box_locator = (By.ID, "promos")
 
     _up_and_coming_locator = (By.ID, "upandcoming")
 
@@ -50,6 +51,7 @@ class Home(Base):
         Base.__init__(self, testsetup)
         if open_url:
             self.selenium.get(self.base_url)
+        WebDriverWait(self.selenium, self.timeout).until(lambda s: s.find_element(*self._promo_box_locator).size['height'] == 271)
 
     def hover_over_addons_home_title(self):
         home_item = self.selenium.find_element(*self._amo_logo_link_locator)
