@@ -75,15 +75,21 @@ class Island(Page):
         _next_locator = (By.CSS_SELECTOR, 'a.next')
         _prev_locator = (By.CSS_SELECTOR, 'a.prev')
         _dot_locator = (By.CSS_SELECTOR, 'a.dot')
+        _footer_locator = (By.ID, 'footer')
 
         def __init__(self, testsetup, elment):
             Page.__init__(self, testsetup)
             self._root = elment
 
+        def click_footer(self):
+            self.selenium.find_element(*self._footer_locator).click()
+
         def next(self):
+            self.click_footer()
             self._root.find_element(*self._next_locator).click()
 
         def prev(self):
+            self.click_footer()
             self._root.find_element(*self._prev_locator).click()
 
         @property
