@@ -6,6 +6,7 @@
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.common.exceptions import NoSuchElementException
 
 from pages.page import Page
 from pages.desktop.base import Base
@@ -112,7 +113,11 @@ class DiscoveryPane(Base):
 
         @property
         def header_name(self):
-            return self._root_element.find_element(*self._header_text_locator).text
+            try:
+                self._root_element.find_element(*self._header_text_locator)
+                return self._root_element.find_element(*self._header_text_locator).text
+            except NoSuchElementException:
+                return ''
 
         def click_next(self):
             self.selenium.find_element(*self._next_slider_locator).click()
