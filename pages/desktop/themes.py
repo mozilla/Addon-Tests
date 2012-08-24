@@ -128,7 +128,7 @@ class Themes(Base):
 
         def _move_to_theme_flyout(self):
             # Due to the grid like movement of the mouse and overlapping of hover cards
-            # sometimes the wrong hovercar can stick open. First we move the mouse to
+            # sometimes the wrong hovercard can stick open. First we move the mouse to
             # a location below the hover then move up to ensure we hover on the correct one
             ActionChains(self.selenium).\
                 move_to_element_with_offset(self._root_element, 200, 10).\
