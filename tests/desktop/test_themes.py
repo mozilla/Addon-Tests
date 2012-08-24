@@ -196,11 +196,11 @@ class TestThemes:
 
         for theme in themes:
             if theme.is_incompatible:
-                Assert.true(theme.is_incompatible_flag_present)
+                Assert.true(theme.is_incompatible_flag_visible)
                 Assert.contains('Not available',
-                             theme.not_compatible_flag_text)
+                             theme.not_available_flag_text)
             else:
-                Assert.false(theme.is_incompatible_flag_present)
+                Assert.false(theme.is_incompatible_flag_visible)
 
     @pytest.mark.native
     @pytest.mark.nondestructive

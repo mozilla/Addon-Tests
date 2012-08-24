@@ -117,36 +117,49 @@ class Themes(Base):
 
     class Theme(Page):
 
-        _not_compatible_locator = (By.CSS_SELECTOR, "div.hovercard > span.notavail")
-        _incompatibility_locator = (By.CSS_SELECTOR, "div.hovercard.incompatible > div.more > div.install-shell > div.extra > span.notavail")
+        _is_incompatible_locator = (By.CSS_SELECTOR, "div.hovercard > span.notavail")
+        _not_available_locator = (By.CSS_SELECTOR, "div.hovercard.incompatible > div.more > div.install-shell > div.extra > span.notavail")
         _hovercard_locator = (By.CSS_SELECTOR, "div.hovercard")
+        _more_flyout_locator = (By.CSS_SELECTOR, 'div.more')
 
         def __init__(self, testsetup, element):
             Page.__init__(self, testsetup)
             self._root_element = element
 
         def _move_to_theme_flyout(self):
+            # Due to the grid like movement of the mouse and overlapping of hover cards
+            # sometimes the wrong hovercard can stick open. First we move the mouse to
+            # a location below the hover then move up to ensure we hover on the correct one
             ActionChains(self.selenium).\
+                move_to_element_with_offset(self._root_element, 200, 10).\
                 move_to_element(self._root_element).\
                 perform()
 
         @property
+        def is_flyout_visible(self):
+            return self._root_element.find_element(*self._more_flyout_locator).is_displayed()
+
+        @property
         def is_incompatible(self):
-            self._move_to_theme_flyout()
             return 'incompatible' in self._root_element.find_element(*self._hovercard_locator).get_attribute('class')
 
         @property
-        def not_compatible_flag_text(self):
+        def not_available_flag_text(self):
+            # This refers to the red 'not available for Firefox x' text inside the flyout
+            # We need to move the mouse to expose the flyout so we can see the text
             self._move_to_theme_flyout()
-            return self._root_element.find_element(*self._incompatibility_locator).text
+            if not self.is_flyout_visible:
+                raise Exception('Flyout did not expand, possible mouse focus/ActionChain issue')
+            return self._root_element.find_element(*self._not_available_locator).text
 
         @property
-        def is_incompatible_flag_present(self):
+        def is_incompatible_flag_visible(self):
+            # This refers to the grey 'This theme is incompatible' text on the panel
+
             from selenium.common.exceptions import NoSuchElementException
             self.selenium.implicitly_wait(0)
             try:
-                self._root_element.find_element(*self._not_compatible_locator)
-                return True
+                return self._root_element.find_element(*self._is_incompatible_locator).is_displayed()
             except NoSuchElementException:
                 return False
             finally:
