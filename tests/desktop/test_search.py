@@ -261,7 +261,7 @@ class TestSearch:
             # ('Add-ons for Mobile', 'fire', 'Extensions')
             # ('Dictionaries & Language Packs', 'a', 'Dictionaries'),
         ])
-    def test_searching_for_addon_type_returns_results_of_correct_type(self, mozwebqa, 
+    def test_searching_for_addon_type_returns_results_of_correct_type(self, mozwebqa,
         addon_type, term, breadcrumb_component):
         """
         Test for Litmus 17350, 17349, 17352
@@ -270,6 +270,9 @@ class TestSearch:
         https://litmus.mozilla.org/show_test.cgi?id=17352
         """
         amo_home_page = Home(mozwebqa)
+        if (addon_type == 'Collections'):
+            pytest.xfail(reason='Bug 787935 No results displayed when searching for collections')
+
         amo_addon_type_page = amo_home_page.header.site_navigation_menu(addon_type).click()
         search_results = amo_addon_type_page.search_for(term)
 
