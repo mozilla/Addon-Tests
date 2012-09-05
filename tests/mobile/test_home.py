@@ -20,6 +20,7 @@ class TestHome:
                                'Photos, Music & Videos', 'Privacy & Security', 'Shopping', 'Social & Communication',
                                'Tabs', 'Web Development', 'Other']
 
+    @pytest.mark.xfail(reason='Bug 788152 - View mobile site\View full site links are not working as expected')
     @pytest.mark.nondestructive
     def test_that_checks_the_desktop_version_link(self, mozwebqa):
         home = Home(mozwebqa)
