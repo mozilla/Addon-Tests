@@ -314,3 +314,29 @@ class TestHome:
         featured_extension_page = home_page.click_featured_extensions_see_all_link()
         Assert.true(featured_extension_page.is_the_current_page)
         Assert.true(featured_extension_page.get_url_current_page().endswith('/extensions/?sort=featured'))
+
+    @pytest.mark.litmus([25792])
+    @pytest.mark.nondestructive
+    def test_that_checks_all_categories_side_navigation(self, mozwebqa):
+        """
+        Test for Litmus 25792.
+        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25792
+        """
+        home_page = Home(mozwebqa)
+        category_region = home_page.click_to_category()
+
+        Assert.equal('CATEGORIES', category_region.categories_side_navigation_header_text)
+        Assert.equal('Alerts & Updates', category_region.categories_alert_updates_header_text)
+        Assert.equal('Appearance', category_region.categories_appearance_header_text)
+        Assert.equal('Bookmarks', category_region.categories_bookmark_header_text)
+        Assert.equal('Download Management', category_region.categories_download_management_header_text)
+        Assert.equal('Feeds, News & Blogging', category_region.categories_feed_news_blog_header_text)
+        Assert.equal('Games & Entertainment', category_region.categories_games_entertainment_header_text)
+        Assert.equal('Language Support', category_region.categories_language_support_header_text)
+        Assert.equal('Photos, Music & Videos', category_region.categories_photo_music_video_header_text)
+        Assert.equal('Privacy & Security', category_region.categories_privacy_security_header_text)
+        Assert.equal('Shopping', category_region.categories_shopping_header_text)
+        Assert.equal('Social & Communication', category_region.categories_social_communication_header_text)
+        Assert.equal('Tabs', category_region.categories_tabs_header_text)
+        Assert.equal('Web Development', category_region.categories_web_development_header_text)
+        Assert.equal('Other', category_region.categories_other_header_text)
