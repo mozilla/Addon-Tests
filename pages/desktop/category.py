@@ -27,14 +27,9 @@ class Category(Base):
     _categories_web_development_link_locator = (By.CSS_SELECTOR, "#side-categories > li:nth-of-type(13) > a")
     _categories_other_link_locator = (By.CSS_SELECTOR, "#side-categories > li:nth-of-type(14) > a")
 
-
     @property
     def categories_side_navigation_header_text(self):
         return self.selenium.find_element(*self._categories_side_navigation_header_locator).text
-
-    @property
-    def category_header_title(self):
-        return self.selenium.find_element(*self._category_title_locator).text
 
     @property
     def categories_alert_updates_header_text(self):
