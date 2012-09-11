@@ -37,7 +37,7 @@ class Details(Base):
     _other_applications_locator = (By.ID, "other-apps")
     _compatibility_locator = (By.CSS_SELECTOR, '.meta.compat')
     _review_link_locator = (By.ID, 'reviews-link')
-    _daily_users_link_locator = (By.ID, 'daily-users')
+    _daily_users_link_locator = (By.CSS_SELECTOR, '#daily-users > a.stats')
 
     _about_addon_locator = (By.CSS_SELECTOR, "section.primary > h2")
     _version_information_locator = (By.ID, "detail-relnotes")
