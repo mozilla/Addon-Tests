@@ -323,7 +323,7 @@ class TestHome:
         https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25792
         """
         home_page = Home(mozwebqa)
-        category_region = home_page.click_to_category()
+        category_region = home_page.get_category()
 
         Assert.equal('CATEGORIES', category_region.categories_side_navigation_header_text)
         Assert.equal('Alerts & Updates', category_region.categories_alert_updates_header_text)
