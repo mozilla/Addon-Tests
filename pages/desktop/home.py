@@ -75,7 +75,7 @@ class Home(Base):
         from pages.desktop.extensions import ExtensionsHome
         return ExtensionsHome(self.testsetup)
 
-    def click_to_category(self):
+    def get_category(self):
         from pages.desktop.category import Category
         return Category(self.testsetup)
 
