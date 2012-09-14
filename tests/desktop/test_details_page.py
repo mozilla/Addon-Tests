@@ -108,7 +108,6 @@ class TestDetails:
         Assert.equal(details_page.part_of_collections_header, 'Part of these Collections')
         Assert.true(len(details_page.part_of_collections) > 0)
 
-    @pytest.mark.xfail(reason='Bug 789875 - [dev]Clicking "Add-on home page" returns 403')
     @pytest.mark.nondestructive
     def test_that_external_link_leads_to_addon_website(self, mozwebqa):
         """
