@@ -1,5 +1,6 @@
 *.swp
 *.pyc
 *.komodoproject
+*.idea
 results*
 .DS_store
