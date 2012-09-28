@@ -233,7 +233,11 @@ class Base(Page):
             return self.is_element_visible(*self._register_locator)
 
         def click_logout(self):
-            self.selenium.find_element(*self._logout_locator).click()
+            hover_element = self.selenium.find_element(*self._account_controller_locator)
+            click_element = self.selenium.find_element(*self._logout_locator)
+            ActionChains(self.selenium).move_to_element(hover_element).\
+                move_to_element(click_element).\
+                click().perform()
 
         def click_edit_profile(self):
             item_locator = (By.CSS_SELECTOR, " li:nth-child(2) a")
