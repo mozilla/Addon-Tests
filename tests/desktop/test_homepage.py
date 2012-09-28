@@ -275,7 +275,6 @@ class TestHome:
             up_and_coming_island.pager.prev()
 
     @pytest.mark.native
-    @pytest.mark.xfail(reason = "very flaky, see refactor task: https://www.pivotaltracker.com/story/show/28494843")
     @pytest.mark.nondestructive
     def test_addons_author_link(self, mozwebqa):
         """
