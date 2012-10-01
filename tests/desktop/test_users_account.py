@@ -17,6 +17,7 @@ class TestAccounts:
 
     @pytest.mark.nondestructive
     @pytest.mark.login
+    @pytest.mark.native
     def test_user_can_login_and_logout_using_normal_login(self, mozwebqa):
         """
         Test for Litmus 7857 and 4859.
