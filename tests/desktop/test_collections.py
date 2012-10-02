@@ -28,7 +28,6 @@ class TestCollections:
         Assert.equal(featured_collections_page.default_selected_tab, "Featured")
 
     @pytest.mark.login
-    @pytest.mark.xfail(reason="bug 779116 - Cannot create new collection")
     def test_create_and_delete_collection(self, mozwebqa):
 
         home_page = Home(mozwebqa)
