@@ -1,3 +1,3 @@
 [submodule "browserid"]
 	path = browserid
-	url = git://github.com/davehunt/bidpom.git
+	url = git://github.com/mozilla/bidpom.git
