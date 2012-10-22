@@ -11,6 +11,11 @@ from pages.page import Page
 class Base(Page):
 
     @property
+    def scroll_down(self):
+        """used as a workaround for selenium scroll issue"""
+        self.selenium.execute_script('window.scrollTo(0,Math.max(document.documentElement.scrollHeight + document.body.scrollHeight,document.documentElement.clientHeight));')
+
+    @property
     def footer(self):
         return Base.Footer(self.testsetup)
 
