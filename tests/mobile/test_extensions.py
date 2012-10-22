@@ -14,7 +14,6 @@ class TestExtensions:
     sort_options = ['Featured', 'Most Users', 'Top Rated', 'Newest', 'Name', 'Weekly Downloads', 'Recently Updated', 'Up & Coming']
 
     @pytest.mark.nondestructive
-    @pytest.mark.xfail(reason='selenium issue http://code.google.com/p/selenium/issues/detail?id=3492')
     def test_sort_by_region(self, mozwebqa):
 
         home = Home(mozwebqa)
