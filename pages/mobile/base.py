@@ -11,6 +11,11 @@ from pages.page import Page
 class Base(Page):
 
     @property
+    def scroll_down(self):
+        """used as a workaround for selenium scroll issue"""
+        self.selenium.execute_script('window.scrollTo(0,Math.max(document.documentElement.scrollHeight + document.body.scrollHeight,document.documentElement.clientHeight));')
+
+    @property
     def footer(self):
         return Base.Footer(self.testsetup)
 
@@ -19,16 +24,11 @@ class Base(Page):
         return Base.HeaderRegion(self.testsetup)
 
     class Footer(Page):
-        _footer_locator = (By.ID, 'footer')
         _desktop_version_locator = (By.CSS_SELECTOR, 'a.desktop-link')
         _other_language_locator = (By.CSS_SELECTOR, '#language')
         _other_language_text_locator = (By.CSS_SELECTOR, '#lang_form > label')
         _privacy_locator = (By.CSS_SELECTOR, '#footer-links > a:nth-child(1)')
         _legal_locator = (By.CSS_SELECTOR, '#footer-links > a:nth-child(2)')
-
-        def click_footer(self):
-            """used as a workaround for selenium scroll issue"""
-            self.selenium.find_element(*self._footer_locator).click()
 
         def click_desktop_version(self):
             self.selenium.find_element(*self._desktop_version_locator).click()
