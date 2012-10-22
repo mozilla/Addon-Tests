@@ -89,6 +89,9 @@ class TestHome:
         home = Home(mozwebqa)
         Assert.true(home.is_the_current_page)
         Assert.equal(home.default_selected_tab_text, 'Featured')
+
+        home.footer.click_footer() # workaround for selenium scroll issue
+
         featured_extensions = home.click_all_featured_addons_link()
 
         Assert.equal(featured_extensions.title, 'MOBILE ADD-ONS')
