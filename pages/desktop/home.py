@@ -38,7 +38,7 @@ class Home(Base):
 
     _featured_extensions_title_locator = (By.CSS_SELECTOR, '#featured-extensions > h2')
     _featured_extensions_see_all_locator = (By.CSS_SELECTOR, '#featured-extensions > h2 > a')
-    _featured_extensions_elements_locator = (By.CSS_SELECTOR, '#featured-extensions section:nth-child(1) > li')
+    _featured_extensions_elements_locator = (By.CSS_SELECTOR, '#featured-extensions section:nth-child(1) > li > div')
 
     _extensions_menu_link = (By.CSS_SELECTOR, "#extensions > a")
 
