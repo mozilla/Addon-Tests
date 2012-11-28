@@ -43,6 +43,7 @@ class Details(Base):
     _version_information_locator = (By.ID, "detail-relnotes")
     _version_information_heading_locator = (By.CSS_SELECTOR, "#detail-relnotes > h2")
     _version_information_heading_link_locator = (By.CSS_SELECTOR, "#detail-relnotes > h2 > a")
+    _version_information_button_locator = (By.CSS_SELECTOR, "#detail-relnotes > h2 > a > b")
     _version_information_content_locator = (By.CSS_SELECTOR, "#detail-relnotes > div.content")
     _release_version_locator = (By.CSS_SELECTOR, "div.info > h3 > a")
     _source_code_license_information_locator = (By.CSS_SELECTOR, ".source > li > a")
@@ -457,7 +458,7 @@ class Details(Base):
         WebDriverWait(self.selenium, 10).until(lambda s: (self.selenium.execute_script('return window.pageYOffset')) > 1000)
 
     def expand_version_information(self):
-        self.selenium.find_element(*self._version_information_heading_link_locator).click()
+        self.selenium.find_element(*self._version_information_button_locator).click()
         WebDriverWait(self.selenium, self.timeout).until(
             lambda s: self.is_version_information_section_expanded)
 
