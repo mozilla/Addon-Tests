@@ -11,14 +11,14 @@ from pages.page import Page
 
 class FilterBase(Page):
 
-    _results_count_tag = (By.CSS_SELECTOR, 'p.cnt')
+    _results_count_tag = (By.CSS_SELECTOR, 'p.cnt b')
 
     def tag(self, lookup):
         return self.Tag(self.testsetup, lookup)
 
     @property
     def results_count(self):
-        return self.selenium.find_element(*self._results_count_tag).text.split()[0]
+        return self.selenium.find_element(*self._results_count_tag).text
 
     class FilterResults(Page):
 
