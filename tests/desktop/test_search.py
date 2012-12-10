@@ -147,6 +147,7 @@ class TestSearch:
 
     @pytest.mark.native
     @pytest.mark.nondestructive
+    @pytest.mark.xfail(reason='https://bugzilla.mozilla.org/show_bug.cgi?id=819911 - [dev]Sorting by weekly downloads is broken')
     def test_sorting_by_downloads(self, mozwebqa):
         """
         Test for Litmus 17342.
