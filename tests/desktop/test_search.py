@@ -192,6 +192,7 @@ class TestSearch:
 
     @pytest.mark.native
     @pytest.mark.nondestructive
+    @pytest.mark.xfail(reason='https://bugzilla.mozilla.org/show_bug.cgi?id=819910 - [dev] Sorting by most users is broken')
     def test_sorting_by_number_of_most_users(self, mozwebqa):
         """
         Test for Litmus 24867.
