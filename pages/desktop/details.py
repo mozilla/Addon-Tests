@@ -82,7 +82,7 @@ class Details(Base):
 
     _development_channel_locator = (By.CSS_SELECTOR, "#beta-channel")
     _development_channel_toggle = (By.CSS_SELECTOR, '#beta-channel a.toggle')
-    _development_channel_install_button_locator = (By.CSS_SELECTOR, '#beta-channel p.install-button a.button')
+    _development_channel_install_button_locator = (By.CSS_SELECTOR, '#beta-channel p.install-button a.button.caution')
     _development_channel_title_locator = (By.CSS_SELECTOR, "#beta-channel h2")
     _development_channel_content_locator = (By.CSS_SELECTOR, "#beta-channel > div.content")
     _development_version_locator = (By.CSS_SELECTOR, '.beta-version')
