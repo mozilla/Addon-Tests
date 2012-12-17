@@ -192,7 +192,7 @@ class TestSearch:
 
     @pytest.mark.native
     @pytest.mark.nondestructive
-        def test_sorting_by_number_of_most_users(self, mozwebqa):
+    def test_sorting_by_number_of_most_users(self, mozwebqa):
         """
         Test for Litmus 24867.
         https://litmus.mozilla.org/show_test.cgi?id=24867
