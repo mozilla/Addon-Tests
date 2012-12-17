@@ -17,7 +17,6 @@ class TestPaypal:
 
     addon_name = 'Firebug'
 
-    @pytest.mark.xfail(reason="Bug 802142 - 'Make contribution' to an add-on doesn't load the PayPal frame and freezes page")
     @pytest.mark.login
     def test_that_user_can_contribute_to_an_addon(self, mozwebqa):
         """Test that checks the Contribute button for an add-on using PayPal."""
@@ -41,7 +40,6 @@ class TestPaypal:
         payment_popup.close_paypal_popup()
         Assert.true(addon_page.is_the_current_page)
 
-    @pytest.mark.xfail(reason="Bug 802142 - 'Make contribution' to an add-on doesn't load the PayPal frame and freezes page")
     def test_that_user_can_make_a_contribution_without_logging_into_amo(self, mozwebqa):
         """Test that checks if the user is able to make a contribution without logging in to AMO."""
         addon_page = Details(mozwebqa, self.addon_name)
