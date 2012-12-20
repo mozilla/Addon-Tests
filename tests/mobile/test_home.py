@@ -13,7 +13,7 @@ class TestHome:
 
     expected_menu_items = ['MOZILLA FIREFOX', 'FEATURES', 'DESKTOP', 'ADD-ONS', 'SUPPORT', 'VISIT MOZILLA']
 
-    expected_tabs = ['Featured', 'Popular', 'Categories']
+    expected_tabs = ['Featured', 'Categories', 'Personas']
 
     expected_category_items = ['Alerts & Updates', 'Appearance', 'Bookmarks', 'Download Management',
                                'Feeds, News & Blogging', 'Games & Entertainment', 'Language Support',
@@ -90,7 +90,7 @@ class TestHome:
         Assert.true(home.is_the_current_page)
         Assert.equal(home.default_selected_tab_text, 'Featured')
 
-        home.scroll_down # workaround for selenium scroll issue
+        home.scroll_down  # workaround for selenium scroll issue
 
         featured_extensions = home.click_all_featured_addons_link()
 
