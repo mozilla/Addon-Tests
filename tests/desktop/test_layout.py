@@ -77,7 +77,7 @@ class TestAmoLayout:
 
     @pytest.mark.native
     @pytest.mark.nondestructive
-    @pytest.mark.parametrize('expected_app', ["Thunderbird", "Mobile", "SeaMonkey"])
+    @pytest.mark.parametrize('expected_app', ["Thunderbird", "Firefox for Android", "SeaMonkey"])
     def test_the_applications_listed_in_other_applications(self, mozwebqa, expected_app):
         """
         Test for Litmus 25740.
@@ -89,7 +89,7 @@ class TestAmoLayout:
                 "%s link not found in the Other Applications menu" % expected_app)
 
     @pytest.mark.nondestructive
-    def test_the_search_field_placeholder_and_serch_button(self, mozwebqa):
+    def test_the_search_field_placeholder_and_search_button(self, mozwebqa):
         """
         Test for Litmus 4826 and 25767.
         https://litmus.mozilla.org/show_test.cgi?id=4826
