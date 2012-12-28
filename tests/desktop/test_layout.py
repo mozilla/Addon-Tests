@@ -77,7 +77,7 @@ class TestAmoLayout:
 
     @pytest.mark.native
     @pytest.mark.nondestructive
-    @pytest.mark.parametrize('expected_app', ["Thunderbird", "Firefox for Android", "SeaMonkey"])
+    @pytest.mark.parametrize('expected_app', ["Thunderbird", "Android", "SeaMonkey"])
     def test_the_applications_listed_in_other_applications(self, mozwebqa, expected_app):
         """
         Test for Litmus 25740.
