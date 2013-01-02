@@ -5,6 +5,8 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+
 from pages.mobile.base import Base
 from pages.page import Page
 
@@ -85,7 +87,9 @@ class Home(Base):
     def click_all_featured_addons_link(self):
         self.selenium.find_element(*self._all_featured_addons_locator).click()
         from pages.mobile.extensions import Extensions
-        return Extensions(self.testsetup)
+        extensions_page = Extensions(self.testsetup)
+        WebDriverWait(self.selenium, 10).until(lambda s: self.is_element_visible(*extensions_page._sort_by_locator))
+        return extensions_page
 
     @property
     def default_selected_tab_text(self):
