@@ -43,7 +43,7 @@ class Base(Page):
 
     @property
     def page_title(self):
-        WebDriverWait(self.selenium, 10).until(lambda s: self.selenium.title)
+        WebDriverWait(self.selenium, self.timeout).until(lambda s: self.selenium.title)
         return self.selenium.title
 
     @property

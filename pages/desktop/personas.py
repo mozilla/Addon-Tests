@@ -37,7 +37,7 @@ class Personas(Base):
         """Clicks on the persona with the given index in the page."""
         self.selenium.find_elements(*self._personas_locator)[index].click()
         persona_detail = PersonasDetail(self.testsetup)
-        WebDriverWait(self.selenium, 10).until(lambda s: persona_detail.is_title_visible)
+        WebDriverWait(self.selenium, self.timeout).until(lambda s: persona_detail.is_title_visible)
         return persona_detail
 
     def open_persona_detail_page(self, persona_key):
@@ -124,7 +124,7 @@ class PersonasBrowse(Base):
     def is_the_current_page(self):
         # This overrides the method in the Page super class.
         Assert.true(self.is_element_present(*self._personas_grid_locator),
-            'Expected the current page to be the personas browse page.')
+                    'Expected the current page to be the personas browse page.')
         return True
 
     @property
@@ -138,9 +138,9 @@ class PersonasBrowse(Base):
         """Returns the label of the currently selected sort option."""
         return self.selenium.find_element(*self._selected_sort_by_locator).text
 
+
 class PersonasSearchResultList(SearchResultList):
     _results_locator = (By.CSS_SELECTOR, 'ul.personas-grid div.persona-small')
 
     class PersonasSearchResultItem(SearchResultList.SearchResultItem):
         _name_locator = (By.CSS_SELECTOR, 'h6 > a')
-

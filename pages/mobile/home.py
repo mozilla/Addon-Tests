@@ -88,7 +88,7 @@ class Home(Base):
         self.selenium.find_element(*self._all_featured_addons_locator).click()
         from pages.mobile.extensions import Extensions
         extensions_page = Extensions(self.testsetup)
-        WebDriverWait(self.selenium, 10).until(lambda s: self.is_element_visible(*extensions_page._sort_by_locator))
+        WebDriverWait(self.selenium, self.timeout).until(lambda s: self.is_element_visible(*extensions_page._sort_by_locator))
         return extensions_page
 
     @property
