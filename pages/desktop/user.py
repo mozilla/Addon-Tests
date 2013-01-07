@@ -43,9 +43,10 @@ class Login(Base):
         pop_up.sign_in(credentials['email'], credentials['password'])
         WebDriverWait(self.selenium, 20).until(lambda s: s.find_element(*self._logout_locator))
 
+
 class ViewProfile(Base):
 
-    _page_title = 'User Info for Test :: Add-ons for Firefox'
+    _page_title = 'User Info for amo.testing :: Add-ons for Firefox'
 
     _about_locator = (By.CSS_SELECTOR, "div.island > section.primary > h2")
     _email_locator = (By.CSS_SELECTOR, 'a.email')
@@ -104,6 +105,7 @@ class EditProfile(Base):
 
     def click_update_account(self):
         self.selenium.find_element(*self._update_account_locator).click()
+        WebDriverWait(self.selenium, self.timeout).until(lambda s: self.update_message == "Profile Updated")
 
     def change_hide_email_state(self):
         self.selenium.find_element(*self._hide_email_checkbox).click()
@@ -111,7 +113,7 @@ class EditProfile(Base):
     @property
     def profile_fields(self):
         return [self.ProfileSection(self.testsetup, web_element)
-                        for web_element in self.selenium.find_elements(*self._profile_fields_locator)]
+                for web_element in self.selenium.find_elements(*self._profile_fields_locator)]
 
     @property
     def update_message(self):
