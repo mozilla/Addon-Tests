@@ -259,6 +259,9 @@ class Base(Page):
                 click().perform()
 
             from pages.desktop.user import ViewProfile
+            view_profile_page = ViewProfile(self.testsetup)
+            # Force a wait for the view_profile_page
+            view_profile_page.is_the_current_page
             return ViewProfile(self.testsetup)
 
         def click_my_collections(self):
