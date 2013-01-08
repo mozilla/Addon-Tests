@@ -31,7 +31,7 @@ class Paginator(Page):
 
     def _wait_for_results_refresh(self):
         # On pages that do not have ajax refresh this wait will have no effect.
-        WebDriverWait(self.selenium, 10).until(lambda s: not self.is_element_present(*self._updating_locator))
+        WebDriverWait(self.selenium, self.timeout).until(lambda s: not self.is_element_present(*self._updating_locator))
 
     @property
     def page_number(self):

@@ -44,7 +44,7 @@ class Sorter(Page):
             ActionChains(self.selenium).move_to_element(hover_element).\
                 move_to_element(click_element).\
                 click().perform()
-        WebDriverWait(self.selenium, 10).until(lambda s: not self.is_element_present(*self._updating_locator))
+        WebDriverWait(self.selenium, self.timeout).until(lambda s: not self.is_element_present(*self._updating_locator))
 
     @property
     def sorted_by(self):

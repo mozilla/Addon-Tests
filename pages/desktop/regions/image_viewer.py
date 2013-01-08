@@ -51,7 +51,7 @@ class ImageViewer(Page):
 
     def close(self):
         self.selenium.find_element(*self._close_locator).click()
-        WebDriverWait(self.selenium, 10).until(lambda s: not self.is_element_visible(*self._image_viewer))
+        WebDriverWait(self.selenium, self.timeout).until(lambda s: not self.is_element_visible(*self._image_viewer))
 
     @property
     def caption(self):
