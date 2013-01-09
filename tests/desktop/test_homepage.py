@@ -85,7 +85,7 @@ class TestHome:
         https://litmus.mozilla.org/show_test.cgi?id=29698
         """
         home_page = Home(mozwebqa)
-        Assert.equal(home_page.featured_personas_title, u'Featured Personas See all \xbb', 'Featured Personas region title doesn\'t match')
+        Assert.equal(home_page.featured_personas_title, u'Featured Themes See all \xbb', 'Featured Themes region title doesn\'t match')
         Assert.less_equal(home_page.featured_personas_count, 6)
 
     @pytest.mark.nondestructive
