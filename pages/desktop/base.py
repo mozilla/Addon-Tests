@@ -142,7 +142,7 @@ class Base(Page):
 
         #other applications
         _other_applications_locator = (By.ID, "other-apps")
-        _other_applications_menu_locator = (By.CLASS_NAME, "other-apps")
+        _other_applications_menu_locator = (By.CSS_SELECTOR, "[class='other-apps']")
 
         #Search box
         _search_button_locator = (By.CSS_SELECTOR, ".search-button")
