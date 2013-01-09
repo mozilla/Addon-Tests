@@ -29,9 +29,9 @@ class Home(Base):
     _explore_popular_link_locator = (By.CSS_SELECTOR, "#side-nav .s-users a")
     _explore_top_rated_link_locator = (By.CSS_SELECTOR, "#side-nav .s-rating a")
 
-    _featured_personas_see_all_link = (By.CSS_SELECTOR, "#featured-personas h2 a")
-    _featured_personas_title_locator = (By.CSS_SELECTOR, "#featured-personas h2")
-    _featured_personas_items_locator = (By.CSS_SELECTOR, "#featured-personas li")
+    _featured_personas_see_all_link = (By.CSS_SELECTOR, "#featured-themes h2 a")
+    _featured_personas_title_locator = (By.CSS_SELECTOR, "#featured-themes h2")
+    _featured_personas_items_locator = (By.CSS_SELECTOR, "#featured-themes li")
 
     _featured_collections_locator = (By.CSS_SELECTOR, "#featured-collections h2")
     _featured_collections_elements_locator = (By.CSS_SELECTOR, "#featured-collections section:nth-child(1) li")
