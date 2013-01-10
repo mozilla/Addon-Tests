@@ -17,20 +17,20 @@ class DiscoveryPane(Base):
     _what_are_addons_text_locator = (By.CSS_SELECTOR, '#intro p')
     _mission_section_text_locator = (By.CSS_SELECTOR, '#mission > p')
     _learn_more_locator = (By.ID, 'learn-more')
-    _mozilla_org_link_locator = (By.CSS_SELECTOR, "#mission a")
-    _download_count_text_locator = (By.ID, "download-count")
-    _personas_section_locator = (By.ID, "featured-themes")
+    _mozilla_org_link_locator = (By.CSS_SELECTOR, '#mission a')
+    _download_count_text_locator = (By.ID, 'download-count')
+    _personas_section_locator = (By.ID, 'featured-themes')
     _personas_see_all_link = (By.CSS_SELECTOR, ".all[href='/en-US/firefox/themes/']")
-    _personas_locator = (By.CSS_SELECTOR, "#featured-themes ul li")
-    _more_ways_section_locator = (By.ID, "more-ways")
-    _more_ways_addons_locator = (By.ID, "more-addons")
-    _more_ways_personas_locator = (By.ID, "more-personas")
+    _personas_locator = (By.CSS_SELECTOR, '#featured-themes ul li')
+    _more_ways_section_locator = (By.ID, 'more-ways')
+    _more_ways_addons_locator = (By.ID, 'more-addons')
+    _more_ways_personas_locator = (By.ID, 'more-personas')
     _up_and_coming_item = (By.XPATH, "//section[@id='up-and-coming']/ul/li/a[@class='addon-title']")
-    _logout_link_locator = (By.CSS_SELECTOR, "#logout > a")
+    _logout_link_locator = (By.CSS_SELECTOR, '#logout > a')
 
-    _carousel_locator = (By.CSS_SELECTOR, "#promos .slider li.panel")
+    _carousel_locator = (By.CSS_SELECTOR, '#promos .slider li.panel')
 
-    _featured_addons_base_locator = (By.CSS_SELECTOR, "#featured-addons .addon-title ")
+    _featured_addons_base_locator = (By.CSS_SELECTOR, '#featured-addons .addon-title ')
 
     def __init__(self, testsetup, path):
         Base.__init__(self, testsetup)
@@ -95,7 +95,7 @@ class DiscoveryPane(Base):
     def click_logout(self):
         self.selenium.find_element(*self._logout_link_locator).click()
         from pages.desktop.home import Home
-        return Home(self.testsetup, open_url = False)
+        return Home(self.testsetup, open_url=False)
 
     @property
     def sliders(self):
@@ -103,9 +103,9 @@ class DiscoveryPane(Base):
                 for web_element in self.selenium.find_elements(*self._carousel_locator)]
 
     class SliderRegion(Page):
-        _header_text_locator = (By.CSS_SELECTOR, "h2")
-        _next_slider_locator = (By.CSS_SELECTOR, "#nav-features .nav-next a")
-        _previous_slider_locator = (By.CSS_SELECTOR, "#nav-features .nav-prev a")
+        _header_text_locator = (By.CSS_SELECTOR, 'h2')
+        _next_slider_locator = (By.CSS_SELECTOR, '#nav-features .nav-next a')
+        _previous_slider_locator = (By.CSS_SELECTOR, '#nav-features .nav-prev a')
 
         def __init__(self, testsetup, element):
             Page.__init__(self, testsetup)
