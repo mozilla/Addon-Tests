@@ -18,7 +18,7 @@ class TestDiscoveryPane:
 
     #Need to get this info before run
     def basepath(self, mozwebqa):
-        return '/en-US/firefox/discovery/pane/%s/Darwin' % mozwebqa.selenium_client.browser_version
+        return '/en-US/firefox/discovery/pane/%s/Darwin' % mozwebqa.selenium.capabilities['version']
 
     @pytest.mark.nondestructive
     def test_that_users_with_less_than_3_addons_get_what_are_addons(self, mozwebqa):
@@ -45,7 +45,7 @@ class TestDiscoveryPane:
         Assert.true(expected_text in mission_text)
         Assert.true(discovery_pane.mozilla_org_link_visible())
         download_count_regex = "Add-ons downloaded: (.+)"
-        Assert.true(re.search(download_count_regex, discovery_pane.download_count) != None)
+        Assert.true(re.search(download_count_regex, discovery_pane.download_count) is not None)
 
     @pytest.mark.nondestructive
     def test_that_featured_personas_is_present_and_has_5_item(self, mozwebqa):
