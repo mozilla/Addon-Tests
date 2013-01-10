@@ -159,7 +159,7 @@ class Base(Page):
         _logout_locator = (By.CSS_SELECTOR, "li.nomenu.logout > a")
 
         _site_navigation_menus_locator = (By.CSS_SELECTOR, "#site-nav > ul > li")
-        _site_navigation_min_number_menus = 5
+        _site_navigation_min_number_menus = 4
 
         def site_navigation_menu(self, value):
             #used to access one specific menu
