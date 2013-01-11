@@ -19,12 +19,12 @@ class DiscoveryPane(Base):
     _learn_more_locator = (By.ID, 'learn-more')
     _mozilla_org_link_locator = (By.CSS_SELECTOR, '#mission a')
     _download_count_text_locator = (By.ID, 'download-count')
-    _personas_section_locator = (By.ID, 'featured-themes')
-    _personas_see_all_link = (By.CSS_SELECTOR, ".all[href='/en-US/firefox/themes/']")
-    _personas_locator = (By.CSS_SELECTOR, '#featured-themes ul li')
+    _themes_section_locator = (By.ID, 'featured-themes')
+    _themes_see_all_link = (By.CSS_SELECTOR, ".all[href='/en-US/firefox/themes/']")
+    _themes_locator = (By.CSS_SELECTOR, '#featured-themes ul li')
     _more_ways_section_locator = (By.ID, 'more-ways')
     _more_ways_addons_locator = (By.ID, 'more-addons')
-    _more_ways_personas_locator = (By.ID, 'more-personas')
+    _more_ways_full_themes_locator = (By.ID, 'more-full-themes')
     _up_and_coming_item = (By.XPATH, "//section[@id='up-and-coming']/ul/li/a[@class='addon-title']")
     _logout_link_locator = (By.CSS_SELECTOR, '#logout > a')
 
@@ -57,24 +57,24 @@ class DiscoveryPane(Base):
         return self.selenium.find_element(*self._download_count_text_locator).text
 
     @property
-    def is_personas_section_visible(self):
-        return self.is_element_visible(*self._personas_section_locator)
+    def is_themes_section_visible(self):
+        return self.is_element_visible(*self._themes_section_locator)
 
     @property
-    def personas_count(self):
-        return len(self.selenium.find_elements(*self._personas_locator))
+    def themes_count(self):
+        return len(self.selenium.find_elements(*self._themes_locator))
 
     @property
-    def is_personas_see_all_link_visible(self):
-        return self.is_element_visible(*self._personas_see_all_link)
+    def is_themes_see_all_link_visible(self):
+        return self.is_element_visible(*self._themes_see_all_link)
 
     @property
-    def first_persona(self):
-        return self.selenium.find_elements(*self._personas_locator)[0].text
+    def first_theme(self):
+        return self.selenium.find_elements(*self._themes_locator)[0].text
 
-    def click_on_first_persona(self):
-        self.selenium.find_elements(*self._personas_locator)[0].click()
-        return DiscoveryPersonasDetail(self.testsetup)
+    def click_on_first_theme(self):
+        self.selenium.find_elements(*self._themes_locator)[0].click()
+        return DiscoveryThemesDetail(self.testsetup)
 
     @property
     def more_ways_section_visible(self):
@@ -85,8 +85,8 @@ class DiscoveryPane(Base):
         return self.selenium.find_element(*self._more_ways_addons_locator).text
 
     @property
-    def see_all_themes(self):
-        return self.selenium.find_element(*self._more_ways_personas_locator).text
+    def see_all_full_themes(self):
+        return self.selenium.find_element(*self._more_ways_full_themes_locator).text
 
     @property
     def up_and_coming_item_count(self):
@@ -144,10 +144,10 @@ class DiscoveryPane(Base):
             return next_element.value_of_css_property('opacity')
 
 
-class DiscoveryPersonasDetail(Base):
+class DiscoveryThemesDetail(Base):
 
-    _persona_title = (By.CSS_SELECTOR, 'h1.addon')
+    _theme_title = (By.CSS_SELECTOR, 'h1.addon')
 
     @property
-    def persona_title(self):
-        return self.selenium.find_element(*self._persona_title).text
+    def theme_title(self):
+        return self.selenium.find_element(*self._theme_title).text

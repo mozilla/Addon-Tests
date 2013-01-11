@@ -253,9 +253,9 @@ class TestSearch:
     @pytest.mark.nondestructive
     @pytest.mark.smoke
     @pytest.mark.parametrize(('addon_type', 'term', 'breadcrumb_component'),[
-            ('Themes', 'nasa', 'Themes'),           # 17350
+            ('Full Themes', 'nasa', 'Full Themes'),           # 17350
             ('Extensions', 'fire', 'Extensions'),
-            ('Personas', 'fox', 'Personas'),        # 17349
+            ('Themes', 'fox', 'Themes'),        # 17349
             ('Collections', 'web', 'Collections'),  # 17352
             # these last two depend on the More menu
             # ('Add-ons for Mobile', 'fire', 'Extensions')

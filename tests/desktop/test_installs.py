@@ -21,9 +21,9 @@ class TestInstalls:
         """note that this test does not actually *install* the theme"""
 
         home_page = Home(mozwebqa)
-        themes_page = home_page.header.site_navigation_menu("Themes").click()
-        theme_page = themes_page.click_on_first_addon()
-        Assert.true(theme_page.install_button_exists)
+        full_themes_page = home_page.header.click_full_themes()
+        full_theme_page = full_themes_page.click_on_first_addon()
+        Assert.true(full_theme_page.install_button_exists)
 
     @pytest.mark.nondestructive
     @pytest.mark.litmus(17355)
