@@ -74,12 +74,12 @@ class TestSearch:
 
     @pytest.mark.nondestructive
     @pytest.mark.parametrize('term', [
-            # 9575
-            u'\u0421\u043b\u043e\u0432\u0430\u0440\u0438 \u042f\u043d\u0434\u0435\u043a\u0441',
-            'fox',  # 9561
-            '',     # 11759
-            '1',    # 17347
-        ])
+        # 9575
+        u'\u0421\u043b\u043e\u0432\u0430\u0440\u0438 \u042f\u043d\u0434\u0435\u043a\u0441',
+        'fox',  # 9561
+        '',     # 11759
+        '1',    # 17347
+    ])
     def test_that_various_search_terms_return_results(self, mozwebqa, term):
         """
         Test for Litmus 9575, 9561, 11759, and 17347.
@@ -252,17 +252,18 @@ class TestSearch:
     @pytest.mark.native
     @pytest.mark.nondestructive
     @pytest.mark.smoke
-    @pytest.mark.parametrize(('addon_type', 'term', 'breadcrumb_component'),[
-            ('Full Themes', 'nasa', 'Full Themes'),           # 17350
-            ('Extensions', 'fire', 'Extensions'),
-            ('Themes', 'fox', 'Themes'),        # 17349
-            ('Collections', 'web', 'Collections'),  # 17352
-            # these last two depend on the More menu
-            # ('Add-ons for Mobile', 'fire', 'Extensions')
-            # ('Dictionaries & Language Packs', 'a', 'Dictionaries'),
-        ])
-    def test_searching_for_addon_type_returns_results_of_correct_type(self, mozwebqa,
-        addon_type, term, breadcrumb_component):
+    @pytest.mark.parametrize(('addon_type', 'term', 'breadcrumb_component'), [
+        ('Full Themes', 'nasa', 'Full Themes'),           # 17350
+        ('Extensions', 'fire', 'Extensions'),
+        ('Themes', 'fox', 'Themes'),        # 17349
+        ('Collections', 'web', 'Collections'),  # 17352
+        # these last two depend on the More menu
+        # ('Add-ons for Mobile', 'fire', 'Extensions')
+        # ('Dictionaries & Language Packs', 'a', 'Dictionaries'),
+    ])
+    def test_searching_for_addon_type_returns_results_of_correct_type(
+        self, mozwebqa, addon_type, term, breadcrumb_component
+    ):
         """
         Test for Litmus 17350, 17349, 17352
         https://litmus.mozilla.org/show_test.cgi?id=17350
@@ -273,7 +274,11 @@ class TestSearch:
         if (addon_type == 'Collections'):
             pytest.xfail(reason='Bug 787935 No results displayed when searching for collections')
 
-        amo_addon_type_page = amo_home_page.header.site_navigation_menu(addon_type).click()
+        if (addon_type == 'Full Themes'):
+            # Full Themes are in a subnav, so must be clicked differently
+            amo_addon_type_page = amo_home_page.header.click_full_themes()
+        else:
+            amo_addon_type_page = amo_home_page.header.site_navigation_menu(addon_type).click()
         search_results = amo_addon_type_page.search_for(term)
 
         Assert.true(search_results.result_count > 0)

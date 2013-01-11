@@ -140,7 +140,7 @@ class ThemesBrowse(Base):
 
 
 class ThemesSearchResultList(SearchResultList):
-    _results_locator = (By.CSS_SELECTOR, 'ul.personas-grid div.theme-small')
+    _results_locator = (By.CSS_SELECTOR, 'ul.personas-grid div.persona-small')
 
     class ThemesSearchResultItem(SearchResultList.SearchResultItem):
         _name_locator = (By.CSS_SELECTOR, 'h6 > a')

@@ -25,8 +25,8 @@ class SearchResultList(Base):
     def __init__(self, testsetup):
         Base.__init__(self, testsetup)
         try:  # the result could legitimately be zero, but give it time to make sure
-            WebDriverWait(self.selenium, self.timeout).until(lambda s:
-                len(s.find_elements(*self._results_locator)) > 0
+            WebDriverWait(self.selenium, self.timeout).until(
+                lambda s: len(s.find_elements(*self._results_locator)) > 0
             )
         except Exception:
             pass
@@ -62,19 +62,20 @@ class SearchResultList(Base):
         from pages.desktop.themes import ThemesSearchResultList, Themes
         from pages.desktop.full_themes import FullThemes, FullThemesSearchResultList
         if isinstance(self, (Collections, CollectionSearchResultList)):
-            return self.CollectionsSearchResultItem(self.testsetup,  elements[lookup])
+            return self.CollectionsSearchResultItem(self.testsetup, elements[lookup])
         elif isinstance(self, (Themes, ThemesSearchResultList)):
-            return self.ThemesSearchResultItem(self.testsetup,  elements[lookup])
+            return self.ThemesSearchResultItem(self.testsetup, elements[lookup])
         elif isinstance(self, (FullThemes, FullThemesSearchResultList)):
-            return self.ThemesSearchResultItem(self.testsetup,  elements[lookup])
+            return self.FullThemesSearchResultItem(self.testsetup, elements[lookup])
         else:
             return self.SearchResultItem(self.testsetup, elements[lookup])
 
     @property
     def results(self):
         elements = self.selenium.find_elements(*self._results_locator)
-        return [self.SearchResultItem(
-            self.testsetup, web_element) for web_element in elements]
+        return [self.SearchResultItem(self.testsetup, web_element)
+                for web_element in elements
+                ]
 
     @property
     def paginator(self):
