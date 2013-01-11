@@ -4,8 +4,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import re
-
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
@@ -29,9 +27,9 @@ class Home(Base):
     _explore_popular_link_locator = (By.CSS_SELECTOR, "#side-nav .s-users a")
     _explore_top_rated_link_locator = (By.CSS_SELECTOR, "#side-nav .s-rating a")
 
-    _featured_personas_see_all_link = (By.CSS_SELECTOR, "#featured-themes h2 a")
-    _featured_personas_title_locator = (By.CSS_SELECTOR, "#featured-themes h2")
-    _featured_personas_items_locator = (By.CSS_SELECTOR, "#featured-personas li")
+    _featured_themes_see_all_link = (By.CSS_SELECTOR, "#featured-themes h2 a")
+    _featured_themes_title_locator = (By.CSS_SELECTOR, "#featured-themes h2")
+    _featured_themes_items_locator = (By.CSS_SELECTOR, "#featured-themes li")
 
     _featured_collections_locator = (By.CSS_SELECTOR, "#featured-collections h2")
     _featured_collections_elements_locator = (By.CSS_SELECTOR, "#featured-collections section:nth-child(1) li")
@@ -46,7 +44,7 @@ class Home(Base):
 
     _up_and_coming_locator = (By.ID, "upandcoming")
 
-    def __init__(self, testsetup, open_url = True):
+    def __init__(self, testsetup, open_url=True):
         """Creates a new instance of the class and gets the page ready for testing."""
         Base.__init__(self, testsetup)
         if open_url:
@@ -59,10 +57,10 @@ class Home(Base):
             move_to_element(home_item).\
             perform()
 
-    def click_featured_personas_see_all_link(self):
-        self.selenium.find_element(*self._featured_personas_see_all_link).click()
-        from pages.desktop.personas import Personas
-        return Personas(self.testsetup)
+    def click_featured_themes_see_all_link(self):
+        self.selenium.find_element(*self._featured_themes_see_all_link).click()
+        from pages.desktop.themes import Themes
+        return Themes(self.testsetup)
 
     def click_featured_collections_see_all_link(self):
         self.selenium.find_element(*self._featured_collections_locator).find_element(By.CSS_SELECTOR, " a").click()
@@ -88,12 +86,12 @@ class Home(Base):
         return self.selenium.find_element(*self._most_popular_list_heading_locator).text
 
     @property
-    def featured_personas_count(self):
-        return len(self.selenium.find_elements(*self._featured_personas_items_locator))
+    def featured_themes_count(self):
+        return len(self.selenium.find_elements(*self._featured_themes_items_locator))
 
     @property
-    def featured_personas_title(self):
-        return self.selenium.find_element(*self._featured_personas_title_locator).text
+    def featured_themes_title(self):
+        return self.selenium.find_element(*self._featured_themes_title_locator).text
 
     @property
     def featured_collections_title(self):

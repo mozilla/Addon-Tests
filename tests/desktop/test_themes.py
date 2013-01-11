@@ -4,6 +4,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+
+import random
 import pytest
 
 from unittestzero import Assert
@@ -15,209 +17,137 @@ class TestThemes:
 
     @pytest.mark.native
     @pytest.mark.nondestructive
-    def test_that_themes_can_be_sorted_by_name(self, mozwebqa):
-        """Test for Litmus 11727 and 4839."""
+    def test_start_exploring_link_in_the_promo_box(self, mozwebqa):
+        """
+        Test for Litmus 12037.
+        https://litmus.mozilla.org/show_test.cgi?id=12037
+        """
         home_page = Home(mozwebqa)
         themes_page = home_page.header.site_navigation_menu("Themes").click()
-        themes_page.click_sort_by("name")
-        addons = themes_page.addon_names
-        addons_set = set(addons)
-        Assert.equal(len(addons), len(addons_set), "There are duplicates in the names")
-        addons_orig = addons
-        addons.sort()
-        [Assert.equal(addons_orig[i], addons[i]) for i in xrange(len(addons))]
-        themes_page.paginator.click_next_page()
-        addons = themes_page.addon_names
-        addons_set = set(addons)
-        Assert.equal(len(addons), len(addons_set), "There are duplicates in the names")
-        addons_orig = addons
-        addons.sort()
-        [Assert.equal(addons_orig[i], addons[i]) for i in xrange(len(addons))]
+        Assert.true(themes_page.is_the_current_page)
+        Assert.true(themes_page.is_featured_addons_present)
+        browse_themes_page = themes_page.click_start_exploring()
+        Assert.true(browse_themes_page.is_the_current_page)
+        Assert.equal("up-and-coming", browse_themes_page.sort_key)
+        Assert.equal("Up & Coming", browse_themes_page.sort_by)
 
     @pytest.mark.native
     @pytest.mark.nondestructive
-    def test_that_themes_can_be_sorted_by_updated_date(self, mozwebqa):
-        """Test for Litmus 11638."""
+    def test_page_title_for_themes_landing_page(self, mozwebqa):
+        """
+        Test for Litmus 15391.
+        https://litmus.mozilla.org/show_test.cgi?id=15391
+        """
         home_page = Home(mozwebqa)
         themes_page = home_page.header.site_navigation_menu("Themes").click()
-        themes_page.click_sort_by("recently updated")
-        addons = themes_page.addon_names
-        addons_set = set(addons)
-        Assert.equal(len(addons), len(addons_set), "There are duplicates in the names")
-        updated_dates = themes_page.addon_updated_dates
-        Assert.is_sorted_descending(updated_dates)
-        themes_page.paginator.click_next_page()
-        updated_dates.extend(themes_page.addon_updated_dates)
-        Assert.is_sorted_descending(updated_dates)
+        Assert.true(themes_page.is_the_current_page)
 
     @pytest.mark.native
+    @pytest.mark.smoke
     @pytest.mark.nondestructive
-    def test_that_themes_can_be_sorted_by_created_date(self, mozwebqa):
-        """Test for Litmus 11638."""
+    def test_the_featured_themes_section(self, mozwebqa):
+        """
+        Test for Litmus 15392.
+        https://litmus.mozilla.org/show_test.cgi?id=15392
+        """
         home_page = Home(mozwebqa)
         themes_page = home_page.header.site_navigation_menu("Themes").click()
-        themes_page.click_sort_by("newest")
-        addons = themes_page.addon_names
-        addons_set = set(addons)
-        Assert.equal(len(addons), len(addons_set), "There are duplicates in the names")
-        created_dates = themes_page.addon_created_dates
-        Assert.is_sorted_descending(created_dates)
-        themes_page.paginator.click_next_page()
-        created_dates.extend(themes_page.addon_created_dates)
-        Assert.is_sorted_descending(created_dates)
+        Assert.true(themes_page.is_the_current_page)
+        Assert.less_equal(themes_page.featured_themes_count, 6)
 
     @pytest.mark.native
+    @pytest.mark.smoke
     @pytest.mark.nondestructive
-    def test_that_themes_can_be_sorted_by_popularity(self, mozwebqa):
-        """Test for Litmus 11638."""
+    def test_the_recently_added_section(self, mozwebqa):
+        """
+        Test for Litmus Litmus 15393.
+        https://litmus.mozilla.org/show_test.cgi?id=15393
+        """
         home_page = Home(mozwebqa)
         themes_page = home_page.header.site_navigation_menu("Themes").click()
-        themes_page.click_sort_by("weekly downloads")
-        addons = themes_page.addon_names
-        addons_set = set(addons)
-        Assert.equal(len(addons), len(addons_set), "There are duplicates in the names")
-        downloads = themes_page.addon_download_number
+        Assert.true(themes_page.is_the_current_page)
+        Assert.equal(6, themes_page.recently_added_count)
+        recently_added_dates = themes_page.recently_added_dates
+        Assert.is_sorted_descending(recently_added_dates)
+
+    @pytest.mark.native
+    @pytest.mark.smoke
+    @pytest.mark.nondestructive
+    def test_the_most_popular_section(self, mozwebqa):
+        """
+        Test for Litmus 15394.
+        https://litmus.mozilla.org/show_test.cgi?id=15394
+        """
+        home_page = Home(mozwebqa)
+        themes_page = home_page.header.site_navigation_menu("Themes").click()
+        Assert.true(themes_page.is_the_current_page)
+        Assert.equal(6, themes_page.most_popular_count)
+        downloads = themes_page.most_popular_downloads
         Assert.is_sorted_descending(downloads)
-        themes_page.paginator.click_next_page()
-        downloads.extend(themes_page.addon_download_number)
-        Assert.is_sorted_descending(downloads)
 
     @pytest.mark.native
     @pytest.mark.nondestructive
-    def test_that_themes_loads_themes_landing_page(self, mozwebqa):
-        """Test for Litmus 15339."""
-        home_page = Home(mozwebqa)
-        themes_page = home_page.header.site_navigation_menu("Themes").click()
-        url_current_page = themes_page.get_url_current_page()
-        Assert.true(url_current_page.endswith("/themes/"))
-
-    @pytest.mark.native
-    @pytest.mark.nondestructive
-    def test_that_clicking_on_theme_name_loads_its_detail_page(self, mozwebqa):
-        """Test for Litmus 15363."""
-        home_page = Home(mozwebqa)
-        themes_page = home_page.header.site_navigation_menu("Themes").click()
-        theme_name = themes_page.addon_name(1)
-        theme_page = themes_page.click_on_first_addon()
-        Assert.contains(theme_name, theme_page.addon_title)
-
-    @pytest.mark.native
-    @pytest.mark.nondestructive
-    def test_that_themes_page_has_correct_title(self, mozwebqa):
-        """Test for Litmus 15340."""
-        home_page = Home(mozwebqa)
-        themes_page = home_page.header.site_navigation_menu("Themes").click()
-        expected_title = "Most Popular Themes :: Add-ons for Firefox"
-        Assert.equal(expected_title, themes_page.page_title)
-
-    @pytest.mark.native
-    @pytest.mark.nondestructive
-    def test_themes_page_breadcrumb(self, mozwebqa):
-        """Test for Litmus 15344."""
-        home_page = Home(mozwebqa)
-        themes_page = home_page.header.site_navigation_menu("Themes").click()
-        expected_breadcrumb = "Themes"
-        Assert.equal(expected_breadcrumb, themes_page.breadcrumbs[1].text)
-
-    @pytest.mark.native
-    @pytest.mark.nondestructive
-    def test_that_clicking_on_a_subcategory_loads_expected_page(self, mozwebqa):
-        """Test for Litmus 15949."""
-        home_page = Home(mozwebqa)
-        themes_page = home_page.header.site_navigation_menu("Themes").click()
-        selected_category = themes_page.themes_category
-        amo_category_page = themes_page.click_on_first_category()
-        Assert.equal(selected_category, amo_category_page.title)
-
-    @pytest.mark.native
-    @pytest.mark.nondestructive
-    def test_themes_subcategory_page_breadcrumb(self, mozwebqa):
-        home_page = Home(mozwebqa)
-        themes_page = home_page.header.site_navigation_menu("Themes").click()
-        selected_category = themes_page.themes_category
-        amo_category_page = themes_page.click_on_first_category()
-        expected_breadcrumbs = ['Add-ons for Firefox', 'Themes', selected_category]
-
-        [Assert.equal(expected_breadcrumbs[i], amo_category_page.breadcrumbs[i].text) for i in range(len(amo_category_page.breadcrumbs))]
-
-    @pytest.mark.native
-    @pytest.mark.nondestructive
-    def test_that_themes_categories_are_listed_on_left_hand_side(self, mozwebqa):
-        """Test for Litmus 15342."""
-        home_page = Home(mozwebqa)
-        themes_page = home_page.header.site_navigation_menu("Themes").click()
-        current_page_url = home_page.get_url_current_page()
-        Assert.true(current_page_url.endswith("/themes/"))
-        default_categories = ["Animals", "Compact", "Large", "Miscellaneous", "Modern", "Nature", "OS Integration", "Retro", "Sports"]
-        Assert.equal(themes_page.categories_count, len(default_categories))
-        count = 0
-        for category in default_categories:
-            count += 1
-            current_category = themes_page.get_category(count)
-            Assert.equal(category, current_category)
-
-    @pytest.mark.native
-    @pytest.mark.nondestructive
-    def test_that_themes_categories_are_not_extensions_categories(self, mozwebqa):
-        """Test for Litmus 15343."""
-        home_page = Home(mozwebqa)
-        themes_page = home_page.header.site_navigation_menu("Themes").click()
-        themes_categories = themes_page.get_all_categories
-
-        home_page.header.site_navigation_menu("Extensions").click()
-        extensions_categories = themes_page.get_all_categories
-
-        Assert.not_equal(len(themes_categories), len(extensions_categories))
-        Assert.equal(list(set(themes_categories) & set(extensions_categories)), [])
-
-    @pytest.mark.native
-    @pytest.mark.nondestructive
-    def test_that_last_themes_page_is_not_empty(self, mozwebqa):
+    def test_the_top_rated_section(self, mozwebqa):
         """
-        Test for Litmus 15359.
-        https://litmus.mozilla.org/show_test.cgi?id=15359
+        Test for Litmus 15395.
+        https://litmus.mozilla.org/show_test.cgi?id=15395
         """
         home_page = Home(mozwebqa)
         themes_page = home_page.header.site_navigation_menu("Themes").click()
-        themes_page.paginator.click_last_page()
-        Assert.greater_equal(themes_page.addon_count, 1)
+        Assert.true(themes_page.is_the_current_page)
+        Assert.equal(6, themes_page.top_rated_count)
+        ratings = themes_page.top_rated_ratings
+        Assert.is_sorted_descending(ratings)
 
     @pytest.mark.native
     @pytest.mark.nondestructive
-    def test_the_displayed_message_for_incompatible_themes(self, mozwebqa):
+    def test_breadcrumb_menu_in_theme_details_page(self, mozwebqa):
         """
-        Test for Litmus 15361
-        https://litmus.mozilla.org/show_test.cgi?id=15361
+        Test for Litmus Litmus 12046.
+        https://litmus.mozilla.org/show_test.cgi?id=12046
+        """
+
+        # Step 1, 2: Access AMO Home, Click on theme category link.
+        home_page = Home(mozwebqa)
+        themes_page = home_page.header.site_navigation_menu("Themes").click()
+        Assert.true(themes_page.is_the_current_page)
+
+        # Step 3: Click on any theme.
+        random_theme_index = random.randint(0, themes_page.theme_count - 1)
+
+        themes_detail_page = themes_page.click_theme(random_theme_index)
+        Assert.true(themes_detail_page.is_the_current_page)
+
+        # Verify breadcrumb menu format, i.e. Add-ons for Firefox > themes > {theme Name}.
+        theme_title = themes_detail_page.title
+        Assert.equal("Add-ons for Firefox", themes_detail_page.breadcrumbs[0].text)
+        Assert.equal("Themes", themes_detail_page.breadcrumbs[1].text)
+
+        theme_breadcrumb_title = len(theme_title) > 40 and '%s...' % theme_title[:40] or theme_title
+
+        Assert.equal(themes_detail_page.breadcrumbs[2].text, theme_breadcrumb_title)
+
+        # Step 4: Click on the links present in the Breadcrumb menu.
+        # Verify that the themes link loads the themes home page.
+        themes_detail_page.breadcrumbs[1].click()
+        Assert.true(themes_page.is_the_current_page)
+
+        themes_page.return_to_previous_page()
+        Assert.true(themes_detail_page.is_the_current_page)
+
+        # Verify that the Add-ons for Firefox link loads the AMO home page.
+        themes_detail_page.breadcrumbs[0].click()
+        Assert.true(home_page.is_the_current_page)
+
+    @pytest.mark.native
+    @pytest.mark.nondestructive
+    def test_themes_breadcrumb_format(self, mozwebqa):
+        """
+        Verify the breadcrumb format in themes page
+        https://litmus.mozilla.org/show_test.cgi?id=12034
         """
         home_page = Home(mozwebqa)
+
         themes_page = home_page.header.site_navigation_menu("Themes").click()
-
-        themes = themes_page.themes
-
-        for theme in themes:
-            if theme.is_incompatible:
-                Assert.true(theme.is_incompatible_flag_visible)
-                Assert.contains('Not available',
-                             theme.not_available_flag_text)
-            else:
-                Assert.false(theme.is_incompatible_flag_visible)
-
-    @pytest.mark.native
-    @pytest.mark.nondestructive
-    def test_that_most_popular_link_is_default(self, mozwebqa):
-        """Test for Litmus 15348"""
-        home_page = Home(mozwebqa)
-        themes_page = home_page.header.site_navigation_menu("Themes").click()
-        url_current_page = themes_page.get_url_current_page()
-        Assert.true(url_current_page.endswith("/themes/"))
-        Assert.equal(themes_page.selected_explore_filter, 'Most Popular')
-
-    @pytest.mark.native
-    @pytest.mark.nondestructive
-    def test_sorted_by_most_users_is_default(self, mozwebqa):
-        """Test for Litmus 15346."""
-        home_page = Home(mozwebqa)
-        themes_page = home_page.header.site_navigation_menu("Themes").click()
-        url_current_page = themes_page.get_url_current_page()
-        Assert.true(url_current_page.endswith("/themes/"))
-        Assert.equal(themes_page.sorted_by, 'Most Users')
+        Assert.equal(themes_page.breadcrumbs[0].text, 'Add-ons for Firefox')
+        Assert.equal(themes_page.breadcrumbs[1].text, 'Themes')
