@@ -34,13 +34,10 @@ class TestHome:
             "Download Management", "Feeds, News & Blogging", "Games & Entertainment",
             "Language Support", "Photos, Music & Videos", "Privacy & Security", "Shopping",
             "Social & Communication", "Tabs", "Web Development", "Other"]),
-        HeaderMenu('PERSONAS', [
+        HeaderMenu('THEMES', [
             "Most Popular", "Top Rated", "Newest", "Abstract", "Causes", "Fashion", "Film and TV",
             "Firefox", "Foxkeh", "Holiday", "Music", "Nature", "Other", "Scenery", "Seasonal",
             "Solid", "Sports", "Websites"]),
-        HeaderMenu('THEMES', [
-            "Most Popular", "Top Rated", "Newest", "Animals", "Compact", "Large", "Miscellaneous",
-            "Modern", "Nature", "OS Integration", "Retro", "Sports"]),
         HeaderMenu('COLLECTIONS', [
             "Featured", "Most Followers", "Newest", "Collections I've Made",
             "Collections I'm Following", "My Favorite Add-ons"]),
@@ -85,7 +82,7 @@ class TestHome:
         https://litmus.mozilla.org/show_test.cgi?id=29698
         """
         home_page = Home(mozwebqa)
-        Assert.equal(home_page.featured_personas_title, u'Featured Personas See all \xbb', 'Featured Personas region title doesn\'t match')
+        Assert.equal(home_page.featured_personas_title, u'Featured Themes See all \xbb', 'Featured Themes region title doesn\'t match')
         Assert.less_equal(home_page.featured_personas_count, 6)
 
     @pytest.mark.nondestructive
@@ -98,7 +95,7 @@ class TestHome:
         featured_persona_page = home_page.click_featured_personas_see_all_link()
 
         Assert.true(featured_persona_page.is_the_current_page)
-        Assert.equal(featured_persona_page.persona_header, 'Personas')
+        Assert.equal(featured_persona_page.persona_header, 'Themes')
 
     @pytest.mark.native
     @pytest.mark.nondestructive

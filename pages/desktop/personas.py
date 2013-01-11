@@ -16,7 +16,7 @@ from pages.desktop.search import SearchResultList
 
 class Personas(Base):
 
-    _page_title = "Personas :: Add-ons for Firefox"
+    _page_title = "Themes :: Add-ons for Firefox"
     _personas_locator = (By.CSS_SELECTOR, 'div.persona.persona-small a')
     _start_exploring_locator = (By.CSS_SELECTOR, "#featured-addons.personas-home a.more-info")
     _featured_addons_locator = (By.CSS_SELECTOR, "#featured-addons.personas-home")
