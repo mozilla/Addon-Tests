@@ -160,7 +160,7 @@ class Base(Page):
 
         _site_navigation_menus_locator = (By.CSS_SELECTOR, "#site-nav > ul > li")
         _site_navigation_min_number_menus = 4
-        _full_themes_menu_locator = (By.CSS_SELECTOR, '#site-nav div > a.full-themes > b')
+        _full_themes_menu_locator = (By.CSS_SELECTOR, '#site-nav div > a.complete-themes > b')
 
         def site_navigation_menu(self, value):
             #used to access one specific menu
