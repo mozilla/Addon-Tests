@@ -24,7 +24,7 @@ class DiscoveryPane(Base):
     _themes_locator = (By.CSS_SELECTOR, '#featured-themes ul li')
     _more_ways_section_locator = (By.ID, 'more-ways')
     _more_ways_addons_locator = (By.ID, 'more-addons')
-    _more_ways_full_themes_locator = (By.ID, 'more-full-themes')
+    _more_ways_full_themes_locator = (By.ID, 'more-complete-themes')
     _up_and_coming_item = (By.XPATH, "//section[@id='up-and-coming']/ul/li/a[@class='addon-title']")
     _logout_link_locator = (By.CSS_SELECTOR, '#logout > a')
 
