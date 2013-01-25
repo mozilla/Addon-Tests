@@ -18,7 +18,7 @@ class TestDiscoveryPane:
 
     #Need to get this info before run
     def basepath(self, mozwebqa):
-        return '/en-US/firefox/discovery/pane/%s/Darwin' % mozwebqa.selenium_client.browser_version
+        return '/en-US/firefox/discovery/pane/%s/Darwin' % mozwebqa.selenium.capabilities['version']
 
     @pytest.mark.nondestructive
     def test_that_users_with_less_than_3_addons_get_what_are_addons(self, mozwebqa):
@@ -45,24 +45,24 @@ class TestDiscoveryPane:
         Assert.true(expected_text in mission_text)
         Assert.true(discovery_pane.mozilla_org_link_visible())
         download_count_regex = "Add-ons downloaded: (.+)"
-        Assert.true(re.search(download_count_regex, discovery_pane.download_count) != None)
+        Assert.true(re.search(download_count_regex, discovery_pane.download_count) is not None)
 
     @pytest.mark.nondestructive
-    def test_that_featured_personas_is_present_and_has_5_item(self, mozwebqa):
+    def test_that_featured_themes_is_present_and_has_5_item(self, mozwebqa):
         """Test for Litmus 15079, 15080."""
         discovery_pane = DiscoveryPane(mozwebqa, self.basepath(mozwebqa))
-        Assert.true(discovery_pane.is_personas_section_visible)
-        Assert.equal(5, discovery_pane.personas_count)
-        Assert.true(discovery_pane.is_personas_see_all_link_visible)
+        Assert.true(discovery_pane.is_themes_section_visible)
+        Assert.equal(5, discovery_pane.themes_count)
+        Assert.true(discovery_pane.is_themes_see_all_link_visible)
 
     @pytest.mark.native
     @pytest.mark.nondestructive
-    def test_that_featured_personas_go_to_their_landing_page_when_clicked(self, mozwebqa):
+    def test_that_featured_themes_go_to_their_landing_page_when_clicked(self, mozwebqa):
         """Test for Litmus 15081."""
         discovery_pane = DiscoveryPane(mozwebqa, self.basepath(mozwebqa))
-        first_persona = discovery_pane.first_persona
-        persona = discovery_pane.click_on_first_persona()
-        Assert.equal(first_persona, persona.persona_title)
+        first_theme = discovery_pane.first_theme
+        theme = discovery_pane.click_on_first_theme()
+        Assert.equal(first_theme, theme.theme_title)
 
     @pytest.mark.nondestructive
     def test_that_more_ways_to_customize_section_is_available(self, mozwebqa):
@@ -70,7 +70,7 @@ class TestDiscoveryPane:
         discovery_pane = DiscoveryPane(mozwebqa, self.basepath(mozwebqa))
         Assert.true(discovery_pane.more_ways_section_visible)
         Assert.equal("Browse all add-ons", discovery_pane.browse_all_addons)
-        Assert.equal("See all themes", discovery_pane.see_all_themes)
+        Assert.equal("See all complete themes", discovery_pane.see_all_full_themes)
 
     @pytest.mark.nondestructive
     def test_that_up_and_coming_is_present_and_had_5_items(self, mozwebqa):

@@ -24,6 +24,7 @@ class HeaderMenu(Page):
     _menu_items_locator = (By.CSS_SELECTOR, 'ul > li')
     _name_locator = (By.CSS_SELECTOR, 'a')
     _footer_locator = (By.ID, 'footer')
+    _full_themes_locator = (By.CSS_SELECTOR, 'div > a > b')
 
     def __init__(self, testsetup, element):
         Page.__init__(self, testsetup)
@@ -46,9 +47,6 @@ class HeaderMenu(Page):
         if "EXTENSIONS" in name:
             from pages.desktop.extensions import ExtensionsHome
             return ExtensionsHome(self.testsetup)
-        elif "PERSONAS" in name:
-            from pages.desktop.personas import Personas
-            return Personas(self.testsetup)
         elif "THEMES" in name:
             from pages.desktop.themes import Themes
             return Themes(self.testsetup)
@@ -99,9 +97,6 @@ class HeaderMenu(Page):
             if "EXTENSIONS" in menu_name:
                 from pages.desktop.extensions import ExtensionsHome
                 return ExtensionsHome(self.testsetup)
-            elif "PERSONAS" in menu_name:
-                from pages.desktop.personas import Personas
-                return Personas(self.testsetup)
             elif "THEMES" in menu_name:
                 from pages.desktop.themes import Themes
                 return Themes(self.testsetup)
