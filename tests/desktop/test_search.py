@@ -253,7 +253,7 @@ class TestSearch:
     @pytest.mark.nondestructive
     @pytest.mark.smoke
     @pytest.mark.parametrize(('addon_type', 'term', 'breadcrumb_component'), [
-        ('Full Themes', 'shine', 'Complete Themes'),           # 17350
+        ('Complete Themes', 'shine', 'Complete Themes'),           # 17350
         ('Extensions', 'fire', 'Extensions'),
         ('Themes', 'fox', 'Themes'),        # 17349
         ('Collections', 'web', 'Collections'),  # 17352
@@ -274,9 +274,9 @@ class TestSearch:
         if (addon_type == 'Collections'):
             pytest.xfail(reason='Bug 787935 No results displayed when searching for collections')
 
-        if (addon_type == 'Full Themes'):
-            # Full Themes are in a subnav, so must be clicked differently
-            amo_addon_type_page = amo_home_page.header.click_full_themes()
+        if (addon_type == 'Complete Themes'):
+            # Complete Themes are in a subnav, so must be clicked differently
+            amo_addon_type_page = amo_home_page.header.click_complete_themes()
         else:
             amo_addon_type_page = amo_home_page.header.site_navigation_menu(addon_type).click()
         search_results = amo_addon_type_page.search_for(term)

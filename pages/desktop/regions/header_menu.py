@@ -24,7 +24,7 @@ class HeaderMenu(Page):
     _menu_items_locator = (By.CSS_SELECTOR, 'ul > li')
     _name_locator = (By.CSS_SELECTOR, 'a')
     _footer_locator = (By.ID, 'footer')
-    _full_themes_locator = (By.CSS_SELECTOR, 'div > a > b')
+    _complete_themes_locator = (By.CSS_SELECTOR, 'div > a > b')
 
     def __init__(self, testsetup, element):
         Page.__init__(self, testsetup)

@@ -24,7 +24,7 @@ class DiscoveryPane(Base):
     _themes_locator = (By.CSS_SELECTOR, '#featured-themes ul li')
     _more_ways_section_locator = (By.ID, 'more-ways')
     _more_ways_addons_locator = (By.ID, 'more-addons')
-    _more_ways_full_themes_locator = (By.ID, 'more-complete-themes')
+    _more_ways_complete_themes_locator = (By.ID, 'more-complete-themes')
     _up_and_coming_item = (By.XPATH, "//section[@id='up-and-coming']/ul/li/a[@class='addon-title']")
     _logout_link_locator = (By.CSS_SELECTOR, '#logout > a')
 
@@ -85,8 +85,8 @@ class DiscoveryPane(Base):
         return self.selenium.find_element(*self._more_ways_addons_locator).text
 
     @property
-    def see_all_full_themes(self):
-        return self.selenium.find_element(*self._more_ways_full_themes_locator).text
+    def see_all_complete_themes(self):
+        return self.selenium.find_element(*self._more_ways_complete_themes_locator).text
 
     @property
     def up_and_coming_item_count(self):
