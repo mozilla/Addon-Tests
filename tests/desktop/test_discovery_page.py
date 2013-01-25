@@ -70,7 +70,7 @@ class TestDiscoveryPane:
         discovery_pane = DiscoveryPane(mozwebqa, self.basepath(mozwebqa))
         Assert.true(discovery_pane.more_ways_section_visible)
         Assert.equal("Browse all add-ons", discovery_pane.browse_all_addons)
-        Assert.equal("See all full themes", discovery_pane.see_all_full_themes)
+        Assert.equal("See all complete themes", discovery_pane.see_all_full_themes)
 
     @pytest.mark.nondestructive
     def test_that_up_and_coming_is_present_and_had_5_items(self, mozwebqa):
