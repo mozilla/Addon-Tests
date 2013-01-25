@@ -60,13 +60,13 @@ class SearchResultList(Base):
         elements = self.selenium.find_elements(*self._results_locator)
         from pages.desktop.collections import Collections, CollectionSearchResultList
         from pages.desktop.themes import ThemesSearchResultList, Themes
-        from pages.desktop.full_themes import FullThemes, FullThemesSearchResultList
+        from pages.desktop.complete_themes import CompleteThemes, CompleteThemesSearchResultList
         if isinstance(self, (Collections, CollectionSearchResultList)):
             return self.CollectionsSearchResultItem(self.testsetup, elements[lookup])
         elif isinstance(self, (Themes, ThemesSearchResultList)):
             return self.ThemesSearchResultItem(self.testsetup, elements[lookup])
-        elif isinstance(self, (FullThemes, FullThemesSearchResultList)):
-            return self.FullThemesSearchResultItem(self.testsetup, elements[lookup])
+        elif isinstance(self, (CompleteThemes, CompleteThemesSearchResultList)):
+            return self.CompleteThemesSearchResultItem(self.testsetup, elements[lookup])
         else:
             return self.SearchResultItem(self.testsetup, elements[lookup])
 
@@ -129,13 +129,13 @@ class SearchResultList(Base):
             self._root_element.find_element(*self._name_locator).click()
             from pages.desktop.collections import Collection, CollectionSearchResultList
             from pages.desktop.themes import ThemesDetail, ThemesSearchResultList
-            from pages.desktop.full_themes import FullTheme, FullThemesSearchResultList
+            from pages.desktop.complete_themes import CompleteTheme, CompleteThemesSearchResultList
             from pages.desktop.details import Details
             if isinstance(self, CollectionSearchResultList.CollectionsSearchResultItem):
                 return Collection(self.testsetup)
             elif isinstance(self, ThemesSearchResultList.ThemesSearchResultItem):
                 return ThemesDetail(self.testsetup)
-            elif isinstance(self, FullThemesSearchResultList.FullThemesSearchResultItem):
-                return FullTheme(self.testsetup)
+            elif isinstance(self, CompleteThemesSearchResultList.CompleteThemesSearchResultItem):
+                return CompleteTheme(self.testsetup)
             else:
                 return Details(self.testsetup)

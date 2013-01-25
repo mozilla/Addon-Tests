@@ -13,7 +13,7 @@ from pages.page import Page
 from pages.desktop.search import SearchResultList
 
 
-class FullThemes(Base):
+class CompleteThemes(Base):
 
     _addons_root_locator = (By.CSS_SELECTOR, '.listing-grid > li')
     _addon_name_locator = (By.CSS_SELECTOR, 'h3')
@@ -48,18 +48,18 @@ class FullThemes(Base):
 
     def click_on_first_addon(self):
         self._addons_root_element.find_element(*self._addon_name_locator).click()
-        return FullTheme(self.testsetup)
+        return CompleteTheme(self.testsetup)
 
     def click_on_first_category(self):
         self.selenium.find_element(*self._category_locator).click()
-        return FullThemesCategory(self.testsetup)
+        return CompleteThemesCategory(self.testsetup)
 
     def get_category(self, lookup):
         return self.selenium.find_element(self._category_link_locator[0],
                                           self._category_link_locator[1] % lookup).text
 
     @property
-    def full_themes_category(self):
+    def complete_themes_category(self):
         return self.selenium.find_element(*self._category_locator).text
 
     @property
@@ -107,15 +107,15 @@ class FullThemes(Base):
         return ratings
 
     @property
-    def full_themes(self):
-        return [self.FullTheme(self.testsetup, fulltheme)for fulltheme in self.selenium.find_elements(*self._addons_root_locator)]
+    def complete_themes(self):
+        return [self.CompleteTheme(self.testsetup, completetheme)for completetheme in self.selenium.find_elements(*self._addons_root_locator)]
 
     @property
     def paginator(self):
         from pages.desktop.regions.paginator import Paginator
         return Paginator(self.testsetup)
 
-    class FullTheme(Page):
+    class CompleteTheme(Page):
 
         _is_incompatible_locator = (By.CSS_SELECTOR, "div.hovercard > span.notavail")
         _not_available_locator = (By.CSS_SELECTOR, "div.hovercard.incompatible > div.more > div.install-shell > div.extra > span.notavail")
@@ -126,7 +126,7 @@ class FullThemes(Base):
             Page.__init__(self, testsetup)
             self._root_element = element
 
-        def _move_to_full_theme_flyout(self):
+        def _move_to_complete_theme_flyout(self):
             # Due to the grid like movement of the mouse and overlapping of hover cards
             # sometimes the wrong hovercard can stick open. First we move the mouse to
             # a location below the hover then move up to ensure we hover on the correct one
@@ -147,14 +147,14 @@ class FullThemes(Base):
         def not_available_flag_text(self):
             # This refers to the red 'not available for Firefox x' text inside the flyout
             # We need to move the mouse to expose the flyout so we can see the text
-            self._move_to_full_theme_flyout()
+            self._move_to_complete_theme_flyout()
             if not self.is_flyout_visible:
                 raise Exception('Flyout did not expand, possible mouse focus/ActionChain issue')
             return self._root_element.find_element(*self._not_available_locator).text
 
         @property
         def is_incompatible_flag_visible(self):
-            # This refers to the grey 'This full theme is incompatible' text on the panel
+            # This refers to the grey 'This complete theme is incompatible' text on the panel
 
             from selenium.common.exceptions import NoSuchElementException
             self.selenium.implicitly_wait(0)
@@ -167,7 +167,7 @@ class FullThemes(Base):
                 self.selenium.implicitly_wait(self.testsetup.default_implicit_wait)
 
 
-class FullTheme(Base):
+class CompleteTheme(Base):
 
     _addon_title = (By.CSS_SELECTOR, "h1.addon")
     _install_button = (By.CSS_SELECTOR, "p.install-button > a")
@@ -186,7 +186,7 @@ class FullTheme(Base):
         return self.selenium.find_element(*self._breadcrumb_locator).text
 
 
-class FullThemesCategory(Base):
+class CompleteThemesCategory(Base):
 
     _title_locator = (By.CSS_SELECTOR, "section.primary > h1")
     _breadcrumb_locator = (By.CSS_SELECTOR, "#breadcrumbs > ol")
@@ -196,8 +196,8 @@ class FullThemesCategory(Base):
         return self.selenium.find_element(*self._title_locator).text
 
 
-class FullThemesSearchResultList(SearchResultList):
+class CompleteThemesSearchResultList(SearchResultList):
     _results_locator = (By.CSS_SELECTOR, '.items .item')
 
-    class FullThemesSearchResultItem(SearchResultList.SearchResultItem):
+    class CompleteThemesSearchResultItem(SearchResultList.SearchResultItem):
         _name_locator = (By.CSS_SELECTOR, 'h3 > a')
