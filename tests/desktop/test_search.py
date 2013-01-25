@@ -253,7 +253,7 @@ class TestSearch:
     @pytest.mark.nondestructive
     @pytest.mark.smoke
     @pytest.mark.parametrize(('addon_type', 'term', 'breadcrumb_component'), [
-        ('Full Themes', 'nasa', 'Full Themes'),           # 17350
+        ('Full Themes', 'shine', 'Complete Themes'),           # 17350
         ('Extensions', 'fire', 'Extensions'),
         ('Themes', 'fox', 'Themes'),        # 17349
         ('Collections', 'web', 'Collections'),  # 17352
