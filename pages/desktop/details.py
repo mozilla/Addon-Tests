@@ -398,8 +398,8 @@ class Details(Base):
     class ImagePreviewer(Page):
 
         #navigation
-        _next_locator = (By.CSS_SELECTOR, 'section.previews.carousel > a.next')
-        _prev_locator = (By.CSS_SELECTOR, 'section.previews.carousel > a.prev')
+        _next_locator = (By.CSS_SELECTOR, 'section.previews div.carousel > a.next')
+        _prev_locator = (By.CSS_SELECTOR, 'section.previews div.carousel > a.prev')
 
         _image_locator = (By.CSS_SELECTOR, '#preview li')
         _link_locator = (By.TAG_NAME, 'a')
