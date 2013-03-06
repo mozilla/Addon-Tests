@@ -83,7 +83,7 @@ class TestHome:
         """
         home_page = Home(mozwebqa)
         Assert.equal(home_page.featured_themes_title, u'Featured Themes See all \xbb', 'Featured Themes region title doesn\'t match')
-        Assert.less_equal(home_page.featured_themes_count, 6)
+        Assert.greater_equal(home_page.featured_themes_count, 6)
 
     @pytest.mark.nondestructive
     def test_that_clicking_see_all_themes_link_works(self, mozwebqa):
