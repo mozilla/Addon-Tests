@@ -40,7 +40,7 @@ class WriteReviewBlock(Base):
 
 class ViewReviews(Base):
 
-    _review_locator = (By.CSS_SELECTOR, "div.primary div.review")
+    _review_locator = (By.CSS_SELECTOR, 'div.review:not(.reply)')
 
     @property
     def reviews(self):

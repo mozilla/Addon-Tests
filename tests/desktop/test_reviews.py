@@ -16,7 +16,6 @@ from pages.desktop.details import Details
 class TestReviews:
 
     @pytest.mark.nondestructive
-    @pytest.mark.xfail(reason="Bug 853512 - [dev]Incorrect number of reviews per page")
     def test_that_all_reviews_hyperlink_works(self, mozwebqa):
         """
         Test for Litmus 4843.
