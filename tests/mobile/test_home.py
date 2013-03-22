@@ -94,7 +94,7 @@ class TestHome:
 
         featured_extensions = home.click_all_featured_addons_link()
 
-        Assert.equal(featured_extensions.title, 'MOBILE ADD-ONS')
+        Assert.equal(featured_extensions.title, 'ADD-ONS')
         Assert.equal(featured_extensions.page_header, 'Featured Extensions')
         Assert.contains('sort=featured', featured_extensions.get_url_current_page())
 
