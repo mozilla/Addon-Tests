@@ -62,7 +62,7 @@ class TestDiscoveryPane:
         discovery_pane = DiscoveryPane(mozwebqa, self.basepath(mozwebqa))
         first_theme = discovery_pane.first_theme
         theme = discovery_pane.click_on_first_theme()
-        Assert.equal(first_theme, theme.theme_title)
+        Assert.contains(first_theme, theme.theme_title)
 
     @pytest.mark.nondestructive
     def test_that_more_ways_to_customize_section_is_available(self, mozwebqa):
