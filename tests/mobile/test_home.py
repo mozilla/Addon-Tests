@@ -40,7 +40,7 @@ class TestHome:
         home = Home(mozwebqa)
         Assert.true(home.is_the_current_page)
 
-        Assert.equal('FIREFOX ADD-ONS', home.header_text)
+        Assert.equal('ADD-ONS', home.header_text)
         Assert.equal('Return to the Firefox Add-ons homepage', home.header_title)
         Assert.equal('Easy ways to personalize.', home.header_statement_text)
 
@@ -153,7 +153,7 @@ class TestHome:
         Assert.true(home.is_the_current_page)
 
         Assert.equal('Return to the Firefox Add-ons homepage', home.logo_title)
-        Assert.equal('FIREFOX ADD-ONS', home.logo_text)
+        Assert.equal('ADD-ONS', home.logo_text)
         Assert.contains('/media/img/zamboni/app_icons/firefox.png', home.logo_image_src)
         Assert.equal('Easy ways to personalize.', home.subtitle)
 
