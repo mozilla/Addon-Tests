@@ -221,7 +221,6 @@ class TestHome:
     @pytest.mark.native
     @pytest.mark.nondestructive
     @pytest.mark.litmus([25745, 25747, 25749, 25751, 25754, 25756, 25758, 25760, 25763, 25764])
-    @pytest.mark.xfail(reason='Disabled until the issue causing the fail is found and fixed.')
     def test_the_name_of_each_site_navigation_menu_in_the_header(self, mozwebqa):
         home_page = Home(mozwebqa)
 
