@@ -13,8 +13,6 @@ from pages.desktop.home import Home
 from pages.desktop.details import Details
 
 
-@pytest.mark.xfail(reason="Bug 820407 - [dev]'Make Contribution' button doesn't load PayPal frame")
-# https://bugzilla.mozilla.org/show_bug.cgi?id=820407
 class TestPaypal:
 
     addon_name = 'Firebug'
