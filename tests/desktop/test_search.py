@@ -271,8 +271,6 @@ class TestSearch:
         https://litmus.mozilla.org/show_test.cgi?id=17352
         """
         amo_home_page = Home(mozwebqa)
-        if (addon_type == 'Collections'):
-            pytest.xfail(reason='Bug 787935 No results displayed when searching for collections')
 
         if (addon_type == 'Complete Themes'):
             # Complete Themes are in a subnav, so must be clicked differently
