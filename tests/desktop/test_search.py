@@ -217,6 +217,7 @@ class TestSearch:
         search_page.filter.tag('development').click_tag()
         Assert.greater_equal(result_count, search_page.filter.results_count)
 
+    @pytest.mark.xfail(reason='Bug 869155 - Actual number of search results does not match that reported')
     @pytest.mark.nondestructive
     def test_that_search_results_return_20_results_per_page(self, mozwebqa):
         """
