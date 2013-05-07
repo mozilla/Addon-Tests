@@ -128,6 +128,7 @@ class TestAccounts:
 
             Assert.equal(view_profile_page.is_email_field_present, initial_state, 'Could not restore profile to initial state.')
 
+    @pytest.mark.xfail(reason='GitHub Issue: https://github.com/mozilla/Addon-Tests/issues/618 - need new prod account')
     @pytest.mark.native
     @pytest.mark.login
     def test_user_can_update_profile_information_in_account_settings_page(self, mozwebqa):
