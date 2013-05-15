@@ -19,7 +19,7 @@ class SearchResultList(Base):
     _number_of_results_found = (By.CSS_SELECTOR, "#search-facets > p")
 
     _no_results_locator = (By.CSS_SELECTOR, "p.no-results")
-    _search_results_title_locator = (By.CSS_SELECTOR, "section.primary>h1")
+    _search_results_title_locator = (By.CSS_SELECTOR, "section.primary > h1")
     _results_locator = (By.CSS_SELECTOR, "div.items div.item.addon")
 
     def __init__(self, testsetup):
