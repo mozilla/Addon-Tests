@@ -166,7 +166,7 @@ class TestDetails:
         for i in range(0, len(detail_page.other_addons)):
             name = detail_page.other_addons[i].name
             detail_page.other_addons[i].click_addon_link()
-            Assert.contains(name, detail_page.breadcrumb_addon_name)
+            Assert.contains(name, detail_page.title)
             Details(mozwebqa, 'firebug')
 
     @pytest.mark.nondestructive
