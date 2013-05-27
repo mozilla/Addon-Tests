@@ -5,7 +5,6 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import re
-import time
 
 from urllib2 import urlparse
 from selenium.webdriver.common.by import By
@@ -20,8 +19,8 @@ class Details(Base):
 
     _breadcrumb_locator = (By.ID, "breadcrumbs")
 
-    #addon informations
-    _title_locator = (By.CSS_SELECTOR, "#addon > hgroup > h1.addon")
+    # addon informations
+    _title_locator = (By.CSS_SELECTOR, 'hgroup .addon')
     _version_number_locator = (By.CSS_SELECTOR, "span.version-number")
     _no_restart_locator = (By.CSS_SELECTOR, "span.no-restart")
     _authors_locator = (By.XPATH, "//h4[@class='author']/a")
@@ -112,7 +111,10 @@ class Details(Base):
     def title(self):
         base = self.selenium.find_element(*self._title_locator).text
         '''base = "firebug 1.8.9" we will have to remove version number for it'''
-        return base.replace(self.version_number, '').replace(self.no_restart, '').strip()
+        if self.selenium.find_element(*self._breadcrumb_locator).find_elements(By.CSS_SELECTOR, 'li')[2].text is "Extensions":
+            return base.replace(self.version_number, '').replace(self.no_restart, '').strip()
+        else:
+            return base
 
     @property
     def no_restart(self):
@@ -325,7 +327,7 @@ class Details(Base):
 
     class PartOfCollectionsSnippet(Page):
 
-        _name_locator = (By.CSS_SELECTOR, ' div.summary > h3')
+        _name_locator = (By.CSS_SELECTOR, 'div.summary > h3')
 
         def __init__(self, testsetup, element):
             Page.__init__(self, testsetup)
@@ -489,7 +491,6 @@ class Details(Base):
 
         def click_addon_link(self):
             self._root_element.find_element(*self._name_locator).click()
-            #return Details(self.testsetup)
 
     class DetailsReviewSnippet(Page):
 

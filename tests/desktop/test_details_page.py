@@ -155,8 +155,7 @@ class TestDetails:
 
         Assert.equal(len(detail_page.authors), 1)
         Assert.equal(detail_page.other_addons_by_authors_text, "Other add-ons by %s" % detail_page.authors[0])
-   
-    @pytest.mark.xfail(reason='GitHub Issue: https://github.com/mozilla/Addon-Tests/issues/619 - need to include themes')
+
     @pytest.mark.nondestructive
     def test_navigating_to_other_addons(self, mozwebqa):
         """

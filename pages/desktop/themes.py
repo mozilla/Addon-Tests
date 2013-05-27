@@ -92,7 +92,7 @@ class ThemesDetail(Base):
 
     _page_title_regex = '.+ :: Add-ons for Firefox'
 
-    _themes_title_locator = (By.CSS_SELECTOR, 'h2.addon')
+    _themes_title_locator = (By.CSS_SELECTOR, 'h2.addon > span')
     _breadcrumb_locator = (By.ID, "breadcrumbs")
 
     @property
