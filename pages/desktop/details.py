@@ -111,7 +111,7 @@ class Details(Base):
     def title(self):
         base = self.selenium.find_element(*self._title_locator).text
         '''base = "firebug 1.8.9" we will have to remove version number for it'''
-        if self.selenium.find_element(*self._breadcrumb_locator).find_elements(By.CSS_SELECTOR, 'li')[2].text is "Themes":
+        if "Themes" in self.selenium.find_element(*self._breadcrumb_locator).text:
             return base
         else:
             return base.replace(self.version_number, '').replace(self.no_restart, '').strip()
