@@ -140,7 +140,7 @@ class TestHome:
         home_page = Home(mozwebqa)
         Assert.equal(home_page.featured_extensions_title, 'Featured Extensions', 'Featured Extensions region title doesn\'t match')
         Assert.equal(home_page.featured_extensions_see_all, u'See all \xbb', 'Featured Extensions region see all link is not correct')
-        Assert.equal(home_page.featured_extensions_count, 6)
+        Assert.greater(home_page.featured_extensions_count, 1)
 
     @pytest.mark.nondestructive
     def test_that_clicking_see_all_collections_link_works(self, mozwebqa):
