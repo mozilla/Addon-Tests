@@ -448,6 +448,7 @@ class TestDetails:
         Assert.equal("Frequently Asked Questions", license_faq.header_text)
 
     @pytest.mark.nondestructive
+    @pytest.mark.xfail("config.getvalue('base_url') == 'https://addons-dev.allizom.org'", reason="Bug 899956 - [dev] Can't view MemChaser source code")
     def test_view_the_source_in_the_version_information(self, mozwebqa):
         details_page = Details(mozwebqa, "MemChaser")
         Assert.equal(details_page.version_information_heading, "Version Information")
