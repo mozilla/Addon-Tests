@@ -32,5 +32,10 @@ class TestInstalls:
 
         home_page = Home(mozwebqa)
         search_page = home_page.search_for("jetpack")
-        details_page = search_page.results.pop().click_result()
+        for result in search_page.results:
+            # click on the first compatible result
+            if result.is_compatible:
+                details_page = result.click_result()
+                break
+
         Assert.true(details_page.is_version_information_install_button_visible)

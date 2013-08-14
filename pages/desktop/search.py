@@ -118,6 +118,10 @@ class SearchResultList(Base):
             return mktime(date)
 
         @property
+        def is_compatible(self):
+            return not 'incompatible' in self._root_element.get_attribute('class')
+
+        @property
         def updated_date(self):
             """Returns updated date of result in POSIX format."""
             date = self._root_element.find_element(*self._created_date).text.replace('Updated ', '')
