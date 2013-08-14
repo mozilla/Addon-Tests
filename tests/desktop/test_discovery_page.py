@@ -96,28 +96,23 @@ class TestDiscoveryPane:
         Assert.false(home_page.header.is_user_logged_in)
 
     @pytest.mark.smoke
-    @pytest.mark.native
     @pytest.mark.nondestructive
     def test_that_carousel_works(self, mozwebqa):
-        """
-        Test for Litmus 15071.
-        https://litmus.mozilla.org/show_test.cgi?id=15071
-        """
         discovery_pane = DiscoveryPane(mozwebqa, self.basepath(mozwebqa))
-        slider2 = ''
 
-        #checking > button works and slides change
-        for i in range(0, len(discovery_pane.sliders)):
-            slider1 = discovery_pane.sliders[i].header_name
-            Assert.not_equal(slider1, slider2)
-            Assert.greater(discovery_pane.sliders[i].opacity_value_for_next, 0.3)
-            discovery_pane.sliders[i].click_next()
-            slider2 = slider1
+        # ensure the first panel is visible
+        current_panel = discovery_pane.carousel_panels[1]
+        Assert.true(current_panel.is_visible)
+        first_heading = current_panel.heading
 
-        #checking < button works and slides change
-        for i in range(0, len(discovery_pane.sliders)):
-            slider1 = discovery_pane.sliders[i].header_name
-            Assert.not_equal(slider1, slider2)
-            Assert.greater(discovery_pane.sliders[i].opacity_value_for_previous, 0.3)
-            discovery_pane.sliders[i].click_previous()
-            slider2 = slider1
+        # switch to the second panel
+        discovery_pane.show_next_carousel_panel()
+        current_panel = discovery_pane.carousel_panels[2]
+        Assert.not_equal(current_panel.heading, first_heading)
+        Assert.true(current_panel.is_visible)
+
+        # switch back to the first panel
+        discovery_pane.show_previous_carousel_panel()
+        current_panel = discovery_pane.carousel_panels[1]
+        Assert.equal(current_panel.heading, first_heading)
+        Assert.true(current_panel.is_visible)
