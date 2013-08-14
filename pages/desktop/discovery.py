@@ -5,8 +5,6 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.action_chains import ActionChains
-from selenium.common.exceptions import NoSuchElementException
 
 from pages.page import Page
 from pages.desktop.base import Base
@@ -28,7 +26,9 @@ class DiscoveryPane(Base):
     _up_and_coming_item = (By.XPATH, "//section[@id='up-and-coming']/ul/li/a[@class='addon-title']")
     _logout_link_locator = (By.CSS_SELECTOR, '#logout > a')
 
-    _carousel_locator = (By.CSS_SELECTOR, '#promos .slider li.panel')
+    _carousel_panels_locator = (By.CSS_SELECTOR, '#promos .slider li.panel')
+    _carousel_next_panel_button_locator = (By.CSS_SELECTOR, '#nav-features .nav-next a')
+    _carousel_previous_panel_button_locator = (By.CSS_SELECTOR, '#nav-features .nav-prev a')
 
     _featured_addons_base_locator = (By.CSS_SELECTOR, '#featured-addons .addon-title ')
 
@@ -98,50 +98,31 @@ class DiscoveryPane(Base):
         return Home(self.testsetup, open_url=False)
 
     @property
-    def sliders(self):
-        return [self.SliderRegion(self.testsetup, web_element)
-                for web_element in self.selenium.find_elements(*self._carousel_locator)]
+    def carousel_panels(self):
+        return [self.CarouselPanelRegion(self.testsetup, element)
+                for element in self.selenium.find_elements(*self._carousel_panels_locator)]
 
-    class SliderRegion(Page):
-        _header_text_locator = (By.CSS_SELECTOR, 'h2')
-        _next_slider_locator = (By.CSS_SELECTOR, '#nav-features .nav-next a')
-        _previous_slider_locator = (By.CSS_SELECTOR, '#nav-features .nav-prev a')
+    def show_next_carousel_panel(self):
+        self.selenium.find_element(*self._carousel_next_panel_button_locator).click()
+
+    def show_previous_carousel_panel(self):
+        self.selenium.find_element(*self._carousel_previous_panel_button_locator).click()
+
+    class CarouselPanelRegion(Page):
+
+        _heading_locator = (By.CSS_SELECTOR, 'h2')
 
         def __init__(self, testsetup, element):
             Page.__init__(self, testsetup)
             self._root_element = element
 
         @property
-        def header_name(self):
-            try:
-                self._root_element.find_element(*self._header_text_locator)
-                return self._root_element.find_element(*self._header_text_locator).text
-            except NoSuchElementException:
-                return ''
-
-        def click_next(self):
-            self.selenium.find_element(*self._next_slider_locator).click()
-
-        def click_previous(self):
-            self.selenium.find_element(*self._previous_slider_locator).click()
+        def heading(self):
+            return self._root_element.find_element(*self._heading_locator).text
 
         @property
-        def opacity_value_for_next(self):
-            head = self.selenium.find_element(By.CSS_SELECTOR, '#learn-more')
-            next_element = self.selenium.find_element(*self._next_slider_locator)
-            ActionChains(self.selenium).\
-                move_to_element(head).\
-                move_to_element(next_element).perform()
-            return next_element.value_of_css_property('opacity')
-
-        @property
-        def opacity_value_for_previous(self):
-            head = self.selenium.find_element(By.CSS_SELECTOR, '#learn-more')
-            next_element = self.selenium.find_element(*self._previous_slider_locator)
-            ActionChains(self.selenium).\
-                move_to_element(head).\
-                move_to_element(next_element).perform()
-            return next_element.value_of_css_property('opacity')
+        def is_visible(self):
+            return self._root_element.is_displayed()
 
 
 class DiscoveryThemesDetail(Base):
