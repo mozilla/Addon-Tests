@@ -1,7 +1,5 @@
 # This pulls in all the libraries needed to run Selenium tests
 # on Mozilla WebQA projects
-
-BeautifulSoup==3.2.1
 PyYAML==3.10
 UnittestZero
 certifi==0.0.8
