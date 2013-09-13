@@ -113,7 +113,7 @@ class TestThemes:
         Assert.true(themes_page.is_the_current_page)
 
         # Step 3: Click on any theme.
-        random_theme_index = random.randint(0, themes_page.theme_count - 1)
+        random_theme_index = random.randint(1, themes_page.theme_count - 1)
 
         themes_detail_page = themes_page.click_theme(random_theme_index)
         Assert.true(themes_detail_page.is_the_current_page)
