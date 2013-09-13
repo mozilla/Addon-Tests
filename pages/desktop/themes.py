@@ -35,8 +35,11 @@ class Themes(Base):
 
     def click_theme(self, index):
         """Clicks on the theme with the given index in the page."""
+        WebDriverWait(self.selenium, self.timeout).until(lambda s: self.selenium.find_elements(*self._themes_locator)[index].is_displayed())
+ 
         self.selenium.find_elements(*self._themes_locator)[index].click()
         theme_detail = ThemesDetail(self.testsetup)
+
         WebDriverWait(self.selenium, self.timeout).until(lambda s: theme_detail.is_title_visible)
         return theme_detail
 
