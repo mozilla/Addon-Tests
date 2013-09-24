@@ -521,8 +521,10 @@ class Details(Base):
         return self.selenium.find_element(*self._development_channel_title_locator).text
 
     def click_development_channel(self):
+        expander = self.selenium.find_element(*self._development_channel_toggle)
+        expander_saved_class = expander.get_attribute('class')
         self.selenium.find_element(*self._development_channel_toggle).click()
-        WebDriverWait(self.selenium, self.timeout).until(lambda s: self.is_element_visible(*self._development_channel_content_locator))
+        WebDriverWait(self.selenium, self.timeout).until(lambda s: expander.get_attribute('class') is not expander_saved_class)
 
     @property
     def is_development_channel_expanded(self):
