@@ -87,6 +87,11 @@ class EditProfile(Base):
     _profile_fields_locator = (By.CSS_SELECTOR, '#profile-personal > ol.formfields li')
     _update_message_locator = (By.CSS_SELECTOR, 'div.notification-box > h2')
 
+    def __init__(self, testsetup):
+        Base.__init__(self, testsetup)
+        WebDriverWait(self.selenium, self.timeout).until(
+            lambda s: (s.find_element(*self._account_locator)).is_displayed())
+
     @property
     def account_header_text(self):
         return self.selenium.find_element(*self._account_locator).text
