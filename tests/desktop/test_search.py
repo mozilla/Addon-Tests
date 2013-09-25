@@ -145,6 +145,7 @@ class TestSearch:
                 Assert.contains(search_term, search_range.lower())
                 details_page.return_to_previous_page()
 
+    @pytest.mark.xfail(reason='Bug 920700 - Sorting by Weekly Downloads produces incorrect sorting')
     @pytest.mark.native
     @pytest.mark.nondestructive
     def test_sorting_by_downloads(self, mozwebqa):
