@@ -554,7 +554,7 @@ class Details(Base):
             Page.__init__(self, testsetup)
 
             WebDriverWait(self.selenium, self.timeout).until(
-                lambda s: s.find_element(*self._make_contribution_button_locator),
+                lambda s: s.find_element(*self._make_contribution_button_locator).is_displayed(),
                 "Timeout waiting for 'make contribution' button.")
 
         def click_make_contribution_button(self):
