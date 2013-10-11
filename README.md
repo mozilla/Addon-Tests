@@ -56,11 +56,26 @@ GitHub has excellent guides for [Windows][GitWin], [MacOSX][GitMacOSX] and [Linu
 Before you will be able to run these tests you will need to have [Python 2.6][Python] installed.
 [Python]: http://www.python.org/download/releases/2.6.6/
 
+Install pip (for managing Python packages):
+
+    sudo easy_install pip
+
 #### Before you begin
 Before you dive into running tests you will want to register for an account on 
 [Addons-Dev][AddonsDev].  For security reasons you may want to create
 this account with a different username and password than you may have on the production addons site.
 [AddonsDev]: https://addons-dev.allizom.org/en-US/firefox/
+
+#### Installing dependencies
+
+If you are using virtualenv, create and activate the virtualenv, then run the following in the project root:
+
+    pip install -r requirements.txt
+
+If you are not using virtualenv, run the following in the project root to install dependencies globally:
+
+    sudo pip install -r requirements.txt
+
 
 #### Running tests locally
 
