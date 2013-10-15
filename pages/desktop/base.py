@@ -20,8 +20,6 @@ class Base(Page):
     _amo_logo_link_locator = (By.CSS_SELECTOR, ".site-title a")
     _amo_logo_image_locator = (By.CSS_SELECTOR, ".site-title img")
 
-    _mozilla_logo_link_locator = (By.CSS_SELECTOR, "#global-header-tab a")
-
     _footer_locator = (By.CSS_SELECTOR, "#footer")
 
     def login(self, method="normal", user="default"):
@@ -66,13 +64,6 @@ class Base(Page):
     @property
     def amo_logo_image_source(self):
         return self.selenium.find_element(*self._amo_logo_image_locator).get_attribute('src')
-
-    @property
-    def is_mozilla_logo_visible(self):
-        return self.is_element_visible(*self._mozilla_logo_link_locator)
-
-    def click_mozilla_logo(self):
-        self.selenium.find_element(*self._mozilla_logo_link_locator).click()
 
     def credentials_of_user(self, user):
         return self.parse_yaml_file(self.credentials)[user]
@@ -146,7 +137,7 @@ class Base(Page):
 
         #Search box
         _search_button_locator = (By.CSS_SELECTOR, ".search-button")
-        _search_textbox_locator = (By.NAME, "q")
+        _search_textbox_locator = (By.ID, "search-q")
 
         #Not LoggedIn
         _login_browser_id_locator = (By.CSS_SELECTOR, "a.browserid-login")
