@@ -156,7 +156,7 @@ class EditProfile(Base):
 
 class MyCollections(Base):
 
-    _header_locator = (By.CSS_SELECTOR, "h2")
+    _header_locator = (By.CSS_SELECTOR, ".primary > header > h2")
 
     @property
     def my_collections_header_text(self):

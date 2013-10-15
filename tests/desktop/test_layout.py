@@ -55,17 +55,6 @@ class TestAmoLayout:
         Assert.equal(home_page.get_url_current_page(), '%s/en-US/firefox/' % home_page.base_url)
 
     @pytest.mark.nondestructive
-    def test_that_clicking_mozilla_logo_loads_mozilla_dot_org(self, mozwebqa):
-        """
-        Test for Litmus 22922.
-        https://litmus.mozilla.org/show_test.cgi?id=22922
-        """
-        home_page = Home(mozwebqa)
-        Assert.true(home_page.is_mozilla_logo_visible)
-        home_page.click_mozilla_logo()
-        Assert.equal(home_page.get_url_current_page(), "http://www.mozilla.org/en-US/")
-
-    @pytest.mark.nondestructive
     def test_that_other_applications_link_has_tooltip(self, mozwebqa):
         """
         Test for Litmus 22925.
