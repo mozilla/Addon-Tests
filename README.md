@@ -111,11 +111,11 @@ Also see the documentation on [davehunt's pytest-mozwebqa Github project page] [
 [pymozwebqa]: https://github.com/davehunt/pytest-mozwebqa
 
 ####Virtualenv and Virtualenvwrapper (Optional/Intermediate level)
-While most of us have had some experience using virtual machines, [virtualenv][venv] is something else entirely.  It's used to keep libraries that you install from clashing and messing up your local environment.  After installing virtualenv, installing [virtualenvwrapper][wrapper] will give you some nice commands to use with virtualenvwrapper.
+While most of us have had some experience using virtual machines, [virtualenv][venv] is something else entirely.  It's used to keep libraries that you install from clashing and messing up your local environment.  After installing virtualenv, installing [virtualenvwrapper][wrapper] will give you some nice commands to use with virtualenv.
 [venv]: http://pypi.python.org/pypi/virtualenv
 [wrapper]: http://www.doughellmann.com/projects/virtualenvwrapper/
 
-For a more detailed discussion of virtualenv and virtualenvwrapper, check out [our quickstart guide] (https://wiki.mozilla.org/QA/Execution/Web_Testing/Automation/Virtual_Environments) and also [this blog post] (https://wiki.mozilla.org/QA/Execution/Web_Testing/Automation/Virtual_Environments).
+For a more detailed discussion of virtualenv and virtualenvwrapper, check out [our quickstart guide] (https://wiki.mozilla.org/QA/Execution/Web_Testing/Automation/Virtual_Environments) and also [this blog post] (http://www.silverwareconsulting.com/index.cfm/2012/7/24/Getting-Started-with-virtualenv-and-virtualenvwrapper-in-Python).
 
 #### Moz-grid-config (Optional/Intermediate level)
 Prerequisites: [Java Runtime Environment][Java JRE], [Apache Ant][ANT]
