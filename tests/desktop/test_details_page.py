@@ -453,7 +453,7 @@ class TestDetails:
 
     @pytest.mark.nondestructive
     def test_view_the_source_in_the_version_information(self, mozwebqa):
-        details_page = Details(mozwebqa, "MemChaser")
+        details_page = Details(mozwebqa, "Firebug")
         Assert.equal(details_page.version_information_heading, "Version Information")
         details_page.expand_version_information()
         Assert.equal("View the source", details_page.view_source_code_text)
