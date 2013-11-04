@@ -32,7 +32,7 @@ class TestHome:
         HeaderMenu('EXTENSIONS', [
             "Featured", "Most Popular", "Top Rated", "Alerts & Updates", "Appearance", "Bookmarks",
             "Download Management", "Feeds, News & Blogging", "Games & Entertainment",
-            "Language Support", "Photos, Music & Videos", "Privacy & Security", "Shopping",
+            "Language Support", "Photos, Music & Videos", "Privacy & Security", "Search Tools", "Shopping",
             "Social & Communication", "Tabs", "Web Development", "Other"]),
         HeaderMenu('THEMES', [
             "Most Popular", "Top Rated", "Newest", "Abstract", "Causes", "Fashion", "Film and TV",
