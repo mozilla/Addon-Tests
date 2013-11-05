@@ -21,11 +21,12 @@ class Category(Base):
     _categories_language_support_link_locator = (By.CSS_SELECTOR, "#side-categories > li:nth-of-type(7) > a")
     _categories_photo_music_video_link_locator = (By.CSS_SELECTOR, "#side-categories > li:nth-of-type(8) > a")
     _categories_privacy_security_link_locator = (By.CSS_SELECTOR, "#side-categories > li:nth-of-type(9) > a")
-    _categories_shopping_link_locator = (By.CSS_SELECTOR, "#side-categories > li:nth-of-type(10) > a")
-    _categories_social_communication_link_locator = (By.CSS_SELECTOR, "#side-categories > li:nth-of-type(11) > a")
-    _categories_tabs_link_locator = (By.CSS_SELECTOR, "#side-categories > li:nth-of-type(12) > a")
-    _categories_web_development_link_locator = (By.CSS_SELECTOR, "#side-categories > li:nth-of-type(13) > a")
-    _categories_other_link_locator = (By.CSS_SELECTOR, "#side-categories > li:nth-of-type(14) > a")
+    _categories_search_tools_link_locator = (By.CSS_SELECTOR, "#side-categories > li:nth-of-type(10) > a")
+    _categories_shopping_link_locator = (By.CSS_SELECTOR, "#side-categories > li:nth-of-type(11) > a")
+    _categories_social_communication_link_locator = (By.CSS_SELECTOR, "#side-categories > li:nth-of-type(12) > a")
+    _categories_tabs_link_locator = (By.CSS_SELECTOR, "#side-categories > li:nth-of-type(13) > a")
+    _categories_web_development_link_locator = (By.CSS_SELECTOR, "#side-categories > li:nth-of-type(14) > a")
+    _categories_other_link_locator = (By.CSS_SELECTOR, "#side-categories > li:nth-of-type(15) > a")
 
     @property
     def categories_side_navigation_header_text(self):
