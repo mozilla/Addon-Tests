@@ -17,8 +17,8 @@ class TestHome:
 
     expected_category_items = ['Alerts & Updates', 'Appearance', 'Bookmarks', 'Download Management',
                                'Feeds, News & Blogging', 'Games & Entertainment', 'Language Support',
-                               'Photos, Music & Videos', 'Privacy & Security', 'Shopping', 'Social & Communication',
-                               'Tabs', 'Web Development', 'Other']
+                               'Photos, Music & Videos', 'Privacy & Security', 'Search Tools', 'Shopping', 
+                               'Social & Communication', 'Tabs', 'Web Development', 'Other']
 
     @pytest.mark.nondestructive
     def test_that_checks_the_desktop_version_link(self, mozwebqa):
