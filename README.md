@@ -38,11 +38,6 @@ Mozilla maintains a guide to running Automated tests on our QMO website:
 
 https://quality.mozilla.org/docs/webqa/running-webqa-automated-tests/
 
-This wiki page has some advanced instructions specific to Windows:
-
-https://wiki.mozilla.org/QA_SoftVision_Team/WebQA_Automation
-
-
 ###You will need to install the following:
 
 #### Git
@@ -76,6 +71,7 @@ If you are not using virtualenv, run the following in the project root to instal
 
     sudo pip install -r requirements.txt
 
+For more information on virtualenv, [see below] (#virtualenv-and-virtualenvwrapper-optionalintermediate-level).
 
 #### Running tests locally
 
@@ -83,7 +79,7 @@ Tests are run using the py.test library. You will find examples here for running
 
 WebDriver does not need a Selenium Server or Grid to run so these examples bypass this step and just use the --driver command.
 
-An example of running all tests without a Selenium Server:
+An example of running all tests:
 
 	py.test --driver=firefox --credentials=./credentials.yaml
 	
@@ -101,19 +97,25 @@ If running on a Mac, skip tests which require 'native' support:
     
 Depending on the platform you're running the tests on, run only the tests in the mobile or desktop directories:
 
-    py.test --driver=firefox --credentials=./credentials.yaml ./tests/desktop
-    py.test --driver=firefox --credentials=./credentials.yaml ./tests/mobile
+    py.test --driver=firefox --credentials=./credentials.yaml tests/desktop
+    py.test --driver=firefox --credentials=./credentials.yaml tests/mobile
     
 For information about running tests against a Selenium Grid or moz-grid-config see the section in this document about setting up moz-grid-config.
 
-The mozwebqa plugin has advanced command line options for reporting and using browsers. See the documentation on [davehunt's pytest mozwebqa github][pymozwebqa]:
+
+The mozwebqa plugin has advanced command line options for reporting and using browsers. To see the options available, try running:
+
+    py.test --help
+
+Also see the documentation on [davehunt's pytest-mozwebqa Github project page] [pymozwebqa].
 [pymozwebqa]: https://github.com/davehunt/pytest-mozwebqa
 
 ####Virtualenv and Virtualenvwrapper (Optional/Intermediate level)
-While most of us have had some experience using virtual machines, [virtualenv][venv] is something else entirely.  It's used to keep libraries that you install from clashing and messing up your local environment.  After installing virtualenv, installing [virtualenvwrapper][wrapper] will give you some nice commands to use with virtualenvwrapper.
-
+While most of us have had some experience using virtual machines, [virtualenv][venv] is something else entirely.  It's used to keep libraries that you install from clashing and messing up your local environment.  After installing virtualenv, installing [virtualenvwrapper][wrapper] will give you some nice commands to use with virtualenv.
 [venv]: http://pypi.python.org/pypi/virtualenv
 [wrapper]: http://www.doughellmann.com/projects/virtualenvwrapper/
+
+For a more detailed discussion of virtualenv and virtualenvwrapper, check out [our quickstart guide] (https://wiki.mozilla.org/QA/Execution/Web_Testing/Automation/Virtual_Environments) and also [this blog post] (http://www.silverwareconsulting.com/index.cfm/2012/7/24/Getting-Started-with-virtualenv-and-virtualenvwrapper-in-Python).
 
 #### Moz-grid-config (Optional/Intermediate level)
 Prerequisites: [Java Runtime Environment][Java JRE], [Apache Ant][ANT]
@@ -141,7 +143,7 @@ Writing Tests
 If you want to get involved and add more tests then there's just a few things
 we'd like to ask you to do:
 
-1. Use the [template files][GitHub Templates] for all new tests and page objects
+1. Use an existing file from this repository as a template for all new tests and page objects
 2. Follow our simple [style guide][Style Guide]
 3. Fork this project with your own GitHub account
 4. Add your test into the "tests" folder and the necessary methods for it into the appropriate file in "pages"
