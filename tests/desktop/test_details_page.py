@@ -451,6 +451,8 @@ class TestDetails:
         license_faq = details_page.click_whats_this_license()
         Assert.equal("Frequently Asked Questions", license_faq.header_text)
 
+    @pytest.mark.xfail("config.getvalue('base_url') == 'https://addons-dev.allizom.org'",
+                       reason='Bug 938027 - [dev] Cannot "View the source" of any app')
     @pytest.mark.nondestructive
     def test_view_the_source_in_the_version_information(self, mozwebqa):
         details_page = Details(mozwebqa, "Firebug")
