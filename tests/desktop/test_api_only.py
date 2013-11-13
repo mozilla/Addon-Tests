@@ -40,7 +40,7 @@ class TestAPIOnlyTests:
         """Test for Litmus 15318."""
         response = AddonsAPI(mozwebqa, 'Firebug')
         Assert.equal(4, response.get_addon_status_id())
-        Assert.equal("Published".lower(), response.get_addon_status())
+        Assert.equal("fully reviewed".lower(), response.get_addon_status())
 
     @pytest.mark.nondestructive
     def test_that_firebug_has_install_link(self, mozwebqa):
