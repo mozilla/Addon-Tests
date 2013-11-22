@@ -51,6 +51,11 @@ class ViewProfile(Base):
     _about_locator = (By.CSS_SELECTOR, "div.island > section.primary > h2")
     _email_locator = (By.CSS_SELECTOR, 'a.email')
 
+    def __init__(self, testsetup):
+        Base.__init__(self, testsetup)
+        WebDriverWait(self.selenium, self.timeout).until(
+            lambda s: (s.find_element(*self._about_locator)).is_displayed())
+
     @property
     def about_me(self):
         return self.selenium.find_element(*self._about_locator).text
