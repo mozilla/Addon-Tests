@@ -6,8 +6,9 @@
 
 
 import re
-import pytest
+from itertools import cycle
 
+import pytest
 from unittestzero import Assert
 
 from pages.desktop.discovery import DiscoveryPane
@@ -116,3 +117,30 @@ class TestDiscoveryPane:
         current_panel = discovery_pane.carousel_panels[1]
         Assert.equal(current_panel.heading, first_heading)
         Assert.true(current_panel.is_visible)
+
+    @pytest.mark.nondestructive
+    def test_that_cycles_through_all_panels_in_the_carousel(self, mozwebqa):
+        discovery_pane = DiscoveryPane(mozwebqa, self.basepath(mozwebqa))
+        carousel_panels = discovery_pane.carousel_panels
+
+        # remove first and last panels, they are phantoms!
+        carousel_panels.pop(0)
+        carousel_panels.pop(-1)
+        panels_count = len(carousel_panels)
+
+        # create and init cycle
+        panels = cycle(carousel_panels)
+        first_heading = panels.next().heading
+
+        # advance forward, check that current panel is visible
+        # to ensure that panels are being switched
+        for i in range(panels_count):
+            discovery_pane.show_next_carousel_panel()
+            current_panel = panels.next()
+            Assert.true(current_panel.heading)
+            Assert.true(current_panel.is_visible)
+
+        # now check that current panel has the same heading as
+        # the first one to ensure that we have completed the cycle
+        last_heading = current_panel.heading
+        Assert.equal(first_heading, last_heading)
