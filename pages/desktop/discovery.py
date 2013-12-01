@@ -20,6 +20,7 @@ class DiscoveryPane(Base):
     _themes_section_locator = (By.ID, 'featured-themes')
     _themes_see_all_link = (By.CSS_SELECTOR, ".all[href='/en-US/firefox/themes/']")
     _themes_locator = (By.CSS_SELECTOR, '#featured-themes ul li')
+    _themes_link_locator = (By.CSS_SELECTOR, '#featured-themes ul a')
     _more_ways_section_locator = (By.ID, 'more-ways')
     _more_ways_addons_locator = (By.ID, 'more-addons')
     _more_ways_complete_themes_locator = (By.ID, 'more-complete-themes')
@@ -73,7 +74,7 @@ class DiscoveryPane(Base):
         return self.selenium.find_elements(*self._themes_locator)[0].text
 
     def click_on_first_theme(self):
-        self.selenium.find_elements(*self._themes_locator)[0].click()
+        self.selenium.find_element(*self._themes_link_locator).click()
         return DiscoveryThemesDetail(self.testsetup)
 
     @property
