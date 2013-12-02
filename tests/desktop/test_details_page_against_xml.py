@@ -5,14 +5,13 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import re
-import pytest
-from HTMLParser import HTMLParser
 from urllib2 import urlparse
 
+import pytest
 from unittestzero import Assert
 
 from pages.desktop.details import Details
-from pages.desktop.addons_api import AddOnsAPI
+from pages.desktop.addons_api import AddonsAPI
 
 
 class TestDetailsAgainstXML:
@@ -38,8 +37,8 @@ class TestDetailsAgainstXML:
         browser_authors = firebug_page.authors
 
         #get authors from xml
-        addons_xml = AddOnsAPI(mozwebqa)
-        xml_authors = addons_xml.get_list_of_addon_author_names(self.firebug)
+        addons_xml = AddonsAPI(mozwebqa, self.firebug)
+        xml_authors = addons_xml.get_list_of_addon_author_names()
 
         #check that both lists have the same number of authors
         Assert.equal(len(browser_authors), len(xml_authors))
@@ -60,15 +59,17 @@ class TestDetailsAgainstXML:
             browser_images.append(firebug_page.previewer.image_link(i))
 
         #get images links from xml
-        addons_xml = AddOnsAPI(mozwebqa)
-        xml_images = addons_xml.get_list_of_addon_images_links(self.firebug)
+        addons_xml = AddonsAPI(mozwebqa, self.firebug)
+        xml_images = addons_xml.get_list_of_addon_images_links()
 
         #check that both lists have the same number of images
         Assert.equal(len(browser_images), len(xml_images))
 
         #cross check both lists with each other
         for i in range(len(xml_images)):
-            Assert.equal(xml_images[i].replace('src=api&amp;', ''), browser_images[i])
+            Assert.equal(
+                re.sub('src=api(&amp;|&)', '', xml_images[i]),
+                browser_images[i])
 
     @pytest.mark.nondestructive
     def test_that_firebug_summary_is_correct(self, mozwebqa):
@@ -79,8 +80,8 @@ class TestDetailsAgainstXML:
         browser_summary = firebug_page.summary
 
         #api
-        addons_xml = AddOnsAPI(mozwebqa)
-        xml_summary = addons_xml.get_addon_summary(self.firebug)
+        addons_xml = AddonsAPI(mozwebqa, self.firebug)
+        xml_summary = addons_xml.get_addon_summary()
 
         Assert.equal(xml_summary, browser_summary)
 
@@ -97,10 +98,12 @@ class TestDetailsAgainstXML:
         browser_description = firebug_page.description
 
         #api
-        addons_xml = AddOnsAPI(mozwebqa)
-        xml_description = addons_xml.get_addon_description(self.firebug)
+        addons_xml = AddonsAPI(mozwebqa, self.firebug)
+        xml_description = addons_xml.get_addon_description()
 
-        Assert.equal(browser_description.replace('\n', ''), HTMLParser().unescape(xml_description.replace('\n', '')))
+        Assert.equal(
+            browser_description.replace('\n', ''),
+            xml_description.replace('\n', ''))
 
     @pytest.mark.nondestructive
     def test_that_icon_is_correct(self, mozwebqa):
@@ -111,9 +114,9 @@ class TestDetailsAgainstXML:
         browser_icon = firebug_page.icon_url
 
         #api
-        addons_xml = AddOnsAPI(mozwebqa)
+        addons_xml = AddonsAPI(mozwebqa, self.firebug)
 
-        xml_icon = addons_xml.get_icon_url(self.firebug)
+        xml_icon = addons_xml.get_icon_url()
 
         Assert.equal(browser_icon, xml_icon)
 
@@ -126,8 +129,8 @@ class TestDetailsAgainstXML:
         browser_support_url = firebug_page.support_url
 
         #api
-        addons_xml = AddOnsAPI(mozwebqa)
-        xml_support_url = addons_xml.get_support_url("firebug")
+        addons_xml = AddonsAPI(mozwebqa, self.firebug)
+        xml_support_url = addons_xml.get_support_url()
 
         Assert.equal(browser_support_url, xml_support_url)
 
@@ -140,8 +143,8 @@ class TestDetailsAgainstXML:
         browser_rating = firebug_page.rating
 
         #api
-        addons_xml = AddOnsAPI(mozwebqa)
-        xml_rating = addons_xml.get_rating("firebug")
+        addons_xml = AddonsAPI(mozwebqa, self.firebug)
+        xml_rating = addons_xml.get_rating()
 
         Assert.equal(browser_rating, xml_rating)
 
@@ -155,8 +158,8 @@ class TestDetailsAgainstXML:
         browser_compatible_applications = firebug_page.compatible_applications
 
         #api
-        addons_xml = AddOnsAPI(mozwebqa)
-        xml_compatible_applications = addons_xml.get_compatible_applications("firebug")
+        addons_xml = AddonsAPI(mozwebqa, self.firebug)
+        xml_compatible_applications = addons_xml.get_compatible_applications()
         name = xml_compatible_applications[0]
         min_version = xml_compatible_applications[1]
         max_version = xml_compatible_applications[2]
@@ -184,8 +187,8 @@ class TestDetailsAgainstXML:
         browser_downloads = statistics_page.total_downloads_number
 
         #api
-        addons_xml = AddOnsAPI(mozwebqa)
-        xml_downloads = addons_xml.get_total_downloads("firebug")
+        addons_xml = AddonsAPI(mozwebqa, self.firebug)
+        xml_downloads = addons_xml.get_total_downloads()
 
         Assert.equal(browser_downloads, xml_downloads)
 
@@ -194,8 +197,8 @@ class TestDetailsAgainstXML:
         """Test for Litmus 15326."""
 
         #api
-        addons_xml = AddOnsAPI(mozwebqa)
-        learn_more_url = addons_xml.get_learn_more_url(self.firebug)
+        addons_xml = AddonsAPI(mozwebqa, self.firebug)
+        learn_more_url = addons_xml.get_learn_more_url()
 
         #browser
         details_page = Details(mozwebqa, self.firebug)
@@ -213,8 +216,8 @@ class TestDetailsAgainstXML:
         browser_devs_comments = firebug_page.devs_comments_message
 
         #api
-        addons_xml = AddOnsAPI(mozwebqa)
-        xml_devs_comments = addons_xml.get_devs_comments(self.firebug)
+        addons_xml = AddonsAPI(mozwebqa, self.firebug)
+        xml_devs_comments = addons_xml.get_devs_comments()
 
         Assert.equal(xml_devs_comments, browser_devs_comments)
 
@@ -227,8 +230,8 @@ class TestDetailsAgainstXML:
         browser_home_page = urlparse.unquote(firebug_page.website)
 
         #api
-        addons_xml = AddOnsAPI(mozwebqa)
-        xml_home_page = addons_xml.get_home_page("firebug")
+        addons_xml = AddonsAPI(mozwebqa, self.firebug)
+        xml_home_page = addons_xml.get_home_page()
 
         Assert.contains(xml_home_page, browser_home_page)
 
@@ -241,8 +244,8 @@ class TestDetailsAgainstXML:
         browser_reviews = firebug_page.total_reviews_count
 
         #api
-        addons_xml = AddOnsAPI(mozwebqa)
-        xml_reviews = addons_xml.get_reviews_count("firebug")
+        addons_xml = AddonsAPI(mozwebqa, self.firebug)
+        xml_reviews = addons_xml.get_reviews_count()
 
         Assert.equal(browser_reviews, xml_reviews)
 
@@ -255,7 +258,7 @@ class TestDetailsAgainstXML:
         browser_daily_users = firebug_page.daily_users_number
 
         #api
-        addons_xml = AddOnsAPI(mozwebqa)
-        xml_daily_users = addons_xml.get_daily_users("firebug")
+        addons_xml = AddonsAPI(mozwebqa, self.firebug)
+        xml_daily_users = addons_xml.get_daily_users()
 
         Assert.equal(browser_daily_users, xml_daily_users)
