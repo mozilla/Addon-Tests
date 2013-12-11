@@ -558,6 +558,7 @@ class Details(Base):
                 "Timeout waiting for 'make contribution' button.")
 
         def click_make_contribution_button(self):
+            self.selenium.maximize_window()
             self.selenium.find_element(*self._make_contribution_button_locator).click()
             from pages.desktop.regions.paypal_frame import PayPalFrame
             return PayPalFrame(self.testsetup)
