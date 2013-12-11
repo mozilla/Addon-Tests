@@ -22,10 +22,6 @@ class Base(Page):
 
     _footer_locator = (By.CSS_SELECTOR, "#footer")
 
-    def __init__(self, testsetup):
-        Page.__init__(self, testsetup)
-        self.selenium.maximize_window()
-
     def login(self, method="normal", user="default"):
         from pages.desktop.user import Login
 
@@ -172,6 +168,7 @@ class Base(Page):
             return [HeaderMenu(self.testsetup, web_element) for web_element in self.selenium.find_elements(*self._site_navigation_menus_locator)]
 
         def click_complete_themes(self):
+            self.selenium.maximize_window()
             themes_menu = self.selenium.find_element(By.CSS_SELECTOR, '#themes')
             complete_themes_menu = self.selenium.find_element(*self._complete_themes_menu_locator)
             ActionChains(self.selenium).move_to_element(themes_menu).\
