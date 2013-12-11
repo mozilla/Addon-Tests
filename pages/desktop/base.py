@@ -22,6 +22,10 @@ class Base(Page):
 
     _footer_locator = (By.CSS_SELECTOR, "#footer")
 
+    def __init__(self, testsetup):
+        Page.__init__(self, testsetup)
+        self.selenium.maximize_window()
+
     def login(self, method="normal", user="default"):
         from pages.desktop.user import Login
 
