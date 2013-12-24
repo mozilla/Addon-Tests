@@ -5,6 +5,7 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
 
 from pages.page import Page
 from pages.desktop.base import Base
@@ -124,6 +125,10 @@ class DiscoveryPane(Base):
         @property
         def is_visible(self):
             return self._root_element.is_displayed()
+
+        def wait_for_next_promo(self):
+            WebDriverWait(self.selenium, self.timeout).until(lambda s:
+                                                         self._root_element.find_element(*self._heading_locator).is_displayed())
 
 
 class DiscoveryThemesDetail(Base):
