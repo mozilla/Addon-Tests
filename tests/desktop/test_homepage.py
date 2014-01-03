@@ -78,7 +78,7 @@ class TestHome:
     @pytest.mark.nondestructive
     def test_that_featured_themes_exist_on_the_home(self, mozwebqa):
         """
-        Test for Litmus29698.
+        Test for Litmus 29698.
         https://litmus.mozilla.org/show_test.cgi?id=29698
         """
         home_page = Home(mozwebqa)
