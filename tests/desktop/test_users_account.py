@@ -19,11 +19,6 @@ class TestAccounts:
     @pytest.mark.login
     @pytest.mark.native
     def test_user_can_login_and_logout_using_normal_login(self, mozwebqa):
-        """
-        Test for Litmus 7857 and 4859.
-        https://litmus.mozilla.org/show_test.cgi?id=7857
-        https://litmus.mozilla.org/show_test.cgi?id=4859
-        """
 
         home_page = Home(mozwebqa)
         home_page.login("normal")
@@ -36,11 +31,6 @@ class TestAccounts:
     @pytest.mark.nondestructive
     @pytest.mark.login
     def test_user_can_login_and_logout_using_browser_id(self, mozwebqa):
-        """
-        Test for Litmus 7857 and 4859.
-        https://litmus.mozilla.org/show_test.cgi?id=7857
-        https://litmus.mozilla.org/show_test.cgi?id=4859
-        """
 
         home_page = Home(mozwebqa)
         home_page.login("browserID")
@@ -54,10 +44,6 @@ class TestAccounts:
     @pytest.mark.nondestructive
     @pytest.mark.login
     def test_user_can_access_the_edit_profile_page(self, mozwebqa):
-        """
-        Test for Litmus 5039.
-        https://litmus.mozilla.org/show_test.cgi?id=5039
-        """
 
         home_page = Home(mozwebqa)
         home_page.login()
@@ -77,10 +63,6 @@ class TestAccounts:
     @pytest.mark.nondestructive
     @pytest.mark.login
     def test_user_can_access_the_view_profile_page(self, mozwebqa):
-        """
-        Test for litmus 15400.
-        https://litmus.mozilla.org/show_test.cgi?id=15400
-        """
 
         home_page = Home(mozwebqa)
         home_page.login()
@@ -131,10 +113,6 @@ class TestAccounts:
     @pytest.mark.native
     @pytest.mark.login
     def test_user_can_update_profile_information_in_account_settings_page(self, mozwebqa):
-        """
-        Test for Litmus 11563.
-        https://litmus.mozilla.org/show_test.cgi?id=11563
-        """
         home_page = Home(mozwebqa)
         home_page.login(user="user.edit")
 

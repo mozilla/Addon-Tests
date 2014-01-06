@@ -19,31 +19,26 @@ class TestAPIOnlyTests:
 
     @pytest.mark.nondestructive
     def test_that_firebug_is_listed_first_in_addons_search_for_firebug(self, mozwebqa):
-        """Test for Litmus 15316."""
         response = AddonsAPI(mozwebqa, 'Firebug')
         Assert.equal("Firebug".lower(), response.get_addon_name())
 
     @pytest.mark.nondestructive
     def test_that_firebug_addon_type_name_is_extension(self, mozwebqa):
-        """Test for Litmus 15316."""
         response = AddonsAPI(mozwebqa, 'Firebug')
         Assert.equal("Extension".lower(), response.get_addon_type())
 
     @pytest.mark.nondestructive
     def test_that_firebug_addon_type_id_is_1(self, mozwebqa):
-        """Test for Litmus 15316."""
         response = AddonsAPI(mozwebqa, 'Firebug')
         Assert.equal(1, response.get_addon_type_id())
 
     @pytest.mark.nondestructive
     def test_that_firebug_status_id_is_4_and_fully_reviewed(self, mozwebqa):
-        """Test for Litmus 15318."""
         response = AddonsAPI(mozwebqa, 'Firebug')
         Assert.equal(4, response.get_addon_status_id())
         Assert.equal("fully reviewed".lower(), response.get_addon_status())
 
     @pytest.mark.nondestructive
     def test_that_firebug_has_install_link(self, mozwebqa):
-        """Test for Litmus 15327."""
         response = AddonsAPI(mozwebqa, 'Firebug')
         Assert.contains("fx.xpi?src=api", response.get_install_link())

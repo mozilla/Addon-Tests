@@ -15,10 +15,6 @@ class TestExtensions:
     @pytest.mark.native
     @pytest.mark.nondestructive
     def test_featured_tab_is_highlighted_by_default(self, mozwebqa):
-        """
-        Test for Litmus 29706.
-        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=29706
-        """
         home_page = Home(mozwebqa)
         featured_extensions_page = home_page.header.site_navigation_menu("Extensions").click()
         Assert.equal(featured_extensions_page.sorter.sorted_by, "Featured")
@@ -26,10 +22,6 @@ class TestExtensions:
     @pytest.mark.native
     @pytest.mark.nondestructive
     def test_pagination(self, mozwebqa):
-        """
-        Test for Litmus 29708
-        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=29708
-        """
         home_page = Home(mozwebqa)
         featured_extensions_page = home_page.header.site_navigation_menu("Extensions").click()
         featured_extensions_page.sorter.sort_by('most_users')
@@ -52,10 +44,6 @@ class TestExtensions:
     @pytest.mark.native
     @pytest.mark.nondestructive
     def test_previous_button_is_disabled_on_the_first_page(self, mozwebqa):
-        """
-        Test for Litmus 29709.
-        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=29709
-        """
         home_page = Home(mozwebqa)
         featured_extensions_page = home_page.header.site_navigation_menu("Extensions").click()
         featured_extensions_page.sorter.sort_by('Most Users')
@@ -70,10 +58,6 @@ class TestExtensions:
     @pytest.mark.native
     @pytest.mark.nondestructive
     def test_next_button_is_disabled_on_the_last_page(self, mozwebqa):
-        """
-        Test for Litmus 29710.
-        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=29710
-        """
         home_page = Home(mozwebqa)
         featured_extensions_page = home_page.header.site_navigation_menu("Extensions").click()
         featured_extensions_page.sorter.sort_by('most_users')
@@ -84,10 +68,6 @@ class TestExtensions:
     @pytest.mark.native
     @pytest.mark.nondestructive
     def test_that_checks_if_the_extensions_are_sorted_by_top_rated(self, mozwebqa):
-        """
-        Test for Litmus 29717
-        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=29717
-        """
         home_page = Home(mozwebqa)
         featured_extensions_page = home_page.header.site_navigation_menu("Extensions").click()
         featured_extensions_page.sorter.sort_by("Top Rated")
@@ -97,10 +77,6 @@ class TestExtensions:
     @pytest.mark.native
     @pytest.mark.nondestructive
     def test_that_checks_if_the_extensions_are_sorted_by_most_user(self, mozwebqa):
-        """
-        Test for Litmus 29715
-        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=29715
-        """
         home_page = Home(mozwebqa)
         featured_extensions_page = home_page.header.site_navigation_menu("Extensions").click()
         featured_extensions_page.sorter.sort_by('most_users')
@@ -112,10 +88,6 @@ class TestExtensions:
     @pytest.mark.native
     @pytest.mark.nondestructive
     def test_that_checks_if_the_extensions_are_sorted_by_newest(self, mozwebqa):
-        """
-        Test for Litmus 29719
-        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=29719
-        """
         home_page = Home(mozwebqa)
         featured_extensions_page = home_page.header.site_navigation_menu("Extensions").click()
         featured_extensions_page.sorter.sort_by('newest')
@@ -132,10 +104,6 @@ class TestExtensions:
     @pytest.mark.native
     @pytest.mark.nondestructive
     def test_that_checks_if_the_extensions_are_sorted_by_recently_updated(self, mozwebqa):
-        """
-        Litmus 29727
-        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=29727
-        """
         home_page = Home(mozwebqa)
         featured_extensions_page = home_page.header.site_navigation_menu("Extensions").click()
 
@@ -153,10 +121,6 @@ class TestExtensions:
     @pytest.mark.native
     @pytest.mark.nondestructive
     def test_that_extensions_are_sorted_by_up_and_coming(self, mozwebqa):
-        """
-        Litmus 29729
-        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=29729
-        """
         home_page = Home(mozwebqa)
         featured_extensions_page = home_page.header.site_navigation_menu("Extensions").click()
 
@@ -167,10 +131,6 @@ class TestExtensions:
 
     @pytest.mark.nondestructive
     def test_that_extensions_page_contains_addons_and_the_pagination_works(self, mozwebqa):
-        """
-        Litmus 29729
-        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=29729
-        """
         home_page = Home(mozwebqa)
         featured_extensions_page = home_page.header.site_navigation_menu("Extensions").click()
 
@@ -200,11 +160,6 @@ class TestExtensions:
     @pytest.mark.native
     @pytest.mark.nondestructive
     def test_breadcrumb_menu_in_extensions_page(self, mozwebqa):
-        """
-        Litmus 29812
-        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=29812
-        """
-
         home_page = Home(mozwebqa)
         featured_extensions_page = home_page.header.site_navigation_menu("Extensions").click()
 
@@ -216,10 +171,6 @@ class TestExtensions:
     @pytest.mark.native
     @pytest.mark.nondestructive
     def test_that_checks_if_the_subscribe_link_exists(self, mozwebqa):
-        """
-        Test for Litmus 29812
-        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=29812
-        """
         home_page = Home(mozwebqa)
         featured_extensions_page = home_page.header.site_navigation_menu("Extensions").click()
         Assert.contains("Subscribe", featured_extensions_page.subscribe_link_text)
@@ -227,10 +178,6 @@ class TestExtensions:
     @pytest.mark.native
     @pytest.mark.nondestructive
     def test_that_checks_featured_extensions_header(self, mozwebqa):
-        """
-        Test for Litmus 29812
-        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=29812
-        """
         home_page = Home(mozwebqa)
         featured_extensions_page = home_page.header.site_navigation_menu("Extensions").click()
         Assert.equal("Featured Extensions", featured_extensions_page.featured_extensions_header_text)

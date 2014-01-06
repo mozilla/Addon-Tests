@@ -16,7 +16,6 @@ class TestInstalls:
 
     @pytest.mark.native
     @pytest.mark.nondestructive
-    @pytest.mark.litmus(15115)
     def test_could_install_theme(self, mozwebqa):
         """note that this test does not actually *install* the theme"""
 
@@ -26,7 +25,6 @@ class TestInstalls:
         Assert.true(complete_theme_page.install_button_exists)
 
     @pytest.mark.nondestructive
-    @pytest.mark.litmus(17355)
     def test_could_install_jetpack(self, mozwebqa):
         """note that this test does not actually *install* the jetpack"""
 

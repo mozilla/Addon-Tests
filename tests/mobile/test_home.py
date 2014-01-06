@@ -32,10 +32,6 @@ class TestHome:
 
     @pytest.mark.nondestructive
     def test_that_checks_header_text_and_page_title(self, mozwebqa):
-        """
-        litmus 15128
-        https://litmus.mozilla.org/show_test.cgi?id=15128
-        """
         home = Home(mozwebqa)
         Assert.true(home.is_the_current_page)
 
@@ -57,10 +53,6 @@ class TestHome:
 
     @pytest.mark.nondestructive
     def test_that_checks_the_firefox_logo(self, mozwebqa):
-        """
-        litmus 15128
-        https://litmus.mozilla.org/show_test.cgi?id=15128
-        """
 
         home = Home(mozwebqa)
         Assert.true(home.is_the_current_page)
@@ -80,10 +72,6 @@ class TestHome:
 
     @pytest.mark.nondestructive
     def test_all_featured_extensions_link(self, mozwebqa):
-        """
-        litmus 15136
-        https://litmus.mozilla.org/show_test.cgi?id=15136
-        """
 
         home = Home(mozwebqa)
         Assert.true(home.is_the_current_page)
@@ -99,10 +87,6 @@ class TestHome:
 
     @pytest.mark.nondestructive
     def test_that_checks_the_search_box_and_button(self, mozwebqa):
-        """
-        Test for Litmus 15128.
-        https://litmus.mozilla.org/show_test.cgi?id=15128
-        """
         home = Home(mozwebqa)
         Assert.true(home.is_the_current_page)
 
@@ -112,10 +96,6 @@ class TestHome:
 
     @pytest.mark.nondestructive
     def test_expandable_header(self, mozwebqa):
-        """
-        Litmus 15128
-        https://litmus.mozilla.org/show_test.cgi?id=15128
-        """
         home = Home(mozwebqa)
         home.header.click_header_menu()
         Assert.true(home.header.is_dropdown_menu_visible)
@@ -126,10 +106,6 @@ class TestHome:
     @pytest.mark.xfail(reason='Bug 824471 - New Personas tab on mobile site not working as expected')
     # https://bugzilla.mozilla.org/show_bug.cgi?id=824471
     def test_that_checks_the_tabs(self, mozwebqa):
-        """
-        Test for Litmus 15128.
-        https://litmus.mozilla.org/show_test.cgi?id=15128
-        """
         home = Home(mozwebqa)
         Assert.true(home.is_the_current_page)
 
@@ -144,10 +120,6 @@ class TestHome:
 
     @pytest.mark.nondestructive
     def test_the_amo_logo_text_and_title(self, mozwebqa):
-        """
-        Test for Litmus 15128.
-        https://litmus.mozilla.org/show_test.cgi?id=15128
-        """
         home = Home(mozwebqa)
         Assert.true(home.is_the_current_page)
 
@@ -158,9 +130,6 @@ class TestHome:
 
     @pytest.mark.nondestructive
     def test_category_items(self, mozwebqa):
-        """
-        https://www.pivotaltracker.com/story/show/26074381
-        """
         home = Home(mozwebqa)
         home.tab('Categories').click()
         Assert.true(home.is_categories_region_visible)

@@ -16,7 +16,6 @@ class TestCompleteThemes:
     @pytest.mark.native
     @pytest.mark.nondestructive
     def test_that_complete_themes_can_be_sorted_by_name(self, mozwebqa):
-        """Test for Litmus 11727 and 4839."""
         home_page = Home(mozwebqa)
         complete_themes_page = home_page.header.click_complete_themes()
         complete_themes_page.click_sort_by("name")
@@ -37,7 +36,6 @@ class TestCompleteThemes:
     @pytest.mark.native
     @pytest.mark.nondestructive
     def test_that_complete_themes_can_be_sorted_by_updated_date(self, mozwebqa):
-        """Test for Litmus 11638."""
         home_page = Home(mozwebqa)
         complete_themes_page = home_page.header.click_complete_themes()
         complete_themes_page.click_sort_by("recently updated")
@@ -53,7 +51,6 @@ class TestCompleteThemes:
     @pytest.mark.native
     @pytest.mark.nondestructive
     def test_that_complete_themes_can_be_sorted_by_created_date(self, mozwebqa):
-        """Test for Litmus 11638."""
         home_page = Home(mozwebqa)
         complete_themes_page = home_page.header.click_complete_themes()
         complete_themes_page.click_sort_by("newest")
@@ -69,7 +66,6 @@ class TestCompleteThemes:
     @pytest.mark.native
     @pytest.mark.nondestructive
     def test_that_complete_themes_can_be_sorted_by_popularity(self, mozwebqa):
-        """Test for Litmus 11638."""
         home_page = Home(mozwebqa)
         complete_themes_page = home_page.header.click_complete_themes()
         complete_themes_page.click_sort_by("weekly downloads")
@@ -85,7 +81,6 @@ class TestCompleteThemes:
     @pytest.mark.native
     @pytest.mark.nondestructive
     def test_that_complete_themes_loads_landing_page_correctly(self, mozwebqa):
-        """Test for Litmus 15339."""
         home_page = Home(mozwebqa)
         complete_themes_page = home_page.header.click_complete_themes()
         url_current_page = complete_themes_page.get_url_current_page()
@@ -94,7 +89,6 @@ class TestCompleteThemes:
     @pytest.mark.native
     @pytest.mark.nondestructive
     def test_that_clicking_on_complete_theme_name_loads_its_detail_page(self, mozwebqa):
-        """Test for Litmus 15363."""
         home_page = Home(mozwebqa)
         complete_themes_page = home_page.header.click_complete_themes()
         complete_theme_name = complete_themes_page.addon_name(1)
@@ -104,7 +98,6 @@ class TestCompleteThemes:
     @pytest.mark.native
     @pytest.mark.nondestructive
     def test_that_complete_themes_page_has_correct_title(self, mozwebqa):
-        """Test for Litmus 15340."""
         home_page = Home(mozwebqa)
         complete_themes_page = home_page.header.click_complete_themes()
         expected_title = "Most Popular Complete Themes :: Add-ons for Firefox"
@@ -113,7 +106,6 @@ class TestCompleteThemes:
     @pytest.mark.native
     @pytest.mark.nondestructive
     def test_complete_themes_page_breadcrumb(self, mozwebqa):
-        """Test for Litmus 15344."""
         home_page = Home(mozwebqa)
         complete_themes_page = home_page.header.click_complete_themes()
         expected_breadcrumb = "Complete Themes"
@@ -122,7 +114,6 @@ class TestCompleteThemes:
     @pytest.mark.native
     @pytest.mark.nondestructive
     def test_that_clicking_on_a_subcategory_loads_expected_page(self, mozwebqa):
-        """Test for Litmus 15949."""
         home_page = Home(mozwebqa)
         complete_themes_page = home_page.header.click_complete_themes()
         selected_category = complete_themes_page.complete_themes_category
@@ -143,7 +134,6 @@ class TestCompleteThemes:
     @pytest.mark.native
     @pytest.mark.nondestructive
     def test_that_complete_themes_categories_are_listed_on_left_hand_side(self, mozwebqa):
-        """Test for Litmus 15342."""
         home_page = Home(mozwebqa)
         complete_themes_page = home_page.header.click_complete_themes()
         current_page_url = home_page.get_url_current_page()
@@ -159,7 +149,6 @@ class TestCompleteThemes:
     @pytest.mark.native
     @pytest.mark.nondestructive
     def test_that_complete_themes_categories_are_not_extensions_categories(self, mozwebqa):
-        """Test for Litmus 15343."""
         home_page = Home(mozwebqa)
         complete_themes_page = home_page.header.click_complete_themes()
         complete_themes_categories = complete_themes_page.get_all_categories
@@ -173,10 +162,6 @@ class TestCompleteThemes:
     @pytest.mark.native
     @pytest.mark.nondestructive
     def test_that_last_complete_themes_page_is_not_empty(self, mozwebqa):
-        """
-        Test for Litmus 15359.
-        https://litmus.mozilla.org/show_test.cgi?id=15359
-        """
         home_page = Home(mozwebqa)
         complete_themes_page = home_page.header.click_complete_themes()
         complete_themes_page.paginator.click_last_page()
@@ -185,10 +170,6 @@ class TestCompleteThemes:
     @pytest.mark.native
     @pytest.mark.nondestructive
     def test_the_displayed_message_for_incompatible_complete_themes(self, mozwebqa):
-        """
-        Test for Litmus 15361
-        https://litmus.mozilla.org/show_test.cgi?id=15361
-        """
         home_page = Home(mozwebqa)
         complete_themes_page = home_page.header.click_complete_themes()
 
@@ -205,7 +186,6 @@ class TestCompleteThemes:
     @pytest.mark.native
     @pytest.mark.nondestructive
     def test_that_most_popular_link_is_default(self, mozwebqa):
-        """Test for Litmus 15348"""
         home_page = Home(mozwebqa)
         complete_themes_page = home_page.header.click_complete_themes()
         url_current_page = complete_themes_page.get_url_current_page()
@@ -215,7 +195,6 @@ class TestCompleteThemes:
     @pytest.mark.native
     @pytest.mark.nondestructive
     def test_sorted_by_most_users_is_default(self, mozwebqa):
-        """Test for Litmus 15346."""
         home_page = Home(mozwebqa)
         complete_themes_page = home_page.header.click_complete_themes()
         url_current_page = complete_themes_page.get_url_current_page()

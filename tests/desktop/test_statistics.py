@@ -19,9 +19,6 @@ class TestStatistics:
 
     @pytest.mark.nondestructive
     def test_that_verifies_the_url_of_the_statistics_page(self, mozwebqa):
-        """ Test for Litmus 25710
-        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25710
-        """
 
         details_page = Details(mozwebqa, "Firebug")
         statistics_page = details_page.click_view_statistics()

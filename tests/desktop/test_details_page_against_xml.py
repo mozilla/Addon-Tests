@@ -30,7 +30,6 @@ class TestDetailsAgainstXML:
 
     @pytest.mark.nondestructive
     def test_that_firebug_authors_is_correct(self, mozwebqa):
-        """Test for Litmus 15319."""
 
         #get authors from browser
         firebug_page = Details(mozwebqa, self.firebug)
@@ -49,7 +48,6 @@ class TestDetailsAgainstXML:
 
     @pytest.mark.nondestructive
     def test_that_firebug_images_is_correct(self, mozwebqa):
-        """Test for Litmus 15324."""
 
         #get images links from browser
         firebug_page = Details(mozwebqa, self.firebug)
@@ -73,7 +71,6 @@ class TestDetailsAgainstXML:
 
     @pytest.mark.nondestructive
     def test_that_firebug_summary_is_correct(self, mozwebqa):
-        """Test for Litmus 15320."""
 
         #browser
         firebug_page = Details(mozwebqa, self.firebug)
@@ -92,7 +89,6 @@ class TestDetailsAgainstXML:
 
     @pytest.mark.nondestructive
     def test_that_description_text_is_correct(self, mozwebqa):
-        """Test for Litmus 15321."""
         #browser
         firebug_page = Details(mozwebqa, self.firebug)
         browser_description = firebug_page.description
@@ -107,7 +103,6 @@ class TestDetailsAgainstXML:
 
     @pytest.mark.nondestructive
     def test_that_icon_is_correct(self, mozwebqa):
-        """Test for Litmus 15322."""
 
         #browser
         firebug_page = Details(mozwebqa, self.firebug)
@@ -122,7 +117,6 @@ class TestDetailsAgainstXML:
 
     @pytest.mark.nondestructive
     def test_that_support_url_is_correct(self, mozwebqa):
-        """Test for Litmus 15337."""
 
         #browser
         firebug_page = Details(mozwebqa, self.firebug)
@@ -136,7 +130,6 @@ class TestDetailsAgainstXML:
 
     @pytest.mark.nondestructive
     def test_that_rating_in_api_equals_rating_in_details_page(self, mozwebqa):
-        """Test for Litmus 15325."""
 
         #browser
         firebug_page = Details(mozwebqa, self.firebug)
@@ -150,7 +143,6 @@ class TestDetailsAgainstXML:
 
     @pytest.mark.nondestructive
     def test_that_compatible_applications_equal(self, mozwebqa):
-        """Test for Litmus 15323."""
 
         #browser
         firebug_page = Details(mozwebqa, self.firebug)
@@ -179,7 +171,6 @@ class TestDetailsAgainstXML:
     @pytest.mark.native
     @pytest.mark.nondestructive
     def test_that_addon_number_of_total_downloads_is_correct(self, mozwebqa):
-        """Test for Litmus 15331."""
 
         #browser
         firebug_page = Details(mozwebqa, self.firebug)
@@ -194,7 +185,6 @@ class TestDetailsAgainstXML:
 
     @pytest.mark.nondestructive
     def test_that_learn_more_link_is_correct(self, mozwebqa):
-        """Test for Litmus 15326."""
 
         #api
         addons_xml = AddonsAPI(mozwebqa, self.firebug)
@@ -208,7 +198,6 @@ class TestDetailsAgainstXML:
 
     @pytest.mark.nondestructive
     def test_that_firebug_devs_comments_is_correct(self, mozwebqa):
-        """Test for Litmus 15329."""
 
         #browser
         firebug_page = Details(mozwebqa, self.firebug)
@@ -223,7 +212,6 @@ class TestDetailsAgainstXML:
 
     @pytest.mark.nondestructive
     def test_that_home_page_in_api_equals_home_page_in_details_page(self, mozwebqa):
-        """Test for Litmus 15336."""
 
         #browser
         firebug_page = Details(mozwebqa, self.firebug)
@@ -237,7 +225,6 @@ class TestDetailsAgainstXML:
 
     @pytest.mark.nondestructive
     def test_that_reviews_in_api_equals_reviews_in_details_page(self, mozwebqa):
-        """Test for Litmus 15330."""
 
         #browser
         firebug_page = Details(mozwebqa, self.firebug)
@@ -251,7 +238,6 @@ class TestDetailsAgainstXML:
 
     @pytest.mark.nondestructive
     def test_that_daily_users_in_api_equals_daily_users_in_details_page(self, mozwebqa):
-        """Test for Litmus 15333."""
 
         #browser
         firebug_page = Details(mozwebqa, self.firebug)
