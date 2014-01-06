@@ -4,7 +4,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-
 import re
 from itertools import cycle
 
@@ -137,6 +136,7 @@ class TestDiscoveryPane:
         for i in range(panels_count):
             discovery_pane.show_next_carousel_panel()
             current_panel = panels.next()
+            current_panel.wait_for_next_promo()
             Assert.true(current_panel.heading)
             Assert.true(current_panel.is_visible)
 
