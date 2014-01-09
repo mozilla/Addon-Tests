@@ -17,10 +17,6 @@ class TestReviews:
 
     @pytest.mark.nondestructive
     def test_that_all_reviews_hyperlink_works(self, mozwebqa):
-        """
-        Test for Litmus 4843.
-        https://litmus.mozilla.org/show_test.cgi?id=4843
-        """
         #Open details page for MemChaser
         details_page = Details(mozwebqa, "Firebug")
         Assert.true(details_page.has_reviews)
@@ -55,10 +51,6 @@ class TestReviews:
     @pytest.mark.native
     @pytest.mark.login
     def test_that_new_review_is_saved(self, mozwebqa):
-        """
-        Test for Litmus 22921.
-        https://litmus.mozilla.org/show_test.cgi?id=22921
-        """
         # Step 1 - Login into AMO
         home_page = Home(mozwebqa)
         home_page.login()

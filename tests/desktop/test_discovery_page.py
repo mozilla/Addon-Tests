@@ -23,7 +23,6 @@ class TestDiscoveryPane:
     @pytest.mark.nondestructive
     def test_that_users_with_less_than_3_addons_get_what_are_addons(self, mozwebqa):
         """
-        Test for Litmus 15063.
         Since Selenium starts with a clean profile all the time this will always have
         less than 3 addons.
         """
@@ -37,7 +36,6 @@ class TestDiscoveryPane:
 
     @pytest.mark.nondestructive
     def test_that_mission_statement_is_on_addons_home_page(self, mozwebqa):
-        """Test for Litmus 15065."""
         discovery_pane = DiscoveryPane(mozwebqa, self.basepath(mozwebqa))
         expected_text = "Thanks for using Firefox and supporting Mozilla's mission!"
 
@@ -49,7 +47,6 @@ class TestDiscoveryPane:
 
     @pytest.mark.nondestructive
     def test_that_featured_themes_is_present_and_has_5_item(self, mozwebqa):
-        """Test for Litmus 15079, 15080."""
         discovery_pane = DiscoveryPane(mozwebqa, self.basepath(mozwebqa))
         Assert.true(discovery_pane.is_themes_section_visible)
         Assert.equal(5, discovery_pane.themes_count)
@@ -58,7 +55,6 @@ class TestDiscoveryPane:
     @pytest.mark.native
     @pytest.mark.nondestructive
     def test_that_featured_themes_go_to_their_landing_page_when_clicked(self, mozwebqa):
-        """Test for Litmus 15081."""
         discovery_pane = DiscoveryPane(mozwebqa, self.basepath(mozwebqa))
         first_theme = discovery_pane.first_theme
         theme = discovery_pane.click_on_first_theme()
@@ -66,7 +62,6 @@ class TestDiscoveryPane:
 
     @pytest.mark.nondestructive
     def test_that_more_ways_to_customize_section_is_available(self, mozwebqa):
-        """Test for Litmus 15082."""
         discovery_pane = DiscoveryPane(mozwebqa, self.basepath(mozwebqa))
         Assert.true(discovery_pane.more_ways_section_visible)
         Assert.equal("Browse all add-ons", discovery_pane.browse_all_addons)
@@ -74,17 +69,12 @@ class TestDiscoveryPane:
 
     @pytest.mark.nondestructive
     def test_that_up_and_coming_is_present_and_had_5_items(self, mozwebqa):
-        """Test for Litmus 15074."""
         discovery_pane = DiscoveryPane(mozwebqa, self.basepath(mozwebqa))
         Assert.equal(5, discovery_pane.up_and_coming_item_count)
 
     @pytest.mark.nondestructive
     @pytest.mark.login
     def test_the_logout_link_for_logged_in_users(self, mozwebqa):
-        """
-        Test for Litmus 15110.
-        https://litmus.mozilla.org/show_test.cgi?id=15110
-        """
         home_page = Home(mozwebqa)
         home_page.login()
         Assert.true(home_page.is_the_current_page)

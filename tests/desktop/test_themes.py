@@ -18,10 +18,6 @@ class TestThemes:
     @pytest.mark.native
     @pytest.mark.nondestructive
     def test_start_exploring_link_in_the_promo_box(self, mozwebqa):
-        """
-        Test for Litmus 12037.
-        https://litmus.mozilla.org/show_test.cgi?id=12037
-        """
         home_page = Home(mozwebqa)
         themes_page = home_page.header.site_navigation_menu("Themes").click()
         Assert.true(themes_page.is_the_current_page)
@@ -34,10 +30,6 @@ class TestThemes:
     @pytest.mark.native
     @pytest.mark.nondestructive
     def test_page_title_for_themes_landing_page(self, mozwebqa):
-        """
-        Test for Litmus 15391.
-        https://litmus.mozilla.org/show_test.cgi?id=15391
-        """
         home_page = Home(mozwebqa)
         themes_page = home_page.header.site_navigation_menu("Themes").click()
         Assert.true(themes_page.is_the_current_page)
@@ -46,10 +38,6 @@ class TestThemes:
     @pytest.mark.smoke
     @pytest.mark.nondestructive
     def test_the_featured_themes_section(self, mozwebqa):
-        """
-        Test for Litmus 15392.
-        https://litmus.mozilla.org/show_test.cgi?id=15392
-        """
         home_page = Home(mozwebqa)
         themes_page = home_page.header.site_navigation_menu("Themes").click()
         Assert.true(themes_page.is_the_current_page)
@@ -59,10 +47,6 @@ class TestThemes:
     @pytest.mark.smoke
     @pytest.mark.nondestructive
     def test_the_recently_added_section(self, mozwebqa):
-        """
-        Test for Litmus Litmus 15393.
-        https://litmus.mozilla.org/show_test.cgi?id=15393
-        """
         home_page = Home(mozwebqa)
         themes_page = home_page.header.site_navigation_menu("Themes").click()
         Assert.true(themes_page.is_the_current_page)
@@ -74,10 +58,6 @@ class TestThemes:
     @pytest.mark.smoke
     @pytest.mark.nondestructive
     def test_the_most_popular_section(self, mozwebqa):
-        """
-        Test for Litmus 15394.
-        https://litmus.mozilla.org/show_test.cgi?id=15394
-        """
         home_page = Home(mozwebqa)
         themes_page = home_page.header.site_navigation_menu("Themes").click()
         Assert.true(themes_page.is_the_current_page)
@@ -88,10 +68,6 @@ class TestThemes:
     @pytest.mark.native
     @pytest.mark.nondestructive
     def test_the_top_rated_section(self, mozwebqa):
-        """
-        Test for Litmus 15395.
-        https://litmus.mozilla.org/show_test.cgi?id=15395
-        """
         home_page = Home(mozwebqa)
         themes_page = home_page.header.site_navigation_menu("Themes").click()
         Assert.true(themes_page.is_the_current_page)
@@ -102,10 +78,6 @@ class TestThemes:
     @pytest.mark.native
     @pytest.mark.nondestructive
     def test_breadcrumb_menu_in_theme_details_page(self, mozwebqa):
-        """
-        Test for Litmus Litmus 12046.
-        https://litmus.mozilla.org/show_test.cgi?id=12046
-        """
 
         # Step 1, 2: Access AMO Home, Click on theme category link.
         home_page = Home(mozwebqa)
@@ -142,10 +114,6 @@ class TestThemes:
     @pytest.mark.native
     @pytest.mark.nondestructive
     def test_themes_breadcrumb_format(self, mozwebqa):
-        """
-        Verify the breadcrumb format in themes page
-        https://litmus.mozilla.org/show_test.cgi?id=12034
-        """
         home_page = Home(mozwebqa)
 
         themes_page = home_page.header.site_navigation_menu("Themes").click()

@@ -19,10 +19,6 @@ class TestCollections:
     @pytest.mark.native
     @pytest.mark.nondestructive
     def test_featured_tab_is_highlighted_by_default(self, mozwebqa):
-        """
-        Test for Litmus 29747.
-        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=29747
-        """
         home_page = Home(mozwebqa)
         featured_collections_page = home_page.header.site_navigation_menu("Collections").click()
         Assert.equal(featured_collections_page.default_selected_tab, "Featured")
@@ -57,10 +53,6 @@ class TestCollections:
     @pytest.mark.nondestructive
     @pytest.mark.login
     def test_user_my_collections_page(self, mozwebqa):
-        """
-        Test for litmus 15401.
-        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=15401
-        """
 
         home_page = Home(mozwebqa)
         home_page.login()
@@ -75,10 +67,7 @@ class TestCollections:
     @pytest.mark.native
     @pytest.mark.login
     def test_user_my_favorites_page(self, mozwebqa):
-        """
-        Test for Litmus 15402.
-        https://litmus.mozilla.org/show_test.cgi?id=15402
-        """
+
         home_page = Home(mozwebqa)
         home_page.login()
         Assert.true(home_page.is_the_current_page)

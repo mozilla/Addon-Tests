@@ -16,10 +16,6 @@ class TestAmoLayout:
     @pytest.mark.native
     @pytest.mark.nondestructive
     def test_other_applications_thunderbird(self, mozwebqa):
-        """
-        Test for Litmus 5037.
-        https://litmus.mozilla.org/show_test.cgi?id=5037
-        """
         app_under_test = "Thunderbird"
         home_page = Home(mozwebqa)
 
@@ -30,11 +26,6 @@ class TestAmoLayout:
 
     @pytest.mark.nondestructive
     def test_that_checks_amo_logo_text_layout_and_title(self, mozwebqa):
-        """
-        Test for Litmus 22924 and 25742.
-        https://litmus.mozilla.org/show_test.cgi?id=22924
-        https://litmus.mozilla.org/show_test.cgi?id=25742
-        """
         home_page = Home(mozwebqa)
         Assert.equal(home_page.amo_logo_text, "ADD-ONS")
         Assert.equal(home_page.amo_logo_title, "Return to the Firefox Add-ons homepage")
@@ -42,10 +33,6 @@ class TestAmoLayout:
 
     @pytest.mark.nondestructive
     def test_that_clicking_the_amo_logo_loads_home_page(self, mozwebqa):
-        """
-        Test for Litmus 25743.
-        https://litmus.mozilla.org/show_test.cgi?id=25743
-        """
         home_page = Home(mozwebqa)
 
         Assert.true(home_page.is_amo_logo_visible)
@@ -56,10 +43,6 @@ class TestAmoLayout:
 
     @pytest.mark.nondestructive
     def test_that_other_applications_link_has_tooltip(self, mozwebqa):
-        """
-        Test for Litmus 22925.
-        https://litmus.mozilla.org/show_test.cgi?id=29698
-        """
         home_page = Home(mozwebqa)
         tooltip = home_page.get_title_of_link('Other applications')
         Assert.equal(tooltip, 'Find add-ons for other applications')
@@ -68,10 +51,6 @@ class TestAmoLayout:
     @pytest.mark.nondestructive
     @pytest.mark.parametrize('expected_app', ["Thunderbird", "Android", "SeaMonkey"])
     def test_the_applications_listed_in_other_applications(self, mozwebqa, expected_app):
-        """
-        Test for Litmus 25740.
-        https://litmus.mozilla.org/show_test.cgi?id=25740
-        """
         home_page = Home(mozwebqa)
 
         Assert.true(home_page.header.is_other_application_visible(expected_app),
@@ -79,11 +58,6 @@ class TestAmoLayout:
 
     @pytest.mark.nondestructive
     def test_the_search_field_placeholder_and_search_button(self, mozwebqa):
-        """
-        Test for Litmus 4826 and 25767.
-        https://litmus.mozilla.org/show_test.cgi?id=4826
-        https://litmus.mozilla.org/show_test.cgi?id=25767
-        """
         home_page = Home(mozwebqa)
         Assert.equal(home_page.header.search_field_placeholder, 'search for add-ons')
         Assert.true(home_page.header.is_search_button_visible)
@@ -91,9 +65,5 @@ class TestAmoLayout:
 
     @pytest.mark.nondestructive
     def test_the_search_box_exist(self, mozwebqa):
-        """
-        Test for Litmus 25766
-        https://litmus.mozilla.org/show_test.cgi?id=25766
-        """
         home_page = Home(mozwebqa)
         Assert.true(home_page.header.is_search_textbox_visible)
