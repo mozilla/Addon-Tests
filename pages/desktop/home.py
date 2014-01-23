@@ -202,6 +202,7 @@ class Home(Base):
             return self._root_element.find_element(*self._summary_locator).text
 
         def _move_to_addon_flyout(self):
+            self.selenium.execute_script("window.scrollTo(0, %s)" % (self._root_element.location['y'] + self._root_element.size['height']))
             ActionChains(self.selenium).\
                 move_to_element(self._root_element).\
                 perform()
