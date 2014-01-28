@@ -75,7 +75,6 @@ class TestAccounts:
 
     @pytest.mark.native
     @pytest.mark.login
-    @pytest.mark.xfail(reason="Bug 959202 - [dev] 'Hide email address from other users' option is not working")
     def test_hide_email_checkbox_works(self, mozwebqa):
         home_page = Home(mozwebqa)
         home_page.login()
