@@ -7,6 +7,7 @@
 import pytest
 from unittestzero import Assert
 from pages.mobile.home import Home
+from pages.mobile.themes import Themes
 
 
 class TestHome:
@@ -17,7 +18,7 @@ class TestHome:
 
     expected_category_items = ['Alerts & Updates', 'Appearance', 'Bookmarks', 'Download Management',
                                'Feeds, News & Blogging', 'Games & Entertainment', 'Language Support',
-                               'Photos, Music & Videos', 'Privacy & Security', 'Search Tools', 'Shopping', 
+                               'Photos, Music & Videos', 'Privacy & Security', 'Search Tools', 'Shopping',
                                'Social & Communication', 'Tabs', 'Web Development', 'Other']
 
     @pytest.mark.nondestructive
@@ -103,20 +104,24 @@ class TestHome:
         menu_names = [menu.name for menu in home.header.dropdown_menu_items]
         Assert.equal(menu_names, self.expected_menu_items)
 
-    @pytest.mark.xfail(reason='Bug 824471 - New Personas tab on mobile site not working as expected')
-    # https://bugzilla.mozilla.org/show_bug.cgi?id=824471
     def test_that_checks_the_tabs(self, mozwebqa):
         home = Home(mozwebqa)
         Assert.true(home.is_the_current_page)
 
         Assert.equal(3, len(home.tabs))
 
-        for tab in reversed(range(len(home.tabs))):
+        # Ignore the last tab "Themes" because it redirects to another page
+        for tab in reversed(range(len(home.tabs[:-1]))):
             Assert.equal(self.expected_tabs[tab], home.tabs[tab].name)
             home.tabs[tab].click()
             Assert.true(home.tabs[tab].is_tab_selected, "The tab '%s' is not selected." % home.tabs[tab].name)
             Assert.true(home.tabs[tab].is_tab_content_visible,
                         "The content of tab '%s' is not visible." % home.tabs[tab].name)
+
+        # Click on the themes tab separately
+        home.tabs[-1].click()
+        themes = Themes(mozwebqa)
+        themes.is_the_current_page
 
     @pytest.mark.nondestructive
     def test_the_amo_logo_text_and_title(self, mozwebqa):
