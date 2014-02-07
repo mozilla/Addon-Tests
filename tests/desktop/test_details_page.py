@@ -312,8 +312,6 @@ class TestDetails:
             details_pg = Details(mozwebqa, 'Firebug')
 
     @pytest.mark.nondestructive
-    @pytest.mark.xfail("config.getvalue('platform') == 'Mac 10.6'",
-                       reason="issue 581 - Intermittent failure on amo.dev.mac.saucelabs - element not displayed")
     def test_the_development_channel_section(self, mozwebqa):
         details_page = Details(mozwebqa, 'Firebug')
 
