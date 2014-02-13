@@ -8,6 +8,7 @@ import re
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.support.ui import WebDriverWait
 
 from pages.desktop.base import Base
 
@@ -86,6 +87,12 @@ class ViewReviews(Base):
 
         def delete(self):
             self._root_element.find_element(*self._delete_review_locator).click()
+            WebDriverWait(self.selenium, self.timeout).until(lambda s:
+                                                         self.marked_for_deletion == 'Marked for deletion')
+
+        @property
+        def marked_for_deletion(self):
+            return self._root_element.find_element(*self._delete_review_mark_locator).text
 
 
 class UserFAQ(Base):
