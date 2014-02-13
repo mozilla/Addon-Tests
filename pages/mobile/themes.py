@@ -10,7 +10,3 @@ from pages.mobile.base import Base
 class Themes(Base):
 
     _page_title = 'Themes :: Add-ons for Firefox'
-
-    def __init__(self, testsetup):
-        Base.__init__(self, testsetup)
-        self.is_the_current_page
