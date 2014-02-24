@@ -95,10 +95,6 @@ class TestSearch:
     @pytest.mark.smoke
     @pytest.mark.nondestructive
     def test_that_searching_for_firebug_returns_firebug_as_first_result(self, mozwebqa):
-        """
-        Modified for Pivotal 28492671.
-        https://www.pivotaltracker.com/projects/477093#!/stories/28492671
-        """
         home_page = Home(mozwebqa)
         search_page = home_page.search_for('firebug')
         results = [result.name for result in search_page.results]
