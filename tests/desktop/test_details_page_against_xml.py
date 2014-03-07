@@ -168,6 +168,8 @@ class TestDetailsAgainstXML:
                 browser_compatible_applications.startswith(meta_compat_prefix)
                 ), "Listed compat. versions don't match versions listed in API."
 
+    @pytest.mark.xfail("config.getvalue('base_url') == 'https://addons-dev.allizom.org'",
+                       reason="Bug 979838 - [dev] App statistics does not load")
     @pytest.mark.native
     @pytest.mark.nondestructive
     def test_that_addon_number_of_total_downloads_is_correct(self, mozwebqa):
