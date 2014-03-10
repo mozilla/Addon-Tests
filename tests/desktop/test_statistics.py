@@ -17,8 +17,6 @@ from pages.desktop.details import Details
 
 class TestStatistics:
 
-    @pytest.mark.xfail("config.getvalue('base_url') == 'https://addons-dev.allizom.org'",
-                       reason="Bug 979838 - [dev] App statistics does not load")
     @pytest.mark.nondestructive
     def test_that_verifies_the_url_of_the_statistics_page(self, mozwebqa):
 
