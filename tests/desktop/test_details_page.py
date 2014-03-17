@@ -350,11 +350,9 @@ class TestDetails:
         details_page = Details(mozwebqa, 'firebug')
         Assert.contains("active", details_page.click_and_hold_install_button_returns_class_value())
 
-    @pytest.mark.xfail("config.getvalue('base_url') == 'https://addons-dev.allizom.org'",
-                       reason="[dev] Whats this? missing from Memchaser app under Version Information")
     @pytest.mark.nondestructive
     def test_what_is_this_in_the_version_information(self, mozwebqa):
-        details_page = Details(mozwebqa, "MemChaser")
+        details_page = Details(mozwebqa, "Firebug")
         Assert.equal(details_page.version_information_heading, "Version Information")
         details_page.expand_version_information()
         Assert.equal("What's this?", details_page.license_faq_text)
