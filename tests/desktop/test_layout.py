@@ -47,6 +47,7 @@ class TestAmoLayout:
         tooltip = home_page.get_title_of_link('Other applications')
         Assert.equal(tooltip, 'Find add-ons for other applications')
 
+    @pytest.mark.action_chains
     @pytest.mark.native
     @pytest.mark.nondestructive
     @pytest.mark.parametrize('expected_app', ["Thunderbird", "Android", "SeaMonkey"])

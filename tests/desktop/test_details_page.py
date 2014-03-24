@@ -27,6 +27,7 @@ class TestDetails:
             Assert.true(details_page.header.is_register_link_visible, "Register link is not visible")
             Assert.true(details_page.header.is_login_link_visible, "Login links is not visible")
 
+    @pytest.mark.action_chains
     @pytest.mark.native
     @pytest.mark.nondestructive
     def test_that_dropdown_menu_is_present_after_click_on_other_apps(self, mozwebqa):
@@ -53,6 +54,7 @@ class TestDetails:
         Assert.equal(details_page.about_addon, "About this Add-on")
         Assert.not_none(re.match('(\w+\s*){3,}', details_page.description))
 
+    @pytest.mark.action_chains
     @pytest.mark.nondestructive
     def test_that_version_information_is_displayed(self, mozwebqa):
         details_page = Details(mozwebqa, 'Firebug')
@@ -333,6 +335,7 @@ class TestDetails:
         license_link = details_page.license_site
         Assert.not_none(license_link)
 
+    @pytest.mark.action_chains
     @pytest.mark.nondestructive
     def test_that_clicking_user_reviews_slides_down_page_to_reviews_section(self, mozwebqa):
         details_page = Details(mozwebqa, 'firebug')
@@ -341,6 +344,7 @@ class TestDetails:
         Assert.true(details_page.is_reviews_section_visible)
         Assert.true(details_page.is_reviews_section_in_view)
 
+    @pytest.mark.action_chains
     @pytest.mark.native
     @pytest.mark.nondestructive
     def test_that_install_button_is_clickable(self, mozwebqa):
