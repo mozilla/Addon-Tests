@@ -36,7 +36,7 @@ class DiscoveryPane(Base):
 
     def __init__(self, testsetup, path):
         Base.__init__(self, testsetup)
-        self.selenium.get(self.api_base_url + path)
+        self.selenium.get(self.base_url + path)
         #resizing this page for elements that disappear when the window is < 1000
         #self.selenium.set_window_size(1000, 1000) Commented because this selenium call is still in beta
 
