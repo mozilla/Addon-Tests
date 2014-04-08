@@ -26,7 +26,8 @@ class TestStatistics:
         Assert.true(statistics_page.is_the_current_page)
         Assert.contains("/statistics", statistics_page.get_url_current_page())
 
-    @pytest.mark.skipif('urlparse(config.getvalue("base_url")).netloc != "addons.mozilla.org"')
+    @pytest.mark.skipif('urlparse(config.getvalue("base_url")).netloc != "addons.mozilla.org"',
+                        reason='Insufficient data on dev/stage')
     @pytest.mark.skip_selenium
     @pytest.mark.nondestructive
     def test_that_checks_content_in_json_endpoints_from_statistics_urls(self, mozwebqa):
