@@ -33,11 +33,9 @@ class Page(object):
 
     @property
     def is_the_current_page(self):
-        if self._page_title:
-            WebDriverWait(self.selenium, self.timeout).until(lambda s: self.selenium.title)
-
-        Assert.equal(self.selenium.title, self._page_title,
-                     "Expected page title: %s. Actual page title: %s" % (self._page_title, self.selenium.title))
+        WebDriverWait(self.selenium, self.timeout).until(
+            lambda s: s.title == self._page_title,
+            "Expected page title: %s. Actual page title: %s" % (self._page_title, self.selenium.title))
         return True
 
     def get_url_current_page(self):
