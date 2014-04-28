@@ -53,6 +53,7 @@ class TestDetails:
         Assert.equal(details_page.about_addon, "About this Add-on")
         Assert.not_none(re.match('(\w+\s*){3,}', details_page.description))
 
+    @pytest.mark.action_chains
     @pytest.mark.nondestructive
     def test_that_version_information_is_displayed(self, mozwebqa):
         details_page = Details(mozwebqa, 'Firebug')

@@ -162,7 +162,7 @@ class TestHome:
 
         Assert.equal(expected_navigation_menu, actual_navigation_menus)
 
-    @pytest.mark.native
+    @pytest.mark.action_chains
     @pytest.mark.nondestructive
     def test_the_name_of_each_site_navigation_menu_in_the_header(self, mozwebqa):
         home_page = Home(mozwebqa)

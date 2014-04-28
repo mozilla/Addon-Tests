@@ -167,7 +167,7 @@ class TestCompleteThemes:
         complete_themes_page.paginator.click_last_page()
         Assert.greater_equal(complete_themes_page.addon_count, 1)
 
-    @pytest.mark.native
+    @pytest.mark.action_chains
     @pytest.mark.nondestructive
     def test_the_displayed_message_for_incompatible_complete_themes(self, mozwebqa):
         home_page = Home(mozwebqa)
