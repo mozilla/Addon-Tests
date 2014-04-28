@@ -48,7 +48,6 @@ class TestAmoLayout:
         Assert.equal(tooltip, 'Find add-ons for other applications')
 
     @pytest.mark.action_chains
-    @pytest.mark.native
     @pytest.mark.nondestructive
     @pytest.mark.parametrize('expected_app', ["Thunderbird", "Android", "SeaMonkey"])
     def test_the_applications_listed_in_other_applications(self, mozwebqa, expected_app):
