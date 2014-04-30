@@ -6,6 +6,11 @@ The following contributors have submitted pull requests to Addon-Tests:
 
 https://github.com/mozilla/Addon-Tests/contributors
 
+Continuous Integration
+----------------------
+
+[![Build Status](https://secure.travis-ci.org/mozilla/Addon-Tests.png?branch=master)](http://travis-ci.org/mozilla/Addon-Tests/)
+
 Getting involved as a contributor
 ------------------------------------------
 
