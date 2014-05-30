@@ -167,8 +167,6 @@ class TestCompleteThemes:
         complete_themes_page.paginator.click_last_page()
         Assert.greater_equal(complete_themes_page.addon_count, 1)
 
-    @pytest.mark.xfail("'mac' in config.getvalue('platform')",
-                       reason="https://github.com/mozilla/Addon-Tests/issues/705")
     @pytest.mark.action_chains
     @pytest.mark.nondestructive
     def test_the_displayed_message_for_incompatible_complete_themes(self, mozwebqa):
