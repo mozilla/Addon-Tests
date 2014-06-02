@@ -107,7 +107,7 @@ class TestAccounts:
         Assert.true(user_edit_page.is_the_current_page)
 
         # save initial values to restore them after the test is finished
-        fields_no = len(user_edit_page.profile_fields) - 1
+        fields_no = len(user_edit_page.profile_fields) - 2
         initial_value = [None] * fields_no
         random_name = "test%s" % random.randrange(1, 100)
 
