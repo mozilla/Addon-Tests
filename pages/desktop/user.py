@@ -7,6 +7,8 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import NoSuchAttributeException
 
 from pages.desktop.base import Base
 from pages.page import Page
@@ -142,8 +144,19 @@ class EditProfile(Base):
         def field_value(self):
             try:
                 return self._root_element.find_element(*self._input_field_locator).get_attribute('value')
-            except Exception.NoSuchAttributeException:
-                return " "
+            except NoSuchAttributeException:
+                return ' '
+
+        @property
+        def input_type(self):
+            try:
+                return self._root_element.find_element(*self._input_field_locator).get_attribute('type')
+            except (NoSuchElementException, NoSuchAttributeException):
+                return ' '
+
+        @property
+        def is_field_editable(self):
+            return self.input_type == 'text' or self.input_type == 'url'
 
         @property
         def field_name(self):
