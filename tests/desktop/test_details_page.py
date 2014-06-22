@@ -345,9 +345,6 @@ class TestDetails:
     @pytest.mark.action_chains
     @pytest.mark.nondestructive
     def test_that_install_button_is_clickable(self, mozwebqa):
-        """
-        https://www.pivotaltracker.com/story/show/27212263
-        """
         details_page = Details(mozwebqa, 'firebug')
         Assert.contains("active", details_page.click_and_hold_install_button_returns_class_value())
 
