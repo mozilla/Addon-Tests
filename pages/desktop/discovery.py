@@ -13,6 +13,7 @@ from pages.desktop.base import Base
 
 class DiscoveryPane(Base):
 
+    _promo_box_locator = (By.ID, 'promos')
     _what_are_addons_text_locator = (By.CSS_SELECTOR, '#intro p')
     _mission_section_text_locator = (By.CSS_SELECTOR, '#mission > p')
     _learn_more_locator = (By.ID, 'learn-more')
@@ -39,6 +40,7 @@ class DiscoveryPane(Base):
         self.selenium.get(self.base_url + path)
         #resizing this page for elements that disappear when the window is < 1000
         #self.selenium.set_window_size(1000, 1000) Commented because this selenium call is still in beta
+        WebDriverWait(self.selenium, self.timeout).until(lambda s: self.selenium.find_element(*self._promo_box_locator).size['height'] == 273)
 
     @property
     def what_are_addons_text(self):
