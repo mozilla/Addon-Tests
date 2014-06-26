@@ -252,9 +252,9 @@ class TestDetails:
         link = detail_page.breadcrumbs[1].href_value
         detail_page.breadcrumbs[1].click()
 
-        amo_extenstions_page = ExtensionsHome(mozwebqa)
-        Assert.true(amo_extenstions_page.is_the_current_page)
-        Assert.true(amo_extenstions_page.get_url_current_page().endswith(link))
+        amo_extensions_page = ExtensionsHome(mozwebqa)
+        Assert.true(amo_extensions_page.is_the_current_page)
+        Assert.true(amo_extensions_page.get_url_current_page().endswith(link))
 
         home_page.return_to_previous_page()
 
