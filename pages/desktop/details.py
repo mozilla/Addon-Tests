@@ -79,7 +79,6 @@ class Details(Base):
     _add_to_collection_widget_login_link_locator = (By.CSS_SELECTOR, "div.collection-add-login p:nth-child(3) > a")
     _add_to_favorites_widget_locator = (By.CSS_SELECTOR, 'div.widgets > a.favorite')
 
-    _development_channel_content_locator = (By.CSS_SELECTOR, '.content > p')
     _development_channel_locator = (By.CSS_SELECTOR, "#beta-channel")
     _development_channel_toggle = (By.CSS_SELECTOR, '#beta-channel a.toggle')
     _development_channel_install_button_locator = (By.CSS_SELECTOR, '#beta-channel p.install-button a.button.caution')
