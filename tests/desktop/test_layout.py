@@ -29,7 +29,7 @@ class TestAmoLayout:
         home_page = Home(mozwebqa)
         Assert.equal(home_page.amo_logo_text, "ADD-ONS")
         Assert.equal(home_page.amo_logo_title, "Return to the Firefox Add-ons homepage")
-        Assert.contains("-cdn.allizom.org/media/img/app-icons/med/firefox.png", home_page.amo_logo_image_source)
+        Assert.contains("/img/app-icons/med/firefox.png", home_page.amo_logo_image_source)
 
     @pytest.mark.nondestructive
     def test_that_clicking_the_amo_logo_loads_home_page(self, mozwebqa):

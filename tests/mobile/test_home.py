@@ -130,7 +130,7 @@ class TestHome:
 
         Assert.equal('Return to the Firefox Add-ons homepage', home.logo_title)
         Assert.equal('ADD-ONS', home.logo_text)
-        Assert.contains('/media/img/zamboni/app_icons/firefox.png', home.logo_image_src)
+        Assert.contains('/img/zamboni/app_icons/firefox.png', home.logo_image_src)
         Assert.equal('Easy ways to personalize.', home.subtitle)
 
     @pytest.mark.nondestructive
