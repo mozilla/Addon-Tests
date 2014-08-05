@@ -460,6 +460,8 @@ class Details(Base):
         self.selenium.find_element(*self._info_link_locator).click()
 
     def click_user_reviews_link(self):
+        WebDriverWait(self.selenium, self.timeout).until(
+            lambda s: self.is_element_present(*self._reviews_section_header_locator))
         self.selenium.find_element(*self._review_link_locator).click()
         WebDriverWait(self.selenium, self.timeout).until(lambda s: (self.selenium.execute_script('return window.pageYOffset')) > 1000)
 
