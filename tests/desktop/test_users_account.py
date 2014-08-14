@@ -109,7 +109,7 @@ class TestAccounts:
         # save initial values to restore them after the test is finished
         fields_no = len(user_edit_page.profile_fields)
         initial_value = [None] * fields_no
-        random_name = "test%s" % random.randrange(1, 100)
+        random_name = "webqa.account%s" % random.randrange(1, 100)
 
         # enter new values
         for i in range(0, fields_no):
