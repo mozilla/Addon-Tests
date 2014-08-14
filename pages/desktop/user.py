@@ -48,7 +48,7 @@ class Login(Base):
 
 class ViewProfile(Base):
 
-    _page_title = 'User Info for amo.testing :: Add-ons for Firefox'
+    _page_title = 'User Info for amo.account :: Add-ons for Firefox'
 
     _about_locator = (By.CSS_SELECTOR, "div.island > section.primary > h2")
     _email_locator = (By.CSS_SELECTOR, 'a.email')
