@@ -15,6 +15,7 @@ from pages.desktop.search import SearchResultList
 
 class CompleteThemes(Base):
 
+    _grid_container_locator = (By.ID, 'themes-listing')
     _addons_root_locator = (By.CSS_SELECTOR, '.listing-grid > li')
     _addon_name_locator = (By.CSS_SELECTOR, 'h3')
     _addons_metadata_locator = (By.CSS_SELECTOR, '.vital .updated')
@@ -27,6 +28,14 @@ class CompleteThemes(Base):
     _previous_link_locator = (By.CSS_SELECTOR, '.paginator .rel > a:nth-child(2)')
     _last_page_link_locator = (By.CSS_SELECTOR, '.rel > a:nth-child(4)')
     _explore_filter_links_locators = (By.CSS_SELECTOR, '#side-explore a')
+
+    def clear_hover_cards(self):
+        # Sometimes the page is loaded with a hovercard open.
+        # Move the mouse so there will not be any hovercards open.
+
+        ActionChains(self.selenium).move_to_element(
+            self.selenium.find_element(*self._grid_container_locator)
+        ).perform()
 
     @property
     def _addons_root_element(self):
