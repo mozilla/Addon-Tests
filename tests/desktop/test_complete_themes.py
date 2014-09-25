@@ -172,6 +172,7 @@ class TestCompleteThemes:
     def test_the_displayed_message_for_incompatible_complete_themes(self, mozwebqa):
         home_page = Home(mozwebqa)
         complete_themes_page = home_page.header.click_complete_themes()
+        complete_themes_page.clear_hover_cards()
 
         complete_themes = complete_themes_page.complete_themes
 
@@ -179,7 +180,7 @@ class TestCompleteThemes:
             if complete_theme.is_incompatible:
                 Assert.true(complete_theme.is_incompatible_flag_visible)
                 Assert.contains('Not available',
-                             complete_theme.not_available_flag_text)
+                                complete_theme.not_available_flag_text)
             else:
                 Assert.false(complete_theme.is_incompatible_flag_visible)
 
