@@ -201,6 +201,8 @@ class TestSearch:
         else:
             Assert.equal(search_page.result_count, number)
 
+    @pytest.mark.xfail("'addons.allizom' in config.getvalue('base_url')",
+                       reason='https://github.com/mozilla/Addon-Tests/issues/728')
     @pytest.mark.native
     @pytest.mark.nondestructive
     @pytest.mark.smoke
