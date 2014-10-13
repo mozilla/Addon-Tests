@@ -30,7 +30,7 @@ To brush up on Python skills before engaging with us, [Dive Into Python][dive] i
 
 Questions are always welcome
 ----------------------------
-While we take pains to keep our documentation updated, the best source of information is those of us who work on the project.  Don't be afraid to join us in irc.mozilla.org #mozwebqa to ask questions about our Selenium tests.  Mozilla also hosts the #mozillians chat room to answer your general questions about contributing to Mozilla.
+While we take pains to keep our documentation updated, the best source of information is those of us who work on the project.  Don't be afraid to join us in irc.mozilla.org [#mozwebqa][mozwebqa] to ask questions about our Selenium tests.  Mozilla also hosts the [#mozillians][mozillans] chat room to answer your general questions about contributing to Mozilla.
 
 [mozwebqa]:http://02.chat.mibbit.com/?server=irc.mozilla.org&channel=#mozwebqa
 [mozillians]:http://02.chat.mibbit.com/?server=irc.mozilla.org&channel=#mozillians
@@ -39,9 +39,9 @@ How to Set up and Build AMO Tests Locally
 -----------------------------------------
 This repository contains Selenium tests used to test the website addons.mozilla.org.
 
-Mozilla maintains a guide to running Automated tests on our QMO website:
+Mozilla maintains a guide to running Automated tests on our MDN website:
 
-https://quality.mozilla.org/docs/webqa/running-webqa-automated-tests/
+https://developer.mozilla.org/en-US/docs/Mozilla/QA/Running_Web_QA_automated_tests
 
 ###You will need to install the following:
 
