@@ -9,7 +9,7 @@ oauthlib==0.5.1
 py==1.4.15
 pyasn1==0.1.7
 pytest==2.3.5
-pytest-mozwebqa==1.3
+pytest-mozwebqa
 pytest-xdist==1.8
 requests==2.4.3
 rsa==3.1.1
