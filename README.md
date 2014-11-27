@@ -74,7 +74,7 @@ If you are using virtualenv, create and activate the virtualenv, then run the fo
 
 If you are not using virtualenv, run the following in the project root to install dependencies globally:
 
-    sudo pip install -r requirements.txt
+    pip install -r requirements.txt
 
 For more information on virtualenv, [see below] (#virtualenv-and-virtualenvwrapper-optionalintermediate-level).
 
