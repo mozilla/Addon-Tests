@@ -78,8 +78,6 @@ class TestHome:
         Assert.true(home.is_the_current_page)
         Assert.equal(home.default_selected_tab_text, 'Featured')
 
-        home.scroll_down  # workaround for selenium scroll issue
-
         featured_extensions = home.click_all_featured_addons_link()
 
         Assert.equal(featured_extensions.title, 'ADD-ONS')

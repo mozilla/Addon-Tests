@@ -85,6 +85,7 @@ class Home(Base):
         return self.is_element_visible(*self._learn_more_msg_locator)
 
     def click_all_featured_addons_link(self):
+        self.scroll_to_element(*self._all_featured_addons_locator)
         self.selenium.find_element(*self._all_featured_addons_locator).click()
         from pages.mobile.extensions import Extensions
         extensions_page = Extensions(self.testsetup)
