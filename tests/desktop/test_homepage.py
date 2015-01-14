@@ -260,3 +260,28 @@ class TestHome:
         Assert.equal('Tabs', category_region.categories_tabs_header_text)
         Assert.equal('Web Development', category_region.categories_web_development_header_text)
         Assert.equal('Other', category_region.categories_other_header_text)
+
+    @pytest.mark.nondestructive
+    def test_that_checks_other_applications_menu(self, mozwebqa):
+        home_page = Home(mozwebqa)
+
+        # Thunderbird
+        Assert.true(home_page.header.is_other_application_visible("Thunderbird"))
+        home_page.header.click_other_application("Thunderbird")
+        current_page_url = home_page.get_url_current_page()
+        Assert.true(current_page_url.endswith("/thunderbird/"))
+        Assert.contains('Thunderbird Add-ons', home_page.amo_logo_title)
+
+        # Android
+        Assert.true(home_page.header.is_other_application_visible("Android"))
+        home_page.header.click_other_application("Android")
+        current_page_url = home_page.get_url_current_page()
+        Assert.true(current_page_url.endswith("/android/"))
+        Assert.contains('Android Add-ons', home_page.amo_logo_title)
+
+        # Seamonkey
+        Assert.true(home_page.header.is_other_application_visible("Seamonkey"))
+        home_page.header.click_other_application("Seamonkey")
+        current_page_url = home_page.get_url_current_page()
+        Assert.true(current_page_url.endswith("/seamonkey/"))
+        Assert.contains('SeaMonkey Add-ons', home_page.amo_logo_title)
