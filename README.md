@@ -112,8 +112,8 @@ The mozwebqa plugin has advanced command line options for reporting and using br
 
     py.test --help
 
-Also see the documentation on [davehunt's pytest-mozwebqa Github project page] [pymozwebqa].
-[pymozwebqa]: https://github.com/davehunt/pytest-mozwebqa
+Also see the documentation on [pytest-mozwebqa Github project page] [pymozwebqa].
+[pymozwebqa]: https://github.com/mozilla/pytest-mozwebqa
 
 ####Virtualenv and Virtualenvwrapper (Optional/Intermediate level)
 While most of us have had some experience using virtual machines, [virtualenv][venv] is something else entirely.  It's used to keep libraries that you install from clashing and messing up your local environment.  After installing virtualenv, installing [virtualenvwrapper][wrapper] will give you some nice commands to use with virtualenv.
