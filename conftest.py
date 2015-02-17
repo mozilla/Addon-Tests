@@ -8,15 +8,15 @@ import py
 
 def pytest_runtest_setup(item):
     pytest_mozwebqa = py.test.config.pluginmanager.getplugin("mozwebqa")
-    pytest_mozwebqa.TestSetup.api_base_url = item.config.option.api_base_url
+    pytest_mozwebqa.TestSetup.services_base_url = item.config.option.services_base_url
 
 
 def pytest_addoption(parser):
-    parser.addoption("--apibaseurl",
+    parser.addoption("--servicesbaseurl",
                      action="store",
-                     dest='api_base_url',
+                     dest='services_base_url',
                      metavar='str',
-                     default="https://addons-dev.allizom.org",
+                     default="",
                      help="specify the api url")
 
 
