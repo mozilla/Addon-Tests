@@ -36,8 +36,22 @@ class DiscoveryPane(Base):
     _featured_addons_base_locator = (By.CSS_SELECTOR, '#featured-addons .addon-title ')
 
     def __init__(self, testsetup, path):
+        '''
+            The default behavior of the class is to use --baseurl. If --servicesbaseurl
+            is passed as an argument to pytest, --baseurl will be overridden.
+
+            The web workers use the same config as addons.mozilla.org workers 
+            but we heavily restrict what can be served from SAMO -- 
+            https://github.com/mozilla-services/svcops-puppet/blob/dev/modules/marketplace/templates/nginx/services_addons.conf#L20
+
+            Due to the Discovery Pane being accessible from a web browser, it can
+            be served from a separate domain for security and performance reasons.
+        '''
         Base.__init__(self, testsetup)
-        self.selenium.get(self.base_url + path)
+        if self.services_base_url:
+            self.selenium.get(self.services_base_url + path)
+        else:
+            self.selenium.get(self.base_url + path)
         self.selenium.maximize_window()
         #resizing this page for elements that disappear when the window is < 1000
         #self.selenium.set_window_size(1000, 1000) Commented because this selenium call is still in beta

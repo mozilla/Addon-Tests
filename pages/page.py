@@ -24,7 +24,7 @@ class Page(object):
         """
         self.testsetup = testsetup
         self.base_url = testsetup.base_url
-        self.api_base_url = testsetup.api_base_url
+        self.services_base_url = testsetup.services_base_url
         self.selenium = testsetup.selenium
         self.timeout = testsetup.timeout
 
