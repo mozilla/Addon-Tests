@@ -75,9 +75,11 @@ class TestReviews:
         Assert.equal(review.author, mozwebqa.credentials['default']['name'])
         date = datetime.now().strftime("%B %d, %Y")
         # there are no leading zero-signs on day so we need to remove them too
-        date = date.replace(' 0', ' ')
-        Assert.equal(review.date, date)
-        Assert.equal(review.text, body)
+        expected_date = date.replace(' 0', ' ')
+        Assert.equal(review.date, expected_date, 'Date of review does not match the expected value. '
+                     'Expected: "%s" but found "%s"' % (expected_date, review.date))
+        Assert.equal(review.text, body, 'Review text does not match expected value. '
+                     'Expected: "%s", but found "%s"' % (body, review.text))
 
         review.delete()
 
