@@ -4,6 +4,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+from urlparse import urlparse
 from datetime import datetime, timedelta
 import json
 
@@ -25,7 +26,7 @@ class TestStatistics:
         Assert.true(statistics_page.is_the_current_page)
         Assert.contains("/statistics", statistics_page.get_url_current_page())
 
-    @pytest.mark.skipif('urlparse(config.getvalue("base_url")).netloc != "addons.mozilla.org"',
+    @pytest.mark.skipif('"allizom.org" in config.getvalue("base_url")',
                         reason='Insufficient data on dev/stage')
     @pytest.mark.skip_selenium
     @pytest.mark.nondestructive
