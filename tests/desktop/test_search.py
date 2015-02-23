@@ -227,7 +227,8 @@ class TestSearch:
             amo_addon_type_page = amo_home_page.header.site_navigation_menu(addon_type).click()
         search_results = amo_addon_type_page.search_for(term)
 
-        Assert.true(search_results.result_count > 0)
+        Assert.true(search_results.result_count > 0,
+                    'Search did not return results. Search terms: %s' % amo_addon_type_page.selenium.current_url)
 
         for i in range(search_results.result_count):
             addon = search_results.result(i).click_result()
