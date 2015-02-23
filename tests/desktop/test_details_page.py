@@ -262,14 +262,14 @@ class TestDetails:
     @pytest.mark.nondestructive
     @pytest.mark.login
     def test_that_add_a_review_button_works(self, mozwebqa):
-        #Step 1: Addons Home Page loads and Addons Details loads
+        # Step 1: Addons Home Page loads and Addons Details loads
         home_page = Home(mozwebqa)
 
-        #Step 2:user logs in to submit a review
+        # Step 2:user logs in to submit a review
         home_page.login()
         Assert.true(home_page.header.is_user_logged_in)
 
-        #Step 3: user loads an addon details page and clicks write a review button
+        # Step 3: user loads an addon details page and clicks write a review button
         details_page = Details(mozwebqa, 'Firebug')
         review_box = details_page.click_to_write_review()
         Assert.true(review_box.is_review_box_visible)

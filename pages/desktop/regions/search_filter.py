@@ -32,7 +32,8 @@ class FilterBase(Page):
             if ('active' not in is_expanded):
                 self.selenium.find_element(*self._all_tags_locator).click()
             self._root_element = self.selenium.find_element(self._base_locator[0],
-                                    "%s[a[contains(@data-params, '%s')]]" % (self._base_locator[1], lookup))
+                                                            "%s[a[contains(@data-params, '%s')]]"
+                                                            % (self._base_locator[1], lookup))
 
         @property
         def name(self):

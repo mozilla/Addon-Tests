@@ -7,7 +7,6 @@
 Created on Jun 21, 2010
 
 '''
-from unittestzero import Assert
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import ElementNotVisibleException

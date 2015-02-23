@@ -39,8 +39,8 @@ class DiscoveryPane(Base):
         Base.__init__(self, testsetup)
         self.selenium.get(self.base_url + path)
         self.selenium.maximize_window()
-        #resizing this page for elements that disappear when the window is < 1000
-        #self.selenium.set_window_size(1000, 1000) Commented because this selenium call is still in beta
+        # resizing this page for elements that disappear when the window is < 1000
+        # self.selenium.set_window_size(1000, 1000) Commented because this selenium call is still in beta
         WebDriverWait(self.selenium, self.timeout).until(lambda s: self.selenium.find_element(*self._promo_box_locator).size['height'] == 273)
 
     @property
@@ -131,7 +131,7 @@ class DiscoveryPane(Base):
 
         def wait_for_next_promo(self):
             WebDriverWait(self.selenium, self.timeout).until(lambda s:
-                                                         self._root_element.find_element(*self._heading_locator).is_displayed())
+                                                             self._root_element.find_element(*self._heading_locator).is_displayed())
 
 
 class DiscoveryThemesDetail(Base):

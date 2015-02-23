@@ -17,9 +17,9 @@ class Details(Base):
     _contribute_button_locator = (By.XPATH, "//a[contains(.,'Contribute')]")
 
     def __init__(self, testsetup, addon_name=None):
-        #formats name for url
+        # formats name for url
         Base.__init__(self, testsetup)
-        if (addon_name != None):
+        if (addon_name is not None):
             self.addon_name = addon_name.replace(" ", "-")
             self.addon_name = re.sub(r'[^A-Za-z0-9\-]', '', self.addon_name).lower()
             self.addon_name = self.addon_name[:27]

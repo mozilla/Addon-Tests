@@ -6,7 +6,6 @@
 
 from selenium.webdriver.common.by import By
 from pages.mobile.base import Base
-from pages.page import Page
 
 
 class Extensions(Base):

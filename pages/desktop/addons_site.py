@@ -88,7 +88,7 @@ class ViewReviews(Base):
         def delete(self):
             self._root_element.find_element(*self._delete_review_locator).click()
             WebDriverWait(self.selenium, self.timeout).until(lambda s:
-                                                         self.marked_for_deletion == 'Marked for deletion')
+                                                             self.marked_for_deletion == 'Marked for deletion')
 
         @property
         def marked_for_deletion(self):

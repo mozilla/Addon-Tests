@@ -17,31 +17,31 @@ class TestReviews:
 
     @pytest.mark.nondestructive
     def test_that_all_reviews_hyperlink_works(self, mozwebqa):
-        #Open details page for MemChaser
+        # Open details page for MemChaser
         details_page = Details(mozwebqa, "Firebug")
         Assert.true(details_page.has_reviews)
 
         view_reviews = details_page.click_all_reviews_link()
         Assert.equal(len(view_reviews.reviews), 20)
 
-        #Go to the last page and check that the next button is not present
+        # Go to the last page and check that the next button is not present
         view_reviews.paginator.click_last_page()
         Assert.true(view_reviews.paginator.is_next_page_disabled)
 
-        #Go one page back, check that it has 20 reviews
-        #that the page number decreases and that the next link is visible
+        # Go one page back, check that it has 20 reviews
+        # that the page number decreases and that the next link is visible
         page_number = view_reviews.paginator.page_number
         view_reviews.paginator.click_prev_page()
         Assert.false(view_reviews.paginator.is_next_page_disabled)
         Assert.equal(len(view_reviews.reviews), 20)
         Assert.equal(view_reviews.paginator.page_number, page_number - 1)
 
-        #Go to the first page and check that the prev button is not present
+        # Go to the first page and check that the prev button is not present
         view_reviews.paginator.click_first_page()
         Assert.true(view_reviews.paginator.is_prev_page_disabled)
 
-        #Go one page forward, check that it has 20 reviews,
-        #that the page number increases and that the prev link is visible
+        # Go one page forward, check that it has 20 reviews,
+        # that the page number increases and that the prev link is visible
         page_number = view_reviews.paginator.page_number
         view_reviews.paginator.click_next_page()
         Assert.false(view_reviews.paginator.is_prev_page_disabled)

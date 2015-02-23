@@ -6,6 +6,7 @@
 
 import py
 
+
 def pytest_runtest_setup(item):
     pytest_mozwebqa = py.test.config.pluginmanager.getplugin("mozwebqa")
     pytest_mozwebqa.TestSetup.api_base_url = item.config.option.api_base_url

@@ -18,7 +18,7 @@ class Home(Base):
     _first_addon_locator = (By.CSS_SELECTOR, ".summary > a > h3")
     _other_applications_link_locator = (By.ID, "other-apps")
 
-    #Most Popular List
+    # Most Popular List
     _most_popular_item_locator = (By.CSS_SELECTOR, "ol.toplist li")
     _most_popular_list_heading_locator = (By.CSS_SELECTOR, "#homepage > .secondary h2")
 

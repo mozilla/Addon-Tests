@@ -117,7 +117,7 @@ class TestHome:
     @pytest.mark.nondestructive
     def test_that_items_menu_fly_out_while_hovering(self, mozwebqa):
 
-        #I've adapted the test to check open/closed for all menu items
+        # I've adapted the test to check open/closed for all menu items
         home_page = Home(mozwebqa)
 
         for menu in self.expected_header_menus:

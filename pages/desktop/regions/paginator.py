@@ -12,17 +12,17 @@ from pages.page import Page
 
 class Paginator(Page):
 
-    #Numbering
+    # Numbering
     _page_number_locator = (By.CSS_SELECTOR, 'nav.paginator .num > a:nth-child(1)')
     _total_page_number_locator = (By.CSS_SELECTOR, 'nav.paginator .num > a:nth-child(2)')
 
-    #Navigation
+    # Navigation
     _first_page_locator = (By.CSS_SELECTOR, 'nav.paginator .rel a:nth-child(1)')
     _prev_locator = (By.CSS_SELECTOR, 'nav.paginator .rel a.prev')
     _next_locator = (By.CSS_SELECTOR, 'nav.paginator .rel a.next')
     _last_page_locator = (By.CSS_SELECTOR, 'nav.paginator .rel a:nth-child(4)')
 
-    #Position
+    # Position
     _start_item_number_locator = (By.CSS_SELECTOR, 'nav.paginator .pos b:nth-child(1)')
     _end_item_number_locator = (By.CSS_SELECTOR, 'nav.paginator .pos b:nth-child(2)')
     _total_item_number = (By.CSS_SELECTOR, 'nav.paginator .pos b:nth-child(3)')
