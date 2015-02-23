@@ -65,9 +65,9 @@ class Details(Base):
     _devs_comments_toggle_locator = (By.CSS_SELECTOR, "#developer-comments h2 a")
     _devs_comments_message_locator = (By.CSS_SELECTOR, "#developer-comments div.content")
 
-    #more about this addon
+    # more about this addon
     _website_locator = (By.CSS_SELECTOR, ".links a.home")
-    #other_addons
+    # other_addons
     _other_addons_by_author_locator = (By.CSS_SELECTOR, "#author-addons > ul.listing-grid > section li > div.addon")
     _other_addons_by_author_text_locator = (By.CSS_SELECTOR, '#author-addons > h2')
     _reviews_section_header_locator = (By.CSS_SELECTOR, '#reviews > h2')
@@ -93,7 +93,7 @@ class Details(Base):
     _paypal_login_dialog_locator = (By.CSS_SELECTOR, '#page .content')
 
     def __init__(self, testsetup, addon_name=None):
-        #formats name for url
+        # formats name for url
         Base.__init__(self, testsetup)
         if (addon_name is not None):
             self.addon_name = addon_name.replace(" ", "-")
@@ -362,15 +362,15 @@ class Details(Base):
     def support_url(self):
         support_url = self.selenium.find_element(*self._support_link_locator).get_attribute('href')
         match = re.findall("http", support_url)
-        #staging url
+        # staging url
         if len(match) > 1:
             return self._extract_url_from_link(support_url)
-        #production url
+        # production url
         else:
             return support_url
 
     def _extract_url_from_link(self, url):
-        #parses out extra certificate stuff from urls in staging only
+        # parses out extra certificate stuff from urls in staging only
         return urlparse.unquote(re.search('\w+://.*/(\w+%3A//.*)', url).group(1))
 
     @property
@@ -399,7 +399,7 @@ class Details(Base):
 
     class ImagePreviewer(Page):
 
-        #navigation
+        # navigation
         _next_locator = (By.CSS_SELECTOR, 'section.previews div.carousel > a.next')
         _prev_locator = (By.CSS_SELECTOR, 'section.previews div.carousel > a.prev')
 

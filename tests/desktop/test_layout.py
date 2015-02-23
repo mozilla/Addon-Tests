@@ -54,7 +54,7 @@ class TestAmoLayout:
         home_page = Home(mozwebqa)
 
         Assert.true(home_page.header.is_other_application_visible(expected_app),
-                "%s link not found in the Other Applications menu" % expected_app)
+                    "%s link not found in the Other Applications menu" % expected_app)
 
     @pytest.mark.nondestructive
     def test_the_search_field_placeholder_and_search_button(self, mozwebqa):

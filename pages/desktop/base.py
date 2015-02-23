@@ -23,8 +23,6 @@ class Base(Page):
     _footer_locator = (By.CSS_SELECTOR, "#footer")
 
     def login(self, method="normal", user="default"):
-        from pages.desktop.user import Login
-
         if method == "normal":
             login = self.header.click_login_normal()
             login.login_user_normal(user)
@@ -131,20 +129,20 @@ class Base(Page):
 
     class HeaderRegion(Page):
 
-        #other applications
+        # other applications
         _other_applications_locator = (By.ID, "other-apps")
         _other_applications_menu_locator = (By.CLASS_NAME, "other-apps")
 
-        #Search box
+        # Search box
         _search_button_locator = (By.CSS_SELECTOR, ".search-button")
         _search_textbox_locator = (By.ID, "search-q")
 
-        #Not LoggedIn
+        # Not LoggedIn
         _login_browser_id_locator = (By.CSS_SELECTOR, "a.browserid-login")
         _register_locator = (By.CSS_SELECTOR, "#aux-nav li.account a:nth-child(1)")
         _login_normal_locator = (By.CSS_SELECTOR, "#aux-nav li.account a:nth-child(2)")
 
-        #LoggedIn
+        # LoggedIn
         _account_controller_locator = (By.CSS_SELECTOR, "#aux-nav .account a.user")
         _account_dropdown_locator = (By.CSS_SELECTOR, "#aux-nav .account ul")
         _logout_locator = (By.CSS_SELECTOR, "li.nomenu.logout > a")
@@ -154,7 +152,7 @@ class Base(Page):
         _complete_themes_menu_locator = (By.CSS_SELECTOR, '#site-nav div > a.complete-themes > b')
 
         def site_navigation_menu(self, value):
-            #used to access one specific menu
+            # used to access one specific menu
             for menu in self.site_navigation_menus:
                 if menu.name == value.upper():
                     return menu
@@ -162,7 +160,7 @@ class Base(Page):
 
         @property
         def site_navigation_menus(self):
-            #returns a list containing all the site navigation menus
+            # returns a list containing all the site navigation menus
             WebDriverWait(self.selenium, self.timeout).until(lambda s: len(s.find_elements(*self._site_navigation_menus_locator)) >= self._site_navigation_min_number_menus)
             from pages.desktop.regions.header_menu import HeaderMenu
             return [HeaderMenu(self.testsetup, web_element) for web_element in self.selenium.find_elements(*self._site_navigation_menus_locator)]
@@ -297,7 +295,7 @@ class Base(Page):
             ActionChains(self.selenium).move_to_element(hover_element).perform()
             menu_text = self.selenium.find_element(*self._account_dropdown_locator).text
 
-            if not 'My Profile' in menu_text:
+            if 'My Profile' not in menu_text:
                 print "ActionChains is being flakey again"
             return 'My Favorites' in menu_text
 

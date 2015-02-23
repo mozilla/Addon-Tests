@@ -70,7 +70,7 @@ class Base(Page):
 
         @property
         def dropdown_menu_items(self):
-            #returns a list containing all the menu items
+            # returns a list containing all the menu items
             return [self.MenuItem(self.testsetup, web_element) for web_element in self.selenium.find_elements(*self._menu_items_locator)]
 
         class MenuItem(Page):

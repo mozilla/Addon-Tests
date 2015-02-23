@@ -16,7 +16,7 @@ from pages.desktop.home import Home
 
 class TestDiscoveryPane:
 
-    #Need to get this info before run
+    # Need to get this info before run
     def basepath(self, mozwebqa):
         return '/en-US/firefox/discovery/pane/%s/Darwin' % mozwebqa.selenium.capabilities['version']
 

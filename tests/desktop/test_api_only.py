@@ -10,8 +10,8 @@ from unittestzero import Assert
 
 from pages.desktop.addons_api import AddonsAPI
 
-#These tests should only call the api.
-#There should be no tests requiring selenium in this class.
+# These tests should only call the api.
+# There should be no tests requiring selenium in this class.
 
 
 @pytest.mark.skip_selenium

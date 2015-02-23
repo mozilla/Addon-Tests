@@ -119,7 +119,7 @@ class SearchResultList(Base):
 
         @property
         def is_compatible(self):
-            return not 'incompatible' in self._root_element.get_attribute('class')
+            return 'incompatible' not in self._root_element.get_attribute('class')
 
         @property
         def updated_date(self):
