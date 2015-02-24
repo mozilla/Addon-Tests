@@ -40,8 +40,8 @@ class DiscoveryPane(Base):
             The default behavior of the class is to use --baseurl. If --servicesbaseurl
             is passed as an argument to pytest, --baseurl will be overridden.
 
-            The web workers use the same config as addons.mozilla.org workers 
-            but we heavily restrict what can be served from SAMO -- 
+            The web workers use the same config as addons.mozilla.org workers
+            but we heavily restrict what can be served from SAMO --
             https://github.com/mozilla-services/svcops-puppet/blob/dev/modules/marketplace/templates/nginx/services_addons.conf#L20
 
             Due to the Discovery Pane being accessible from a web browser, it can
