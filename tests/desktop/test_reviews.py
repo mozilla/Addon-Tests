@@ -4,9 +4,10 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import pytest
-
 from datetime import datetime
+
+import pytest
+from pytz import timezone
 from unittestzero import Assert
 
 from pages.desktop.home import Home
@@ -73,7 +74,7 @@ class TestReviews:
         review = review_page.reviews[0]
         Assert.equal(review.rating, 1)
         Assert.equal(review.author, mozwebqa.credentials['default']['name'])
-        date = datetime.now().strftime("%B %d, %Y")
+        date = datetime.now(timezone('US/Pacific')).strftime("%B %d, %Y")
         # there are no leading zero-signs on day so we need to remove them too
         expected_date = date.replace(' 0', ' ')
         Assert.equal(review.date, expected_date, 'Date of review does not match the expected value. '
