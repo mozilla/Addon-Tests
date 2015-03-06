@@ -201,8 +201,6 @@ class TestSearch:
         else:
             Assert.equal(search_page.result_count, number)
 
-    @pytest.mark.xfail("'addons.allizom' in config.getvalue('base_url')",
-                       reason='https://github.com/mozilla/Addon-Tests/issues/728')
     @pytest.mark.native
     @pytest.mark.nondestructive
     @pytest.mark.smoke
@@ -220,17 +218,28 @@ class TestSearch:
     ):
         amo_home_page = Home(mozwebqa)
 
+        search_results = None
+
         if (addon_type == 'Complete Themes'):
-            # Complete Themes are in a subnav, so must be clicked differently
-            amo_addon_type_page = amo_home_page.header.click_complete_themes()
+            search_results = amo_home_page.search_for(term)
+
+            search_results.filter.category.expand_filter_options()
+            search_results.filter.category.click_filter_complete_themes()
+
+            search_results.filter.works_with.expand_filter_options()
+            search_results.filter.works_with.click_filter_all_versions_of_firefox()
+            search_results.filter.works_with.click_filter_all_systems()
         else:
             amo_addon_type_page = amo_home_page.header.site_navigation_menu(addon_type).click()
-        search_results = amo_addon_type_page.search_for(term)
+            search_results = amo_addon_type_page.search_for(term)
 
         Assert.true(search_results.result_count > 0,
-                    'Search did not return results. Search terms: %s' % amo_addon_type_page.selenium.current_url)
+                    'Search did not return results. Search terms: %s' % search_results.selenium.current_url)
 
+        # click through to each result and verify navigation breadcrumbs are correct
         for i in range(search_results.result_count):
             addon = search_results.result(i).click_result()
-            Assert.contains(breadcrumb_component, addon.breadcrumb)
+            Assert.contains(breadcrumb_component, addon.breadcrumb,
+                            "Expected to find: '%s' in '%s'. url: %s" %
+                            (breadcrumb_component, addon.breadcrumb, addon.selenium.current_url))
             addon.return_to_previous_page()

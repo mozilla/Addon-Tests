@@ -24,12 +24,9 @@ class SearchResultList(Base):
 
     def __init__(self, testsetup):
         Base.__init__(self, testsetup)
-        try:  # the result could legitimately be zero, but give it time to make sure
-            WebDriverWait(self.selenium, self.timeout).until(
-                lambda s: len(s.find_elements(*self._results_locator)) > 0
-            )
-        except Exception:
-            pass
+        WebDriverWait(self.selenium, self.timeout).until(
+            lambda s: self.is_no_results_present or
+            len(s.find_elements(*self._results_locator)) > 0)
 
     @property
     def is_no_results_present(self):
