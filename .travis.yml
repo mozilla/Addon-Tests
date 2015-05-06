@@ -4,7 +4,7 @@ python: 2.7
 
 install: "pip install flake8"
 
-script: "flake8 . --ignore=E501"
+script: "flake8 ."
 
 notifications:
   email: webqa-ci@mozilla.org
