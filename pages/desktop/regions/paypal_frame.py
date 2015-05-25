@@ -25,10 +25,10 @@ class PayPalFrame(Page):
             lambda s: s.find_element(*self._logo_locator),
             'Timeout waiting for Paypal logo in frame.')
 
-    def login_to_paypal(self, user="paypal"):
+    def login_to_paypal(self, email, password):
         self.selenium.find_element(*self._paypal_login_button).click()
 
         from pages.desktop.paypal_popup import PayPalPopup
         pop_up = PayPalPopup(self.testsetup)
-        pop_up.login_paypal(user)
+        pop_up.login_paypal(email, password)
         return PayPalPopup(self.testsetup)

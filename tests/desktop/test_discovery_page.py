@@ -74,9 +74,9 @@ class TestDiscoveryPane:
 
     @pytest.mark.nondestructive
     @pytest.mark.login
-    def test_the_logout_link_for_logged_in_users(self, mozwebqa):
+    def test_the_logout_link_for_logged_in_users(self, mozwebqa, existing_user):
         home_page = Home(mozwebqa)
-        home_page.login()
+        home_page.login(existing_user['email'], existing_user['password'])
         Assert.true(home_page.is_the_current_page)
         Assert.true(home_page.header.is_user_logged_in)
 

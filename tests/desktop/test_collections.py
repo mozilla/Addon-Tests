@@ -24,12 +24,12 @@ class TestCollections:
         Assert.equal(featured_collections_page.default_selected_tab, "Featured")
 
     @pytest.mark.login
-    def test_create_and_delete_collection(self, mozwebqa):
+    def test_create_and_delete_collection(self, mozwebqa, existing_user):
 
         home_page = Home(mozwebqa)
         collections_page = home_page.header.site_navigation_menu('Collections').click()
         create_collection_page = collections_page.click_create_collection_button()
-        home_page.login()
+        home_page.login(existing_user['email'], existing_user['password'])
 
         collection_uuid = uuid.uuid4().hex
         collection_time = repr(time.time())
@@ -52,24 +52,23 @@ class TestCollections:
     @pytest.mark.native
     @pytest.mark.nondestructive
     @pytest.mark.login
-    def test_user_my_collections_page(self, mozwebqa):
-
+    def test_user_my_collections_page(self, mozwebqa, existing_user):
         home_page = Home(mozwebqa)
-        home_page.login()
+        home_page.login(existing_user['email'], existing_user['password'])
         Assert.true(home_page.is_the_current_page)
         Assert.true(home_page.header.is_user_logged_in)
 
-        username = mozwebqa.credentials['default']['name']
         my_collections_page = home_page.header.click_my_collections()
-        Assert.equal('Collections by %s :: Add-ons for Firefox' % username, home_page.page_title)
-        Assert.equal('Collections by %s' % username, my_collections_page.my_collections_header_text)
+        Assert.equal('Collections by %s :: Add-ons for Firefox' %
+                     existing_user['name'], my_collections_page.page_title)
+        Assert.equal('Collections by %s' % existing_user['name'],
+                     my_collections_page.my_collections_header_text)
 
     @pytest.mark.native
     @pytest.mark.login
-    def test_user_my_favorites_page(self, mozwebqa):
-
+    def test_user_my_favorites_page(self, mozwebqa, existing_user):
         home_page = Home(mozwebqa)
-        home_page.login()
+        home_page.login(existing_user['email'], existing_user['password'])
         Assert.true(home_page.is_the_current_page)
         Assert.true(home_page.header.is_user_logged_in)
 

@@ -20,30 +20,10 @@ class Login(Base):
 
     _email_locator = (By.ID, 'id_username')
     _password_locator = (By.ID, 'id_password')
-    _login_button_locator = (By.ID, 'login-submit')
-    _logout_locator = (By.CSS_SELECTOR, '.logout')
-    _normal_login_locator = (By.ID, 'show-normal-login')
-    _browser_id_locator = (By.CSS_SELECTOR, 'button.browserid-login')
 
-    _pop_up_id = '_mozid_signin'
-
-    def login_user_normal(self, user):
-        credentials = self.testsetup.credentials[user]
-
-        email = self.selenium.find_element(*self._email_locator)
-        email.send_keys(credentials['email'])
-
-        password = self.selenium.find_element(*self._password_locator)
-        password.send_keys(credentials['password'])
-
-        password.send_keys(Keys.RETURN)
-
-    def login_user_browser_id(self, user):
-        credentials = self.testsetup.credentials[user]
-        from browserid import BrowserID
-        pop_up = BrowserID(self.selenium, self.timeout)
-        pop_up.sign_in(credentials['email'], credentials['password'])
-        WebDriverWait(self.selenium, 20).until(lambda s: s.find_element(*self._logout_locator))
+    def login(self, email, password):
+        self.selenium.find_element(*self._email_locator).send_keys(email)
+        self.selenium.find_element(*self._password_locator).send_keys(password + Keys.RETURN)
 
 
 class ViewProfile(Base):

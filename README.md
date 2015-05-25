@@ -86,24 +86,24 @@ WebDriver does not need a Selenium Server or Grid to run so these examples bypas
 
 An example of running all tests:
 
-	py.test --driver=firefox --credentials=./credentials.yaml
+	py.test --driver=firefox --variables=/path/to/variables.json
 	
 An example of running all of the tests in one file:
 
-	py.test --driver=firefox --credentials=./credentials.yaml tests/desktop/test_details_page.py
+	py.test --driver=firefox --variables=/path/to/variables.json tests/desktop/test_details_page.py
 	
 An example of running one test in a file:
 
-	py.test --driver=firefox --credentials=./credentials.yaml tests/desktop/test_details_page.py -k test_that_external_link_leads_to_addon_website
+	py.test --driver=firefox --variables=/path/to/variables.json tests/desktop/test_details_page.py -k test_that_external_link_leads_to_addon_website
 
 If running on a Mac, skip tests which require 'native' support:
 
-    py.test --driver=firefox --credentials=./credentials.yaml -m 'not native'
+    py.test --driver=firefox --variables=/path/to/variables.json -m 'not native'
     
 Depending on the platform you're running the tests on, run only the tests in the mobile or desktop directories:
 
-    py.test --driver=firefox --credentials=./credentials.yaml tests/desktop
-    py.test --driver=firefox --credentials=./credentials.yaml tests/mobile
+    py.test --driver=firefox --variables=/path/to/variables.json tests/desktop
+    py.test --driver=firefox --variables=/path/to/variables.json tests/mobile
     
 For information about running tests against a Selenium Grid or moz-grid-config see the section in this document about setting up moz-grid-config.
 

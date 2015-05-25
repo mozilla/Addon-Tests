@@ -51,10 +51,10 @@ class TestReviews:
 
     @pytest.mark.native
     @pytest.mark.login
-    def test_that_new_review_is_saved(self, mozwebqa):
+    def test_that_new_review_is_saved(self, mozwebqa, existing_user):
         # Step 1 - Login into AMO
         home_page = Home(mozwebqa)
-        home_page.login()
+        home_page.login(existing_user['email'], existing_user['password'])
         Assert.true(home_page.is_the_current_page)
         Assert.true(home_page.header.is_user_logged_in)
 
@@ -73,7 +73,7 @@ class TestReviews:
         # Step 5 - Assert review
         review = review_page.reviews[0]
         Assert.equal(review.rating, 1)
-        Assert.equal(review.author, mozwebqa.credentials['default']['name'])
+        Assert.equal(review.author, existing_user['name'])
         date = datetime.now(timezone('US/Pacific')).strftime("%B %d, %Y")
         # there are no leading zero-signs on day so we need to remove them too
         expected_date = date.replace(' 0', ' ')

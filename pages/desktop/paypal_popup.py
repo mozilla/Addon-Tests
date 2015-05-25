@@ -24,10 +24,9 @@ class PayPalPopup(Page):
         Page.__init__(self, testsetup)
         self.selenium.switch_to_window(self._pop_up_id)
 
-    def login_paypal(self, user):
-        credentials = self.testsetup.credentials[user]
-        self.selenium.find_element(*self._email_locator).send_keys(credentials['email'])
-        self.selenium.find_element(*self._password_locator).send_keys(credentials['password'])
+    def login_paypal(self, email, password):
+        self.selenium.find_element(*self._email_locator).send_keys(email)
+        self.selenium.find_element(*self._password_locator).send_keys(password)
         self.selenium.find_element(*self._login_locator).click()
 
     def close_paypal_popup(self):

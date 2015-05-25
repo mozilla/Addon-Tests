@@ -18,22 +18,9 @@ class TestAccounts:
     @pytest.mark.nondestructive
     @pytest.mark.login
     @pytest.mark.native
-    def test_user_can_login_and_logout_using_normal_login(self, mozwebqa):
-
+    def test_user_can_login_and_logout(self, mozwebqa, existing_user):
         home_page = Home(mozwebqa)
-        home_page.login("normal")
-        Assert.true(home_page.is_the_current_page)
-        Assert.true(home_page.header.is_user_logged_in)
-
-        home_page.header.click_logout()
-        Assert.false(home_page.header.is_user_logged_in)
-
-    @pytest.mark.nondestructive
-    @pytest.mark.login
-    def test_user_can_login_and_logout_using_browser_id(self, mozwebqa):
-
-        home_page = Home(mozwebqa)
-        home_page.login("browserID")
+        home_page.login(existing_user['email'], existing_user['password'])
         Assert.true(home_page.is_the_current_page)
         Assert.true(home_page.header.is_user_logged_in)
 
@@ -43,10 +30,9 @@ class TestAccounts:
     @pytest.mark.native
     @pytest.mark.nondestructive
     @pytest.mark.login
-    def test_user_can_access_the_edit_profile_page(self, mozwebqa):
-
+    def test_user_can_access_the_edit_profile_page(self, mozwebqa, existing_user):
         home_page = Home(mozwebqa)
-        home_page.login()
+        home_page.login(existing_user['email'], existing_user['password'])
         Assert.true(home_page.is_the_current_page)
         Assert.true(home_page.header.is_user_logged_in)
 
@@ -62,10 +48,9 @@ class TestAccounts:
     @pytest.mark.native
     @pytest.mark.nondestructive
     @pytest.mark.login
-    def test_user_can_access_the_view_profile_page(self, mozwebqa):
-
+    def test_user_can_access_the_view_profile_page(self, mozwebqa, existing_user):
         home_page = Home(mozwebqa)
-        home_page.login()
+        home_page.login(existing_user['email'], existing_user['password'])
         Assert.true(home_page.is_the_current_page)
         Assert.true(home_page.header.is_user_logged_in)
 
@@ -75,9 +60,9 @@ class TestAccounts:
 
     @pytest.mark.native
     @pytest.mark.login
-    def test_hide_email_checkbox_works(self, mozwebqa):
+    def test_hide_email_checkbox_works(self, mozwebqa, existing_user):
         home_page = Home(mozwebqa)
-        home_page.login()
+        home_page.login(existing_user['email'], existing_user['password'])
 
         Assert.true(home_page.is_the_current_page)
         Assert.true(home_page.header.is_user_logged_in)
@@ -96,9 +81,9 @@ class TestAccounts:
 
     @pytest.mark.native
     @pytest.mark.login
-    def test_user_can_update_profile_information_in_account_settings_page(self, mozwebqa):
+    def test_user_can_update_profile_information_in_account_settings_page(self, mozwebqa, editable_user):
         home_page = Home(mozwebqa)
-        home_page.login(user="user.edit")
+        home_page.login(editable_user['email'], editable_user['password'])
 
         Assert.true(home_page.is_the_current_page)
         Assert.true(home_page.header.is_user_logged_in)

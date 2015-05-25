@@ -22,20 +22,9 @@ class Base(Page):
 
     _footer_locator = (By.CSS_SELECTOR, "#footer")
 
-    def login(self, method="normal", user="default"):
-        if method == "normal":
-            login = self.header.click_login_normal()
-            login.login_user_normal(user)
-
-        elif method == "browserID":
-            is_browserid_login_available = self.header.is_browserid_login_available
-
-            if is_browserid_login_available:
-                login = self.header.click_login_browser_id()
-                login.login_user_browser_id(user)
-            else:
-                login = self.header.click_login_normal()
-                login.login_user_normal(user)
+    def login(self, email, password):
+        login_page = self.header.click_login()
+        login_page.login(email, password)
 
     @property
     def page_title(self):
@@ -62,9 +51,6 @@ class Base(Page):
     @property
     def amo_logo_image_source(self):
         return self.selenium.find_element(*self._amo_logo_image_locator).get_attribute('src')
-
-    def credentials_of_user(self, user):
-        return self.parse_yaml_file(self.credentials)[user]
 
     @property
     def header(self):
@@ -138,9 +124,8 @@ class Base(Page):
         _search_textbox_locator = (By.ID, "search-q")
 
         # Not LoggedIn
-        _login_browser_id_locator = (By.CSS_SELECTOR, "a.browserid-login")
+        _login_locator = (By.CSS_SELECTOR, "#aux-nav li.account a:nth-child(2)")
         _register_locator = (By.CSS_SELECTOR, "#aux-nav li.account a:nth-child(1)")
-        _login_normal_locator = (By.CSS_SELECTOR, "#aux-nav li.account a:nth-child(2)")
 
         # LoggedIn
         _account_controller_locator = (By.CSS_SELECTOR, "#aux-nav .account a.user")
@@ -210,23 +195,14 @@ class Base(Page):
         def search_button_title(self):
             return self.selenium.find_element(*self._search_button_locator).get_attribute('title')
 
-        def click_login_browser_id(self):
-            self.selenium.find_element(*self._login_browser_id_locator).click()
+        def click_login(self):
+            self.selenium.find_element(*self._login_locator).click()
             from pages.desktop.user import Login
             return Login(self.testsetup)
-
-        def click_login_normal(self):
-            self.selenium.find_element(*self._login_normal_locator).click()
-            from pages.desktop.user import Login
-            return Login(self.testsetup)
-
-        @property
-        def is_browserid_login_available(self):
-            return self.is_element_present(*self._login_browser_id_locator)
 
         @property
         def is_login_link_visible(self):
-            return self.is_element_visible(*self._login_normal_locator)
+            return self.is_element_visible(*self._login_locator)
 
         @property
         def is_register_link_visible(self):

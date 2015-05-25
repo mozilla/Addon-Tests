@@ -21,11 +21,8 @@ class TestDetails:
     @pytest.mark.nondestructive
     def test_that_register_login_link_is_present_in_addon_details_page(self, mozwebqa):
         details_page = Details(mozwebqa, "Firebug")
-        if details_page.header.is_browserid_login_available:
-            Assert.true(details_page.header.is_browserid_login_available)
-        else:
-            Assert.true(details_page.header.is_register_link_visible, "Register link is not visible")
-            Assert.true(details_page.header.is_login_link_visible, "Login links is not visible")
+        Assert.true(details_page.header.is_register_link_visible, "Register link is not visible")
+        Assert.true(details_page.header.is_login_link_visible, "Login links is not visible")
 
     @pytest.mark.action_chains
     @pytest.mark.nondestructive
@@ -261,12 +258,12 @@ class TestDetails:
 
     @pytest.mark.nondestructive
     @pytest.mark.login
-    def test_that_add_a_review_button_works(self, mozwebqa):
+    def test_that_add_a_review_button_works(self, mozwebqa, existing_user):
         # Step 1: Addons Home Page loads and Addons Details loads
         home_page = Home(mozwebqa)
 
         # Step 2:user logs in to submit a review
-        home_page.login()
+        home_page.login(existing_user['email'], existing_user['password'])
         Assert.true(home_page.header.is_user_logged_in)
 
         # Step 3: user loads an addon details page and clicks write a review button

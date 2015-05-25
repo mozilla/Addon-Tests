@@ -18,12 +18,10 @@ class TestPaypal:
     addon_name = 'Firebug'
 
     @pytest.mark.login
-    def test_that_user_can_contribute_to_an_addon(self, mozwebqa):
+    def test_that_user_can_contribute_to_an_addon(self, mozwebqa, existing_user, paypal_user):
         """Test that checks the Contribute button for an add-on using PayPal."""
-
         addon_page = Home(mozwebqa)
-
-        addon_page.login()
+        addon_page.login(existing_user['email'], existing_user['password'])
         Assert.true(addon_page.is_the_current_page)
         Assert.true(addon_page.header.is_user_logged_in)
 
@@ -33,7 +31,7 @@ class TestPaypal:
         paypal_frame = contribution_snippet.click_make_contribution_button()
         Assert.true(addon_page.is_paypal_login_dialog_visible)
 
-        payment_popup = paypal_frame.login_to_paypal(user="paypal")
+        payment_popup = paypal_frame.login_to_paypal(paypal_user['email'], paypal_user['password'])
         Assert.true(payment_popup.is_user_logged_into_paypal)
         payment_popup.click_pay()
         Assert.true(payment_popup.is_payment_successful)
@@ -41,7 +39,7 @@ class TestPaypal:
         Assert.true(addon_page.is_the_current_page)
 
     @pytest.mark.login
-    def test_that_user_can_make_a_contribution_without_logging_into_amo(self, mozwebqa):
+    def test_that_user_can_make_a_contribution_without_logging_into_amo(self, mozwebqa, paypal_user):
         """Test that checks if the user is able to make a contribution without logging in to AMO."""
         addon_page = Details(mozwebqa, self.addon_name)
         Assert.false(addon_page.header.is_user_logged_in)
@@ -50,7 +48,7 @@ class TestPaypal:
         paypal_frame = contribution_snippet.click_make_contribution_button()
         Assert.true(addon_page.is_paypal_login_dialog_visible)
 
-        payment_popup = paypal_frame.login_to_paypal(user="paypal")
+        payment_popup = paypal_frame.login_to_paypal(paypal_user['email'], paypal_user['password'])
         Assert.true(payment_popup.is_user_logged_into_paypal)
         payment_popup.click_pay()
         Assert.true(payment_popup.is_payment_successful)
@@ -74,9 +72,9 @@ class TestPaypal:
     @pytest.mark.smoke
     @pytest.mark.nondestructive
     @pytest.mark.login
-    def test_that_make_contribution_button_is_clickable_and_loads_paypal_frame_while_user_is_logged_in(self, mozwebqa):
+    def test_that_make_contribution_button_is_clickable_and_loads_paypal_frame_while_user_is_logged_in(self, mozwebqa, existing_user):
         addon_page = Details(mozwebqa, self.addon_name)
-        addon_page.login()
+        addon_page.login(existing_user['email'], existing_user['password'])
         Assert.true(addon_page.is_the_current_page)
         Assert.true(addon_page.header.is_user_logged_in)
 
