@@ -125,8 +125,8 @@ class TestDetails:
 
     @pytest.mark.nondestructive
     def test_other_addons_label_when_there_is_only_one_author(self, mozwebqa):
-        addon_with_one_authors = 'MemChaser'
-        detail_page = Details(mozwebqa, addon_with_one_authors)
+        addon_with_one_author = 'MemChaser'
+        detail_page = Details(mozwebqa, addon_with_one_author)
 
         Assert.equal(len(detail_page.authors), 1)
         Assert.equal(detail_page.other_addons_by_authors_text, "Other add-ons by %s" % detail_page.authors[0])
