@@ -55,7 +55,7 @@ class Details(Base):
     _icon_locator = (By.CSS_SELECTOR, "img.icon")
     _support_link_locator = (By.CSS_SELECTOR, "a.support")
     _review_details_locator = (By.CSS_SELECTOR, ".review .description")
-    _all_reviews_link_locator = (By.CSS_SELECTOR, "#reviews a.more-info")
+    _all_reviews_link_locator = (By.CSS_SELECTOR, "#reviews > p > a.more-info")
     _review_locator = (By.CSS_SELECTOR, "#reviews > div.review:not(.reply)")
     _info_link_locator = (By.CSS_SELECTOR, "li > a.scrollto")
     _rating_counter_locator = (By.CSS_SELECTOR, ".grouped_ratings .num_ratings")
