@@ -178,17 +178,20 @@ class CompleteThemes(Base):
 
 class CompleteTheme(Base):
 
-    _addon_title = (By.CSS_SELECTOR, "h1.addon")
-    _install_button = (By.CSS_SELECTOR, "p.install-button > a")
+    _addon_title_locator = (By.CSS_SELECTOR, "h1.addon")
+    _install_buttons_locator = (By.CSS_SELECTOR, ".install-shell p.install-button a")
     _breadcrumb_locator = (By.ID, "breadcrumbs")
 
     @property
     def addon_title(self):
-        return self.selenium.find_element(*self._addon_title).text
+        return self.selenium.find_element(*self._addon_title_locator).text
 
     @property
-    def install_button_exists(self):
-        return self.is_element_visible(*self._install_button)
+    def is_install_button_visible(self):
+        # There are multiple install buttons and we need to check whether any of them are visible
+        return any(
+            [e.is_displayed()
+             for e in self.selenium.find_elements(*self._install_buttons_locator)])
 
     @property
     def breadcrumb(self):

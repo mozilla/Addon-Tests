@@ -22,7 +22,7 @@ class TestInstalls:
         home_page = Home(mozwebqa)
         complete_themes_page = home_page.header.click_complete_themes()
         complete_theme_page = complete_themes_page.click_on_first_addon()
-        Assert.true(complete_theme_page.install_button_exists)
+        Assert.true(complete_theme_page.is_install_button_visible)
 
     @pytest.mark.nondestructive
     def test_could_install_jetpack(self, mozwebqa):
