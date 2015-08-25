@@ -6,7 +6,6 @@
 
 import pytest
 
-from unittestzero import Assert
 
 from pages.desktop.home import Home
 
@@ -21,17 +20,19 @@ class TestCompleteThemes:
         complete_themes_page.click_sort_by("name")
         addons = complete_themes_page.addon_names
         addons_set = set(addons)
-        Assert.equal(len(addons), len(addons_set), "There are duplicates in the names")
+        assert len(addons_set) == len(addons), 'There are duplicates in the names'
         addons_orig = addons
         addons.sort()
-        [Assert.equal(addons_orig[i], addons[i]) for i in xrange(len(addons))]
+        for i in xrange(len(addons)):
+            assert addons_orig[i] == addons[i]
         complete_themes_page.paginator.click_next_page()
         addons = complete_themes_page.addon_names
         addons_set = set(addons)
-        Assert.equal(len(addons), len(addons_set), "There are duplicates in the names")
+        assert len(addons_set) == len(addons), 'There are duplicates in the names'
         addons_orig = addons
         addons.sort()
-        [Assert.equal(addons_orig[i], addons[i]) for i in xrange(len(addons))]
+        for i in xrange(len(addons)):
+            assert addons_orig[i] == addons[i]
 
     @pytest.mark.native
     @pytest.mark.nondestructive
@@ -41,12 +42,12 @@ class TestCompleteThemes:
         complete_themes_page.click_sort_by("recently updated")
         addons = complete_themes_page.addon_names
         addons_set = set(addons)
-        Assert.equal(len(addons), len(addons_set), "There are duplicates in the names")
+        assert len(addons_set) == len(addons), 'There are duplicates in the names'
         updated_dates = complete_themes_page.addon_updated_dates
-        Assert.is_sorted_descending(updated_dates)
+        assert sorted(updated_dates, reverse=True) == updated_dates
         complete_themes_page.paginator.click_next_page()
         updated_dates.extend(complete_themes_page.addon_updated_dates)
-        Assert.is_sorted_descending(updated_dates)
+        assert sorted(updated_dates, reverse=True) == updated_dates
 
     @pytest.mark.native
     @pytest.mark.nondestructive
@@ -56,12 +57,12 @@ class TestCompleteThemes:
         complete_themes_page.click_sort_by("newest")
         addons = complete_themes_page.addon_names
         addons_set = set(addons)
-        Assert.equal(len(addons), len(addons_set), "There are duplicates in the names")
+        assert len(addons_set) == len(addons), 'There are duplicates in the names'
         created_dates = complete_themes_page.addon_created_dates
-        Assert.is_sorted_descending(created_dates)
+        assert sorted(created_dates, reverse=True) == created_dates
         complete_themes_page.paginator.click_next_page()
         created_dates.extend(complete_themes_page.addon_created_dates)
-        Assert.is_sorted_descending(created_dates)
+        assert sorted(created_dates, reverse=True) == created_dates
 
     @pytest.mark.native
     @pytest.mark.nondestructive
@@ -71,12 +72,12 @@ class TestCompleteThemes:
         complete_themes_page.click_sort_by("weekly downloads")
         addons = complete_themes_page.addon_names
         addons_set = set(addons)
-        Assert.equal(len(addons), len(addons_set), "There are duplicates in the names")
+        assert len(addons_set) == len(addons), 'There are duplicates in the names'
         downloads = complete_themes_page.addon_download_number
-        Assert.is_sorted_descending(downloads)
+        assert sorted(downloads, reverse=True) == downloads
         complete_themes_page.paginator.click_next_page()
         downloads.extend(complete_themes_page.addon_download_number)
-        Assert.is_sorted_descending(downloads)
+        assert sorted(downloads, reverse=True) == downloads
 
     @pytest.mark.native
     @pytest.mark.nondestructive
@@ -84,7 +85,7 @@ class TestCompleteThemes:
         home_page = Home(mozwebqa)
         complete_themes_page = home_page.header.click_complete_themes()
         url_current_page = complete_themes_page.get_url_current_page()
-        Assert.true(url_current_page.endswith("/complete-themes/"))
+        assert url_current_page.endswith('/complete-themes/')
 
     @pytest.mark.native
     @pytest.mark.nondestructive
@@ -93,7 +94,7 @@ class TestCompleteThemes:
         complete_themes_page = home_page.header.click_complete_themes()
         complete_theme_name = complete_themes_page.addon_name(1)
         complete_theme_page = complete_themes_page.click_on_first_addon()
-        Assert.contains(complete_theme_name, complete_theme_page.addon_title)
+        assert complete_theme_name in complete_theme_page.addon_title
 
     @pytest.mark.native
     @pytest.mark.nondestructive
@@ -101,7 +102,7 @@ class TestCompleteThemes:
         home_page = Home(mozwebqa)
         complete_themes_page = home_page.header.click_complete_themes()
         expected_title = "Most Popular Complete Themes :: Add-ons for Firefox"
-        Assert.equal(expected_title, complete_themes_page.page_title)
+        assert expected_title == complete_themes_page.page_title
 
     @pytest.mark.native
     @pytest.mark.nondestructive
@@ -109,7 +110,7 @@ class TestCompleteThemes:
         home_page = Home(mozwebqa)
         complete_themes_page = home_page.header.click_complete_themes()
         expected_breadcrumb = "Complete Themes"
-        Assert.equal(expected_breadcrumb, complete_themes_page.breadcrumbs[1].text)
+        assert expected_breadcrumb == complete_themes_page.breadcrumbs[1].text
 
     @pytest.mark.native
     @pytest.mark.nondestructive
@@ -118,7 +119,7 @@ class TestCompleteThemes:
         complete_themes_page = home_page.header.click_complete_themes()
         selected_category = complete_themes_page.complete_themes_category
         amo_category_page = complete_themes_page.click_on_first_category()
-        Assert.equal(selected_category, amo_category_page.title)
+        assert selected_category == amo_category_page.title
 
     @pytest.mark.native
     @pytest.mark.nondestructive
@@ -128,8 +129,8 @@ class TestCompleteThemes:
         selected_category = complete_themes_page.complete_themes_category
         amo_category_page = complete_themes_page.click_on_first_category()
         expected_breadcrumbs = ['Add-ons for Firefox', 'Complete Themes', selected_category]
-
-        [Assert.equal(expected_breadcrumbs[i], amo_category_page.breadcrumbs[i].text) for i in range(len(amo_category_page.breadcrumbs))]
+        for i in range(len(amo_category_page.breadcrumbs)):
+            assert expected_breadcrumbs[i] == amo_category_page.breadcrumbs[i].text
 
     @pytest.mark.native
     @pytest.mark.nondestructive
@@ -137,14 +138,14 @@ class TestCompleteThemes:
         home_page = Home(mozwebqa)
         complete_themes_page = home_page.header.click_complete_themes()
         current_page_url = home_page.get_url_current_page()
-        Assert.true(current_page_url.endswith("/complete-themes/"))
+        assert current_page_url.endswith('/complete-themes/')
         default_categories = ["Animals", "Compact", "Large", "Miscellaneous", "Modern", "Nature", "OS Integration", "Retro", "Sports"]
-        Assert.equal(complete_themes_page.categories_count, len(default_categories))
+        assert len(default_categories) == complete_themes_page.categories_count
         count = 0
         for category in default_categories:
             count += 1
             current_category = complete_themes_page.get_category(count)
-            Assert.equal(category, current_category)
+            assert category == current_category
 
     @pytest.mark.native
     @pytest.mark.nondestructive
@@ -156,8 +157,8 @@ class TestCompleteThemes:
         home_page.header.site_navigation_menu("Extensions").click()
         extensions_categories = complete_themes_page.get_all_categories
 
-        Assert.not_equal(len(complete_themes_categories), len(extensions_categories))
-        Assert.equal(list(set(complete_themes_categories) & set(extensions_categories)), [])
+        assert not len(complete_themes_categories) == len(extensions_categories)
+        assert [] == list(set(complete_themes_categories) & set(extensions_categories))
 
     @pytest.mark.native
     @pytest.mark.nondestructive
@@ -165,7 +166,7 @@ class TestCompleteThemes:
         home_page = Home(mozwebqa)
         complete_themes_page = home_page.header.click_complete_themes()
         complete_themes_page.paginator.click_last_page()
-        Assert.greater_equal(complete_themes_page.addon_count, 1)
+        assert complete_themes_page.addon_count >= 1
 
     @pytest.mark.action_chains
     @pytest.mark.nondestructive
@@ -178,11 +179,10 @@ class TestCompleteThemes:
 
         for complete_theme in complete_themes:
             if complete_theme.is_incompatible:
-                Assert.true(complete_theme.is_incompatible_flag_visible)
-                Assert.contains('Not available',
-                                complete_theme.not_available_flag_text)
+                assert complete_theme.is_incompatible_flag_visible
+                assert 'Not available' in complete_theme.not_available_flag_text
             else:
-                Assert.false(complete_theme.is_incompatible_flag_visible)
+                assert not complete_theme.is_incompatible_flag_visible
 
     @pytest.mark.native
     @pytest.mark.nondestructive
@@ -190,8 +190,8 @@ class TestCompleteThemes:
         home_page = Home(mozwebqa)
         complete_themes_page = home_page.header.click_complete_themes()
         url_current_page = complete_themes_page.get_url_current_page()
-        Assert.true(url_current_page.endswith("/complete-themes/"))
-        Assert.equal(complete_themes_page.selected_explore_filter, 'Most Popular')
+        assert url_current_page.endswith('/complete-themes/')
+        assert 'Most Popular', complete_themes_page.selected_explore_filter
 
     @pytest.mark.native
     @pytest.mark.nondestructive
@@ -199,5 +199,5 @@ class TestCompleteThemes:
         home_page = Home(mozwebqa)
         complete_themes_page = home_page.header.click_complete_themes()
         url_current_page = complete_themes_page.get_url_current_page()
-        Assert.true(url_current_page.endswith("/complete-themes/"))
-        Assert.equal(complete_themes_page.sorted_by, 'Most Users')
+        assert url_current_page.endswith('/complete-themes/')
+        assert 'Most Users' == complete_themes_page.sorted_by

@@ -6,7 +6,6 @@
 
 import pytest
 
-from unittestzero import Assert
 
 from pages.desktop.home import Home
 
@@ -47,71 +46,69 @@ class TestHome:
     @pytest.mark.nondestructive
     def test_that_checks_the_most_popular_section_exists(self, mozwebqa):
         home_page = Home(mozwebqa)
-        Assert.contains('MOST POPULAR', home_page.most_popular_list_heading)
-        Assert.equal(home_page.most_popular_count, 10)
+        assert 'MOST POPULAR' in home_page.most_popular_list_heading
+        assert 10 == home_page.most_popular_count
 
     @pytest.mark.nondestructive
     def test_that_checks_the_promo_box_exists(self, mozwebqa):
         home_page = Home(mozwebqa)
-        Assert.true(home_page.promo_box_present)
+        assert home_page.promo_box_present
 
     @pytest.mark.smoke
     @pytest.mark.nondestructive
     def test_that_clicking_on_addon_name_loads_details_page(self, mozwebqa):
         home_page = Home(mozwebqa)
         details_page = home_page.click_on_first_addon()
-        Assert.true(details_page.is_the_current_page)
+        assert details_page.is_the_current_page
 
     @pytest.mark.smoke
     @pytest.mark.nondestructive
     def test_that_featured_themes_exist_on_the_home(self, mozwebqa):
         home_page = Home(mozwebqa)
-        Assert.equal(home_page.featured_themes_title, u'Featured Themes See all \xbb', 'Featured Themes region title doesn\'t match')
-        Assert.greater_equal(home_page.featured_themes_count, 6)
+        assert u'Featured Themes See all \xbb', 'Featured Themes region title doesn\'t match' == home_page.featured_themes_title
+        assert home_page.featured_themes_count >= 6
 
     @pytest.mark.nondestructive
     def test_that_clicking_see_all_themes_link_works(self, mozwebqa):
         home_page = Home(mozwebqa)
         featured_theme_page = home_page.click_featured_themes_see_all_link()
-
-        Assert.true(featured_theme_page.is_the_current_page)
-        Assert.equal(featured_theme_page.theme_header, 'Themes')
+        assert featured_theme_page.is_the_current_page
+        assert 'Themes' == featured_theme_page.theme_header
 
     @pytest.mark.native
     @pytest.mark.nondestructive
     def test_that_extensions_link_loads_extensions_page(self, mozwebqa):
         home_page = Home(mozwebqa)
         extensions_page = home_page.header.site_navigation_menu("EXTENSIONS").click()
-        Assert.true(extensions_page.is_the_current_page)
+        assert extensions_page.is_the_current_page
 
     @pytest.mark.smoke
     @pytest.mark.nondestructive
     def test_that_most_popular_section_is_ordered_by_users(self, mozwebqa):
         home_page = Home(mozwebqa)
-
         most_popular_items = home_page.most_popular_items
-        Assert.is_sorted_descending([i.users_number for i in most_popular_items])
+        assert sorted(most_popular_items, key=lambda item: item.users_number, reverse=True) == most_popular_items
 
     @pytest.mark.smoke
     @pytest.mark.nondestructive
     def test_that_featured_collections_exist_on_the_home(self, mozwebqa):
         home_page = Home(mozwebqa)
-        Assert.equal(home_page.featured_collections_title, u'Featured Collections See all \xbb', 'Featured Collection region title doesn\'t match')
-        Assert.equal(home_page.featured_collections_count, 4)
+        assert u'Featured Collections See all \xbb' == home_page.featured_collections_title, 'Featured Collection region title doesn\'t match'
+        assert home_page.featured_collections_count == 4
 
     @pytest.mark.nondestructive
     def test_that_featured_extensions_exist_on_the_home(self, mozwebqa):
         home_page = Home(mozwebqa)
-        Assert.equal(home_page.featured_extensions_title, 'Featured Extensions', 'Featured Extensions region title doesn\'t match')
-        Assert.equal(home_page.featured_extensions_see_all, u'See all \xbb', 'Featured Extensions region see all link is not correct')
-        Assert.greater(home_page.featured_extensions_count, 1)
+        assert 'Featured Extensions' == home_page.featured_extensions_title, 'Featured Extensions region title doesn\'t match'
+        assert u'See all \xbb' == home_page.featured_extensions_see_all, 'Featured Extensions region see all link is not correct'
+        assert home_page.featured_extensions_count > 1
 
     @pytest.mark.nondestructive
     def test_that_clicking_see_all_collections_link_works(self, mozwebqa):
         home_page = Home(mozwebqa)
         featured_collection_page = home_page.click_featured_collections_see_all_link()
-        Assert.true(featured_collection_page.is_the_current_page)
-        Assert.true(featured_collection_page.get_url_current_page().endswith('/collections/?sort=featured'))
+        assert featured_collection_page.is_the_current_page
+        assert featured_collection_page.get_url_current_page().endswith('/collections/?sort=featured')
 
     @pytest.mark.native
     @pytest.mark.nondestructive
@@ -123,34 +120,31 @@ class TestHome:
         for menu in self.expected_header_menus:
             menu_item = home_page.header.site_navigation_menu(menu.name)
             menu_item.hover()
-            Assert.true(menu_item.is_menu_dropdown_visible)
+            assert menu_item.is_menu_dropdown_visible
             home_page.hover_over_addons_home_title()
-            Assert.false(menu_item.is_menu_dropdown_visible)
+            assert not menu_item.is_menu_dropdown_visible
 
     @pytest.mark.smoke
     @pytest.mark.nondestructive
     def test_that_clicking_top_rated_shows_addons_sorted_by_rating(self, mozwebqa):
         home_page = Home(mozwebqa)
         extensions_page = home_page.click_to_explore('top_rated')
-
-        Assert.contains('sort=rating', extensions_page.get_url_current_page())
-        Assert.equal('Top Rated', extensions_page.sorter.sorted_by)
+        assert 'sort=rating' in extensions_page.get_url_current_page()
+        assert 'Top Rated' == extensions_page.sorter.sorted_by
 
     @pytest.mark.nondestructive
     def test_that_clicking_most_popular_shows_addons_sorted_by_users(self, mozwebqa):
         home_page = Home(mozwebqa)
         extensions_page = home_page.click_to_explore('popular')
-
-        Assert.contains('sort=users', extensions_page.get_url_current_page())
-        Assert.equal('Most Users', extensions_page.sorter.sorted_by)
+        assert 'sort=users' in extensions_page.get_url_current_page()
+        assert 'Most Users' == extensions_page.sorter.sorted_by
 
     @pytest.mark.nondestructive
     def test_that_clicking_featured_shows_addons_sorted_by_featured(self, mozwebqa):
         home_page = Home(mozwebqa)
         extensions_page = home_page.click_to_explore('featured')
-
-        Assert.contains('sort=featured', extensions_page.get_url_current_page())
-        Assert.equal('Featured', extensions_page.sorter.sorted_by)
+        assert 'sort=featured' in extensions_page.get_url_current_page()
+        assert 'Featured' == extensions_page.sorter.sorted_by
 
     @pytest.mark.nondestructive
     def test_header_site_navigation_menus_are_correct(self, mozwebqa):
@@ -160,7 +154,7 @@ class TestHome:
         expected_navigation_menu = [menu.name for menu in self.expected_header_menus]
         actual_navigation_menus = [actual_menu.name for actual_menu in home_page.header.site_navigation_menus]
 
-        Assert.equal(expected_navigation_menu, actual_navigation_menus)
+        assert expected_navigation_menu == actual_navigation_menus
 
     @pytest.mark.action_chains
     @pytest.mark.nondestructive
@@ -173,7 +167,7 @@ class TestHome:
             expected_menu_items = menu.items
             actual_menu_items = [menu_items.name for menu_items in home_page.header.site_navigation_menu(menu.name).items]
 
-            Assert.equal(expected_menu_items, actual_menu_items)
+            assert expected_menu_items == actual_menu_items
 
     @pytest.mark.nondestructive
     def test_top_three_items_in_each_site_navigation_menu_are_featured(self, mozwebqa):
@@ -184,11 +178,14 @@ class TestHome:
             # 'more' navigation_menu has no featured items so we have a different assertion
             if actual_menu.name == u"MORE\u2026":
                 # loop through each of the items in the top level menu and check is_featured property
-                [Assert.false(item.is_featured) for item in actual_menu.items]
+                for item in actual_menu.items:
+                    assert not item.is_featured
             else:
                 # first 3 are featured, the others are not
-                [Assert.true(item.is_featured) for item in actual_menu.items[:3]]
-                [Assert.false(item.is_featured) for item in actual_menu.items[3:]]
+                for item in actual_menu.items[:3]:
+                    assert item.is_featured
+                for item in actual_menu.items[3:]:
+                    assert not item.is_featured
 
     @pytest.mark.nondestructive
     def test_that_checks_the_up_and_coming_extensions_island(self, mozwebqa):
@@ -197,19 +194,19 @@ class TestHome:
 
         up_and_coming_island = home_page.up_and_coming_island
 
-        Assert.equal(up_and_coming_island.title, 'Up & Coming Extensions')
-        Assert.equal(up_and_coming_island.see_all_text, u'See all \xbb')
+        assert 'Up & Coming Extensions' == up_and_coming_island.title
+        assert u'See all \xbb' == up_and_coming_island.see_all_text
 
-        for idx in range(up_and_coming_island.pager.dot_count):
-            Assert.equal(idx, up_and_coming_island.visible_section)
-            Assert.equal(idx, up_and_coming_island.pager.selected_dot)
-            Assert.equal(len(up_and_coming_island.addons), 6)
+        for i in range(up_and_coming_island.pager.dot_count):
+            assert i == up_and_coming_island.visible_section
+            assert i == up_and_coming_island.pager.selected_dot
+            assert 6 == len(up_and_coming_island.addons)
             up_and_coming_island.pager.next()
 
-        for idx in range(up_and_coming_island.pager.dot_count - 1, -1, -1):
-            Assert.equal(idx, up_and_coming_island.visible_section)
-            Assert.equal(idx, up_and_coming_island.pager.selected_dot)
-            Assert.equal(len(up_and_coming_island.addons), 6)
+        for i in range(up_and_coming_island.pager.dot_count - 1, -1, -1):
+            assert i == up_and_coming_island.visible_section
+            assert i == up_and_coming_island.pager.selected_dot
+            assert 6 == len(up_and_coming_island.addons)
             up_and_coming_island.pager.prev()
 
     @pytest.mark.native
@@ -222,66 +219,64 @@ class TestHome:
         first_author = first_addon.author_name
         user_page = first_addon.click_first_author()
 
-        Assert.equal(user_page.username, first_author[0])
-        Assert.contains('user', user_page.get_url_current_page())
+        assert first_author[0] == user_page.username
+        assert 'user' in user_page.get_url_current_page()
 
     def test_that_checks_explore_side_navigation(self, mozwebqa):
         home_page = Home(mozwebqa)
-
-        Assert.equal('EXPLORE', home_page.explore_side_navigation_header_text)
-        Assert.equal('Featured', home_page.explore_featured_link_text)
-        Assert.equal('Most Popular', home_page.explore_popular_link_text)
-        Assert.equal('Top Rated', home_page.explore_top_rated_link_text)
+        assert 'EXPLORE' == home_page.explore_side_navigation_header_text
+        assert 'Featured' == home_page.explore_featured_link_text
+        assert 'Most Popular' == home_page.explore_popular_link_text
+        assert 'Top Rated' == home_page.explore_top_rated_link_text
 
     @pytest.mark.nondestructive
     def test_that_clicking_see_all_extensions_link_works(self, mozwebqa):
         home_page = Home(mozwebqa)
         featured_extension_page = home_page.click_featured_extensions_see_all_link()
-        Assert.true(featured_extension_page.is_the_current_page)
-        Assert.true(featured_extension_page.get_url_current_page().endswith('/extensions/?sort=featured'))
+        assert featured_extension_page.is_the_current_page
+        assert featured_extension_page.get_url_current_page().endswith('/extensions/?sort=featured')
 
     @pytest.mark.nondestructive
     def test_that_checks_all_categories_side_navigation(self, mozwebqa):
         home_page = Home(mozwebqa)
         category_region = home_page.get_category()
-
-        Assert.equal('CATEGORIES', category_region.categories_side_navigation_header_text)
-        Assert.equal('Alerts & Updates', category_region.categories_alert_updates_header_text)
-        Assert.equal('Appearance', category_region.categories_appearance_header_text)
-        Assert.equal('Bookmarks', category_region.categories_bookmark_header_text)
-        Assert.equal('Download Management', category_region.categories_download_management_header_text)
-        Assert.equal('Feeds, News & Blogging', category_region.categories_feed_news_blog_header_text)
-        Assert.equal('Games & Entertainment', category_region.categories_games_entertainment_header_text)
-        Assert.equal('Language Support', category_region.categories_language_support_header_text)
-        Assert.equal('Photos, Music & Videos', category_region.categories_photo_music_video_header_text)
-        Assert.equal('Privacy & Security', category_region.categories_privacy_security_header_text)
-        Assert.equal('Shopping', category_region.categories_shopping_header_text)
-        Assert.equal('Social & Communication', category_region.categories_social_communication_header_text)
-        Assert.equal('Tabs', category_region.categories_tabs_header_text)
-        Assert.equal('Web Development', category_region.categories_web_development_header_text)
-        Assert.equal('Other', category_region.categories_other_header_text)
+        assert 'CATEGORIES' == category_region.categories_side_navigation_header_text
+        assert 'Alerts & Updates' == category_region.categories_alert_updates_header_text
+        assert 'Appearance' == category_region.categories_appearance_header_text
+        assert 'Bookmarks' == category_region.categories_bookmark_header_text
+        assert 'Download Management' == category_region.categories_download_management_header_text
+        assert 'Feeds, News & Blogging' == category_region.categories_feed_news_blog_header_text
+        assert 'Games & Entertainment' == category_region.categories_games_entertainment_header_text
+        assert 'Language Support' == category_region.categories_language_support_header_text
+        assert 'Photos, Music & Videos' == category_region.categories_photo_music_video_header_text
+        assert 'Privacy & Security' == category_region.categories_privacy_security_header_text
+        assert 'Shopping' == category_region.categories_shopping_header_text
+        assert 'Social & Communication' == category_region.categories_social_communication_header_text
+        assert 'Tabs' == category_region.categories_tabs_header_text
+        assert 'Web Development' == category_region.categories_web_development_header_text
+        assert 'Other' == category_region.categories_other_header_text
 
     @pytest.mark.nondestructive
     def test_that_checks_other_applications_menu(self, mozwebqa):
         home_page = Home(mozwebqa)
 
         # Thunderbird
-        Assert.true(home_page.header.is_other_application_visible("Thunderbird"))
-        home_page.header.click_other_application("Thunderbird")
+        assert home_page.header.is_other_application_visible('Thunderbird')
+        home_page.header.click_other_application('Thunderbird')
         current_page_url = home_page.get_url_current_page()
-        Assert.true(current_page_url.endswith("/thunderbird/"))
-        Assert.contains('Thunderbird Add-ons', home_page.amo_logo_title)
+        assert current_page_url.endswith('/thunderbird/')
+        assert 'Thunderbird Add-ons' in home_page.amo_logo_title
 
         # Android
-        Assert.true(home_page.header.is_other_application_visible("Android"))
-        home_page.header.click_other_application("Android")
+        assert home_page.header.is_other_application_visible('Android')
+        home_page.header.click_other_application('Android')
         current_page_url = home_page.get_url_current_page()
-        Assert.true(current_page_url.endswith("/android/"))
-        Assert.contains('Android Add-ons', home_page.amo_logo_title)
+        assert current_page_url.endswith('/android/')
+        assert 'Android Add-ons' in home_page.amo_logo_title
 
         # Seamonkey
-        Assert.true(home_page.header.is_other_application_visible("Seamonkey"))
-        home_page.header.click_other_application("Seamonkey")
+        assert home_page.header.is_other_application_visible('Seamonkey')
+        home_page.header.click_other_application('Seamonkey')
         current_page_url = home_page.get_url_current_page()
-        Assert.true(current_page_url.endswith("/seamonkey/"))
-        Assert.contains('SeaMonkey Add-ons', home_page.amo_logo_title)
+        assert current_page_url.endswith('/seamonkey/')
+        assert 'SeaMonkey Add-ons' in home_page.amo_logo_title

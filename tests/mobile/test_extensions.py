@@ -5,7 +5,6 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import pytest
-from unittestzero import Assert
 from pages.mobile.home import Home
 
 
@@ -19,12 +18,12 @@ class TestExtensions:
         home = Home(mozwebqa)
         extensions_page = home.click_all_featured_addons_link()
         sort_menu = extensions_page.click_sort_by()
-        Assert.true(sort_menu.is_extensions_dropdown_visible)
+        assert sort_menu.is_extensions_dropdown_visible
 
         actual_options = sort_menu.options
         expected_options = self.sort_options
-        Assert.equal(len(actual_options), len(expected_options))
+        assert len(expected_options) == len(actual_options)
 
         for i in range(len(actual_options)):
-            Assert.equal(actual_options[i].name, expected_options[i])
-            Assert.true(actual_options[i].is_option_visible)
+            assert expected_options[i] == actual_options[i].name
+            assert actual_options[i].is_option_visible

@@ -7,7 +7,6 @@
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
 from pages.page import Page
-from unittestzero import Assert
 
 
 class Island(Page):
@@ -26,7 +25,7 @@ class Island(Page):
         try:
             return self.Pager(self.testsetup, self._root.find_element(*self._pager_locator))
         except NoSuchElementException:
-            Assert.fail('Paginator is not available')
+            raise AssertionError('Paginator is not available')
 
     @property
     def see_all_text(self):

@@ -8,7 +8,6 @@ import re
 from urllib2 import urlparse
 
 import pytest
-from unittestzero import Assert
 
 from pages.desktop.details import Details
 from pages.desktop.addons_api import AddonsAPI
@@ -21,12 +20,12 @@ class TestDetailsAgainstXML:
     @pytest.mark.nondestructive
     def test_that_firebug_page_title_is_correct(self, mozwebqa):
         firebug_page = Details(mozwebqa, self.firebug)
-        Assert.true(re.search(self.firebug, firebug_page.page_title) is not None)
+        assert re.search(self.firebug, firebug_page.page_title) is not None
 
     @pytest.mark.nondestructive
     def test_that_firebug_version_number_is_correct(self, mozwebqa):
         firebug_page = Details(mozwebqa, self.firebug)
-        Assert.true(len(str(firebug_page.version_number)) > 0)
+        assert len(str(firebug_page.version_number)) > 0
 
     @pytest.mark.nondestructive
     def test_that_firebug_authors_is_correct(self, mozwebqa):
@@ -40,11 +39,11 @@ class TestDetailsAgainstXML:
         xml_authors = addons_xml.get_list_of_addon_author_names()
 
         # check that both lists have the same number of authors
-        Assert.equal(len(browser_authors), len(xml_authors))
+        assert len(browser_authors) == len(xml_authors)
 
         # cross check both lists with each other
         for i in range(len(xml_authors)):
-            Assert.equal(xml_authors[i], browser_authors[i])
+            assert xml_authors[i] == browser_authors[i]
 
     @pytest.mark.nondestructive
     def test_that_firebug_images_is_correct(self, mozwebqa):
@@ -61,17 +60,14 @@ class TestDetailsAgainstXML:
         xml_images = addons_xml.get_list_of_addon_images_links()
 
         # check that both lists have the same number of images
-        Assert.equal(len(browser_images), len(xml_images))
+        assert len(browser_images) == len(xml_images)
 
         # cross check both lists with each other
         for i in range(len(xml_images)):
-            Assert.equal(
-                re.sub('src=api(&amp;|&)', '', xml_images[i]),
-                browser_images[i])
+            assert re.sub('src=api(&amp;|&)', '', xml_images[i]) == browser_images[i]
 
     @pytest.mark.nondestructive
     def test_that_firebug_summary_is_correct(self, mozwebqa):
-
         # browser
         firebug_page = Details(mozwebqa, self.firebug)
         browser_summary = firebug_page.summary
@@ -80,12 +76,12 @@ class TestDetailsAgainstXML:
         addons_xml = AddonsAPI(mozwebqa, self.firebug)
         xml_summary = addons_xml.get_addon_summary()
 
-        Assert.equal(xml_summary, browser_summary)
+        assert xml_summary == browser_summary
 
     @pytest.mark.nondestructive
     def test_that_firebug_rating_is_correct(self, mozwebqa):
         firebug_page = Details(mozwebqa, self.firebug)
-        Assert.equal("5", firebug_page.rating)
+        assert '5' == firebug_page.rating
 
     @pytest.mark.nondestructive
     def test_that_description_text_is_correct(self, mozwebqa):
@@ -97,27 +93,22 @@ class TestDetailsAgainstXML:
         addons_xml = AddonsAPI(mozwebqa, self.firebug)
         xml_description = addons_xml.get_addon_description()
 
-        Assert.equal(
-            browser_description.replace('\n', ''),
-            xml_description.replace('\n', ''))
+        assert browser_description.replace('\n', '') == xml_description.replace('\n', '')
 
     @pytest.mark.nondestructive
     def test_that_icon_is_correct(self, mozwebqa):
-
         # browser
         firebug_page = Details(mozwebqa, self.firebug)
         browser_icon = firebug_page.icon_url
 
         # api
         addons_xml = AddonsAPI(mozwebqa, self.firebug)
-
         xml_icon = addons_xml.get_icon_url()
 
-        Assert.equal(browser_icon, xml_icon)
+        assert browser_icon == xml_icon
 
     @pytest.mark.nondestructive
     def test_that_support_url_is_correct(self, mozwebqa):
-
         # browser
         firebug_page = Details(mozwebqa, self.firebug)
         browser_support_url = firebug_page.support_url
@@ -126,11 +117,10 @@ class TestDetailsAgainstXML:
         addons_xml = AddonsAPI(mozwebqa, self.firebug)
         xml_support_url = addons_xml.get_support_url()
 
-        Assert.equal(browser_support_url, xml_support_url)
+        assert browser_support_url == xml_support_url
 
     @pytest.mark.nondestructive
     def test_that_rating_in_api_equals_rating_in_details_page(self, mozwebqa):
-
         # browser
         firebug_page = Details(mozwebqa, self.firebug)
         browser_rating = firebug_page.rating
@@ -139,11 +129,10 @@ class TestDetailsAgainstXML:
         addons_xml = AddonsAPI(mozwebqa, self.firebug)
         xml_rating = addons_xml.get_rating()
 
-        Assert.equal(browser_rating, xml_rating)
+        assert browser_rating == xml_rating
 
     @pytest.mark.nondestructive
     def test_that_compatible_applications_equal(self, mozwebqa):
-
         # browser
         firebug_page = Details(mozwebqa, self.firebug)
         firebug_page.expand_version_information()
@@ -171,7 +160,6 @@ class TestDetailsAgainstXML:
     @pytest.mark.native
     @pytest.mark.nondestructive
     def test_that_addon_number_of_total_downloads_is_correct(self, mozwebqa):
-
         # browser
         firebug_page = Details(mozwebqa, self.firebug)
         statistics_page = firebug_page.click_view_statistics()
@@ -181,11 +169,10 @@ class TestDetailsAgainstXML:
         addons_xml = AddonsAPI(mozwebqa, self.firebug)
         xml_downloads = addons_xml.get_total_downloads()
 
-        Assert.equal(browser_downloads, xml_downloads)
+        assert browser_downloads == xml_downloads
 
     @pytest.mark.nondestructive
     def test_that_learn_more_link_is_correct(self, mozwebqa):
-
         # api
         addons_xml = AddonsAPI(mozwebqa, self.firebug)
         learn_more_url = addons_xml.get_learn_more_url()
@@ -194,11 +181,10 @@ class TestDetailsAgainstXML:
         details_page = Details(mozwebqa, self.firebug)
         details_page.get_url(learn_more_url)
 
-        Assert.contains(self.firebug, details_page.page_title)
+        assert self.firebug in details_page.page_title
 
     @pytest.mark.nondestructive
     def test_that_firebug_devs_comments_is_correct(self, mozwebqa):
-
         # browser
         firebug_page = Details(mozwebqa, self.firebug)
         firebug_page.expand_devs_comments()
@@ -208,11 +194,10 @@ class TestDetailsAgainstXML:
         addons_xml = AddonsAPI(mozwebqa, self.firebug)
         xml_devs_comments = addons_xml.get_devs_comments()
 
-        Assert.equal(xml_devs_comments, browser_devs_comments)
+        assert xml_devs_comments == browser_devs_comments
 
     @pytest.mark.nondestructive
     def test_that_home_page_in_api_equals_home_page_in_details_page(self, mozwebqa):
-
         # browser
         firebug_page = Details(mozwebqa, self.firebug)
         browser_home_page = urlparse.unquote(firebug_page.website)
@@ -221,11 +206,10 @@ class TestDetailsAgainstXML:
         addons_xml = AddonsAPI(mozwebqa, self.firebug)
         xml_home_page = addons_xml.get_home_page()
 
-        Assert.contains(xml_home_page, browser_home_page)
+        assert xml_home_page in browser_home_page
 
     @pytest.mark.nondestructive
     def test_that_reviews_in_api_equals_reviews_in_details_page(self, mozwebqa):
-
         # browser
         firebug_page = Details(mozwebqa, self.firebug)
         browser_reviews = firebug_page.total_reviews_count
@@ -234,11 +218,10 @@ class TestDetailsAgainstXML:
         addons_xml = AddonsAPI(mozwebqa, self.firebug)
         xml_reviews = addons_xml.get_reviews_count()
 
-        Assert.equal(browser_reviews, xml_reviews)
+        assert browser_reviews == xml_reviews
 
     @pytest.mark.nondestructive
     def test_that_daily_users_in_api_equals_daily_users_in_details_page(self, mozwebqa):
-
         # browser
         firebug_page = Details(mozwebqa, self.firebug)
         browser_daily_users = firebug_page.daily_users_number
@@ -247,4 +230,4 @@ class TestDetailsAgainstXML:
         addons_xml = AddonsAPI(mozwebqa, self.firebug)
         xml_daily_users = addons_xml.get_daily_users()
 
-        Assert.equal(browser_daily_users, xml_daily_users)
+        assert browser_daily_users == xml_daily_users

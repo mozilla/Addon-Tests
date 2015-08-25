@@ -9,7 +9,6 @@ import json
 
 import requests
 import pytest
-from unittestzero import Assert
 
 from pages.desktop.details import Details
 
@@ -18,12 +17,10 @@ class TestStatistics:
 
     @pytest.mark.nondestructive
     def test_that_verifies_the_url_of_the_statistics_page(self, mozwebqa):
-
         details_page = Details(mozwebqa, "Firebug")
         statistics_page = details_page.click_view_statistics()
-
-        Assert.true(statistics_page.is_the_current_page)
-        Assert.contains("/statistics", statistics_page.get_url_current_page())
+        assert statistics_page.is_the_current_page
+        assert '/statistics' in statistics_page.get_url_current_page()
 
     @pytest.mark.skip_selenium
     @pytest.mark.nondestructive
@@ -45,24 +42,22 @@ class TestStatistics:
 
         # make request and assert that status code is OK
         r = requests.get(statistics_url_template % locals())
-        Assert.equal(r.status_code, 200,
-                     'request to %s failed with %s status code' % (r.url, r.status_code))
+        assert requests.codes.ok == r.status_code, 'request to %s failed with %s status code' % (r.url, r.status_code)
 
         # Decode response and assert it's not empty.
         # Only run against prod, data on dev & stage is insufficient.
         if 'mozilla.org' in mozwebqa.base_url:
             response = json.loads(r.content)
-            Assert.equal(len(response), 30,
-                         'some dates (or all) dates are missing in response')
+            assert 30 == len(response), 'some dates (or all) dates are missing in response'
 
             dates = []
             for value in response:
                 dates.append(value['date'])
                 downloads, updates = value['data'].values()
                 # check that download and update values are equal or greater than zero
-                Assert.greater_equal(downloads, 0)
-                Assert.greater_equal(updates, 0)
+                assert downloads >= 0
+                assert updates >= 0
 
             # ensure that response contains all dates for given timeframe
-            Assert.equal(dates, [str(last_date - timedelta(days=i)) for i in xrange(30)],
-                         'wrong dates in response')
+            expected_dates = [str(last_date - timedelta(days=i)) for i in xrange(30)]
+            assert expected_dates == dates, 'wrong dates in response'

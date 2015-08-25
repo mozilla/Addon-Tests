@@ -7,7 +7,6 @@
 
 import pytest
 
-from unittestzero import Assert
 
 from pages.desktop.home import Home
 
@@ -22,7 +21,7 @@ class TestInstalls:
         home_page = Home(mozwebqa)
         complete_themes_page = home_page.header.click_complete_themes()
         complete_theme_page = complete_themes_page.click_on_first_addon()
-        Assert.true(complete_theme_page.is_install_button_visible)
+        assert complete_theme_page.is_install_button_visible
 
     @pytest.mark.nondestructive
     def test_could_install_jetpack(self, mozwebqa):
@@ -36,4 +35,4 @@ class TestInstalls:
                 details_page = result.click_result()
                 break
 
-        Assert.true(details_page.is_version_information_install_button_visible)
+        assert details_page.is_version_information_install_button_visible

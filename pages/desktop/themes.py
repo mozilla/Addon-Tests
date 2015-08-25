@@ -5,7 +5,6 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import re
-from unittestzero import Assert
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -102,7 +101,7 @@ class ThemesDetail(Base):
     def is_the_current_page(self):
         # This overrides the method in the Page super class.
         actual_page_title = self.page_title
-        Assert.not_none(re.match(self._page_title_regex, actual_page_title), 'Expected the current page to be the themes detail page.\n Actual title: %s' % actual_page_title)
+        assert re.match(self._page_title_regex, actual_page_title) is not None, 'Expected the current page to be the themes detail page.\n Actual title: %s' % actual_page_title
         return True
 
     @property
@@ -126,8 +125,7 @@ class ThemesBrowse(Base):
     @property
     def is_the_current_page(self):
         # This overrides the method in the Page super class.
-        Assert.true(self.is_element_present(*self._themes_grid_locator),
-                    'Expected the current page to be the themes browse page.')
+        assert self.is_element_present(*self._themes_grid_locator), 'Expected the current page to be the themes browse page.'
         return True
 
     @property
