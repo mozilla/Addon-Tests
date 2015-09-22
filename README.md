@@ -42,7 +42,7 @@ We also have a [mailing list][mailing_list] available that you are welcome to jo
 How to run the tests locally
 -----------------------------------------
 We maintain a [detailed guide][runningtests] to running our automated tests which can be found on the MDN website.
-If you want to get started quickly, you can try following the steps in our quick start instructions below:
+If you want to get started quickly, you can try following the steps in our quick-start instructions below:
 
 ###Clone the repository
 If you have cloned this project already then you can skip this, otherwise you'll need to clone this repo using Git.
@@ -69,7 +69,7 @@ from the the project root, issue the following command:
     pip install -Ur requirements.txt
 
 ### Create a variables.json file
-Some of the tests in this repo need to log into the addons website and/or PayPal.
+Some of the tests in this repo need to log into the add-ons website and/or PayPal.
 We store the credentials (i.e., username and password) to access those sites in a file 
 called `variables.json`, which we then pass to the tests via the command line. 
 If you want to be able to run any of those tests, you will need your own copy of 
@@ -83,7 +83,7 @@ To do that, make a copy of the `variables.json` file which exists in the project
 
 Tests are run using the command line. Below are a couple of examples of running the tests:
 
-To run all of the desktop tests against the default environment, which is the addons development environment:
+To run all of the desktop tests against the default environment, which is the add-ons development environment:
 
 	py.test --driver=firefox --variables=my_variables.json tests/desktop
 	
@@ -91,10 +91,10 @@ To run against a different environment, pass in a value for --baseurl, like so:
 
 	py.test --baseurl=https://addons.allizom.org --driver=firefox --variables=my_variables.json tests/desktop
 
-The pytest plugin that we use for running tests has a number of advanced command line 
+The pytest plugin that we use for running tests has a number of advanced command-line 
 options available. To see the options available, try running:
 
     py.test --help
 
-The full documentation for the plugin can be found at the [pytest-mozwebqa Github project page] [pymozwebqa].
+The full documentation for the plugin can be found at the [pytest-mozwebqa GitHub project page] [pymozwebqa].
 [pymozwebqa]: https://github.com/mozilla/pytest-mozwebqa
