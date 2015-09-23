@@ -27,7 +27,7 @@ class Sorter(Page):
     _selected_sort_by_locator = (By.CSS_SELECTOR, '#sorter > ul > li.selected a')
 
     _hover_more_locator = (By.CSS_SELECTOR, "li.extras > a")
-    _updating_locator = (By.CSS_SELECTOR, '.updating.tall')
+    _updating_locator = (By.CSS_SELECTOR, '.updating')
     _footer_locator = (By.ID, 'footer')
 
     def sort_by(self, type):
