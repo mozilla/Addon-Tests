@@ -15,7 +15,7 @@ from pages.desktop.base import Base
 
 class WriteReviewBlock(Base):
 
-    _add_review_input_field_locator = (By.ID, "id_body")
+    _add_review_input_field_locator = (By.ID, "id_review_body")
     _add_review_input_rating_locator = (By.CSS_SELECTOR, '.ratingwidget.stars.stars-0 > label')
     _add_review_submit_button_locator = (By.CSS_SELECTOR, "#review-box input[type=submit]")
 
