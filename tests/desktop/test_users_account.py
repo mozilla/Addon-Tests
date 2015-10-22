@@ -56,25 +56,6 @@ class TestAccounts:
 
     @pytest.mark.native
     @pytest.mark.login
-    def test_hide_email_checkbox_works(self, mozwebqa, existing_user):
-        home_page = Home(mozwebqa)
-        home_page.login(existing_user['email'], existing_user['password'])
-        assert home_page.is_the_current_page
-        assert home_page.header.is_user_logged_in
-
-        view_profile_page = home_page.header.click_view_profile()
-        initial_state = view_profile_page.is_email_field_present
-
-        edit_profile_page = home_page.header.click_edit_profile()
-        edit_profile_page.change_hide_email_state()
-        edit_profile_page.click_update_account()
-
-        view_profile_page = home_page.header.click_view_profile()
-        final_state = view_profile_page.is_email_field_present
-        assert not initial_state == final_state, 'The initial and final states are the same. The profile change failed.'
-
-    @pytest.mark.native
-    @pytest.mark.login
     def test_user_can_update_profile_information_in_account_settings_page(self, mozwebqa, editable_user):
         home_page = Home(mozwebqa)
         home_page.login(editable_user['email'], editable_user['password'])
