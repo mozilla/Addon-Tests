@@ -9,6 +9,7 @@ This repository contains Selenium tests used to test the website addons.mozilla.
 [![dev](https://img.shields.io/jenkins/s/https/webqa-ci.mozilla.com/amo.dev.svg?label=dev)](https://webqa-ci.mozilla.com/job/amo.dev/)
 [![stage](https://img.shields.io/jenkins/s/https/webqa-ci.mozilla.com/amo.stage.saucelabs.svg?label=stage)](https://webqa-ci.mozilla.com/job/amo.stage.saucelabs/)
 [![prod](https://img.shields.io/jenkins/s/https/webqa-ci.mozilla.com/amo.prod.svg?label=prod)](https://webqa-ci.mozilla.com/job/amo.prod/)
+[![requirements](https://img.shields.io/requires/github/mozilla/Addon-Tests.svg)](https://requires.io/github/mozilla/Addon-Tests/requirements/?branch=master)
 
 Getting involved
 ----------------

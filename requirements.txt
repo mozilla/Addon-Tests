@@ -1,15 +1,5 @@
-# This pulls in all the libraries needed to run Selenium tests
-# on Mozilla WebQA projects
-certifi==0.0.8
-chardet==2.1.1
-execnet==1.1
-oauthlib==0.5.1
-py==1.4.26
-pyasn1==0.1.7
-pytest==2.7.0
+pytest==2.7.3
 pytest-mozwebqa
 pytest-variables
-pytz
-requests==2.4.3
-rsa==3.1.1
-selenium
+pytz==2015.7
+requests==2.8.1
