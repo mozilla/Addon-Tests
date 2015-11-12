@@ -60,3 +60,20 @@ class Page(object):
 
     def return_to_previous_page(self):
         self.selenium.back()
+
+
+class PageRegion(object):
+
+    _root_locator = None
+
+    def __init__(self, testsetup, root=None):
+        self.testsetup = testsetup
+        self.selenium = testsetup.selenium
+        self.timeout = testsetup.timeout
+        self.root_element = root
+
+    @property
+    def root(self):
+        if self.root_element is None and self._root_locator is not None:
+            self.root_element = self.selenium.find_element(*self._root_locator)
+        return self.root_element

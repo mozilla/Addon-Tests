@@ -40,7 +40,7 @@ class TestThemes:
         home_page = Home(mozwebqa)
         themes_page = home_page.header.site_navigation_menu("Themes").click()
         assert themes_page.is_the_current_page
-        assert themes_page.featured_themes_count <= 6
+        assert 0 < len(themes_page.featured_themes) <= 6
 
     @pytest.mark.native
     @pytest.mark.smoke
@@ -83,10 +83,9 @@ class TestThemes:
         themes_page = home_page.header.site_navigation_menu("Themes").click()
         assert themes_page.is_the_current_page
 
-        # Step 3: Click on any theme.
-        random_theme_index = random.randint(1, themes_page.theme_count - 1)
-
-        themes_detail_page = themes_page.click_theme(random_theme_index)
+        # Step 3: Click on any featured theme.
+        theme = random.choice(themes_page.featured_themes)
+        themes_detail_page = theme.click()
         assert themes_detail_page.is_the_current_page
 
         # Verify breadcrumb menu format, i.e. Add-ons for Firefox > themes > {theme Name}.

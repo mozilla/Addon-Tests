@@ -7,8 +7,8 @@
 import re
 
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
 
+from pages.page import PageRegion
 from pages.desktop.base import Base
 from pages.desktop.search import SearchResultList
 
@@ -16,11 +16,10 @@ from pages.desktop.search import SearchResultList
 class Themes(Base):
 
     _page_title = "Themes :: Add-ons for Firefox"
-    _themes_locator = (By.CSS_SELECTOR, 'div.persona.persona-small a')
     _start_exploring_locator = (By.CSS_SELECTOR, "#featured-addons.personas-home a.more-info")
     _featured_addons_locator = (By.CSS_SELECTOR, "#featured-addons.personas-home")
 
-    _featured_themes_locator = (By.CSS_SELECTOR, ".personas-featured .persona.persona-small")
+    _featured_themes_locator = (By.CSS_SELECTOR, '.personas-featured .persona-preview')
     _recently_added_locator = (By.CSS_SELECTOR, "#personas-created .persona-small")
     _most_popular_locator = (By.CSS_SELECTOR, "#personas-popular .persona-small")
     _top_rated_locator = (By.CSS_SELECTOR, "#personas-rating .persona-small")
@@ -28,19 +27,9 @@ class Themes(Base):
     _theme_header_locator = (By.CSS_SELECTOR, ".featured-inner > h2")
 
     @property
-    def theme_count(self):
-        """Returns the total number of theme links in the page."""
-        return len(self.selenium.find_elements(*self._themes_locator))
-
-    def click_theme(self, index):
-        """Clicks on the theme with the given index in the page."""
-        WebDriverWait(self.selenium, self.timeout).until(lambda s: self.selenium.find_elements(*self._themes_locator)[index].is_displayed())
-
-        self.selenium.find_elements(*self._themes_locator)[index].click()
-        theme_detail = ThemesDetail(self.testsetup)
-
-        WebDriverWait(self.selenium, self.timeout).until(lambda s: theme_detail.is_title_visible)
-        return theme_detail
+    def featured_themes(self):
+        return [self.ThemePreview(self.testsetup, root=el) for
+                el in self.selenium.find_elements(*self._featured_themes_locator)]
 
     def open_theme_detail_page(self, theme_key):
         self.selenium.get(self.base_url + "/addon/%s" % theme_key)
@@ -53,10 +42,6 @@ class Themes(Base):
     @property
     def is_featured_addons_present(self):
         return len(self.selenium.find_elements(*self._featured_addons_locator)) > 0
-
-    @property
-    def featured_themes_count(self):
-        return len(self.selenium.find_elements(*self._featured_themes_locator))
 
     @property
     def recently_added_count(self):
@@ -88,6 +73,12 @@ class Themes(Base):
     @property
     def theme_header(self):
         return self.selenium.find_element(*self._theme_header_locator).text
+
+    class ThemePreview(PageRegion):
+
+        def click(self):
+            self.root.click()
+            return ThemesDetail(self.testsetup)
 
 
 class ThemesDetail(Base):
