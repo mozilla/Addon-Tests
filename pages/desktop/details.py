@@ -466,7 +466,10 @@ class Details(Base):
         WebDriverWait(self.selenium, self.timeout).until(lambda s: (self.selenium.execute_script('return window.pageYOffset')) > 1000)
 
     def expand_version_information(self):
-        self.selenium.find_element(*self._version_information_button_locator).click()
+        el = self.selenium.find_element(*self._version_information_button_locator)
+        # make sure button is in view
+        self.selenium.execute_script('arguments[0].scrollIntoView();', el)
+        el.click()
         WebDriverWait(self.selenium, self.timeout).until(
             lambda s: self.is_version_information_section_expanded)
 
