@@ -76,8 +76,10 @@ class Themes(Base):
 
     class ThemePreview(PageRegion):
 
+        _link_locator = (By.TAG_NAME, 'a')
+
         def click(self):
-            self.root.click()
+            self.root.find_element(*self._link_locator).click()
             return ThemesDetail(self.testsetup)
 
 
