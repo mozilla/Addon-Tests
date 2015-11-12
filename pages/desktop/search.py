@@ -127,8 +127,6 @@ class SearchResultList(Base):
             return mktime(date)
 
         def click_result(self):
-            # make sure the search result is in view
-            self.selenium.execute_script('arguments[0].scrollIntoView();', self._root_element)
             self._root_element.find_element(*self._name_locator).click()
             from pages.desktop.collections import Collection, CollectionSearchResultList
             from pages.desktop.themes import ThemesDetail, ThemesSearchResultList
