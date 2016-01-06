@@ -16,14 +16,14 @@ class FilterBase(Page):
 
     @property
     def category(self):
-        return self.Category(self.testsetup)
+        return self.Category(self.base_url, self.selenium)
 
     @property
     def works_with(self):
-        return self.WorksWith(self.testsetup)
+        return self.WorksWith(self.base_url, self.selenium)
 
     def tag(self, lookup):
-        return self.Tag(self.testsetup, lookup)
+        return self.Tag(self.base_url, self.selenium, lookup)
 
     @property
     def results_count(self):
@@ -92,8 +92,8 @@ class FilterBase(Page):
         _item_link = (By.CSS_SELECTOR, ' a')
         _all_tags_locator = (By.CSS_SELECTOR, 'li#tag-facets h3')
 
-        def __init__(self, testsetup, lookup):
-            Page.__init__(self, testsetup)
+        def __init__(self, base_url, selenium, lookup):
+            Page.__init__(self, base_url, selenium)
             # expand the thing here to represent the proper user action
             is_expanded = self.selenium.find_element(*self._all_tags_locator).get_attribute('class')
             if ('active' not in is_expanded):

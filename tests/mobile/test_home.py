@@ -21,8 +21,8 @@ class TestHome:
                                'Social & Communication', 'Tabs', 'Web Development', 'Other']
 
     @pytest.mark.nondestructive
-    def test_that_checks_the_desktop_version_link(self, mozwebqa):
-        home = Home(mozwebqa)
+    def test_that_checks_the_desktop_version_link(self, base_url, selenium):
+        home = Home(base_url, selenium)
         assert home.is_the_current_page
         assert 'VIEW FULL SITE' == home.footer.desktop_version_text
 
@@ -30,16 +30,16 @@ class TestHome:
         assert home_desktop.is_the_current_page
 
     @pytest.mark.nondestructive
-    def test_that_checks_header_text_and_page_title(self, mozwebqa):
-        home = Home(mozwebqa)
+    def test_that_checks_header_text_and_page_title(self, base_url, selenium):
+        home = Home(base_url, selenium)
         assert home.is_the_current_page
         assert 'ADD-ONS' == home.header_text
         assert 'Return to the Firefox Add-ons homepage' == home.header_title
         assert 'Easy ways to personalize.' == home.header_statement_text
 
     @pytest.mark.nondestructive
-    def test_that_checks_learn_more_link(self, mozwebqa):
-        home = Home(mozwebqa)
+    def test_that_checks_learn_more_link(self, base_url, selenium):
+        home = Home(base_url, selenium)
         assert home.is_the_current_page
         assert u'Learn More\xbb' == home.learn_more_text
 
@@ -51,15 +51,15 @@ class TestHome:
                 'add-on to improve your on-the-go browsing.' == home.learn_more_msg_text)
 
     @pytest.mark.nondestructive
-    def test_that_checks_the_firefox_logo(self, mozwebqa):
-        home = Home(mozwebqa)
+    def test_that_checks_the_firefox_logo(self, base_url, selenium):
+        home = Home(base_url, selenium)
         assert home.is_the_current_page
         assert home.is_header_firefox_logo_visible
         assert 'firefox.png' in home.firefox_header_logo_src
 
     @pytest.mark.nondestructive
-    def test_that_checks_the_footer_items(self, mozwebqa):
-        home = Home(mozwebqa)
+    def test_that_checks_the_footer_items(self, base_url, selenium):
+        home = Home(base_url, selenium)
         assert home.is_the_current_page
         assert home.footer.is_other_language_dropdown_visible
         assert 'Other languages' == home.footer.other_language_text
@@ -67,8 +67,8 @@ class TestHome:
         assert 'Legal Notices' == home.footer.legal_text
 
     @pytest.mark.nondestructive
-    def test_all_featured_extensions_link(self, mozwebqa):
-        home = Home(mozwebqa)
+    def test_all_featured_extensions_link(self, base_url, selenium):
+        home = Home(base_url, selenium)
         assert home.is_the_current_page
         assert 'Featured' == home.default_selected_tab_text
 
@@ -78,23 +78,23 @@ class TestHome:
         assert 'sort=featured' in featured_extensions.get_url_current_page()
 
     @pytest.mark.nondestructive
-    def test_that_checks_the_search_box_and_button(self, mozwebqa):
-        home = Home(mozwebqa)
+    def test_that_checks_the_search_box_and_button(self, base_url, selenium):
+        home = Home(base_url, selenium)
         assert home.is_the_current_page
         assert home.is_search_box_visible
         assert 'search for add-ons' == home.search_box_placeholder
         assert home.is_search_button_visible
 
     @pytest.mark.nondestructive
-    def test_expandable_header(self, mozwebqa):
-        home = Home(mozwebqa)
+    def test_expandable_header(self, base_url, selenium):
+        home = Home(base_url, selenium)
         home.header.click_header_menu()
         assert home.header.is_dropdown_menu_visible
         menu_names = [menu.name for menu in home.header.dropdown_menu_items]
         assert self.expected_menu_items == menu_names
 
-    def test_that_checks_the_tabs(self, mozwebqa):
-        home = Home(mozwebqa)
+    def test_that_checks_the_tabs(self, base_url, selenium):
+        home = Home(base_url, selenium)
         assert home.is_the_current_page
         assert 3 == len(home.tabs)
 
@@ -107,12 +107,12 @@ class TestHome:
 
         # Click on the themes tab separately
         home.tabs[-1].click()
-        themes = Themes(mozwebqa)
+        themes = Themes(base_url, selenium)
         themes.is_the_current_page
 
     @pytest.mark.nondestructive
-    def test_the_amo_logo_text_and_title(self, mozwebqa):
-        home = Home(mozwebqa)
+    def test_the_amo_logo_text_and_title(self, base_url, selenium):
+        home = Home(base_url, selenium)
         assert home.is_the_current_page
         assert 'Return to the Firefox Add-ons homepage', home.logo_title
         assert 'ADD-ONS', home.logo_text
@@ -120,8 +120,8 @@ class TestHome:
         assert 'Easy ways to personalize.' == home.subtitle
 
     @pytest.mark.nondestructive
-    def test_category_items(self, mozwebqa):
-        home = Home(mozwebqa)
+    def test_category_items(self, base_url, selenium):
+        home = Home(base_url, selenium)
         home.tab('Categories').click()
         assert home.is_categories_region_visible
         for i in range(len(home.categories)):

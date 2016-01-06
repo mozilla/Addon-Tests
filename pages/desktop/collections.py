@@ -28,7 +28,7 @@ class Collections(Base):
 
     def click_create_collection_button(self):
         self.selenium.find_element(*self._create_a_collection_locator).click()
-        return self.CreateNewCollection(self.testsetup)
+        return self.CreateNewCollection(self.base_url, self.selenium)
 
     class UserCollections(Page):
 
@@ -57,7 +57,7 @@ class Collections(Base):
 
         def click_create_collection(self):
             self.selenium.find_element(*self._create_collection_button_locator).click()
-            return Collection(self.testsetup)
+            return Collection(self.base_url, self.selenium)
 
 
 class Collection(Base):
@@ -81,7 +81,7 @@ class Collection(Base):
 
     def delete_confirmation(self):
         self.selenium.find_element(*self._delete_confirmation_locator).click()
-        return Collections.UserCollections(self.testsetup)
+        return Collections.UserCollections(self.base_url, self.selenium)
 
     @property
     def breadcrumb(self):

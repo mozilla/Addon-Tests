@@ -17,15 +17,13 @@ class Page(object):
     Base class for all Pages.
     """
 
-    def __init__(self, testsetup):
+    def __init__(self, base_url, selenium):
         """
         Constructor
         """
-        self.testsetup = testsetup
-        self.base_url = testsetup.base_url
-        self.services_base_url = testsetup.services_base_url
-        self.selenium = testsetup.selenium
-        self.timeout = testsetup.timeout
+        self.base_url = base_url
+        self.selenium = selenium
+        self.timeout = 10
 
     def get_url(self, url):
         self.selenium.get(url)
@@ -50,7 +48,7 @@ class Page(object):
             return False
         finally:
             # set back to where you once belonged
-            self.selenium.implicitly_wait(self.testsetup.default_implicit_wait)
+            self.selenium.implicitly_wait(self.timeout)
 
     def is_element_visible(self, *locator):
         try:
@@ -66,10 +64,10 @@ class PageRegion(object):
 
     _root_locator = None
 
-    def __init__(self, testsetup, root=None):
-        self.testsetup = testsetup
-        self.selenium = testsetup.selenium
-        self.timeout = testsetup.timeout
+    def __init__(self, base_url, selenium, root=None):
+        self.base_url = base_url
+        self.selenium = selenium
+        self.timeout = 10
         self.root_element = root
 
     @property

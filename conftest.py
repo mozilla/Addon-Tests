@@ -4,13 +4,13 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import py
 import pytest
 
 
-def pytest_runtest_setup(item):
-    pytest_mozwebqa = py.test.config.pluginmanager.getplugin("mozwebqa")
-    pytest_mozwebqa.TestSetup.services_base_url = item.config.option.services_base_url
+@pytest.fixture(scope='session')
+def capabilities(capabilities):
+    capabilities.setdefault('tags', []).append('amo')
+    return capabilities
 
 
 def pytest_addoption(parser):
@@ -22,9 +22,11 @@ def pytest_addoption(parser):
                      help="specify the api url")
 
 
-def pytest_funcarg__mozwebqa(request):
-    pytest_mozwebqa = py.test.config.pluginmanager.getplugin("mozwebqa")
-    return pytest_mozwebqa.TestSetup(request)
+@pytest.fixture(scope='session')
+def services_base_url(request, base_url):
+    config = request.config
+    services_base_url = config.getoption('services_base_url')
+    return services_base_url or base_url
 
 
 @pytest.fixture
@@ -46,3 +48,9 @@ def editable_user(stored_users):
 @pytest.fixture
 def paypal_user(variables):
     return variables['paypal']
+
+
+@pytest.fixture
+def selenium(selenium):
+    selenium.implicitly_wait(10)
+    return selenium

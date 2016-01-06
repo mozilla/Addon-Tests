@@ -42,11 +42,11 @@ class CompleteThemes(Base):
         return self.selenium.find_element(*self._addons_root_locator)
 
     def click_sort_by(self, type):
-        Sorter(self.testsetup).sort_by(type)
+        Sorter(self.base_url, self.selenium).sort_by(type)
 
     @property
     def sorted_by(self):
-        return Sorter(self.testsetup).sorted_by
+        return Sorter(self.base_url, self.selenium).sorted_by
 
     @property
     def selected_explore_filter(self):
@@ -57,11 +57,11 @@ class CompleteThemes(Base):
 
     def click_on_first_addon(self):
         self._addons_root_element.find_element(*self._addon_name_locator).click()
-        return CompleteTheme(self.testsetup)
+        return CompleteTheme(self.base_url, self.selenium)
 
     def click_on_first_category(self):
         self.selenium.find_element(*self._category_locator).click()
-        return CompleteThemesCategory(self.testsetup)
+        return CompleteThemesCategory(self.base_url, self.selenium)
 
     def get_category(self, lookup):
         return self.selenium.find_element(self._category_link_locator[0],
@@ -117,12 +117,12 @@ class CompleteThemes(Base):
 
     @property
     def complete_themes(self):
-        return [self.CompleteTheme(self.testsetup, completetheme)for completetheme in self.selenium.find_elements(*self._addons_root_locator)]
+        return [self.CompleteTheme(self.base_url, self.selenium, completetheme)for completetheme in self.selenium.find_elements(*self._addons_root_locator)]
 
     @property
     def paginator(self):
         from pages.desktop.regions.paginator import Paginator
-        return Paginator(self.testsetup)
+        return Paginator(self.base_url, self.selenium)
 
     class CompleteTheme(Page):
 
@@ -131,8 +131,8 @@ class CompleteThemes(Base):
         _hovercard_locator = (By.CSS_SELECTOR, "div.hovercard")
         _more_flyout_locator = (By.CSS_SELECTOR, 'div.more')
 
-        def __init__(self, testsetup, element):
-            Page.__init__(self, testsetup)
+        def __init__(self, base_url, selenium, element):
+            Page.__init__(self, base_url, selenium)
             self._root_element = element
 
         def _move_to_complete_theme_flyout(self):
@@ -173,7 +173,7 @@ class CompleteThemes(Base):
                 return False
             finally:
                 # set back to where you once belonged
-                self.selenium.implicitly_wait(self.testsetup.default_implicit_wait)
+                self.selenium.implicitly_wait(self.timeout)
 
 
 class CompleteTheme(Base):

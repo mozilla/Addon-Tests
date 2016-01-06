@@ -20,8 +20,8 @@ class PayPalPopup(Page):
     _pay_button_locator = (By.NAME, '_eventId_submit')
     _order_details_locator = (By.ID, 'order-details')
 
-    def __init__(self, testsetup):
-        Page.__init__(self, testsetup)
+    def __init__(self, base_url, selenium):
+        Page.__init__(self, base_url, selenium)
         self.selenium.switch_to_window(self._pop_up_id)
 
     def login_paypal(self, email, password):

@@ -17,14 +17,14 @@ class TestPaypal:
     addon_name = 'Firebug'
 
     @pytest.mark.login
-    def test_that_user_can_contribute_to_an_addon(self, mozwebqa, existing_user, paypal_user):
+    def test_that_user_can_contribute_to_an_addon(self, base_url, selenium, existing_user, paypal_user):
         """Test that checks the Contribute button for an add-on using PayPal."""
-        addon_page = Home(mozwebqa)
+        addon_page = Home(base_url, selenium)
         addon_page.login(existing_user['email'], existing_user['password'])
         assert addon_page.is_the_current_page
         assert addon_page.header.is_user_logged_in
 
-        addon_page = Details(mozwebqa, self.addon_name)
+        addon_page = Details(base_url, selenium, self.addon_name)
         contribution_snippet = addon_page.click_contribute_button()
         paypal_frame = contribution_snippet.click_make_contribution_button()
         assert addon_page.is_paypal_login_dialog_visible
@@ -37,9 +37,9 @@ class TestPaypal:
         assert addon_page.is_the_current_page
 
     @pytest.mark.login
-    def test_that_user_can_make_a_contribution_without_logging_into_amo(self, mozwebqa, paypal_user):
+    def test_that_user_can_make_a_contribution_without_logging_into_amo(self, base_url, selenium, paypal_user):
         """Test that checks if the user is able to make a contribution without logging in to AMO."""
-        addon_page = Details(mozwebqa, self.addon_name)
+        addon_page = Details(base_url, selenium, self.addon_name)
         assert not addon_page.header.is_user_logged_in
 
         contribution_snippet = addon_page.click_contribute_button()
@@ -55,8 +55,8 @@ class TestPaypal:
 
     @pytest.mark.smoke
     @pytest.mark.nondestructive
-    def test_that_make_contribution_button_is_clickable_and_loads_paypal_frame_while_user_is_logged_out(self, mozwebqa):
-        addon_page = Details(mozwebqa, self.addon_name)
+    def test_that_make_contribution_button_is_clickable_and_loads_paypal_frame_while_user_is_logged_out(self, base_url, selenium):
+        addon_page = Details(base_url, selenium, self.addon_name)
         assert not addon_page.header.is_user_logged_in
 
         contribution_snippet = addon_page.click_contribute_button()
@@ -69,8 +69,8 @@ class TestPaypal:
     @pytest.mark.smoke
     @pytest.mark.nondestructive
     @pytest.mark.login
-    def test_that_make_contribution_button_is_clickable_and_loads_paypal_frame_while_user_is_logged_in(self, mozwebqa, existing_user):
-        addon_page = Details(mozwebqa, self.addon_name)
+    def test_that_make_contribution_button_is_clickable_and_loads_paypal_frame_while_user_is_logged_in(self, base_url, selenium, existing_user):
+        addon_page = Details(base_url, selenium, self.addon_name)
         addon_page.login(existing_user['email'], existing_user['password'])
         assert addon_page.is_the_current_page
         assert addon_page.header.is_user_logged_in

@@ -15,19 +15,19 @@ class TestInstalls:
 
     @pytest.mark.native
     @pytest.mark.nondestructive
-    def test_could_install_theme(self, mozwebqa):
+    def test_could_install_theme(self, base_url, selenium):
         """note that this test does not actually *install* the theme"""
 
-        home_page = Home(mozwebqa)
+        home_page = Home(base_url, selenium)
         complete_themes_page = home_page.header.click_complete_themes()
         complete_theme_page = complete_themes_page.click_on_first_addon()
         assert complete_theme_page.is_install_button_visible
 
     @pytest.mark.nondestructive
-    def test_could_install_jetpack(self, mozwebqa):
+    def test_could_install_jetpack(self, base_url, selenium):
         """note that this test does not actually *install* the jetpack"""
 
-        home_page = Home(mozwebqa)
+        home_page = Home(base_url, selenium)
         search_page = home_page.search_for("jetpack")
         for result in search_page.results:
             # click on the first compatible result

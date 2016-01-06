@@ -32,8 +32,8 @@ class Home(Base):
     _categories_list_locator = (By.CSS_SELECTOR, '#listing-categories ul')
     _category_item_locator = (By.CSS_SELECTOR, 'li')
 
-    def __init__(self, testsetup):
-        Base.__init__(self, testsetup)
+    def __init__(self, base_url, selenium):
+        Base.__init__(self, base_url, selenium)
         self.selenium.get(self.base_url)
         self.is_the_current_page
 
@@ -47,7 +47,7 @@ class Home(Base):
             search_box.submit()
 
         from pages.mobile.search_results import SearchResults
-        return SearchResults(self.testsetup, search_term)
+        return SearchResults(self.base_url, self.selenium, search_term)
 
     @property
     def header_text(self):
@@ -88,7 +88,7 @@ class Home(Base):
         self.scroll_to_element(*self._all_featured_addons_locator)
         self.selenium.find_element(*self._all_featured_addons_locator).click()
         from pages.mobile.extensions import Extensions
-        extensions_page = Extensions(self.testsetup)
+        extensions_page = Extensions(self.base_url, self.selenium)
         WebDriverWait(self.selenium, self.timeout).until(lambda s: self.is_element_visible(*extensions_page._sort_by_locator))
         return extensions_page
 
@@ -98,7 +98,7 @@ class Home(Base):
 
     @property
     def tabs(self):
-        return [self.Tabs(self.testsetup, web_element)
+        return [self.Tabs(self.base_url, self.selenium, web_element)
                 for web_element in self.selenium.find_elements(*self._tabs_locator)]
 
     def tab(self, value):
@@ -114,8 +114,8 @@ class Home(Base):
         _tab_name_locator = (By.CSS_SELECTOR, 'a')
         _tab_content_locator = (By.ID, 'listing')
 
-        def __init__(self, testsetup, element):
-            Page.__init__(self, testsetup)
+        def __init__(self, base_url, selenium, element):
+            Page.__init__(self, base_url, selenium)
             self._root_element = element
 
         @property
@@ -169,15 +169,15 @@ class Home(Base):
 
     @property
     def categories(self):
-        return [self.Category(self.testsetup, category_element)
+        return [self.Category(self.base_url, self.selenium, category_element)
                 for category_element in self.selenium.find_element(*self._categories_list_locator).find_elements(*self._category_item_locator)]
 
     class Category(Page):
 
         _link_locator = (By.TAG_NAME, 'a')
 
-        def __init__(self, testsetup, category_element):
-            Page.__init__(self, testsetup)
+        def __init__(self, base_url, selenium, category_element):
+            Page.__init__(self, base_url, selenium)
             self._root_element = category_element
 
         @property

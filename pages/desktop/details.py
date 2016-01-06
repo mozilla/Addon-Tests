@@ -92,9 +92,9 @@ class Details(Base):
     _contribute_button_locator = (By.ID, 'contribute-button')
     _paypal_login_dialog_locator = (By.CSS_SELECTOR, '#page .content')
 
-    def __init__(self, testsetup, addon_name=None):
+    def __init__(self, base_url, selenium, addon_name=None):
         # formats name for url
-        Base.__init__(self, testsetup)
+        Base.__init__(self, base_url, selenium)
         if (addon_name is not None):
             self.addon_name = addon_name.replace(" ", "-")
             self.addon_name = re.sub(r'[^A-Za-z0-9\-]', '', self.addon_name).lower()
@@ -131,7 +131,7 @@ class Details(Base):
         self.selenium.find_element(*self._all_reviews_link_locator).click()
 
         from pages.desktop.addons_site import ViewReviews
-        return ViewReviews(self.testsetup)
+        return ViewReviews(self.base_url, self.selenium)
 
     @property
     def review_count(self):
@@ -145,7 +145,7 @@ class Details(Base):
     def click_view_statistics(self):
         self.selenium.find_element(*self._daily_users_link_locator).click()
         from pages.desktop.statistics import Statistics
-        stats_page = Statistics(self.testsetup)
+        stats_page = Statistics(self.base_url, self.selenium)
         WebDriverWait(self.selenium, self.timeout).until(lambda s: stats_page.is_chart_loaded)
         return stats_page
 
@@ -181,7 +181,7 @@ class Details(Base):
     def click_whats_this_license(self):
         self.selenium.find_element(*self._whats_this_license_locator).click()
         from pages.desktop.addons_site import UserFAQ
-        return UserFAQ(self.testsetup)
+        return UserFAQ(self.base_url, self.selenium)
 
     @property
     def license_site(self):
@@ -269,7 +269,7 @@ class Details(Base):
     def click_view_source_code(self):
         self.selenium.find_element(*self._view_the_source_locator).click()
         from pages.desktop.addons_site import ViewAddonSource
-        addon_source = ViewAddonSource(self.testsetup)
+        addon_source = ViewAddonSource(self.base_url, self.selenium)
         WebDriverWait(self.selenium, self.timeout).until(lambda s: addon_source.is_file_viewer_visible)
         return addon_source
 
@@ -314,7 +314,7 @@ class Details(Base):
 
     @property
     def part_of_collections(self):
-        return [self.PartOfCollectionsSnippet(self.testsetup, web_element)
+        return [self.PartOfCollectionsSnippet(self.base_url, self.selenium, web_element)
                 for web_element in self.selenium.find_elements(*self._part_of_collections_list_locator)]
 
     @property
@@ -329,14 +329,14 @@ class Details(Base):
 
         _name_locator = (By.CSS_SELECTOR, 'div.summary > h3')
 
-        def __init__(self, testsetup, element):
-            Page.__init__(self, testsetup)
+        def __init__(self, base_url, selenium, element):
+            Page.__init__(self, base_url, selenium)
             self._root_element = element
 
         def click_collection(self):
             self._root_element.find_element(*self._name_locator).click()
             from pages.desktop.collections import Collections
-            return Collections(self.testsetup)
+            return Collections(self.base_url, self.selenium)
 
         @property
         def name(self):
@@ -379,12 +379,12 @@ class Details(Base):
 
     @property
     def other_addons(self):
-        return [self.OtherAddons(self.testsetup, other_addon_web_element)
+        return [self.OtherAddons(self.base_url, self.selenium, other_addon_web_element)
                 for other_addon_web_element in self.selenium.find_elements(*self._other_addons_by_author_locator)]
 
     @property
     def previewer(self):
-        return self.ImagePreviewer(self.testsetup)
+        return self.ImagePreviewer(self.base_url, self.selenium)
 
     def click_add_to_collection_widget(self):
         self.selenium.find_element(*self._add_to_collection_locator).click()
@@ -417,7 +417,7 @@ class Details(Base):
             images[image_no].find_element(*self._link_locator).click()
 
             from pages.desktop.regions.image_viewer import ImageViewer
-            image_viewer = ImageViewer(self.testsetup)
+            image_viewer = ImageViewer(self.base_url, self.selenium)
             WebDriverWait(self.selenium, self.timeout).until(lambda s: image_viewer.is_visible)
             return image_viewer
 
@@ -445,11 +445,11 @@ class Details(Base):
                 return self.image_count / 3 + 1
 
     def review(self, element):
-        return self.DetailsReviewSnippet(self.testsetup, element)
+        return self.DetailsReviewSnippet(self.base_url, self.selenium, element)
 
     @property
     def reviews(self):
-        return [self.DetailsReviewSnippet(self.testsetup, web_element)
+        return [self.DetailsReviewSnippet(self.base_url, self.selenium, web_element)
                 for web_element in self.selenium.find_elements(*self._reviews_locator)]
 
     @property
@@ -483,8 +483,8 @@ class Details(Base):
 
         _name_locator = (By.CSS_SELECTOR, 'div.summary h3')
 
-        def __init__(self, testsetup, element):
-            Page.__init__(self, testsetup)
+        def __init__(self, base_url, selenium, element):
+            Page.__init__(self, base_url, selenium)
             self._root_element = element
 
         @property
@@ -499,8 +499,8 @@ class Details(Base):
         _reviews_locator = (By.CSS_SELECTOR, '#reviews div')  # Base locator
         _username_locator = (By.CSS_SELECTOR, 'p.byline a')
 
-        def __init__(self, testsetup, element):
-            Page.__init__(self, testsetup)
+        def __init__(self, base_url, selenium, element):
+            Page.__init__(self, base_url, selenium)
             self._root_element = element
 
         @property
@@ -510,12 +510,12 @@ class Details(Base):
         def click_username(self):
             self._root_element.find_element(*self._username_locator).click()
             from pages.desktop.user import User
-            return User(self.testsetup)
+            return User(self.base_url, self.selenium)
 
     def click_to_write_review(self):
         self.selenium.find_element(*self._add_review_link_locator).click()
         from pages.desktop.addons_site import WriteReviewBlock
-        return WriteReviewBlock(self.testsetup)
+        return WriteReviewBlock(self.base_url, self.selenium)
 
     @property
     def development_channel_text(self):
@@ -551,8 +551,8 @@ class Details(Base):
 
         _make_contribution_button_locator = (By.ID, 'contribute-confirm')
 
-        def __init__(self, testsetup):
-            Page.__init__(self, testsetup)
+        def __init__(self, base_url, selenium):
+            Page.__init__(self, base_url, selenium)
 
             WebDriverWait(self.selenium, self.timeout).until(
                 lambda s: s.find_element(*self._make_contribution_button_locator).is_displayed(),
@@ -562,7 +562,7 @@ class Details(Base):
             self.selenium.maximize_window()
             self.selenium.find_element(*self._make_contribution_button_locator).click()
             from pages.desktop.regions.paypal_frame import PayPalFrame
-            return PayPalFrame(self.testsetup)
+            return PayPalFrame(self.base_url, self.selenium)
 
         @property
         def is_make_contribution_button_visible(self):
@@ -574,7 +574,7 @@ class Details(Base):
 
     def click_contribute_button(self):
         self.selenium.find_element(*self._contribute_button_locator).click()
-        return self.ContributionSnippet(self.testsetup)
+        return self.ContributionSnippet(self.base_url, self.selenium)
 
     @property
     def is_paypal_login_dialog_visible(self):

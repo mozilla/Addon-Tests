@@ -13,12 +13,12 @@ class SearchResults(Base):
 
     _results_locator = (By.CSS_SELECTOR, '.addon-listing .item')
 
-    def __init__(self, testsetup, search_term):
-        Base.__init__(self, testsetup)
+    def __init__(self, base_url, selenium, search_term):
+        Base.__init__(self, base_url, selenium)
         self._page_title = "%s :: Search :: Add-ons for Firefox" % search_term
 
     @property
     def results(self):
         from pages.mobile.regions.addon_list_item import AddonItem
-        return [AddonItem(self.testsetup, element)
+        return [AddonItem(self.base_url, self.selenium, element)
                 for element in self.selenium.find_elements(*self._results_locator)]

@@ -23,7 +23,7 @@ class ExtensionsHome(Base):
 
     @property
     def extensions(self):
-        return [Extension(self.testsetup, web_element)
+        return [Extension(self.base_url, self.selenium, web_element)
                 for web_element in self.selenium.find_elements(*self._extensions_locator)]
 
     @property
@@ -37,12 +37,12 @@ class ExtensionsHome(Base):
     @property
     def sorter(self):
         from pages.desktop.regions.sorter import Sorter
-        return Sorter(self.testsetup)
+        return Sorter(self.base_url, self.selenium)
 
     @property
     def paginator(self):
         from pages.desktop.regions.paginator import Paginator
-        return Paginator(self.testsetup)
+        return Paginator(self.base_url, self.selenium)
 
     @property
     def is_paginator_present(self):
@@ -55,8 +55,8 @@ class Extension(Page):
         _featured_locator = (By.CSS_SELECTOR, 'div.info > h3 > span.featured')
         _user_count_locator = (By.CSS_SELECTOR, 'div.adu')
 
-        def __init__(self, testsetup, element):
-            Page.__init__(self, testsetup)
+        def __init__(self, base_url, selenium, element):
+            Page.__init__(self, base_url, selenium)
             self._root_element = element
 
         @property
@@ -74,7 +74,7 @@ class Extension(Page):
         def click(self):
             self._root_element.find_element(*self._name_locator).click()
             from pages.desktop.details import Details
-            return Details(self.testsetup)
+            return Details(self.base_url, self.selenium)
 
         @property
         def added_date(self):

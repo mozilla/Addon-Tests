@@ -16,14 +16,14 @@ class Island(Page):
     _sections_locator = (By.CSS_SELECTOR, 'ul > section')
     _item_locator = (By.CSS_SELECTOR, 'li > div')
 
-    def __init__(self, testsetup, element):
-        Page.__init__(self, testsetup)
+    def __init__(self, base_url, selenium, element):
+        Page.__init__(self, base_url, selenium)
         self._root = element
 
     @property
     def pager(self):
         try:
-            return self.Pager(self.testsetup, self._root.find_element(*self._pager_locator))
+            return self.Pager(self.base_url, self.selenium, self._root.find_element(*self._pager_locator))
         except NoSuchElementException:
             raise AssertionError('Paginator is not available')
 
@@ -41,13 +41,13 @@ class Island(Page):
 
         if 'extensions' in see_all_url:
             from pages.desktop.extensions import ExtensionsHome
-            return ExtensionsHome(self.testsetup)
+            return ExtensionsHome(self.base_url, self.selenium)
         elif 'personas' in see_all_url:
             from pages.desktop.personas import Personas
-            return Personas(self.testsetup)
+            return Personas(self.base_url, self.selenium)
         elif 'collections' in see_all_url:
             from pages.desktop.collections import Collections
-            return Collections(self.testsetup)
+            return Collections(self.base_url, self.selenium)
 
     @property
     def title(self):
@@ -62,12 +62,12 @@ class Island(Page):
 
     @property
     def addons(self):
-        return [self.Addon(self.testsetup, element)
+        return [self.Addon(self.base_url, self.selenium, element)
                 for element in self._root.find_elements(*self._sections_locator)[self.pager.selected_dot].find_elements(*self._item_locator)]
 
     class Addon(Page):
-        def __init__(self, testsetup, element):
-            Page.__init__(self, testsetup)
+        def __init__(self, base_url, selenium, element):
+            Page.__init__(self, base_url, selenium)
             self._root = element
 
     class Pager(Page):
@@ -76,8 +76,8 @@ class Island(Page):
         _dot_locator = (By.CSS_SELECTOR, 'a.dot')
         _footer_locator = (By.ID, 'footer')
 
-        def __init__(self, testsetup, elment):
-            Page.__init__(self, testsetup)
+        def __init__(self, base_url, selenium, elment):
+            Page.__init__(self, base_url, selenium)
             self._root = elment
 
         def click_footer(self):

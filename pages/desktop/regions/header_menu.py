@@ -14,11 +14,11 @@ class HeaderMenu(Page):
     """
     This class access the header area from the top of the AMO pages.desktop.
     To access it just use:
-        HeaderMenu(self.testsetup, lookup)
+        HeaderMenu(self.base_url, self.selenium, lookup)
     Where lookup is:
         -the web element coresponding to the menu you want to access
     Ex:
-        HeaderMenu(self.testsetup, personas_element) returns the Personas menu
+        HeaderMenu(self.base_url, self.selenium, personas_element) returns the Personas menu
     """
 
     _menu_items_locator = (By.CSS_SELECTOR, 'ul > li')
@@ -26,8 +26,8 @@ class HeaderMenu(Page):
     _footer_locator = (By.ID, 'footer')
     _complete_themes_locator = (By.CSS_SELECTOR, 'div > a > b')
 
-    def __init__(self, testsetup, element):
-        Page.__init__(self, testsetup)
+    def __init__(self, base_url, selenium, element):
+        Page.__init__(self, base_url, selenium)
         self._root_element = element
 
     @property
@@ -46,13 +46,13 @@ class HeaderMenu(Page):
 
         if "EXTENSIONS" in name:
             from pages.desktop.extensions import ExtensionsHome
-            return ExtensionsHome(self.testsetup)
+            return ExtensionsHome(self.base_url, self.selenium)
         elif "THEMES" in name:
             from pages.desktop.themes import Themes
-            return Themes(self.testsetup)
+            return Themes(self.base_url, self.selenium)
         elif "COLLECTIONS" in name:
             from pages.desktop.collections import Collections
-            return Collections(self.testsetup)
+            return Collections(self.base_url, self.selenium)
 
     def hover(self):
         element = self._root_element.find_element(*self._name_locator)
@@ -65,15 +65,15 @@ class HeaderMenu(Page):
 
     @property
     def items(self):
-        return [self.HeaderMenuItem(self.testsetup, web_element, self)
+        return [self.HeaderMenuItem(self.base_url, self.selenium, web_element, self)
                 for web_element in self._root_element.find_elements(*self._menu_items_locator)]
 
     class HeaderMenuItem (Page):
 
         _name_locator = (By.CSS_SELECTOR, 'a')
 
-        def __init__(self, testsetup, element, menu):
-            Page.__init__(self, testsetup)
+        def __init__(self, base_url, selenium, element, menu):
+            Page.__init__(self, base_url, selenium)
             self._root_element = element
             self._menu = menu
 
@@ -96,10 +96,10 @@ class HeaderMenu(Page):
 
             if "EXTENSIONS" in menu_name:
                 from pages.desktop.extensions import ExtensionsHome
-                return ExtensionsHome(self.testsetup)
+                return ExtensionsHome(self.base_url, self.selenium)
             elif "THEMES" in menu_name:
                 from pages.desktop.themes import Themes
-                return Themes(self.testsetup)
+                return Themes(self.base_url, self.selenium)
             elif "COLLECTIONS" in menu_name:
                 from pages.desktop.collections import Collections
-                return Collections(self.testsetup)
+                return Collections(self.base_url, self.selenium)

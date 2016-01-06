@@ -16,9 +16,9 @@ from pages.desktop.details import Details
 class TestReviews:
 
     @pytest.mark.nondestructive
-    def test_that_all_reviews_hyperlink_works(self, mozwebqa):
+    def test_that_all_reviews_hyperlink_works(self, base_url, selenium):
         # Open details page for MemChaser
-        details_page = Details(mozwebqa, "Firebug")
+        details_page = Details(base_url, selenium, "Firebug")
         assert details_page.has_reviews
 
         view_reviews = details_page.click_all_reviews_link()
@@ -50,15 +50,15 @@ class TestReviews:
 
     @pytest.mark.native
     @pytest.mark.login
-    def test_that_new_review_is_saved(self, mozwebqa, existing_user):
+    def test_that_new_review_is_saved(self, base_url, selenium, existing_user):
         # Step 1 - Login into AMO
-        home_page = Home(mozwebqa)
+        home_page = Home(base_url, selenium)
         home_page.login(existing_user['email'], existing_user['password'])
         assert home_page.is_the_current_page
         assert home_page.header.is_user_logged_in
 
         # Step 2 - Load any addon detail page
-        details_page = Details(mozwebqa, 'Memchaser')
+        details_page = Details(base_url, selenium, 'Memchaser')
 
         # Step 3 - Click on "Write review" button
         write_review_block = details_page.click_to_write_review()
@@ -81,7 +81,7 @@ class TestReviews:
 
         review.delete()
 
-        details_page = Details(mozwebqa, 'Memchaser')
+        details_page = Details(base_url, selenium, 'Memchaser')
         review_page = details_page.click_all_reviews_link()
 
         for review in review_page.reviews:

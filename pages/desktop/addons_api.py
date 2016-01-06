@@ -12,14 +12,14 @@ import xml.etree.ElementTree as ET
 
 class AddonsAPI:
 
-    def __init__(self, testsetup, search_query):
+    def __init__(self, base_url, search_query):
         """
         This class checks the XML response returned by
         the AddonsAPI on addons.mozilla.org.  The search_query
         parameter is the name of the add-on to search for.
         """
         self.search_query = search_query
-        self.api_url = '%s/en-us/firefox/api/1.5/search/%s' % (testsetup.base_url, search_query)
+        self.api_url = '%s/en-us/firefox/api/1.5/search/%s' % (base_url, search_query)
         self.xml_response = ET.parse(urllib2.urlopen(self.api_url))
 
     def get_addon_name(self):

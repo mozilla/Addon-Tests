@@ -1,5 +1,5 @@
 pytest==2.7.3
-pytest-mozwebqa
+pytest-selenium
 pytest-variables
 pytz==2015.7
 requests==2.8.1

@@ -13,15 +13,15 @@ class TestExtensions:
 
     @pytest.mark.native
     @pytest.mark.nondestructive
-    def test_featured_tab_is_highlighted_by_default(self, mozwebqa):
-        home_page = Home(mozwebqa)
+    def test_featured_tab_is_highlighted_by_default(self, base_url, selenium):
+        home_page = Home(base_url, selenium)
         featured_extensions_page = home_page.header.site_navigation_menu("Extensions").click()
         assert 'Featured' == featured_extensions_page.sorter.sorted_by
 
     @pytest.mark.native
     @pytest.mark.nondestructive
-    def test_pagination(self, mozwebqa):
-        home_page = Home(mozwebqa)
+    def test_pagination(self, base_url, selenium):
+        home_page = Home(base_url, selenium)
         featured_extensions_page = home_page.header.site_navigation_menu("Extensions").click()
         featured_extensions_page.sorter.sort_by('most_users')
         featured_extensions_page.paginator.click_next_page()
@@ -35,8 +35,8 @@ class TestExtensions:
 
     @pytest.mark.native
     @pytest.mark.nondestructive
-    def test_previous_button_is_disabled_on_the_first_page(self, mozwebqa):
-        home_page = Home(mozwebqa)
+    def test_previous_button_is_disabled_on_the_first_page(self, base_url, selenium):
+        home_page = Home(base_url, selenium)
         featured_extensions_page = home_page.header.site_navigation_menu("Extensions").click()
         featured_extensions_page.sorter.sort_by('Most Users')
         assert featured_extensions_page.paginator.is_prev_page_disabled
@@ -46,8 +46,8 @@ class TestExtensions:
 
     @pytest.mark.native
     @pytest.mark.nondestructive
-    def test_next_button_is_disabled_on_the_last_page(self, mozwebqa):
-        home_page = Home(mozwebqa)
+    def test_next_button_is_disabled_on_the_last_page(self, base_url, selenium):
+        home_page = Home(base_url, selenium)
         featured_extensions_page = home_page.header.site_navigation_menu("Extensions").click()
         featured_extensions_page.sorter.sort_by('most_users')
         featured_extensions_page.paginator.click_last_page()
@@ -55,8 +55,8 @@ class TestExtensions:
 
     @pytest.mark.native
     @pytest.mark.nondestructive
-    def test_that_checks_if_the_extensions_are_sorted_by_top_rated(self, mozwebqa):
-        home_page = Home(mozwebqa)
+    def test_that_checks_if_the_extensions_are_sorted_by_top_rated(self, base_url, selenium):
+        home_page = Home(base_url, selenium)
         featured_extensions_page = home_page.header.site_navigation_menu("Extensions").click()
         featured_extensions_page.sorter.sort_by("Top Rated")
         assert 'Top Rated' == featured_extensions_page.sorter.sorted_by
@@ -64,8 +64,8 @@ class TestExtensions:
 
     @pytest.mark.native
     @pytest.mark.nondestructive
-    def test_that_checks_if_the_extensions_are_sorted_by_most_user(self, mozwebqa):
-        home_page = Home(mozwebqa)
+    def test_that_checks_if_the_extensions_are_sorted_by_most_user(self, base_url, selenium):
+        home_page = Home(base_url, selenium)
         featured_extensions_page = home_page.header.site_navigation_menu("Extensions").click()
         featured_extensions_page.sorter.sort_by('most_users')
         assert 'sort=users' in featured_extensions_page.get_url_current_page()
@@ -74,8 +74,8 @@ class TestExtensions:
 
     @pytest.mark.native
     @pytest.mark.nondestructive
-    def test_that_checks_if_the_extensions_are_sorted_by_newest(self, mozwebqa):
-        home_page = Home(mozwebqa)
+    def test_that_checks_if_the_extensions_are_sorted_by_newest(self, base_url, selenium):
+        home_page = Home(base_url, selenium)
         featured_extensions_page = home_page.header.site_navigation_menu("Extensions").click()
         featured_extensions_page.sorter.sort_by('newest')
         assert 'Newest' == featured_extensions_page.sorter.sorted_by
@@ -90,8 +90,8 @@ class TestExtensions:
 
     @pytest.mark.native
     @pytest.mark.nondestructive
-    def test_that_checks_if_the_extensions_are_sorted_by_recently_updated(self, mozwebqa):
-        home_page = Home(mozwebqa)
+    def test_that_checks_if_the_extensions_are_sorted_by_recently_updated(self, base_url, selenium):
+        home_page = Home(base_url, selenium)
         featured_extensions_page = home_page.header.site_navigation_menu("Extensions").click()
 
         featured_extensions_page.sorter.sort_by('recently updated')
@@ -107,8 +107,8 @@ class TestExtensions:
 
     @pytest.mark.native
     @pytest.mark.nondestructive
-    def test_that_extensions_are_sorted_by_up_and_coming(self, mozwebqa):
-        home_page = Home(mozwebqa)
+    def test_that_extensions_are_sorted_by_up_and_coming(self, base_url, selenium):
+        home_page = Home(base_url, selenium)
         featured_extensions_page = home_page.header.site_navigation_menu("Extensions").click()
         featured_extensions_page.sorter.sort_by('up and coming')
         assert 'Up & Coming' == featured_extensions_page.sorter.sorted_by
@@ -116,8 +116,8 @@ class TestExtensions:
         assert len(featured_extensions_page.extensions) > 0
 
     @pytest.mark.nondestructive
-    def test_that_extensions_page_contains_addons_and_the_pagination_works(self, mozwebqa):
-        home_page = Home(mozwebqa)
+    def test_that_extensions_page_contains_addons_and_the_pagination_works(self, base_url, selenium):
+        home_page = Home(base_url, selenium)
         featured_extensions_page = home_page.header.site_navigation_menu("Extensions").click()
 
         # Assert that at least one addon is displayed
@@ -143,8 +143,8 @@ class TestExtensions:
 
     @pytest.mark.native
     @pytest.mark.nondestructive
-    def test_breadcrumb_menu_in_extensions_page(self, mozwebqa):
-        home_page = Home(mozwebqa)
+    def test_breadcrumb_menu_in_extensions_page(self, base_url, selenium):
+        home_page = Home(base_url, selenium)
         featured_extensions_page = home_page.header.site_navigation_menu("Extensions").click()
         breadcrumbs = featured_extensions_page.breadcrumbs
         assert 'Add-ons for Firefox' == breadcrumbs[0].text
@@ -152,14 +152,14 @@ class TestExtensions:
 
     @pytest.mark.native
     @pytest.mark.nondestructive
-    def test_that_checks_if_the_subscribe_link_exists(self, mozwebqa):
-        home_page = Home(mozwebqa)
+    def test_that_checks_if_the_subscribe_link_exists(self, base_url, selenium):
+        home_page = Home(base_url, selenium)
         featured_extensions_page = home_page.header.site_navigation_menu("Extensions").click()
         assert 'Subscribe' in featured_extensions_page.subscribe_link_text
 
     @pytest.mark.native
     @pytest.mark.nondestructive
-    def test_that_checks_featured_extensions_header(self, mozwebqa):
-        home_page = Home(mozwebqa)
+    def test_that_checks_featured_extensions_header(self, base_url, selenium):
+        home_page = Home(base_url, selenium)
         featured_extensions_page = home_page.header.site_navigation_menu("Extensions").click()
         assert 'Featured Extensions' == featured_extensions_page.featured_extensions_header_text

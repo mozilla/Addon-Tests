@@ -16,19 +16,17 @@ from pages.desktop.details import Details
 class TestStatistics:
 
     @pytest.mark.nondestructive
-    def test_that_verifies_the_url_of_the_statistics_page(self, mozwebqa):
-        details_page = Details(mozwebqa, "Firebug")
+    def test_that_verifies_the_url_of_the_statistics_page(self, base_url, selenium):
+        details_page = Details(base_url, selenium, "Firebug")
         statistics_page = details_page.click_view_statistics()
         assert statistics_page.is_the_current_page
         assert '/statistics' in statistics_page.get_url_current_page()
 
-    @pytest.mark.skip_selenium
     @pytest.mark.nondestructive
-    def test_that_checks_content_in_json_endpoints_from_statistics_urls(self, mozwebqa):
+    def test_that_checks_content_in_json_endpoints_from_statistics_urls(self, base_url):
         """https://github.com/mozilla/Addon-Tests/issues/621"""
 
         # make statistics url template
-        base_url = mozwebqa.base_url
         temp_url = '/firefox/addon/firebug/statistics/overview-day-%(start)s-%(end)s.json'
         statistics_url_template = base_url + temp_url
 
@@ -46,7 +44,7 @@ class TestStatistics:
 
         # Decode response and assert it's not empty.
         # Only run against prod, data on dev & stage is insufficient.
-        if 'mozilla.org' in mozwebqa.base_url:
+        if 'mozilla.org' in base_url:
             response = json.loads(r.content)
             assert 30 == len(response), 'some dates (or all) dates are missing in response'
 

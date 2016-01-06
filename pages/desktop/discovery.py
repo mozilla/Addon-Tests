@@ -35,23 +35,9 @@ class DiscoveryPane(Base):
 
     _featured_addons_base_locator = (By.CSS_SELECTOR, '#featured-addons .addon-title ')
 
-    def __init__(self, testsetup, path):
-        '''
-            The default behavior of the class is to use --baseurl. If --servicesbaseurl
-            is passed as an argument to pytest, --baseurl will be overridden.
-
-            The web workers use the same config as addons.mozilla.org workers
-            but we heavily restrict what can be served from SAMO --
-            https://github.com/mozilla-services/svcops-puppet/blob/dev/modules/marketplace/templates/nginx/services_addons.conf#L20
-
-            Due to the Discovery Pane being accessible from a web browser, it can
-            be served from a separate domain for security and performance reasons.
-        '''
-        Base.__init__(self, testsetup)
-        if self.services_base_url:
-            self.selenium.get(self.services_base_url + path)
-        else:
-            self.selenium.get(self.base_url + path)
+    def __init__(self, base_url, selenium, path):
+        Base.__init__(self, base_url, selenium)
+        self.selenium.get(self.base_url + path)
         self.selenium.maximize_window()
         # resizing this page for elements that disappear when the window is < 1000
         # self.selenium.set_window_size(1000, 1000) Commented because this selenium call is still in beta
@@ -93,7 +79,7 @@ class DiscoveryPane(Base):
 
     def click_on_first_theme(self):
         self.selenium.find_element(*self._themes_link_locator).click()
-        return DiscoveryThemesDetail(self.testsetup)
+        return DiscoveryThemesDetail(self.base_url, self.selenium)
 
     @property
     def more_ways_section_visible(self):
@@ -114,11 +100,11 @@ class DiscoveryPane(Base):
     def click_logout(self):
         self.selenium.find_element(*self._logout_link_locator).click()
         from pages.desktop.home import Home
-        return Home(self.testsetup, open_url=False)
+        return Home(self.base_url, self.selenium, open_url=False)
 
     @property
     def carousel_panels(self):
-        return [self.CarouselPanelRegion(self.testsetup, element)
+        return [self.CarouselPanelRegion(self.base_url, self.selenium, element)
                 for element in self.selenium.find_elements(*self._carousel_panels_locator)]
 
     def show_next_carousel_panel(self):
@@ -131,8 +117,8 @@ class DiscoveryPane(Base):
 
         _heading_locator = (By.CSS_SELECTOR, 'h2')
 
-        def __init__(self, testsetup, element):
-            Page.__init__(self, testsetup)
+        def __init__(self, base_url, selenium, element):
+            Page.__init__(self, base_url, selenium)
             self._root_element = element
 
         @property

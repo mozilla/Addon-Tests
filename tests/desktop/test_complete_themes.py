@@ -14,8 +14,8 @@ class TestCompleteThemes:
 
     @pytest.mark.native
     @pytest.mark.nondestructive
-    def test_that_complete_themes_can_be_sorted_by_name(self, mozwebqa):
-        home_page = Home(mozwebqa)
+    def test_that_complete_themes_can_be_sorted_by_name(self, base_url, selenium):
+        home_page = Home(base_url, selenium)
         complete_themes_page = home_page.header.click_complete_themes()
         complete_themes_page.click_sort_by("name")
         addons = complete_themes_page.addon_names
@@ -36,8 +36,8 @@ class TestCompleteThemes:
 
     @pytest.mark.native
     @pytest.mark.nondestructive
-    def test_that_complete_themes_can_be_sorted_by_updated_date(self, mozwebqa):
-        home_page = Home(mozwebqa)
+    def test_that_complete_themes_can_be_sorted_by_updated_date(self, base_url, selenium):
+        home_page = Home(base_url, selenium)
         complete_themes_page = home_page.header.click_complete_themes()
         complete_themes_page.click_sort_by("recently updated")
         addons = complete_themes_page.addon_names
@@ -51,8 +51,8 @@ class TestCompleteThemes:
 
     @pytest.mark.native
     @pytest.mark.nondestructive
-    def test_that_complete_themes_can_be_sorted_by_created_date(self, mozwebqa):
-        home_page = Home(mozwebqa)
+    def test_that_complete_themes_can_be_sorted_by_created_date(self, base_url, selenium):
+        home_page = Home(base_url, selenium)
         complete_themes_page = home_page.header.click_complete_themes()
         complete_themes_page.click_sort_by("newest")
         addons = complete_themes_page.addon_names
@@ -66,8 +66,8 @@ class TestCompleteThemes:
 
     @pytest.mark.native
     @pytest.mark.nondestructive
-    def test_that_complete_themes_can_be_sorted_by_popularity(self, mozwebqa):
-        home_page = Home(mozwebqa)
+    def test_that_complete_themes_can_be_sorted_by_popularity(self, base_url, selenium):
+        home_page = Home(base_url, selenium)
         complete_themes_page = home_page.header.click_complete_themes()
         complete_themes_page.click_sort_by("weekly downloads")
         addons = complete_themes_page.addon_names
@@ -81,16 +81,16 @@ class TestCompleteThemes:
 
     @pytest.mark.native
     @pytest.mark.nondestructive
-    def test_that_complete_themes_loads_landing_page_correctly(self, mozwebqa):
-        home_page = Home(mozwebqa)
+    def test_that_complete_themes_loads_landing_page_correctly(self, base_url, selenium):
+        home_page = Home(base_url, selenium)
         complete_themes_page = home_page.header.click_complete_themes()
         url_current_page = complete_themes_page.get_url_current_page()
         assert url_current_page.endswith('/complete-themes/')
 
     @pytest.mark.native
     @pytest.mark.nondestructive
-    def test_that_clicking_on_complete_theme_name_loads_its_detail_page(self, mozwebqa):
-        home_page = Home(mozwebqa)
+    def test_that_clicking_on_complete_theme_name_loads_its_detail_page(self, base_url, selenium):
+        home_page = Home(base_url, selenium)
         complete_themes_page = home_page.header.click_complete_themes()
         complete_theme_name = complete_themes_page.addon_name(1)
         complete_theme_page = complete_themes_page.click_on_first_addon()
@@ -98,24 +98,24 @@ class TestCompleteThemes:
 
     @pytest.mark.native
     @pytest.mark.nondestructive
-    def test_that_complete_themes_page_has_correct_title(self, mozwebqa):
-        home_page = Home(mozwebqa)
+    def test_that_complete_themes_page_has_correct_title(self, base_url, selenium):
+        home_page = Home(base_url, selenium)
         complete_themes_page = home_page.header.click_complete_themes()
         expected_title = "Most Popular Complete Themes :: Add-ons for Firefox"
         assert expected_title == complete_themes_page.page_title
 
     @pytest.mark.native
     @pytest.mark.nondestructive
-    def test_complete_themes_page_breadcrumb(self, mozwebqa):
-        home_page = Home(mozwebqa)
+    def test_complete_themes_page_breadcrumb(self, base_url, selenium):
+        home_page = Home(base_url, selenium)
         complete_themes_page = home_page.header.click_complete_themes()
         expected_breadcrumb = "Complete Themes"
         assert expected_breadcrumb == complete_themes_page.breadcrumbs[1].text
 
     @pytest.mark.native
     @pytest.mark.nondestructive
-    def test_that_clicking_on_a_subcategory_loads_expected_page(self, mozwebqa):
-        home_page = Home(mozwebqa)
+    def test_that_clicking_on_a_subcategory_loads_expected_page(self, base_url, selenium):
+        home_page = Home(base_url, selenium)
         complete_themes_page = home_page.header.click_complete_themes()
         selected_category = complete_themes_page.complete_themes_category
         amo_category_page = complete_themes_page.click_on_first_category()
@@ -123,8 +123,8 @@ class TestCompleteThemes:
 
     @pytest.mark.native
     @pytest.mark.nondestructive
-    def test_complete_themes_subcategory_page_breadcrumb(self, mozwebqa):
-        home_page = Home(mozwebqa)
+    def test_complete_themes_subcategory_page_breadcrumb(self, base_url, selenium):
+        home_page = Home(base_url, selenium)
         complete_themes_page = home_page.header.click_complete_themes()
         selected_category = complete_themes_page.complete_themes_category
         amo_category_page = complete_themes_page.click_on_first_category()
@@ -134,8 +134,8 @@ class TestCompleteThemes:
 
     @pytest.mark.native
     @pytest.mark.nondestructive
-    def test_that_complete_themes_categories_are_listed_on_left_hand_side(self, mozwebqa):
-        home_page = Home(mozwebqa)
+    def test_that_complete_themes_categories_are_listed_on_left_hand_side(self, base_url, selenium):
+        home_page = Home(base_url, selenium)
         complete_themes_page = home_page.header.click_complete_themes()
         current_page_url = home_page.get_url_current_page()
         assert current_page_url.endswith('/complete-themes/')
@@ -149,8 +149,8 @@ class TestCompleteThemes:
 
     @pytest.mark.native
     @pytest.mark.nondestructive
-    def test_that_complete_themes_categories_are_not_extensions_categories(self, mozwebqa):
-        home_page = Home(mozwebqa)
+    def test_that_complete_themes_categories_are_not_extensions_categories(self, base_url, selenium):
+        home_page = Home(base_url, selenium)
         complete_themes_page = home_page.header.click_complete_themes()
         complete_themes_categories = complete_themes_page.get_all_categories
 
@@ -162,16 +162,16 @@ class TestCompleteThemes:
 
     @pytest.mark.native
     @pytest.mark.nondestructive
-    def test_that_last_complete_themes_page_is_not_empty(self, mozwebqa):
-        home_page = Home(mozwebqa)
+    def test_that_last_complete_themes_page_is_not_empty(self, base_url, selenium):
+        home_page = Home(base_url, selenium)
         complete_themes_page = home_page.header.click_complete_themes()
         complete_themes_page.paginator.click_last_page()
         assert complete_themes_page.addon_count >= 1
 
     @pytest.mark.action_chains
     @pytest.mark.nondestructive
-    def test_the_displayed_message_for_incompatible_complete_themes(self, mozwebqa):
-        home_page = Home(mozwebqa)
+    def test_the_displayed_message_for_incompatible_complete_themes(self, base_url, selenium):
+        home_page = Home(base_url, selenium)
         complete_themes_page = home_page.header.click_complete_themes()
         complete_themes_page.clear_hover_cards()
 
@@ -186,8 +186,8 @@ class TestCompleteThemes:
 
     @pytest.mark.native
     @pytest.mark.nondestructive
-    def test_that_most_popular_link_is_default(self, mozwebqa):
-        home_page = Home(mozwebqa)
+    def test_that_most_popular_link_is_default(self, base_url, selenium):
+        home_page = Home(base_url, selenium)
         complete_themes_page = home_page.header.click_complete_themes()
         url_current_page = complete_themes_page.get_url_current_page()
         assert url_current_page.endswith('/complete-themes/')
@@ -195,8 +195,8 @@ class TestCompleteThemes:
 
     @pytest.mark.native
     @pytest.mark.nondestructive
-    def test_sorted_by_most_users_is_default(self, mozwebqa):
-        home_page = Home(mozwebqa)
+    def test_sorted_by_most_users_is_default(self, base_url, selenium):
+        home_page = Home(base_url, selenium)
         complete_themes_page = home_page.header.click_complete_themes()
         url_current_page = complete_themes_page.get_url_current_page()
         assert url_current_page.endswith('/complete-themes/')

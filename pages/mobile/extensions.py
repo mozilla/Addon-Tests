@@ -25,4 +25,4 @@ class Extensions(Base):
     def click_sort_by(self):
         self.selenium.find_element(*self._sort_by_locator).click()
         from pages.mobile.regions.sorter import Sorter
-        return Sorter(self.testsetup)
+        return Sorter(self.base_url, self.selenium)

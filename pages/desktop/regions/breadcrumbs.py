@@ -14,14 +14,14 @@ class Breadcrumbs(Page):
 
     @property
     def breadcrumbs(self):
-        return [self.BreadcrumbItem(self.testsetup, breadcrumb_list_item)
+        return [self.BreadcrumbItem(self.base_url, self.selenium, breadcrumb_list_item)
                 for breadcrumb_list_item in self.selenium.find_elements(*self._breadcrumbs_locator)]
 
     class BreadcrumbItem(Page):
         _link_locator = (By.CSS_SELECTOR, 'a')
 
-        def __init__(self, testsetup, breadcrumb_list_element):
-            Page.__init__(self, testsetup)
+        def __init__(self, base_url, selenium, breadcrumb_list_element):
+            Page.__init__(self, base_url, selenium)
             self._root_element = breadcrumb_list_element
 
         def click(self):

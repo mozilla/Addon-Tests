@@ -9,6 +9,6 @@ from pages.page import Page
 
 class AddonItem(Page):
 
-    def __init__(self, testsetup, element):
-        Page.__init__(self, testsetup)
+    def __init__(self, base_url, selenium, element):
+        Page.__init__(self, base_url, selenium)
         self._root_element = element

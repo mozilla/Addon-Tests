@@ -44,9 +44,9 @@ class Home(Base):
 
     _up_and_coming_locator = (By.ID, "upandcoming")
 
-    def __init__(self, testsetup, open_url=True):
+    def __init__(self, base_url, selenium, open_url=True):
         """Creates a new instance of the class and gets the page ready for testing."""
-        Base.__init__(self, testsetup)
+        Base.__init__(self, base_url, selenium)
         if open_url:
             self.selenium.get(self.base_url)
         WebDriverWait(self.selenium, self.timeout).until(lambda s: s.find_element(*self._promo_box_locator).size['height'] == 271)
@@ -60,22 +60,22 @@ class Home(Base):
     def click_featured_themes_see_all_link(self):
         self.selenium.find_element(*self._featured_themes_see_all_link).click()
         from pages.desktop.themes import Themes
-        return Themes(self.testsetup)
+        return Themes(self.base_url, self.selenium)
 
     def click_featured_collections_see_all_link(self):
         self.selenium.find_element(*self._featured_collections_locator).find_element(By.CSS_SELECTOR, " a").click()
         from pages.desktop.collections import Collections
-        return Collections(self.testsetup)
+        return Collections(self.base_url, self.selenium)
 
     def click_to_explore(self, what):
         what = what.replace(' ', '_').lower()
         self.selenium.find_element(*getattr(self, "_explore_%s_link_locator" % what)).click()
         from pages.desktop.extensions import ExtensionsHome
-        return ExtensionsHome(self.testsetup)
+        return ExtensionsHome(self.base_url, self.selenium)
 
     def get_category(self):
         from pages.desktop.category import Category
-        return Category(self.testsetup)
+        return Category(self.base_url, self.selenium)
 
     @property
     def most_popular_count(self):
@@ -117,7 +117,7 @@ class Home(Base):
     @property
     def up_and_coming_island(self):
         from pages.desktop.regions.island import Island
-        return Island(self.testsetup, self.selenium.find_element(*self._up_and_coming_locator))
+        return Island(self.base_url, self.selenium, self.selenium.find_element(*self._up_and_coming_locator))
 
     @property
     def explore_side_navigation_header_text(self):
@@ -138,7 +138,7 @@ class Home(Base):
     def click_on_first_addon(self):
         self.selenium.find_element(*self._first_addon_locator).click()
         from pages.desktop.details import Details
-        return Details(self.testsetup)
+        return Details(self.base_url, self.selenium)
 
     def get_title_of_link(self, name):
         name = name.lower().replace(" ", "_")
@@ -151,20 +151,20 @@ class Home(Base):
 
     @property
     def most_popular_items(self):
-        return [self.MostPopularRegion(self.testsetup, web_element)
+        return [self.MostPopularRegion(self.base_url, self.selenium, web_element)
                 for web_element in self.selenium.find_elements(*self._most_popular_item_locator)]
 
     def click_featured_extensions_see_all_link(self):
         self.selenium.find_element(*self._featured_extensions_see_all_locator).click()
         from pages.desktop.extensions import ExtensionsHome
-        return ExtensionsHome(self.testsetup)
+        return ExtensionsHome(self.base_url, self.selenium)
 
     class MostPopularRegion(Page):
         _name_locator = (By.TAG_NAME, "span")
         _users_locator = (By.CSS_SELECTOR, "small")
 
-        def __init__(self, testsetup, element):
-            Page.__init__(self, testsetup)
+        def __init__(self, base_url, selenium, element):
+            Page.__init__(self, base_url, selenium)
             self._root_element = element
 
         @property
@@ -178,7 +178,7 @@ class Home(Base):
 
     @property
     def featured_extensions(self):
-        return [self.FeaturedExtensions(self.testsetup, web_element)
+        return [self.FeaturedExtensions(self.base_url, self.selenium, web_element)
                 for web_element in self.selenium.find_elements(*self._featured_extensions_elements_locator)]
 
     class FeaturedExtensions(Page):
@@ -187,8 +187,8 @@ class Home(Base):
         _summary_locator = (By.CSS_SELECTOR, 'div.addon > div.more > .addon-summary')
         _link_locator = (By.CSS_SELECTOR, 'div.addon > .summary')
 
-        def __init__(self, testsetup, web_element):
-            Page.__init__(self, testsetup)
+        def __init__(self, base_url, selenium, web_element):
+            Page.__init__(self, base_url, selenium)
             self._root_element = web_element
 
         @property
@@ -213,4 +213,4 @@ class Home(Base):
                 move_to_element(author_item).click().\
                 perform()
             from pages.desktop.user import User
-            return User(self.testsetup)
+            return User(self.base_url, self.selenium)

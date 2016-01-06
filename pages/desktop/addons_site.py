@@ -32,7 +32,7 @@ class WriteReviewBlock(Base):
 
     def click_to_save_review(self):
         self.selenium.find_element(*self._add_review_submit_button_locator).click()
-        return ViewReviews(self.testsetup)
+        return ViewReviews(self.base_url, self.selenium)
 
     @property
     def is_review_box_visible(self):
@@ -46,12 +46,12 @@ class ViewReviews(Base):
     @property
     def reviews(self):
         """Returns review object with index."""
-        return [self.ReviewSnippet(self.testsetup, web_element) for web_element in self.selenium.find_elements(*self._review_locator)]
+        return [self.ReviewSnippet(self.base_url, self.selenium, web_element) for web_element in self.selenium.find_elements(*self._review_locator)]
 
     @property
     def paginator(self):
         from pages.desktop.regions.paginator import Paginator
-        return Paginator(self.testsetup)
+        return Paginator(self.base_url, self.selenium)
 
     class ReviewSnippet(Base):
 
@@ -62,8 +62,8 @@ class ViewReviews(Base):
         _delete_review_locator = (By.CSS_SELECTOR, '.delete-review')
         _delete_review_mark_locator = (By.CSS_SELECTOR, '.item-actions > li:nth-child(2)')
 
-        def __init__(self, testsetup, element):
-            Base.__init__(self, testsetup)
+        def __init__(self, base_url, selenium, element):
+            Base.__init__(self, base_url, selenium)
             self._root_element = element
 
         @property

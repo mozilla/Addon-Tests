@@ -44,78 +44,78 @@ class TestHome:
             "Add-ons for Mobile", "Dictionaries & Language Packs", "Search Tools", "Developer Hub"])]
 
     @pytest.mark.nondestructive
-    def test_that_checks_the_most_popular_section_exists(self, mozwebqa):
-        home_page = Home(mozwebqa)
+    def test_that_checks_the_most_popular_section_exists(self, base_url, selenium):
+        home_page = Home(base_url, selenium)
         assert 'MOST POPULAR' in home_page.most_popular_list_heading
         assert 10 == home_page.most_popular_count
 
     @pytest.mark.nondestructive
-    def test_that_checks_the_promo_box_exists(self, mozwebqa):
-        home_page = Home(mozwebqa)
+    def test_that_checks_the_promo_box_exists(self, base_url, selenium):
+        home_page = Home(base_url, selenium)
         assert home_page.promo_box_present
 
     @pytest.mark.smoke
     @pytest.mark.nondestructive
-    def test_that_clicking_on_addon_name_loads_details_page(self, mozwebqa):
-        home_page = Home(mozwebqa)
+    def test_that_clicking_on_addon_name_loads_details_page(self, base_url, selenium):
+        home_page = Home(base_url, selenium)
         details_page = home_page.click_on_first_addon()
         assert details_page.is_the_current_page
 
     @pytest.mark.smoke
     @pytest.mark.nondestructive
-    def test_that_featured_themes_exist_on_the_home(self, mozwebqa):
-        home_page = Home(mozwebqa)
+    def test_that_featured_themes_exist_on_the_home(self, base_url, selenium):
+        home_page = Home(base_url, selenium)
         assert u'Featured Themes See all \xbb', 'Featured Themes region title doesn\'t match' == home_page.featured_themes_title
         assert home_page.featured_themes_count >= 6
 
     @pytest.mark.nondestructive
-    def test_that_clicking_see_all_themes_link_works(self, mozwebqa):
-        home_page = Home(mozwebqa)
+    def test_that_clicking_see_all_themes_link_works(self, base_url, selenium):
+        home_page = Home(base_url, selenium)
         featured_theme_page = home_page.click_featured_themes_see_all_link()
         assert featured_theme_page.is_the_current_page
         assert 'Themes' == featured_theme_page.theme_header
 
     @pytest.mark.native
     @pytest.mark.nondestructive
-    def test_that_extensions_link_loads_extensions_page(self, mozwebqa):
-        home_page = Home(mozwebqa)
+    def test_that_extensions_link_loads_extensions_page(self, base_url, selenium):
+        home_page = Home(base_url, selenium)
         extensions_page = home_page.header.site_navigation_menu("EXTENSIONS").click()
         assert extensions_page.is_the_current_page
 
     @pytest.mark.smoke
     @pytest.mark.nondestructive
-    def test_that_most_popular_section_is_ordered_by_users(self, mozwebqa):
-        home_page = Home(mozwebqa)
+    def test_that_most_popular_section_is_ordered_by_users(self, base_url, selenium):
+        home_page = Home(base_url, selenium)
         most_popular_items = home_page.most_popular_items
         assert sorted(most_popular_items, key=lambda item: item.users_number, reverse=True) == most_popular_items
 
     @pytest.mark.smoke
     @pytest.mark.nondestructive
-    def test_that_featured_collections_exist_on_the_home(self, mozwebqa):
-        home_page = Home(mozwebqa)
+    def test_that_featured_collections_exist_on_the_home(self, base_url, selenium):
+        home_page = Home(base_url, selenium)
         assert u'Featured Collections See all \xbb' == home_page.featured_collections_title, 'Featured Collection region title doesn\'t match'
         assert home_page.featured_collections_count == 4
 
     @pytest.mark.nondestructive
-    def test_that_featured_extensions_exist_on_the_home(self, mozwebqa):
-        home_page = Home(mozwebqa)
+    def test_that_featured_extensions_exist_on_the_home(self, base_url, selenium):
+        home_page = Home(base_url, selenium)
         assert 'Featured Extensions' == home_page.featured_extensions_title, 'Featured Extensions region title doesn\'t match'
         assert u'See all \xbb' == home_page.featured_extensions_see_all, 'Featured Extensions region see all link is not correct'
         assert home_page.featured_extensions_count > 1
 
     @pytest.mark.nondestructive
-    def test_that_clicking_see_all_collections_link_works(self, mozwebqa):
-        home_page = Home(mozwebqa)
+    def test_that_clicking_see_all_collections_link_works(self, base_url, selenium):
+        home_page = Home(base_url, selenium)
         featured_collection_page = home_page.click_featured_collections_see_all_link()
         assert featured_collection_page.is_the_current_page
         assert featured_collection_page.get_url_current_page().endswith('/collections/?sort=featured')
 
     @pytest.mark.native
     @pytest.mark.nondestructive
-    def test_that_items_menu_fly_out_while_hovering(self, mozwebqa):
+    def test_that_items_menu_fly_out_while_hovering(self, base_url, selenium):
 
         # I've adapted the test to check open/closed for all menu items
-        home_page = Home(mozwebqa)
+        home_page = Home(base_url, selenium)
 
         for menu in self.expected_header_menus:
             menu_item = home_page.header.site_navigation_menu(menu.name)
@@ -126,29 +126,29 @@ class TestHome:
 
     @pytest.mark.smoke
     @pytest.mark.nondestructive
-    def test_that_clicking_top_rated_shows_addons_sorted_by_rating(self, mozwebqa):
-        home_page = Home(mozwebqa)
+    def test_that_clicking_top_rated_shows_addons_sorted_by_rating(self, base_url, selenium):
+        home_page = Home(base_url, selenium)
         extensions_page = home_page.click_to_explore('top_rated')
         assert 'sort=rating' in extensions_page.get_url_current_page()
         assert 'Top Rated' == extensions_page.sorter.sorted_by
 
     @pytest.mark.nondestructive
-    def test_that_clicking_most_popular_shows_addons_sorted_by_users(self, mozwebqa):
-        home_page = Home(mozwebqa)
+    def test_that_clicking_most_popular_shows_addons_sorted_by_users(self, base_url, selenium):
+        home_page = Home(base_url, selenium)
         extensions_page = home_page.click_to_explore('popular')
         assert 'sort=users' in extensions_page.get_url_current_page()
         assert 'Most Users' == extensions_page.sorter.sorted_by
 
     @pytest.mark.nondestructive
-    def test_that_clicking_featured_shows_addons_sorted_by_featured(self, mozwebqa):
-        home_page = Home(mozwebqa)
+    def test_that_clicking_featured_shows_addons_sorted_by_featured(self, base_url, selenium):
+        home_page = Home(base_url, selenium)
         extensions_page = home_page.click_to_explore('featured')
         assert 'sort=featured' in extensions_page.get_url_current_page()
         assert 'Featured' == extensions_page.sorter.sorted_by
 
     @pytest.mark.nondestructive
-    def test_header_site_navigation_menus_are_correct(self, mozwebqa):
-        home_page = Home(mozwebqa)
+    def test_header_site_navigation_menus_are_correct(self, base_url, selenium):
+        home_page = Home(base_url, selenium)
 
         # compile lists of the expected and actual top level navigation items
         expected_navigation_menu = [menu.name for menu in self.expected_header_menus]
@@ -158,8 +158,8 @@ class TestHome:
 
     @pytest.mark.action_chains
     @pytest.mark.nondestructive
-    def test_the_name_of_each_site_navigation_menu_in_the_header(self, mozwebqa):
-        home_page = Home(mozwebqa)
+    def test_the_name_of_each_site_navigation_menu_in_the_header(self, base_url, selenium):
+        home_page = Home(base_url, selenium)
 
         # loop through each expected menu and collect a list of the items in the menu
         # and then assert that they exist in the actual menu on the page
@@ -170,8 +170,8 @@ class TestHome:
             assert expected_menu_items == actual_menu_items
 
     @pytest.mark.nondestructive
-    def test_top_three_items_in_each_site_navigation_menu_are_featured(self, mozwebqa):
-        home_page = Home(mozwebqa)
+    def test_top_three_items_in_each_site_navigation_menu_are_featured(self, base_url, selenium):
+        home_page = Home(base_url, selenium)
 
         # loop through each actual top level menu
         for actual_menu in home_page.header.site_navigation_menus:
@@ -188,9 +188,9 @@ class TestHome:
                     assert not item.is_featured
 
     @pytest.mark.nondestructive
-    def test_that_checks_the_up_and_coming_extensions_island(self, mozwebqa):
+    def test_that_checks_the_up_and_coming_extensions_island(self, base_url, selenium):
 
-        home_page = Home(mozwebqa)
+        home_page = Home(base_url, selenium)
 
         up_and_coming_island = home_page.up_and_coming_island
 
@@ -211,9 +211,9 @@ class TestHome:
 
     @pytest.mark.native
     @pytest.mark.nondestructive
-    def test_addons_author_link(self, mozwebqa):
+    def test_addons_author_link(self, base_url, selenium):
 
-        home_page = Home(mozwebqa)
+        home_page = Home(base_url, selenium)
         first_addon = home_page.featured_extensions[0]
 
         first_author = first_addon.author_name
@@ -222,23 +222,23 @@ class TestHome:
         assert first_author[0] == user_page.username
         assert 'user' in user_page.get_url_current_page()
 
-    def test_that_checks_explore_side_navigation(self, mozwebqa):
-        home_page = Home(mozwebqa)
+    def test_that_checks_explore_side_navigation(self, base_url, selenium):
+        home_page = Home(base_url, selenium)
         assert 'EXPLORE' == home_page.explore_side_navigation_header_text
         assert 'Featured' == home_page.explore_featured_link_text
         assert 'Most Popular' == home_page.explore_popular_link_text
         assert 'Top Rated' == home_page.explore_top_rated_link_text
 
     @pytest.mark.nondestructive
-    def test_that_clicking_see_all_extensions_link_works(self, mozwebqa):
-        home_page = Home(mozwebqa)
+    def test_that_clicking_see_all_extensions_link_works(self, base_url, selenium):
+        home_page = Home(base_url, selenium)
         featured_extension_page = home_page.click_featured_extensions_see_all_link()
         assert featured_extension_page.is_the_current_page
         assert featured_extension_page.get_url_current_page().endswith('/extensions/?sort=featured')
 
     @pytest.mark.nondestructive
-    def test_that_checks_all_categories_side_navigation(self, mozwebqa):
-        home_page = Home(mozwebqa)
+    def test_that_checks_all_categories_side_navigation(self, base_url, selenium):
+        home_page = Home(base_url, selenium)
         category_region = home_page.get_category()
         assert 'CATEGORIES' == category_region.categories_side_navigation_header_text
         assert 'Alerts & Updates' == category_region.categories_alert_updates_header_text
@@ -257,8 +257,8 @@ class TestHome:
         assert 'Other' == category_region.categories_other_header_text
 
     @pytest.mark.nondestructive
-    def test_that_checks_other_applications_menu(self, mozwebqa):
-        home_page = Home(mozwebqa)
+    def test_that_checks_other_applications_menu(self, base_url, selenium):
+        home_page = Home(base_url, selenium)
 
         # Thunderbird
         assert home_page.header.is_other_application_visible('Thunderbird')

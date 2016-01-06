@@ -14,7 +14,7 @@ class TestSearch:
     positive_search_term = "firefox"
 
     @pytest.mark.nondestructive
-    def test_that_search_returns_results(self, mozwebqa):
-        home = Home(mozwebqa)
+    def test_that_search_returns_results(self, base_url, selenium):
+        home = Home(base_url, selenium)
         search_page = home.search_for(self.positive_search_term)
         assert len(search_page.results) > 0

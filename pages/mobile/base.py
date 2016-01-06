@@ -17,11 +17,11 @@ class Base(Page):
 
     @property
     def footer(self):
-        return Base.Footer(self.testsetup)
+        return Base.Footer(self.base_url, self.selenium)
 
     @property
     def header(self):
-        return Base.HeaderRegion(self.testsetup)
+        return Base.HeaderRegion(self.base_url, self.selenium)
 
     class Footer(Page):
         _desktop_version_locator = (By.CSS_SELECTOR, 'a.desktop-link')
@@ -33,7 +33,7 @@ class Base(Page):
         def click_desktop_version(self):
             self.selenium.find_element(*self._desktop_version_locator).click()
             from pages.desktop.home import Home
-            return Home(self.testsetup)
+            return Home(self.base_url, self.selenium)
 
         @property
         def desktop_version_text(self):
@@ -71,14 +71,14 @@ class Base(Page):
         @property
         def dropdown_menu_items(self):
             # returns a list containing all the menu items
-            return [self.MenuItem(self.testsetup, web_element) for web_element in self.selenium.find_elements(*self._menu_items_locator)]
+            return [self.MenuItem(self.base_url, self.selenium, web_element) for web_element in self.selenium.find_elements(*self._menu_items_locator)]
 
         class MenuItem(Page):
 
             _name_items_locator = (By.CSS_SELECTOR, 'a')
 
-            def __init__(self, testsetup, element):
-                Page.__init__(self, testsetup)
+            def __init__(self, base_url, selenium, element):
+                Page.__init__(self, base_url, selenium)
                 self._root_element = element
 
             @property

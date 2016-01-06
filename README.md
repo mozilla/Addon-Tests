@@ -86,16 +86,19 @@ Tests are run using the command line. Below are a couple of examples of running 
 
 To run all of the desktop tests against the default environment, which is the add-ons development environment:
 
-	py.test --driver=firefox --variables=my_variables.json tests/desktop
-	
-To run against a different environment, pass in a value for --baseurl, like so:
+```bash
+$ py.test --driver Firefox --variables my_variables.json tests/desktop
+```
 
-	py.test --baseurl=https://addons.allizom.org --driver=firefox --variables=my_variables.json tests/desktop
+To run against a different environment, pass in a value for `--base-url`, like so:
 
-The pytest plugin that we use for running tests has a number of advanced command-line 
-options available. To see the options available, try running:
+```bash
+$ py.test --base-url https://addons.allizom.org --driver Firefox --variables my_variables.json tests/desktop
+```
 
-    py.test --help
+The pytest plugin that we use for running tests has a number of advanced
+command line options available. To see the options available, run
+`py.test --help`. The full documentation for the plugin can be found
+[here][pytest-selenium].
 
-The full documentation for the plugin can be found at the [pytest-mozwebqa GitHub project page] [pymozwebqa].
-[pymozwebqa]: https://github.com/mozilla/pytest-mozwebqa
+[pytest-selenium]: http://pytest-selenium.readthedocs.org/
