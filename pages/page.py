@@ -17,13 +17,30 @@ class Page(object):
     Base class for all Pages.
     """
 
-    def __init__(self, base_url, selenium):
+    def __init__(self, base_url, selenium, **kwargs):
         """
         Constructor
         """
         self.base_url = base_url
         self.selenium = selenium
         self.timeout = 10
+        self.wait = WebDriverWait(self.selenium, self.timeout)
+        self.kwargs = kwargs
+
+    def open(self):
+        self.selenium.get(self.url)
+        self.wait_for_page_to_load()
+        return self
+
+    @property
+    def url(self):
+        if self._url is not None:
+            return self._url.format(base_url=self.base_url, **self.kwargs)
+        return self.base_url
+
+    def wait_for_page_to_load(self):
+        self.wait.until(lambda s: self.url in s.current_url)
+        return self
 
     def get_url(self, url):
         self.selenium.get(url)

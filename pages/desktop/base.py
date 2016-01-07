@@ -16,11 +16,16 @@ from pages.page import Page
 
 class Base(Page):
 
+    _url = '{base_url}/{locale}'
+
     _amo_logo_locator = (By.CSS_SELECTOR, ".site-title")
     _amo_logo_link_locator = (By.CSS_SELECTOR, ".site-title a")
     _amo_logo_image_locator = (By.CSS_SELECTOR, ".site-title img")
 
     _footer_locator = (By.CSS_SELECTOR, "#footer")
+
+    def __init__(self, base_url, selenium, locale='en-US', **kwargs):
+        super(Base, self).__init__(base_url, selenium, locale=locale, **kwargs)
 
     def login(self, email, password):
         login_page = self.header.click_login()

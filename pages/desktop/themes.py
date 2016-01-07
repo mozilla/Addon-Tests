@@ -15,6 +15,8 @@ from pages.desktop.search import SearchResultList
 
 class Themes(Base):
 
+    _url = '{base_url}/{locale}/firefox/themes/'
+
     _page_title = "Themes :: Add-ons for Firefox"
     _start_exploring_locator = (By.CSS_SELECTOR, "#featured-addons.personas-home a.more-info")
     _featured_addons_locator = (By.CSS_SELECTOR, "#featured-addons.personas-home")

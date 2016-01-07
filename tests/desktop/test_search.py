@@ -9,6 +9,10 @@ import pytest
 
 
 from pages.desktop.home import Home
+from pages.desktop.complete_themes import CompleteThemes
+from pages.desktop.collections import Collections
+from pages.desktop.extensions import ExtensionsHome
+from pages.desktop.themes import Themes
 
 
 class TestSearch:
@@ -189,42 +193,55 @@ class TestSearch:
         else:
             assert number == search_page.result_count
 
-    @pytest.mark.native
     @pytest.mark.nondestructive
     @pytest.mark.smoke
-    @pytest.mark.parametrize(('addon_type', 'term', 'breadcrumb_component'), [
-        ('Complete Themes', 'nasa', 'Complete Themes'),           # 17350
-        ('Extensions', 'fire', 'Extensions'),
-        ('Themes', 'fox', 'Themes'),        # 17349
-        ('Collections', 'web', 'Collections'),  # 17352
-        # these last two depend on the More menu
-        # ('Add-ons for Mobile', 'fire', 'Extensions')
-        # ('Dictionaries & Language Packs', 'a', 'Dictionaries'),
-    ])
-    def test_searching_for_addon_type_returns_results_of_correct_type(
-        self, base_url, selenium, addon_type, term, breadcrumb_component
-    ):
-        amo_home_page = Home(base_url, selenium)
+    def test_searching_for_extensions(self, base_url, selenium):
+        page = ExtensionsHome(base_url, selenium).open()
+        results_page = page.search_for('fire')
+        assert len(results_page.results) > 0
+        # click through to each result and verify navigation breadcrumbs
+        for i in range(len(results_page.results)):
+            addon = results_page.result(i).click_result()
+            assert 'Extensions' in addon.breadcrumb
+            selenium.back()
 
-        search_results = None
+    @pytest.mark.nondestructive
+    @pytest.mark.smoke
+    def test_searching_for_themes(self, base_url, selenium):
+        page = Themes(base_url, selenium).open()
+        results_page = page.search_for('fox')
+        assert len(results_page.results) > 0
+        # click through to each result and verify navigation breadcrumbs
+        for i in range(len(results_page.results)):
+            addon = results_page.result(i).click_result()
+            assert 'Themes' in addon.breadcrumb
+            selenium.back()
 
-        if (addon_type == 'Complete Themes'):
-            search_results = amo_home_page.search_for(term)
+    @pytest.mark.nondestructive
+    @pytest.mark.smoke
+    @pytest.mark.xfail(reason='https://github.com/mozilla/olympia/issues/1247')
+    def test_searching_for_complete_themes(self, base_url, selenium):
+        page = CompleteThemes(base_url, selenium).open()
+        results_page = page.search_for('nasa')
+        # show results for all firefox versions and platforms
+        results_page.filter.works_with.expand_filter_options()
+        results_page.filter.works_with.click_filter_all_versions_of_firefox()
+        results_page.filter.works_with.click_filter_all_systems()
+        assert len(results_page.results) > 0
+        # click through to each result and verify navigation breadcrumbs
+        for i in range(len(results_page.results)):
+            addon = results_page.result(i).click_result()
+            assert 'Complete Themes' in addon.breadcrumb
+            selenium.back()
 
-            search_results.filter.category.expand_filter_options()
-            search_results.filter.category.click_filter_complete_themes()
-
-            search_results.filter.works_with.expand_filter_options()
-            search_results.filter.works_with.click_filter_all_versions_of_firefox()
-            search_results.filter.works_with.click_filter_all_systems()
-        else:
-            amo_addon_type_page = amo_home_page.header.site_navigation_menu(addon_type).click()
-            search_results = amo_addon_type_page.search_for(term)
-
-        assert search_results.result_count > 0, 'Search did not return results. Search terms: %s' % search_results.selenium.current_url
-
-        # click through to each result and verify navigation breadcrumbs are correct
-        for i in range(search_results.result_count):
-            addon = search_results.result(i).click_result()
-            assert breadcrumb_component in addon.breadcrumb, 'URL: %s' % addon.selenium.current_url
-            addon.return_to_previous_page()
+    @pytest.mark.nondestructive
+    @pytest.mark.smoke
+    def test_searching_for_collections(self, base_url, selenium):
+        page = Collections(base_url, selenium).open()
+        results_page = page.search_for('web')
+        assert len(results_page.results) > 0
+        # click through to each result and verify navigation breadcrumbs
+        for i in range(len(results_page.results)):
+            addon = results_page.result(i).click_result()
+            assert 'Collections' in addon.breadcrumb
+            selenium.back()

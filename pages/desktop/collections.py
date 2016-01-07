@@ -13,6 +13,8 @@ from pages.desktop.search import SearchResultList
 
 class Collections(Base):
 
+    _url = '{base_url}/{locale}/firefox/collections/'
+
     _page_title = "Featured Collections :: Add-ons for Firefox"
     _default_selected_tab_locator = (By.CSS_SELECTOR, "#sorter li.selected")
     _collection_name = (By.CSS_SELECTOR, "h2.collection > span")

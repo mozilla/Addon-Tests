@@ -5,7 +5,6 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
 
 from pages.page import Page
 
@@ -34,57 +33,41 @@ class FilterBase(Page):
             Filter results by Addon category
         '''
 
-        _updating_throbber_locator = (By.CLASS_NAME, 'updating')
         _category_section_locator = (By.ID, 'category-facets')
         _expand_category_section_locator = (By.CSS_SELECTOR, '#category-facets h3')
+        _selected_filter_locator = (By.CSS_SELECTOR, '#category-facets .selected a')
         _complete_themes_filter_locator = (By.CSS_SELECTOR, "#category-facets > ul > li:nth-child(3) > a")
-
-        @property
-        def are_filter_options_exanded(self):
-            return 'active' in \
-                   self.selenium.find_element(*self._category_section_locator).get_attribute('class')
-
-        def wait_for_result_set_to_update(self):
-            WebDriverWait(self.selenium, self.timeout)\
-                .until(lambda s: self.is_element_visible(*self._updating_throbber_locator) is False)
 
         def expand_filter_options(self):
             self.selenium.find_element(*self._expand_category_section_locator).click()
+            self.wait(lambda s: 'active' in s.find_element(*self._category_section_locator).get_attribute('class'))
 
         def click_filter_complete_themes(self):
             self.selenium.find_element(*self._complete_themes_filter_locator).click()
-            self.wait_for_result_set_to_update()
+            self.wait.until(lambda s: s.find_element(*self._complete_themes_filter_locator) == s.find_element(*self._selected_filters_locator))
 
     class WorksWith(Page):
         '''
             Filter results by version of Firefox and Operating System
         '''
 
-        _updating_throbber_locator = (By.CLASS_NAME, 'updating')
         _works_with_section_locator = (By.ID, 'compat-facets')
         _expand_works_with_section_locator = (By.CSS_SELECTOR, '#compat-facets h3')
+        _selected_filters_locator = (By.CSS_SELECTOR, '#compat-facets .selected a')
         _any_firefox_filter_locator = (By.CSS_SELECTOR, '#compat-facets a[data-params*=any]')
         _all_systems_filter_locator = (By.CSS_SELECTOR, '#compat-facets a[data-params*=all]')
 
-        @property
-        def are_filter_options_expanded(self):
-            return 'active' in \
-                   self.selenium.find_element(*self._works_with_section_locator).get_attribute('class')
-
-        def wait_for_result_set_to_update(self):
-            WebDriverWait(self.selenium, self.timeout)\
-                .until(lambda s: self.is_element_visible(*self._updating_throbber_locator) is False)
-
         def expand_filter_options(self):
             self.selenium.find_element(*self._expand_works_with_section_locator).click()
+            self.wait.until(lambda s: 'active' in s.find_element(*self._works_with_section_locator).get_attribute('class'))
 
         def click_filter_all_versions_of_firefox(self):
             self.selenium.find_element(*self._any_firefox_filter_locator).click()
-            self.wait_for_result_set_to_update()
+            self.wait.until(lambda s: s.find_element(*self._any_firefox_filter_locator) in s.find_elements(*self._selected_filters_locator))
 
         def click_filter_all_systems(self):
             self.selenium.find_element(*self._all_systems_filter_locator).click()
-            self.wait_for_result_set_to_update()
+            self.wait.until(lambda s: s.find_element(*self._all_systems_filter_locator) in s.find_elements(*self._selected_filters_locator))
 
     class Tag(Page):
 

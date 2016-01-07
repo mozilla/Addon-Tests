@@ -15,6 +15,8 @@ from pages.desktop.search import SearchResultList
 
 class CompleteThemes(Base):
 
+    _url = '{base_url}/{locale}/firefox/complete-themes/'
+
     _grid_container_locator = (By.ID, 'themes-listing')
     _addons_root_locator = (By.CSS_SELECTOR, '.listing-grid > li')
     _addon_name_locator = (By.CSS_SELECTOR, 'h3')
