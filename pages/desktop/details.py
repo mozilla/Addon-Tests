@@ -6,6 +6,7 @@ import re
 
 from urllib2 import urlparse
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as expected
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.action_chains import ActionChains
 
@@ -551,10 +552,9 @@ class Details(Base):
 
         def __init__(self, base_url, selenium):
             Page.__init__(self, base_url, selenium)
-
-            WebDriverWait(self.selenium, self.timeout).until(
-                lambda s: s.find_element(*self._make_contribution_button_locator).is_displayed(),
-                "Timeout waiting for 'make contribution' button.")
+            self.wait.until(expected.visibility_of_element_located(
+                self._make_contribution_button_locator),
+                'Make Contribution button is not displayed')
 
         def click_make_contribution_button(self):
             self.selenium.maximize_window()
