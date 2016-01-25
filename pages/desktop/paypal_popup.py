@@ -26,6 +26,7 @@ class PayPalPopup(Page):
         self.selenium.find_element(*self._email_locator).send_keys(email)
         self.selenium.find_element(*self._password_locator).send_keys(password)
         self.selenium.find_element(*self._login_locator).click()
+        self.wait.until(lambda s: self.is_user_logged_into_paypal)
 
     def close_paypal_popup(self):
         self.selenium.find_element(*self._pay_button_locator).click()
