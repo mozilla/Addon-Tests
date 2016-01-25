@@ -92,7 +92,7 @@ class TestHome:
     def test_that_featured_collections_exist_on_the_home(self, base_url, selenium):
         home_page = Home(base_url, selenium)
         assert u'Featured Collections See all \xbb' == home_page.featured_collections_title, 'Featured Collection region title doesn\'t match'
-        assert home_page.featured_collections_count == 4
+        assert home_page.featured_collections_count > 0
 
     @pytest.mark.nondestructive
     def test_that_featured_extensions_exist_on_the_home(self, base_url, selenium):
