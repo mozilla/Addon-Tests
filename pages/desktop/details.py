@@ -47,8 +47,6 @@ class Details(Base):
     _source_code_license_information_locator = (By.CSS_SELECTOR, ".source > li > a")
     _reviews_title_locator = (By.CSS_SELECTOR, "#reviews > h2")
     _tags_locator = (By.ID, "tagbox")
-    _other_addons_header_locator = (By.CSS_SELECTOR, "h2.compact-bottom")
-    _other_addons_list_locator = (By.CSS_SELECTOR, ".primary .listing-grid")
     _part_of_collections_header_locator = (By.CSS_SELECTOR, "#collections-grid h2")
     _part_of_collections_list_locator = (By.CSS_SELECTOR, "#collections-grid section li")
     _icon_locator = (By.CSS_SELECTOR, "img.icon")
@@ -223,10 +221,6 @@ class Details(Base):
         return [review.text for review in self.selenium.find_elements(*self._review_details_locator)]
 
     @property
-    def often_used_with_header(self):
-        return self.selenium.find_element(*self._other_addons_header_locator).text
-
-    @property
     def devs_comments_title(self):
         return self.selenium.find_element(*self._devs_comments_title_locator).text
 
@@ -290,10 +284,6 @@ class Details(Base):
         is in view.
         """
         return (self.selenium.execute_script('return window.pageYOffset')) > 1000
-
-    @property
-    def is_often_used_with_list_visible(self):
-        return self.is_element_visible(*self._other_addons_list_locator)
 
     @property
     def are_tags_visible(self):

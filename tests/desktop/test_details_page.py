@@ -72,12 +72,6 @@ class TestDetails:
             assert review is not None
 
     @pytest.mark.nondestructive
-    def test_that_in_often_used_with_addons_are_displayed(self, base_url, selenium):
-        details_page = Details(base_url, selenium, "Firebug")
-        assert u'Often used with\u2026' == details_page.often_used_with_header
-        assert details_page.is_often_used_with_list_visible
-
-    @pytest.mark.nondestructive
     def test_that_tags_are_displayed(self, base_url, selenium):
         details_page = Details(base_url, selenium, "Firebug")
         assert details_page.are_tags_visible
