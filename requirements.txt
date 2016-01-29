@@ -1,3 +1,4 @@
+fxapom==1.6
 pytest==2.7.3
 pytest-selenium
 pytest-variables

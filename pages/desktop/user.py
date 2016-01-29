@@ -2,8 +2,9 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import re
+
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import NoSuchAttributeException
@@ -18,15 +19,24 @@ class Login(Base):
 
     _email_locator = (By.ID, 'id_username')
     _password_locator = (By.ID, 'id_password')
+    _continue_button_locator = (By.CSS_SELECTOR, '#normal-login .login-source-button')
+    _login_button_locator = (By.ID, 'login-submit')
 
     def login(self, email, password):
         self.selenium.find_element(*self._email_locator).send_keys(email)
-        self.selenium.find_element(*self._password_locator).send_keys(password + Keys.RETURN)
+        if '-dev' in self.base_url:
+            # New FxA login flow is only active on dev at this time
+            self.selenium.find_element(*self._continue_button_locator).click()
+            from fxapom.pages.sign_in import SignIn
+            sign_in = SignIn(self.selenium)
+            sign_in.login_password = password
+            sign_in.click_sign_in()
+        else:
+            self.selenium.find_element(*self._password_locator).send_keys(password)
+            self.selenium.find_element(*self._login_button_locator).click()
 
 
 class ViewProfile(Base):
-
-    _page_title = 'User Info for amo.account :: Add-ons for Firefox'
 
     _about_locator = (By.CSS_SELECTOR, "div.island > section.primary > h2")
     _email_locator = (By.CSS_SELECTOR, 'a.email')
@@ -35,6 +45,12 @@ class ViewProfile(Base):
         Base.__init__(self, base_url, selenium)
         WebDriverWait(self.selenium, self.timeout).until(
             lambda s: (s.find_element(*self._about_locator)).is_displayed())
+
+    @property
+    def is_the_current_page(self):
+        WebDriverWait(self.selenium, self.timeout).until(
+            lambda s: re.match('User Info for .+ :: Add-ons for Firefox', s.title) is not None)
+        return True
 
     @property
     def about_me(self):
@@ -64,6 +80,7 @@ class EditProfile(Base):
     _page_title = 'Account Settings :: Add-ons for Firefox'
 
     _account_locator = (By.CSS_SELECTOR, "#acct-account > legend")
+    _username_locator = (By.ID, 'id_username')
     _profile_locator = (By.CSS_SELECTOR, "#profile-personal > legend")
     _details_locator = (By.CSS_SELECTOR, "#profile-detail > legend")
     _notification_locator = (By.CSS_SELECTOR, "#acct-notify > legend")
@@ -80,6 +97,9 @@ class EditProfile(Base):
     @property
     def account_header_text(self):
         return self.selenium.find_element(*self._account_locator).text
+
+    def type_username(self, value):
+        self.selenium.find_element(*self._username_locator).send_keys(value)
 
     @property
     def profile_header_text(self):
