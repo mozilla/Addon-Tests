@@ -15,10 +15,10 @@ class TestPaypal:
     addon_name = 'Firebug'
 
     @pytest.mark.login
-    def test_that_user_can_contribute_to_an_addon(self, base_url, selenium, existing_user, paypal_user):
+    def test_that_user_can_contribute_to_an_addon(self, base_url, selenium, user, paypal_user):
         """Test that checks the Contribute button for an add-on using PayPal."""
         addon_page = Home(base_url, selenium)
-        addon_page.login(existing_user['email'], existing_user['password'])
+        addon_page.login(user['email'], user['password'])
         assert addon_page.is_the_current_page
         assert addon_page.header.is_user_logged_in
 
@@ -65,11 +65,10 @@ class TestPaypal:
         assert addon_page.is_paypal_login_dialog_visible
 
     @pytest.mark.smoke
-    @pytest.mark.nondestructive
     @pytest.mark.login
-    def test_that_make_contribution_button_is_clickable_and_loads_paypal_frame_while_user_is_logged_in(self, base_url, selenium, existing_user):
+    def test_that_make_contribution_button_is_clickable_and_loads_paypal_frame_while_user_is_logged_in(self, base_url, selenium, user):
         addon_page = Details(base_url, selenium, self.addon_name)
-        addon_page.login(existing_user['email'], existing_user['password'])
+        addon_page.login(user['email'], user['password'])
         assert addon_page.is_the_current_page
         assert addon_page.header.is_user_logged_in
 

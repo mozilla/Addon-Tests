@@ -236,14 +236,13 @@ class TestDetails:
         home_page.return_to_previous_page()
         assert 'Firebug' == detail_page.breadcrumbs[2].text
 
-    @pytest.mark.nondestructive
     @pytest.mark.login
-    def test_that_add_a_review_button_works(self, base_url, selenium, existing_user):
+    def test_that_add_a_review_button_works(self, base_url, selenium, user):
         # Step 1: Addons Home Page loads and Addons Details loads
         home_page = Home(base_url, selenium)
 
         # Step 2:user logs in to submit a review
-        home_page.login(existing_user['email'], existing_user['password'])
+        home_page.login(user['email'], user['password'])
         assert home_page.header.is_user_logged_in
 
         # Step 3: user loads an addon details page and clicks write a review button

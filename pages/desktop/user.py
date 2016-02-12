@@ -18,22 +18,15 @@ class Login(Base):
     _page_title = 'User Login :: Add-ons for Firefox'
 
     _email_locator = (By.ID, 'id_username')
-    _password_locator = (By.ID, 'id_password')
     _continue_button_locator = (By.CSS_SELECTOR, '#normal-login .login-source-button')
-    _login_button_locator = (By.ID, 'login-submit')
 
     def login(self, email, password):
         self.selenium.find_element(*self._email_locator).send_keys(email)
-        if '-dev' in self.base_url:
-            # New FxA login flow is only active on dev at this time
-            self.selenium.find_element(*self._continue_button_locator).click()
-            from fxapom.pages.sign_in import SignIn
-            sign_in = SignIn(self.selenium)
-            sign_in.login_password = password
-            sign_in.click_sign_in()
-        else:
-            self.selenium.find_element(*self._password_locator).send_keys(password)
-            self.selenium.find_element(*self._login_button_locator).click()
+        self.selenium.find_element(*self._continue_button_locator).click()
+        from fxapom.pages.sign_in import SignIn
+        sign_in = SignIn(self.selenium)
+        sign_in.login_password = password
+        sign_in.click_sign_in()
 
 
 class ViewProfile(Base):

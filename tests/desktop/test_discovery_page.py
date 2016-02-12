@@ -67,11 +67,10 @@ class TestDiscoveryPane:
         discovery_pane = DiscoveryPane(services_base_url, selenium, self.basepath(selenium))
         assert 5 == discovery_pane.up_and_coming_item_count
 
-    @pytest.mark.nondestructive
     @pytest.mark.login
-    def test_the_logout_link_for_logged_in_users(self, base_url, services_base_url, selenium, existing_user):
+    def test_the_logout_link_for_logged_in_users(self, base_url, services_base_url, selenium, user):
         home_page = Home(base_url, selenium)
-        home_page.login(existing_user['email'], existing_user['password'])
+        home_page.login(user['email'], user['password'])
         assert home_page.is_the_current_page
         assert home_page.header.is_user_logged_in
 
