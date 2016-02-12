@@ -1,6 +1,8 @@
+.cache
 *.swp
 *.pyc
 *.komodoproject
 *.idea
+__pycache__
 results*
 .DS_store

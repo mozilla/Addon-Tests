@@ -19,7 +19,7 @@ but it does require a few skills.
 By contributing to our test suite you will have an opportunity to learn and/or improve your
 skills with Python, Selenium WebDriver, GitHub, Virtualenv, the Page Object Model, and more.
 
-For some resources for learning about these technologies, take a look at our documentation on 
+For some resources for learning about these technologies, take a look at our documentation on
 [Running Web QA automated tests][runningtests].
 
 [runningtests]: https://developer.mozilla.org/en-US/docs/Mozilla/QA/Running_Web_QA_automated_tests
@@ -31,9 +31,9 @@ https://github.com/mozilla/Addon-Tests/contributors
 
 Questions are always welcome
 ----------------------------
-While we take pains to keep our documentation updated, the best source of information is those 
+While we take pains to keep our documentation updated, the best source of information is those
 of us who work on the project.  
-Don't be afraid to join us in irc.mozilla.org [#mozwebqa][mozwebqa] to ask questions about our 
+Don't be afraid to join us in irc.mozilla.org [#mozwebqa][mozwebqa] to ask questions about our
 Selenium tests.
 We also have a [mailing list][mailing_list] available that you are welcome to join and post to.
 
@@ -47,7 +47,7 @@ If you want to get started quickly, you can try following the steps in our quick
 
 ###Clone the repository
 If you have cloned this project already then you can skip this, otherwise you'll need to clone this repo using Git.
-If you do not know how to clone a GitHub repository, check out this 
+If you do not know how to clone a GitHub repository, check out this
 [help page] (https://help.github.com/articles/cloning-a-repository/) from GitHub.
 
 If you think you would like to contribute to the tests by writing or maintaining them in the future,
@@ -57,28 +57,28 @@ GitHub also has great instructions for [forking a repository] (https://help.gith
 ###Create or activate a Python virtual environment
 You should install this project's dependencies (which is described in the next step) into a virtual environment
 in order to avoid impacting the rest of your system, and to make problem solving easier.
-If you already have a virtual environment for these tests, then you should activate it, 
+If you already have a virtual environment for these tests, then you should activate it,
 otherwise you should create a new one.
-For more information on working with virtual environments see our 
-[our quickstart guide] (https://wiki.mozilla.org/QA/Execution/Web_Testing/Automation/Virtual_Environments) 
+For more information on working with virtual environments see our
+[our quickstart guide] (https://wiki.mozilla.org/QA/Execution/Web_Testing/Automation/Virtual_Environments)
 and also [this blog post] (http://www.silverwareconsulting.com/index.cfm/2012/7/24/Getting-Started-with-virtualenv-and-virtualenvwrapper-in-Python).
 
 ### Install dependencies
-Install the Python packages that are needed to run our tests using pip. In a terminal, 
+Install the Python packages that are needed to run our tests using pip. In a terminal,
 from the the project root, issue the following command:
 
     pip install -Ur requirements.txt
 
 ### Create a variables.json file
-Some of the tests in this repo need to log into the add-ons website and/or PayPal.
-We store the credentials (i.e., username and password) to access those sites in a file 
-called `variables.json`, which we then pass to the tests via the command line. 
-If you want to be able to run any of those tests, you will need your own copy of 
-the `variables.json` file, which you will update to contain your own credentials.
-To do that, make a copy of the `variables.json` file which exists in the project root
- and update that with your own credentials. 
- You will then pass the name of that file on the command line. 
- For the purposes of the examples below, assume you named your copy of the file `my_variables.json`.
+Some of the tests in this repo need to log into PayPal. We store the
+credentials (email and password) to access those sites in a file called
+`variables.json`, which we then pass to the tests via the command line. If you
+want to be able to run any of those tests, you will need your own copy of the
+`variables.json` file, which you will update to contain your own credentials.
+To do that, make a copy of the `variables.json` file which exists in the
+project root and update that with your own credentials. You will then pass the
+name of that file on the command line. For the purposes of the examples below,
+assume you named your copy of the file `my_variables.json`.
 
 ### Run the tests
 

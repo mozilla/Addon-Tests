@@ -217,6 +217,7 @@ class Base(Page):
             ActionChains(self.selenium).move_to_element(hover_element).\
                 move_to_element(click_element).\
                 click().perform()
+            self.wait.until(lambda s: not self.is_user_logged_in)
 
         def click_edit_profile(self):
             item_locator = (By.CSS_SELECTOR, " li:nth-child(2) a")

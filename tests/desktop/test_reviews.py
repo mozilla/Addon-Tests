@@ -48,10 +48,10 @@ class TestReviews:
 
     @pytest.mark.native
     @pytest.mark.login
-    def test_that_new_review_is_saved(self, base_url, selenium, existing_user):
+    def test_that_new_review_is_saved(self, base_url, selenium, user):
         # Step 1 - Login into AMO
         home_page = Home(base_url, selenium)
-        home_page.login(existing_user['email'], existing_user['password'])
+        home_page.login(user['email'], user['password'])
         assert home_page.is_the_current_page
         assert home_page.header.is_user_logged_in
 
@@ -70,7 +70,7 @@ class TestReviews:
         # Step 5 - Assert review
         review = review_page.reviews[0]
         assert 1 == review.rating
-        assert existing_user['name'] == review.author
+        assert user['name'] == review.author
         date = datetime.now(timezone('US/Pacific')).strftime("%B %d, %Y")
         # there are no leading zero-signs on day so we need to remove them too
         expected_date = date.replace(' 0', ' ')

@@ -1,16 +1,4 @@
 {
-  "users": {
-    "default": {
-      "email": "",
-      "password": "",
-      "name": ""
-    },
-    "editable": {
-      "email": "",
-      "password": "",
-      "name": ""
-    }
-  },
   "paypal": {
     "email": "",
     "password": ""
