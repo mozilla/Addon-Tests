@@ -7,7 +7,6 @@ from datetime import datetime
 import pytest
 from pytz import timezone
 
-from pages.desktop.home import Home
 from pages.desktop.details import Details
 
 
@@ -47,27 +46,18 @@ class TestReviews:
         assert page_number + 1 == view_reviews.paginator.page_number
 
     @pytest.mark.native
-    @pytest.mark.login
-    def test_that_new_review_is_saved(self, base_url, selenium, user):
-        # Step 1 - Login into AMO
-        home_page = Home(base_url, selenium)
-        home_page.login(user['email'], user['password'])
-        assert home_page.is_the_current_page
-        assert home_page.header.is_user_logged_in
-
-        # Step 2 - Load any addon detail page
+    @pytest.mark.xfail(reason='https://github.com/mozilla/addons-server/issues/1738')
+    def test_that_new_review_is_saved(self, base_url, selenium, logged_in, user):
         details_page = Details(base_url, selenium, 'Memchaser')
-
-        # Step 3 - Click on "Write review" button
         write_review_block = details_page.click_to_write_review()
 
-        # Step 4 - Write a review
+        # Write a review
         body = 'Automatic addon review by Selenium tests %s' % datetime.now()
         write_review_block.enter_review_with_text(body)
         write_review_block.set_review_rating(1)
         review_page = write_review_block.click_to_save_review()
 
-        # Step 5 - Assert review
+        # Assert review
         review = review_page.reviews[0]
         assert 1 == review.rating
         assert user['name'] == review.author

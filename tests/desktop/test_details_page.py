@@ -13,7 +13,6 @@ from pages.desktop.home import Home
 
 class TestDetails:
 
-    @pytest.mark.login
     @pytest.mark.nondestructive
     def test_that_register_login_link_is_present_in_addon_details_page(self, base_url, selenium):
         details_page = Details(base_url, selenium, "Firebug")
@@ -236,16 +235,7 @@ class TestDetails:
         home_page.return_to_previous_page()
         assert 'Firebug' == detail_page.breadcrumbs[2].text
 
-    @pytest.mark.login
-    def test_that_add_a_review_button_works(self, base_url, selenium, user):
-        # Step 1: Addons Home Page loads and Addons Details loads
-        home_page = Home(base_url, selenium)
-
-        # Step 2:user logs in to submit a review
-        home_page.login(user['email'], user['password'])
-        assert home_page.header.is_user_logged_in
-
-        # Step 3: user loads an addon details page and clicks write a review button
+    def test_that_add_a_review_button_works(self, base_url, selenium, logged_in):
         details_page = Details(base_url, selenium, 'Firebug')
         review_box = details_page.click_to_write_review()
         assert review_box.is_review_box_visible

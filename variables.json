@@ -1,4 +1,10 @@
 {
+  "api": {
+    "hostname": {
+      "jwt_issuer": "",
+      "jwt_secret": ""
+    }
+  },
   "paypal": {
     "email": "",
     "password": ""

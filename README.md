@@ -20,13 +20,10 @@ By contributing to our test suite you will have an opportunity to learn and/or i
 skills with Python, Selenium WebDriver, GitHub, Virtualenv, the Page Object Model, and more.
 
 For some resources for learning about these technologies, take a look at our documentation on
-[Running Web QA automated tests][runningtests].
+[running Web QA automated tests][running-tests].
 
-[runningtests]: https://developer.mozilla.org/en-US/docs/Mozilla/QA/Running_Web_QA_automated_tests
-
-The following contributors have submitted pull requests to Addon-Tests:
-
-https://github.com/mozilla/Addon-Tests/contributors
+All of [these awesome contributors][contributors] have opened pull requests
+against this repository.
 
 
 Questions are always welcome
@@ -37,63 +34,97 @@ Don't be afraid to join us in irc.mozilla.org [#mozwebqa][mozwebqa] to ask quest
 Selenium tests.
 We also have a [mailing list][mailing_list] available that you are welcome to join and post to.
 
-[mozwebqa]:http://widget01.mibbit.com/?settings=1b10107157e79b08f2bf99a11f521973&server=irc.mozilla.org&channel=%23mozwebqa
-[mailing_list]:https://mail.mozilla.org/listinfo/mozwebqa
-
 How to run the tests locally
 -----------------------------------------
-We maintain a [detailed guide][runningtests] to running our automated tests which can be found on the MDN website.
+We maintain a [detailed guide][running-tests] to running our automated tests which can be found on the MDN website.
 If you want to get started quickly, you can try following the steps in our quick-start instructions below:
 
-###Clone the repository
+### Clone the repository
 If you have cloned this project already then you can skip this, otherwise you'll need to clone this repo using Git.
 If you do not know how to clone a GitHub repository, check out this
-[help page] (https://help.github.com/articles/cloning-a-repository/) from GitHub.
+[help page][git-clone] from GitHub.
 
 If you think you would like to contribute to the tests by writing or maintaining them in the future,
 it would be a good idea to create a fork of this repository first, and then clone that.
-GitHub also has great instructions for [forking a repository] (https://help.github.com/articles/fork-a-repo/).
+GitHub also has great instructions for [forking a repository][git-fork].
 
-###Create or activate a Python virtual environment
+### Create or activate a Python virtual environment
 You should install this project's dependencies (which is described in the next step) into a virtual environment
 in order to avoid impacting the rest of your system, and to make problem solving easier.
 If you already have a virtual environment for these tests, then you should activate it,
 otherwise you should create a new one.
 For more information on working with virtual environments see our
-[our quickstart guide] (https://wiki.mozilla.org/QA/Execution/Web_Testing/Automation/Virtual_Environments)
-and also [this blog post] (http://www.silverwareconsulting.com/index.cfm/2012/7/24/Getting-Started-with-virtualenv-and-virtualenvwrapper-in-Python).
+[summary][virtualenv].
 
 ### Install dependencies
 Install the Python packages that are needed to run our tests using pip. In a terminal,
 from the the project root, issue the following command:
 
-    pip install -Ur requirements.txt
+```bash
+$ pip install -Ur requirements.txt
+```
 
-### Create a variables.json file
-Some of the tests in this repo need to log into PayPal. We store the
-credentials (email and password) to access those sites in a file called
-`variables.json`, which we then pass to the tests via the command line. If you
-want to be able to run any of those tests, you will need your own copy of the
-`variables.json` file, which you will update to contain your own credentials.
-To do that, make a copy of the `variables.json` file which exists in the
-project root and update that with your own credentials. You will then pass the
-name of that file on the command line. For the purposes of the examples below,
-assume you named your copy of the file `my_variables.json`.
+### Create test variables files
+
+#### API
+Some tests use the [Add-ons Server API][api] to create necessary test data in
+the application. For this to work you will need to
+[obtain a key and a secret][api-credentials] from the API Credentials
+Management Page and place then in a JSON file with the following format:
+
+```json
+{
+  "api": {
+    "addons.allizom.org": {
+      "jwt_issuer": "",
+      "jwt_secret": ""
+    },
+    "addons-dev.allizom.org": {
+      "jwt_issuer": "",
+      "jwt_secret": ""
+    }
+  }
+}
+```
+
+You will need an entry in this file for each environment you intend to use the
+API for. This file will then need to be referenced on the command line using
+the `--variables` option.
+
+Tests that use the [super-create][api-super-create] endpoint require a user
+in the `Accounts:SuperCreate` group. Speak to a member of the add-ons or Web QA
+team to be added to this group.
+
+#### PayPal
+Some of the tests in this repo need to log into PayPal. If you want to be able
+to run any of these tests, you will need to place your PayPal credentials in a
+JSON file with the following format:
+
+```json
+{
+  "paypal": {
+    "email": "",
+    "password": ""
+  }
+}
+```
+
+This file will then need to be referenced on the command line using the
+`--variables` option.
 
 ### Run the tests
-
 Tests are run using the command line. Below are a couple of examples of running the tests:
 
 To run all of the desktop tests against the default environment, which is the add-ons development environment:
 
 ```bash
-$ py.test --driver Firefox --variables my_variables.json tests/desktop
+$ py.test --driver Firefox --variables api.json --variables paypal.json tests/desktop
 ```
 
 To run against a different environment, pass in a value for `--base-url`, like so:
 
 ```bash
-$ py.test --base-url https://addons.allizom.org --driver Firefox --variables my_variables.json tests/desktop
+$ py.test --base-url https://addons.allizom.org --driver Firefox --variables api.json --variables paypal.json  tests/desktop
 ```
 
 The pytest plugin that we use for running tests has a number of advanced
@@ -101,4 +132,14 @@ command line options available. To see the options available, run
 `py.test --help`. The full documentation for the plugin can be found
 [here][pytest-selenium].
 
+[contributors]: https://github.com/mozilla/Addon-Tests/contributors
+[git-clone]: https://help.github.com/articles/cloning-a-repository/
+[git-fork]: https://help.github.com/articles/fork-a-repo/
+[irc]: http://widget01.mibbit.com/?settings=1b10107157e79b08f2bf99a11f521973&server=irc.mozilla.org&channel=%23mozwebqa
+[list]: https://mail.mozilla.org/listinfo/mozwebqa
 [pytest-selenium]: http://pytest-selenium.readthedocs.org/
+[running-tests]: https://developer.mozilla.org/en-US/docs/Mozilla/QA/Running_Web_QA_automated_tests
+[virtualenv]: https://wiki.mozilla.org/QA/Execution/Web_Testing/Automation/Virtual_Environments
+[api]: http://addons-server.readthedocs.org
+[api-credentials]: http://addons-server.readthedocs.org/en/latest/topics/api/auth.html#access-credentials
+[api-super-create]: http://addons-server.readthedocs.org/en/latest/topics/api/accounts.html#super-creation
