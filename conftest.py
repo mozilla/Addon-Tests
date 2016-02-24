@@ -7,9 +7,9 @@ import pytest
 
 
 @pytest.fixture(scope='session')
-def capabilities(capabilities):
-    capabilities.setdefault('tags', []).append('amo')
-    return capabilities
+def session_capabilities(session_capabilities):
+    session_capabilities.setdefault('tags', []).append('amo')
+    return session_capabilities
 
 
 def pytest_addoption(parser):
