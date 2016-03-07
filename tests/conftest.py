@@ -54,7 +54,6 @@ def user(base_url, fxa_account, jwt_token):
     user = {
         'email': fxa_account.email,
         'password': fxa_account.password,
-        'name': 'FIXME',  # https://github.com/mozilla/addons-server/issues/1738
         'username': fxa_account.email.split('@')[0]}
     url = '{base_url}/api/v3/accounts/super-create/'.format(base_url=base_url)
     params = {

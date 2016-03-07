@@ -40,12 +40,11 @@ class TestCollections:
         assert user_collections.has_no_results
 
     @pytest.mark.native
-    @pytest.mark.xfail(reason='https://github.com/mozilla/addons-server/issues/1738')
     def test_user_my_collections_page(self, base_url, selenium, logged_in, user):
         home_page = Home(base_url, selenium)
         my_collections_page = home_page.header.click_my_collections()
-        assert 'Collections by %s :: Add-ons for Firefox' % user['name'] == my_collections_page.page_title
-        assert 'Collections by %s' % user['name'] == my_collections_page.my_collections_header_text
+        assert 'Collections by %s :: Add-ons for Firefox' % user['display_name'] == my_collections_page.page_title
+        assert 'Collections by %s' % user['display_name'] == my_collections_page.my_collections_header_text
 
     @pytest.mark.native
     def test_user_my_favorites_page(self, base_url, selenium, logged_in):
