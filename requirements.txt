@@ -4,5 +4,5 @@ pytest==2.9.0
 pytest-selenium
 pytest-variables
 pytest-xdist==1.14
-pytz==2015.7
+pytz==2016.1
 requests==2.9.1
