@@ -16,9 +16,7 @@ from pages.desktop.base import Base
 
 class Details(Base):
 
-    _breadcrumb_locator = (By.ID, "breadcrumbs")
-
-    # addon informations
+    # add-on information
     _title_locator = (By.CSS_SELECTOR, 'hgroup .addon')
     _version_number_locator = (By.CSS_SELECTOR, "span.version-number")
     _no_restart_locator = (By.CSS_SELECTOR, "span.no-restart")
@@ -62,7 +60,7 @@ class Details(Base):
     _devs_comments_toggle_locator = (By.CSS_SELECTOR, "#developer-comments h2 a")
     _devs_comments_message_locator = (By.CSS_SELECTOR, "#developer-comments div.content")
 
-    # more about this addon
+    # more about this add-on
     _website_locator = (By.CSS_SELECTOR, ".links a.home")
     # other_addons
     _other_addons_by_author_locator = (By.CSS_SELECTOR, "#author-addons > ul.listing-grid > section li > div.addon")
@@ -85,7 +83,7 @@ class Details(Base):
 
     _add_to_favorites_updating_locator = (By.CSS_SELECTOR, "a.ajax-loading")
 
-    # contribute to addon
+    # contribute to add-on
     _contribute_button_locator = (By.ID, 'contribute-button')
     _paypal_login_dialog_locator = (By.CSS_SELECTOR, '#page .content')
 
@@ -108,10 +106,7 @@ class Details(Base):
     def title(self):
         base = self.selenium.find_element(*self._title_locator).text
         '''base = "firebug 1.8.9" we will have to remove version number for it'''
-        if "Themes" in self.selenium.find_element(*self._breadcrumb_locator).text:
-            return base
-        else:
-            return base.replace(self.version_number, '').replace(self.no_restart, '').strip()
+        return base.replace(self.version_number, '').replace(self.no_restart, '').strip()
 
     @property
     def no_restart(self):
@@ -150,10 +145,6 @@ class Details(Base):
     def daily_users_number(self):
         text = self.selenium.find_element(*self._daily_users_link_locator).text
         return int(text.split()[0].replace(',', ''))
-
-    @property
-    def breadcrumb(self):
-        return self.selenium.find_element(*self._breadcrumb_locator).text
 
     @property
     def version_number(self):

@@ -74,11 +74,6 @@ class Base(Page):
             from pages.desktop.search import SearchResultList
             return SearchResultList(self.base_url, self.selenium)
 
-    @property
-    def breadcrumbs(self):
-        from pages.desktop.regions.breadcrumbs import Breadcrumbs
-        return Breadcrumbs(self.base_url, self.selenium).breadcrumbs
-
     def _extract_iso_dates(self, date_format, *locator):
         """
         Returns a list of iso formatted date strings extracted from

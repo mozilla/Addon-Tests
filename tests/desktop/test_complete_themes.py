@@ -104,31 +104,12 @@ class TestCompleteThemes:
 
     @pytest.mark.native
     @pytest.mark.nondestructive
-    def test_complete_themes_page_breadcrumb(self, base_url, selenium):
-        home_page = Home(base_url, selenium)
-        complete_themes_page = home_page.header.click_complete_themes()
-        expected_breadcrumb = "Complete Themes"
-        assert expected_breadcrumb == complete_themes_page.breadcrumbs[1].text
-
-    @pytest.mark.native
-    @pytest.mark.nondestructive
     def test_that_clicking_on_a_subcategory_loads_expected_page(self, base_url, selenium):
         home_page = Home(base_url, selenium)
         complete_themes_page = home_page.header.click_complete_themes()
         selected_category = complete_themes_page.complete_themes_category
         amo_category_page = complete_themes_page.click_on_first_category()
         assert selected_category == amo_category_page.title
-
-    @pytest.mark.native
-    @pytest.mark.nondestructive
-    def test_complete_themes_subcategory_page_breadcrumb(self, base_url, selenium):
-        home_page = Home(base_url, selenium)
-        complete_themes_page = home_page.header.click_complete_themes()
-        selected_category = complete_themes_page.complete_themes_category
-        amo_category_page = complete_themes_page.click_on_first_category()
-        expected_breadcrumbs = ['Add-ons for Firefox', 'Complete Themes', selected_category]
-        for i in range(len(amo_category_page.breadcrumbs)):
-            assert expected_breadcrumbs[i] == amo_category_page.breadcrumbs[i].text
 
     @pytest.mark.native
     @pytest.mark.nondestructive

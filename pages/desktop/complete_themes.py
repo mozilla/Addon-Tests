@@ -180,7 +180,6 @@ class CompleteTheme(Base):
 
     _addon_title_locator = (By.CSS_SELECTOR, "h1.addon")
     _install_buttons_locator = (By.CSS_SELECTOR, ".install-shell p.install-button a")
-    _breadcrumb_locator = (By.ID, "breadcrumbs")
 
     @property
     def addon_title(self):
@@ -193,15 +192,10 @@ class CompleteTheme(Base):
             [e.is_displayed()
              for e in self.selenium.find_elements(*self._install_buttons_locator)])
 
-    @property
-    def breadcrumb(self):
-        return self.selenium.find_element(*self._breadcrumb_locator).text
-
 
 class CompleteThemesCategory(Base):
 
     _title_locator = (By.CSS_SELECTOR, "section.primary > h1")
-    _breadcrumb_locator = (By.CSS_SELECTOR, "#breadcrumbs > ol")
 
     @property
     def title(self):
