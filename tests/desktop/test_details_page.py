@@ -7,8 +7,6 @@ import re
 import pytest
 
 from pages.desktop.details import Details
-from pages.desktop.extensions import ExtensionsHome
-from pages.desktop.home import Home
 
 
 class TestDetails:
@@ -196,44 +194,12 @@ class TestDetails:
             Details(base_url, selenium, addon_name)
 
     @pytest.mark.nondestructive
-    def test_that_details_page_has_breadcrumb(self, base_url, selenium):
-        detail_page = Details(base_url, selenium, 'firebug')
-        assert 'Add-ons for Firefox' == detail_page.breadcrumbs[0].text
-        assert 'Extensions' == detail_page.breadcrumbs[1].text
-        assert 'Firebug' == detail_page.breadcrumbs[2].text
-
-    @pytest.mark.nondestructive
     def test_that_clicking_info_link_slides_down_page_to_version_info(self, base_url, selenium):
         details_page = Details(base_url, selenium, 'firebug')
         details_page.click_version_info_link()
         assert details_page.version_info_link == details_page.version_information_href
         assert details_page.is_version_information_section_expanded
         assert details_page.is_version_information_section_in_view
-
-    @pytest.mark.nondestructive
-    def test_that_breadcrumb_links_in_details_page_work(self, base_url, selenium):
-        home_page = Home(base_url, selenium)
-        detail_page = Details(base_url, selenium, 'firebug')
-
-        assert 'Add-ons for Firefox' == detail_page.breadcrumbs[0].text
-        link = detail_page.breadcrumbs[0].href_value
-        detail_page.breadcrumbs[0].click()
-
-        assert home_page.is_the_current_page
-        assert home_page.get_url_current_page().endswith(link)
-
-        home_page.return_to_previous_page()
-
-        assert 'Extensions' == detail_page.breadcrumbs[1].text
-        link = detail_page.breadcrumbs[1].href_value
-        detail_page.breadcrumbs[1].click()
-
-        amo_extensions_page = ExtensionsHome(base_url, selenium)
-        assert amo_extensions_page.is_the_current_page
-        assert amo_extensions_page.get_url_current_page().endswith(link)
-
-        home_page.return_to_previous_page()
-        assert 'Firebug' == detail_page.breadcrumbs[2].text
 
     def test_that_add_a_review_button_works(self, base_url, selenium, logged_in):
         details_page = Details(base_url, selenium, 'Firebug')

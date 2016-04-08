@@ -197,11 +197,6 @@ class TestSearch:
         page = ExtensionsHome(base_url, selenium).open()
         results_page = page.search_for('fire')
         assert len(results_page.results) > 0
-        # click through to each result and verify navigation breadcrumbs
-        for i in range(len(results_page.results)):
-            addon = results_page.result(i).click_result()
-            assert 'Extensions' in addon.breadcrumb
-            selenium.back()
 
     @pytest.mark.nondestructive
     @pytest.mark.smoke
@@ -209,11 +204,6 @@ class TestSearch:
         page = Themes(base_url, selenium).open()
         results_page = page.search_for('fox')
         assert len(results_page.results) > 0
-        # click through to each result and verify navigation breadcrumbs
-        for i in range(len(results_page.results)):
-            addon = results_page.result(i).click_result()
-            assert 'Themes' in addon.breadcrumb
-            selenium.back()
 
     @pytest.mark.nondestructive
     @pytest.mark.smoke
@@ -226,11 +216,6 @@ class TestSearch:
         results_page.filter.works_with.click_filter_all_versions_of_firefox()
         results_page.filter.works_with.click_filter_all_systems()
         assert len(results_page.results) > 0
-        # click through to each result and verify navigation breadcrumbs
-        for i in range(len(results_page.results)):
-            addon = results_page.result(i).click_result()
-            assert 'Complete Themes' in addon.breadcrumb
-            selenium.back()
 
     @pytest.mark.nondestructive
     @pytest.mark.smoke
@@ -238,8 +223,3 @@ class TestSearch:
         page = Collections(base_url, selenium).open()
         results_page = page.search_for('web')
         assert len(results_page.results) > 0
-        # click through to each result and verify navigation breadcrumbs
-        for i in range(len(results_page.results)):
-            addon = results_page.result(i).click_result()
-            assert 'Collections' in addon.breadcrumb
-            selenium.back()

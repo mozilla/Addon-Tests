@@ -141,15 +141,6 @@ class TestExtensions:
 
     @pytest.mark.native
     @pytest.mark.nondestructive
-    def test_breadcrumb_menu_in_extensions_page(self, base_url, selenium):
-        home_page = Home(base_url, selenium)
-        featured_extensions_page = home_page.header.site_navigation_menu("Extensions").click()
-        breadcrumbs = featured_extensions_page.breadcrumbs
-        assert 'Add-ons for Firefox' == breadcrumbs[0].text
-        assert 'Extensions' == breadcrumbs[1].text
-
-    @pytest.mark.native
-    @pytest.mark.nondestructive
     def test_that_checks_if_the_subscribe_link_exists(self, base_url, selenium):
         home_page = Home(base_url, selenium)
         featured_extensions_page = home_page.header.site_navigation_menu("Extensions").click()

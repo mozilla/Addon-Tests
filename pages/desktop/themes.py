@@ -88,7 +88,6 @@ class ThemesDetail(Base):
     _page_title_regex = '.+ :: Add-ons for Firefox'
 
     _themes_title_locator = (By.CSS_SELECTOR, 'h2.addon > span')
-    _breadcrumb_locator = (By.ID, "breadcrumbs")
 
     @property
     def is_the_current_page(self):
@@ -104,10 +103,6 @@ class ThemesDetail(Base):
     @property
     def title(self):
         return self.selenium.find_element(*self._themes_title_locator).text
-
-    @property
-    def breadcrumb(self):
-        return self.selenium.find_element(*self._breadcrumb_locator).text
 
 
 class ThemesBrowse(Base):

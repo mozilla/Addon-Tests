@@ -66,7 +66,6 @@ class Collection(Base):
     _collection_name_locator = (By.CSS_SELECTOR, ".collection > span")
     _delete_collection_locator = (By.CSS_SELECTOR, ".delete")
     _delete_confirmation_locator = (By.CSS_SELECTOR, ".section > form > button")
-    _breadcrumb_locator = (By.ID, "breadcrumbs")
 
     @property
     def notification(self):
@@ -82,10 +81,6 @@ class Collection(Base):
     def delete_confirmation(self):
         self.selenium.find_element(*self._delete_confirmation_locator).click()
         return Collections.UserCollections(self.base_url, self.selenium)
-
-    @property
-    def breadcrumb(self):
-        return self.selenium.find_element(*self._breadcrumb_locator).text
 
 
 class CollectionSearchResultList(SearchResultList):
