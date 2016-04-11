@@ -24,7 +24,7 @@ class TestAmoLayout:
         home_page = Home(base_url, selenium)
         assert 'Add-ons' == home_page.amo_logo_text
         assert 'Return to the Firefox Add-ons homepage' == home_page.amo_logo_title
-        assert '/img/app-icons/med/firefox.png' in home_page.amo_logo_image_source
+        assert '/static/img/icons/firefox.png' in home_page.amo_logo_image_source
 
     @pytest.mark.nondestructive
     def test_that_clicking_the_amo_logo_loads_home_page(self, base_url, selenium):
