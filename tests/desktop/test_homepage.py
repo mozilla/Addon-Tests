@@ -69,9 +69,8 @@ class TestHome:
     @pytest.mark.nondestructive
     def test_that_clicking_see_all_themes_link_works(self, base_url, selenium):
         home_page = Home(base_url, selenium)
-        featured_theme_page = home_page.click_featured_themes_see_all_link()
-        assert featured_theme_page.is_the_current_page
-        assert 'Themes' == featured_theme_page.theme_header
+        theme_page = home_page.click_featured_themes_see_all_link()
+        assert theme_page.is_the_current_page
 
     @pytest.mark.native
     @pytest.mark.nondestructive
