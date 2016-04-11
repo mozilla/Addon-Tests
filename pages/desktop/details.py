@@ -68,11 +68,6 @@ class Details(Base):
     _reviews_section_header_locator = (By.CSS_SELECTOR, '#reviews > h2')
     _reviews_locator = (By.CSS_SELECTOR, "section#reviews div")
     _add_review_link_locator = (By.ID, "add-review")
-
-    _add_to_collection_locator = (By.CSS_SELECTOR, ".collection-add.widget.collection")
-    _add_to_collection_widget_button_locator = (By.CSS_SELECTOR, ".collection-add-login .register-button .button")
-    _add_to_collection_widget_login_link_locator = (By.CSS_SELECTOR, "div.collection-add-login p:nth-child(3) > a")
-
     _development_channel_locator = (By.CSS_SELECTOR, "#beta-channel")
     _development_channel_toggle = (By.CSS_SELECTOR, '#beta-channel a.toggle')
     _development_channel_install_button_locator = (By.CSS_SELECTOR, '#beta-channel p.install-button a.button.caution')
@@ -362,17 +357,6 @@ class Details(Base):
     @property
     def previewer(self):
         return self.ImagePreviewer(self.base_url, self.selenium)
-
-    def click_add_to_collection_widget(self):
-        self.selenium.find_element(*self._add_to_collection_locator).click()
-
-    @property
-    def collection_widget_button(self):
-        return self.selenium.find_element(*self._add_to_collection_widget_button_locator).text
-
-    @property
-    def collection_widget_login_link(self):
-        return self.selenium.find_element(*self._add_to_collection_widget_login_link_locator).text
 
     class ImagePreviewer(Page):
 

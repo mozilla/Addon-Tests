@@ -214,14 +214,6 @@ class TestDetails:
         assert details_page.is_devs_comments_section_expanded
         assert re.match('(\w+\s*){3,}', details_page.devs_comments_message) is not None
 
-    @pytest.mark.smoke
-    @pytest.mark.nondestructive
-    def test_that_add_to_collection_flyout_for_anonymous_users(self, base_url, selenium):
-        details_page = Details(base_url, selenium, 'Firebug')
-        details_page.click_add_to_collection_widget()
-        assert 'Create an Add-ons Account' == details_page.collection_widget_button
-        assert 'log in to your current account' == details_page.collection_widget_login_link
-
     @pytest.mark.nondestructive
     def test_that_the_development_channel_expands(self, base_url, selenium):
         details_page = Details(base_url, selenium, 'Firebug')
