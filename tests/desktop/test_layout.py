@@ -22,7 +22,7 @@ class TestAmoLayout:
     @pytest.mark.nondestructive
     def test_that_checks_amo_logo_text_layout_and_title(self, base_url, selenium):
         home_page = Home(base_url, selenium)
-        assert 'ADD-ONS' == home_page.amo_logo_text
+        assert 'Add-ons' == home_page.amo_logo_text
         assert 'Return to the Firefox Add-ons homepage' == home_page.amo_logo_title
         assert '/img/app-icons/med/firefox.png' in home_page.amo_logo_image_source
 
