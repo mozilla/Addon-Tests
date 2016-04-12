@@ -8,7 +8,6 @@ import uuid
 
 
 from pages.desktop.home import Home
-from pages.desktop.details import Details
 
 
 class TestCollections:
@@ -45,14 +44,3 @@ class TestCollections:
         my_collections_page = home_page.header.click_my_collections()
         assert 'Collections by %s :: Add-ons for Firefox' % user['display_name'] == my_collections_page.page_title
         assert 'Collections by %s' % user['display_name'] == my_collections_page.my_collections_header_text
-
-    @pytest.mark.native
-    def test_user_my_favorites_page(self, base_url, selenium, logged_in):
-        details_page = Details(base_url, selenium, 'Firebug')
-        details_page.click_add_to_favorites()
-        assert details_page.is_addon_marked_as_favorite
-
-        home_page = Home(base_url, selenium)
-        my_favorites_page = home_page.header.click_my_favorites()
-        assert my_favorites_page.is_the_current_page
-        assert 'My Favorite Add-ons' == my_favorites_page.my_favorites_header_text
