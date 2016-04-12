@@ -170,13 +170,3 @@ class MyCollections(Base):
     @property
     def my_collections_header_text(self):
         return self.selenium.find_element(*self._header_locator).text
-
-
-class MyFavorites(Base):
-
-    _header_locator = (By.CSS_SELECTOR, 'h2.collection > span')
-    _page_title = 'My Favorite Add-ons :: Collections :: Add-ons for Firefox'
-
-    @property
-    def my_favorites_header_text(self):
-        return self.selenium.find_element(*self._header_locator).text
