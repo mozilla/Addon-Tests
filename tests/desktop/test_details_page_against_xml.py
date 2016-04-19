@@ -48,10 +48,7 @@ class TestDetailsAgainstXML:
 
         # get images links from browser
         firebug_page = Details(base_url, selenium, self.firebug)
-        images_count = firebug_page.previewer.image_count
-        browser_images = []
-        for i in range(images_count):
-            browser_images.append(firebug_page.previewer.image_link(i))
+        browser_images = [t.source for t in firebug_page.previews.thumbnails]
 
         # get images links from xml
         addons_xml = AddonsAPI(base_url, self.firebug)

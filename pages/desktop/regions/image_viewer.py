@@ -5,52 +5,55 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 
-from pages.page import Page
+from pages.page import PageRegion
 
 
-class ImageViewer(Page):
+class ImageViewer(PageRegion):
 
-    _image_viewer = (By.CSS_SELECTOR, '#lightbox > section')
-    # controls
-    _next_locator = (By.CSS_SELECTOR, 'div.controls > a.control.next')
-    _previous_locator = (By.CSS_SELECTOR, 'div.controls > a.control.prev')
-    _caption_locator = (By.CSS_SELECTOR, 'div.caption span')
-    _close_locator = (By.CSS_SELECTOR, 'div.content > a.close')
-
-    # content
-    _images_locator = (By.CSS_SELECTOR, 'div.content > img')
-    _current_image_locator = (By.CSS_SELECTOR, 'div.content > img[style*="opacity: 1"]')
+    _root_locator = (By.ID, 'lightbox')
+    _close_locator = (By.CLASS_NAME, 'close')
+    _previous_locator = (By.CSS_SELECTOR, '.control.prev')
+    _next_locator = (By.CSS_SELECTOR, '.control.next')
+    _caption_locator = (By.CLASS_NAME, 'caption')
+    _image_locator = (By.CSS_SELECTOR, '.content > img')
 
     @property
-    def is_visible(self):
-        return self.is_element_visible(*self._image_viewer)
-
-    @property
-    def images_count(self):
-        return len(self.selenium.find_elements(*self._images_locator))
-
-    @property
-    def is_next_present(self):
-        return 'disabled' not in self.selenium.find_element(*self._next_locator).get_attribute('class')
-
-    @property
-    def is_previous_present(self):
-        return 'disabled' not in self.selenium.find_element(*self._previous_locator).get_attribute('class')
-
-    @property
-    def image_link(self):
-        return self.selenium.find_element(*self._current_image_locator).get_attribute('src')
-
-    def click_next(self):
-        self.selenium.find_element(*self._next_locator).click()
-
-    def click_previous(self):
-        self.selenium.find_element(*self._previous_locator).click()
+    def is_displayed(self):
+        return self.root.is_displayed()
 
     def close(self):
-        self.selenium.find_element(*self._close_locator).click()
-        WebDriverWait(self.selenium, self.timeout).until(lambda s: not self.is_element_visible(*self._image_viewer))
+        self.root.find_element(*self._close_locator).click()
+        WebDriverWait(self.selenium, self.timeout).until(lambda s: not self.root.is_displayed())
+
+    @property
+    def images(self):
+        return [self.Image(self.base_url, self.selenium, el) for el in
+                self.root.find_elements(*self._image_locator)]
+
+    @property
+    def is_previous_displayed(self):
+        return self.root.find_element(*self._previous_locator).is_displayed()
+
+    def click_previous(self):
+        self.root.find_element(*self._previous_locator).click()
+
+    @property
+    def is_next_displayed(self):
+        return self.root.find_element(*self._next_locator).is_displayed()
+
+    def click_next(self):
+        self.root.find_element(*self._next_locator).click()
 
     @property
     def caption(self):
-        return self.selenium.find_element(*self._caption_locator).text
+        return self.root.find_element(*self._caption_locator).text
+
+    class Image(PageRegion):
+
+        @property
+        def is_displayed(self):
+            return self.root.is_displayed
+
+        @property
+        def source(self):
+            return self.root.get_attribute('src')

@@ -10,7 +10,7 @@ from selenium.webdriver.support import expected_conditions as expected
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.action_chains import ActionChains
 
-from pages.page import Page
+from pages.page import Page, PageRegion
 from pages.desktop.base import Base
 
 
@@ -355,55 +355,37 @@ class Details(Base):
                 for other_addon_web_element in self.selenium.find_elements(*self._other_addons_by_author_locator)]
 
     @property
-    def previewer(self):
-        return self.ImagePreviewer(self.base_url, self.selenium)
+    def previews(self):
+        return self.Previews(self.base_url, self.selenium)
 
-    class ImagePreviewer(Page):
+    class Previews(PageRegion):
 
-        # navigation
-        _next_locator = (By.CSS_SELECTOR, 'section.previews div.carousel > a.next')
-        _prev_locator = (By.CSS_SELECTOR, 'section.previews div.carousel > a.prev')
-
-        _image_locator = (By.CSS_SELECTOR, '#preview li')
-        _link_locator = (By.TAG_NAME, 'a')
-
-        def next_set(self):
-            self.selenium.find_element(*self._next_locator).click()
-
-        def prev_set(self):
-            self.selenium.find_element(*self._prev_locator).click()
-
-        def click_image(self, image_no=0):
-            images = self.selenium.find_elements(*self._image_locator)
-            images[image_no].find_element(*self._link_locator).click()
-
-            from pages.desktop.regions.image_viewer import ImageViewer
-            image_viewer = ImageViewer(self.base_url, self.selenium)
-            WebDriverWait(self.selenium, self.timeout).until(lambda s: image_viewer.is_visible)
-            return image_viewer
-
-        def image_title(self, image_no):
-            return self.selenium.find_element(
-                self._image_locator[0],
-                '%s:nth-child(%s) a' % (self._image_locator[1], image_no + 1)
-            ).get_attribute('title')
-
-        def image_link(self, image_no):
-            return self.selenium.find_element(
-                self._image_locator[0],
-                '%s:nth-child(%s) a img' % (self._image_locator[1], image_no + 1)
-            ).get_attribute('src')
+        _root_locator = (By.CSS_SELECTOR, 'section.previews')
+        _thumbnail_locator = (By.CLASS_NAME, 'thumbnail')
 
         @property
-        def image_count(self):
-            return len(self.selenium.find_elements(*self._image_locator))
+        def thumbnails(self):
+            return [self.Thumbnail(self.base_url, self.selenium, el) for el in
+                    self.root.find_elements(*self._thumbnail_locator)]
 
-        @property
-        def image_set_count(self):
-            if self.image_count % 3 == 0:
-                return self.image_count / 3
-            else:
-                return self.image_count / 3 + 1
+        class Thumbnail(PageRegion):
+
+            _image_locator = (By.TAG_NAME, 'img')
+
+            def click(self):
+                self.root.click()
+                from pages.desktop.regions.image_viewer import ImageViewer
+                viewer = ImageViewer(self.base_url, self.selenium)
+                WebDriverWait(self.selenium, self.timeout).until(lambda s: viewer.is_displayed)
+                return viewer
+
+            @property
+            def title(self):
+                return self.root.get_attribute('title')
+
+            @property
+            def source(self):
+                return self.root.find_element(*self._image_locator).get_attribute('src')
 
     def review(self, element):
         return self.DetailsReviewSnippet(self.base_url, self.selenium, element)
