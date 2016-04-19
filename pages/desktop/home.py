@@ -40,7 +40,7 @@ class Home(Base):
 
     _promo_box_locator = (By.ID, "promos")
 
-    _up_and_coming_locator = (By.ID, "upandcoming")
+    _up_and_coming_locator = (By.ID, 'upandcoming')
 
     def __init__(self, base_url, selenium, open_url=True):
         """Creates a new instance of the class and gets the page ready for testing."""
@@ -113,7 +113,7 @@ class Home(Base):
         return len(self.selenium.find_elements(*self._featured_extensions_elements_locator))
 
     @property
-    def up_and_coming_island(self):
+    def up_and_coming(self):
         from pages.desktop.regions.island import Island
         return Island(self.base_url, self.selenium, self.selenium.find_element(*self._up_and_coming_locator))
 

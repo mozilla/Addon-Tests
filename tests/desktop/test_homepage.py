@@ -185,26 +185,10 @@ class TestHome:
                     assert not item.is_featured
 
     @pytest.mark.nondestructive
-    def test_that_checks_the_up_and_coming_extensions_island(self, base_url, selenium):
-
-        home_page = Home(base_url, selenium)
-
-        up_and_coming_island = home_page.up_and_coming_island
-
-        assert 'Up & Coming Extensions' == up_and_coming_island.title
-        assert u'See all \xbb' == up_and_coming_island.see_all_text
-
-        for i in range(up_and_coming_island.pager.dot_count):
-            assert i == up_and_coming_island.visible_section
-            assert i == up_and_coming_island.pager.selected_dot
-            assert 6 == len(up_and_coming_island.addons)
-            up_and_coming_island.pager.next()
-
-        for i in range(up_and_coming_island.pager.dot_count - 1, -1, -1):
-            assert i == up_and_coming_island.visible_section
-            assert i == up_and_coming_island.pager.selected_dot
-            assert 6 == len(up_and_coming_island.addons)
-            up_and_coming_island.pager.prev()
+    def test_up_and_coming_extensions(self, base_url, selenium):
+        page = Home(base_url, selenium)
+        assert page.up_and_coming.title.startswith('Up & Coming Extensions')
+        assert 6 == len(page.up_and_coming.addons)
 
     @pytest.mark.native
     @pytest.mark.nondestructive
