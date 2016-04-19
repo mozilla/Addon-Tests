@@ -123,64 +123,30 @@ class TestDetails:
 
     @pytest.mark.nondestructive
     def test_open_close_functionality_for_image_viewer(self, base_url, selenium):
-        detail_page = Details(base_url, selenium, 'firebug')
-        image_viewer = detail_page.previewer.click_image()
-        assert image_viewer.is_visible
-        image_viewer.close()
-        assert not image_viewer.is_visible
+        page = Details(base_url, selenium, 'firebug')
+        viewer = page.previews.thumbnails[0].click()
+        assert viewer.is_displayed
+        viewer.close()
+        assert not viewer.is_displayed
 
     @pytest.mark.nondestructive
-    def test_navigation_buttons_for_image_viewer(self, base_url, selenium):
-        detail_page = Details(base_url, selenium, 'firebug')
-        images_count = detail_page.previewer.image_count
-        image_set_count = detail_page.previewer.image_set_count
-        images_title = []
-        image_link = []
-        for img_set in range(image_set_count):
-            for img_no in range(3):
-                if img_set * 3 + img_no != images_count:
-                    images_title.append(detail_page.previewer.image_title(img_set * 3 + img_no))
-                    image_link.append(detail_page.previewer.image_link(img_set * 3 + img_no))
-
-            detail_page.previewer.next_set()
-
-        for img_set in range(image_set_count):
-            detail_page.previewer.prev_set()
-
-        image_viewer = detail_page.previewer.click_image()
-        assert image_viewer.is_visible
-        assert images_count == image_viewer.images_count
-        for i in range(image_viewer.images_count):
-            assert image_viewer.is_visible
-            assert images_title[i] == image_viewer.caption
-            assert image_link[i].split('/')[-1] == image_viewer.image_link.split('/')[-1]
-
-            if not i == 0:
-                assert image_viewer.is_previous_present
-            else:
-                assert not image_viewer.is_previous_present
-
-            if not i == image_viewer.images_count - 1:
-                assert image_viewer.is_next_present
-                image_viewer.click_next()
-            else:
-                assert not image_viewer.is_next_present
-
-        for i in range(image_viewer.images_count - 1, -1, -1):
-            assert image_viewer.is_visible
-            assert images_title[i] == image_viewer.caption
-            assert image_link[i].split('/')[-1] == image_viewer.image_link.split('/')[-1]
-
-            if not i == image_viewer.images_count - 1:
-                assert image_viewer.is_next_present
-            else:
-                assert not image_viewer.is_next_present
-
-            if not i == 0:
-                assert image_viewer.is_previous_present
-                image_viewer.click_previous()
-            else:
-                assert not image_viewer.is_previous_present
+    def test_image_viewer_navigation(self, base_url, selenium):
+        page = Details(base_url, selenium, 'firebug')
+        thumbnails = page.previews.thumbnails
+        viewer = thumbnails[0].click()
+        assert not viewer.is_previous_displayed
+        for i in range(len(thumbnails)):
+            assert viewer.images[i].is_displayed
+            assert thumbnails[i].title == viewer.caption
+            assert thumbnails[i].source.split('/')[-1] == viewer.images[i].source.split('/')[-1]
+            viewer.click_next()
+        assert not viewer.is_next_displayed
+        for i in range(len(thumbnails) - 1, -1, -1):
+            assert viewer.images[i].is_displayed
+            assert thumbnails[i].title == viewer.caption
+            assert thumbnails[i].source.split('/')[-1] == viewer.images[i].source.split('/')[-1]
+            viewer.click_previous()
+        assert not viewer.is_previous_displayed
 
     @pytest.mark.nondestructive
     def test_that_review_usernames_are_clickable(self, base_url, selenium):
