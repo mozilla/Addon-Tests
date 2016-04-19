@@ -99,27 +99,27 @@ class TestDetails:
         assert re.match('(\w+\s*){3,}', user_faq_page.license_answer) is not None
 
     @pytest.mark.nondestructive
-    def test_other_addons_label_when_there_are_multiple_authors(self, base_url, selenium):
+    def test_author_addons_when_there_are_multiple_authors(self, base_url, selenium):
         addon_with_multiple_authors = 'firebug'
-        detail_page = Details(base_url, selenium, addon_with_multiple_authors)
-        assert len(detail_page.authors) > 1
-        assert 'Other add-ons by these authors' == detail_page.other_addons_by_authors_text
+        page = Details(base_url, selenium, addon_with_multiple_authors)
+        assert len(page.authors) > 1
+        assert 'Other add-ons by these authors' == page.author_addons.heading
 
     @pytest.mark.nondestructive
-    def test_other_addons_label_when_there_is_only_one_author(self, base_url, selenium):
+    def test_author_addons_when_there_is_only_one_author(self, base_url, selenium):
         addon_with_one_author = 'MemChaser'
-        detail_page = Details(base_url, selenium, addon_with_one_author)
-        assert len(detail_page.authors) == 1
-        assert 'Other add-ons by %s' % detail_page.authors[0] == detail_page.other_addons_by_authors_text
+        page = Details(base_url, selenium, addon_with_one_author)
+        assert len(page.authors) == 1
+        assert 'Other add-ons by %s' % page.authors[0] == page.author_addons.heading
 
     @pytest.mark.nondestructive
-    def test_navigating_to_other_addons(self, base_url, selenium):
-        detail_page = Details(base_url, selenium, 'firebug')
-        for i in range(0, len(detail_page.other_addons)):
-            name = detail_page.other_addons[i].name
-            detail_page.other_addons[i].click_addon_link()
-            assert name in detail_page.title
-            Details(base_url, selenium, 'firebug')
+    def test_navigating_to_author_addons(self, base_url, selenium):
+        addon_page = Details(base_url, selenium, 'firebug')
+        for i in range(len(addon_page.author_addons.addons)):
+            author_addon_name = addon_page.author_addons.addons[i].name
+            addon_page.author_addons.addons[i].click()
+            assert author_addon_name in selenium.title
+            selenium.back()
 
     @pytest.mark.nondestructive
     def test_open_close_functionality_for_image_viewer(self, base_url, selenium):

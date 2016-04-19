@@ -12,6 +12,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 
 from pages.page import Page, PageRegion
 from pages.desktop.base import Base
+from pages.desktop.regions.addon import AddOn
 
 
 class Details(Base):
@@ -62,9 +63,7 @@ class Details(Base):
 
     # more about this add-on
     _website_locator = (By.CSS_SELECTOR, ".links a.home")
-    # other_addons
-    _other_addons_by_author_locator = (By.CSS_SELECTOR, "#author-addons > ul.listing-grid > section li > div.addon")
-    _other_addons_by_author_text_locator = (By.CSS_SELECTOR, '#author-addons > h2')
+    _author_addons_locator = (By.ID, 'author-addons')
     _reviews_section_header_locator = (By.CSS_SELECTOR, '#reviews > h2')
     _reviews_locator = (By.CSS_SELECTOR, "section#reviews div")
     _add_review_link_locator = (By.ID, "add-review")
@@ -346,13 +345,23 @@ class Details(Base):
         return urlparse.unquote(re.search('\w+://.*/(\w+%3A//.*)', url).group(1))
 
     @property
-    def other_addons_by_authors_text(self):
-        return self.selenium.find_element(*self._other_addons_by_author_text_locator).text
+    def author_addons(self):
+        return self.AuthorAddOns(self.base_url, self.selenium)
 
-    @property
-    def other_addons(self):
-        return [self.OtherAddons(self.base_url, self.selenium, other_addon_web_element)
-                for other_addon_web_element in self.selenium.find_elements(*self._other_addons_by_author_locator)]
+    class AuthorAddOns(PageRegion):
+
+        _root_locator = (By.ID, 'author-addons')
+        _heading_locator = (By.TAG_NAME, 'h2')
+        _addon_locator = (By.CLASS_NAME, 'addon')
+
+        @property
+        def heading(self):
+            return self.root.find_element(*self._heading_locator).text
+
+        @property
+        def addons(self):
+            return [AddOn(self.base_url, self.selenium, el) for el in
+                    self.root.find_elements(*self._addon_locator)]
 
     @property
     def previews(self):
@@ -421,21 +430,6 @@ class Details(Base):
         self.selenium.find_element(*self._devs_comments_toggle_locator).click()
         WebDriverWait(self.selenium, self.timeout).until(
             lambda s: self.is_devs_comments_section_expanded)
-
-    class OtherAddons(Page):
-
-        _name_locator = (By.CSS_SELECTOR, 'div.summary h3')
-
-        def __init__(self, base_url, selenium, element):
-            Page.__init__(self, base_url, selenium)
-            self._root_element = element
-
-        @property
-        def name(self):
-            return self._root_element.find_element(*self._name_locator).text
-
-        def click_addon_link(self):
-            self._root_element.find_element(*self._name_locator).click()
 
     class DetailsReviewSnippet(Page):
 
