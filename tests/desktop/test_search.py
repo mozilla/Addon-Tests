@@ -207,7 +207,6 @@ class TestSearch:
 
     @pytest.mark.nondestructive
     @pytest.mark.smoke
-    @pytest.mark.xfail(reason='https://github.com/mozilla/olympia/issues/1247')
     def test_searching_for_complete_themes(self, base_url, selenium):
         page = CompleteThemes(base_url, selenium).open()
         results_page = page.search_for('nasa')
