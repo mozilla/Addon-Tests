@@ -44,3 +44,24 @@ class TestCollections:
         my_collections_page = home_page.header.click_my_collections()
         assert 'Collections by %s :: Add-ons for Firefox' % user['display_name'] == my_collections_page.page_title
         assert 'Collections by %s' % user['display_name'] == my_collections_page.my_collections_header_text
+
+    @pytest.mark.native
+    def test_user_my_favorites_page(self, base_url, selenium, logged_in):
+        home_page = Home(base_url, selenium)
+        my_collections_page = home_page.header.click_my_collections()
+        my_favorites_page = my_collections_page.click_my_favorites()
+        assert 0 == len(my_favorites_page.add_ons)
+
+        assert 'My Favorite Add-ons' == my_favorites_page.my_favorites_header_text
+        edit_collection_page = my_favorites_page.edit_collection()
+
+        assert edit_collection_page.is_the_current_page
+
+        edit_collection_page.click_add_ons_tab()
+        edit_collection_page.include_add_on('Firebug')
+        edit_collection_page.click_add_ons_save_changes()
+
+        my_favorites_page = home_page.header.click_my_favorites()
+        assert 1 == len(my_favorites_page.add_ons)
+        assert 'Firebug' == my_favorites_page.add_ons[0].name
+        assert my_favorites_page.add_ons[0].favorite

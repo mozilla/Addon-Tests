@@ -9,8 +9,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import NoSuchAttributeException
 
+from pages.page import Page, PageRegion
 from pages.desktop.base import Base
-from pages.page import Page
 
 
 class Login(Base):
@@ -165,8 +165,80 @@ class EditProfile(Base):
 
 class MyCollections(Base):
 
-    _header_locator = (By.CSS_SELECTOR, ".primary > header > h2")
+    _header_locator = (By.CSS_SELECTOR, '.primary > header > h2')
+    _my_favorites_locator = (By.CSS_SELECTOR, '.other-categories ul:nth-child(3) li:nth-child(3)')
 
     @property
     def my_collections_header_text(self):
         return self.selenium.find_element(*self._header_locator).text
+
+    def click_my_favorites(self):
+        self.selenium.find_element(*self._my_favorites_locator).click()
+        return MyFavorites(self.base_url, self.selenium)
+
+
+class MyFavorites(Base):
+
+    _page_title = 'My Favorite Add-ons :: Collections :: Add-ons for Firefox'
+    _header_locator = (By.CSS_SELECTOR, "h2.collection > span")
+
+    _edit_collection_locator = (By.CLASS_NAME, 'edit')
+    _addon_locator = (By.CSS_SELECTOR, '.separated-listing .item')
+    _add_on_name_locator = (By.CSS_SELECTOR, '.item h3 a')
+
+    def edit_collection(self):
+        self.selenium.find_element(*self._edit_collection_locator).click()
+        return EditCollection(self.base_url, self.selenium)
+
+    @property
+    def my_favorites_header_text(self):
+        return self.selenium.find_element(*self._header_locator).text
+
+    @property
+    def add_ons(self):
+        return [self.AddOn(self.base_url, self.selenium, el) for el in
+                self.selenium.find_elements(*self._addon_locator)]
+
+    class AddOn(PageRegion):
+        _name_locator = (By.CSS_SELECTOR, '.item a')
+        _favorite_locator = (By.CSS_SELECTOR, 'a.favorite')
+
+        @property
+        def name(self):
+            return self.root.find_element(*self._name_locator).text
+
+        @property
+        def favorite(self):
+            is_favorite = self.selenium.find_element(*self._favorite_locator).get_attribute('title')
+            return 'Remove from favorites' in is_favorite
+
+
+class EditCollection(Base):
+
+    _title_locator = (By.CSS_SELECTOR, 'header > h2')
+
+    _name_field_locator = (By.ID, 'addon-ac')
+    _search_list_locator = (By.CSS_SELECTOR, '#ui-id-1')
+    _add_to_collection_button_locator = (By.ID, 'addon-select')
+    _addons_tab_locator = (By.CSS_SELECTOR, ".tab-nav li:nth-child(2) a")
+    _save_addon_changes_locator = (By.CSS_SELECTOR, '#addons-edit input[type=submit]')
+
+    @property
+    def _page_title(self):
+        return "%s :: Add-ons for Firefox" % self.title
+
+    @property
+    def title(self):
+        return self.selenium.find_element(*self._title_locator).text
+
+    def click_add_ons_tab(self):
+        self.selenium.find_element(*self._addons_tab_locator).click()
+
+    def include_add_on(self, name):
+        item_locator = (By.CSS_SELECTOR, " li:nth-child(1) a")
+        self.selenium.find_element(*self._name_field_locator).send_keys(name)
+        self.selenium.find_element(*self._search_list_locator).find_element(*item_locator).click()
+        self.selenium.find_element(*self._add_to_collection_button_locator).click()
+
+    def click_add_ons_save_changes(self):
+        self.selenium.find_element(*self._save_addon_changes_locator).click()

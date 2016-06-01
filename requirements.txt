@@ -1,4 +1,4 @@
-fxapom==1.7.1
+fxapom==1.8.0
 pyjwt==1.4.0
 pytest==2.9.2
 pytest-selenium
