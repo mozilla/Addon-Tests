@@ -1,6 +1,6 @@
 fxapom==1.7.1
 pyjwt==1.4.0
-pytest==2.9.1
+pytest==2.9.2
 pytest-selenium
 pytest-variables
 pytest-xdist==1.14
