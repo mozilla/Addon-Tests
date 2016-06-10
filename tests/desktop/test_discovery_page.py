@@ -62,6 +62,9 @@ class TestDiscoveryPane:
         assert 'See all complete themes' == discovery_pane.see_all_complete_themes
 
     @pytest.mark.nondestructive
+    @pytest.mark.skipif(
+        'dev' in pytest.config.getoption('services_base_url'),
+        reason='https://github.com/mozilla/addons-server/issues/2886')
     def test_that_up_and_coming_is_present_and_had_5_items(self, services_base_url, selenium):
         discovery_pane = DiscoveryPane(services_base_url, selenium, self.basepath(selenium))
         assert 5 == discovery_pane.up_and_coming_item_count
