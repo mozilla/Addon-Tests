@@ -56,7 +56,6 @@ class Details(Base):
     _info_link_locator = (By.CSS_SELECTOR, "li > a.scrollto")
     _rating_counter_locator = (By.CSS_SELECTOR, ".grouped_ratings .num_ratings")
 
-    _devs_comments_section_locator = (By.CSS_SELECTOR, "#developer-comments")
     _devs_comments_title_locator = (By.CSS_SELECTOR, "#developer-comments h2")
     _devs_comments_toggle_locator = (By.CSS_SELECTOR, "#developer-comments h2 a")
     _devs_comments_message_locator = (By.CSS_SELECTOR, "#developer-comments div.content")
@@ -270,10 +269,6 @@ class Details(Base):
     @property
     def are_tags_visible(self):
         return self.is_element_visible(*self._tags_locator)
-
-    @property
-    def is_devs_comments_section_present(self):
-        return self.is_element_present(*self._devs_comments_section_locator)
 
     @property
     def is_devs_comments_section_expanded(self):

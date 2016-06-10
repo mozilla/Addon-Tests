@@ -71,9 +71,6 @@ class Page(object):
         except (NoSuchElementException, ElementNotVisibleException):
             return False
 
-    def return_to_previous_page(self):
-        self.selenium.back()
-
 
 class PageRegion(object):
 

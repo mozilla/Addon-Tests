@@ -92,26 +92,6 @@ class TestSearch:
         results = [result.name for result in search_page.results]
         assert 'Firebug' == results[0]
 
-    @pytest.mark.nondestructive
-    def test_that_searching_for_cool_returns_results_with_cool_in_their_name_description(self, base_url, selenium):
-        home_page = Home(base_url, selenium)
-        search_term = 'cool'
-        search_page = home_page.search_for(search_term)
-        assert not search_page.is_no_results_present
-
-        for i in range(0, len(search_page.results)):
-            try:
-                assert search_term in search_page.results[i].text.lower()
-            except:
-                devs_comments = ''
-                details_page = search_page.results[i].click_result()
-                if details_page.is_devs_comments_section_present:
-                    details_page.expand_devs_comments()
-                    devs_comments = details_page.devs_comments_message
-                search_range = details_page.description + devs_comments
-                assert search_term in search_range.lower()
-                details_page.return_to_previous_page()
-
     @pytest.mark.native
     @pytest.mark.nondestructive
     def test_sorting_by_downloads(self, base_url, selenium):
