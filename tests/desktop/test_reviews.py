@@ -46,9 +46,6 @@ class TestReviews:
         assert page_number + 1 == view_reviews.paginator.page_number
 
     @pytest.mark.native
-    @pytest.mark.xfail(
-        'addons-dev' in pytest.config.getvalue('base_url'),
-        reason='https://github.com/mozilla/addons-server/issues/2442')
     def test_that_new_review_is_saved(self, base_url, selenium, logged_in, user):
         details_page = Details(base_url, selenium, 'Memchaser')
         write_review_block = details_page.click_to_write_review()
