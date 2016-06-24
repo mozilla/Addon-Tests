@@ -1,13 +1,26 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
-
+#from axl.axl import generate
 import pytest
-
 from pages.desktop.home import Home
 
 
 class TestExtensions:
+
+    @pytest.mark.native
+    def test_web_extension_submission(self, base_url, selenium, user):
+        home_page = Home(base_url, selenium)
+        home_page.login(user['email'], user['password'])
+
+        assert home_page.is_the_current_page
+        assert home_page.header.is_user_logged_in
+
+        submit_page = home_page.header.click_submit_a_new_addon()
+        path = generate()
+        submit_page.select_file(path)
+
+        time.sleep(3)
 
     @pytest.mark.native
     @pytest.mark.nondestructive
