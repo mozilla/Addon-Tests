@@ -17,22 +17,6 @@ def session_capabilities(session_capabilities):
     return session_capabilities
 
 
-def pytest_addoption(parser):
-    parser.addoption("--servicesbaseurl",
-                     action="store",
-                     dest='services_base_url',
-                     metavar='str',
-                     default="",
-                     help="specify the api url")
-
-
-@pytest.fixture(scope='session')
-def services_base_url(request, base_url):
-    config = request.config
-    services_base_url = config.getoption('services_base_url')
-    return services_base_url or base_url
-
-
 @pytest.fixture
 def fxa_account(base_url):
     url = DEV_URL if 'dev' in base_url else PROD_URL
