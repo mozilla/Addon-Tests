@@ -131,7 +131,7 @@ class Base(Page):
         _logout_locator = (By.CSS_SELECTOR, "li.nomenu.logout > a")
 
         _tools_dropdown_locator = (By.CLASS_NAME, "tools")
-        _submit_a_new_addon_locator = (By.CSS_SELECTOR,".tools>ul>li:nth-child(2)>a")
+        _submit_a_new_addon_locator = (By.CSS_SELECTOR, ".tools>ul>li:nth-child(2)>a")
 
         _site_navigation_menus_locator = (By.CSS_SELECTOR, "#site-nav > ul > li")
         _site_navigation_min_number_menus = 4
@@ -279,7 +279,7 @@ class Base(Page):
             hover_element = self.selenium.find_element(*self._tools_dropdown_locator)
 
             ActionChains(self.selenium).move_to_element(hover_element).perform()
-            submit_new_addon = self.selenium.find_element(*self._submit_a_new_addon_locator).click()
+            self.selenium.find_element(*self._submit_a_new_addon_locator).click()
 
             from pages.desktop.submit import Submit
             return Submit(self.base_url, self.selenium)
