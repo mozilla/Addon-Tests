@@ -14,9 +14,6 @@ class TestExtensions:
         home_page = Home(base_url, selenium)
         home_page.login(user['email'], user['password'])
 
-        assert home_page.is_the_current_page
-        assert home_page.header.is_user_logged_in
-
         submit_page = home_page.header.click_submit_a_new_addon()
 
         path = generate()
