@@ -10,7 +10,7 @@ from pages.desktop.base import Base
 class Submit(Base):
 
     _upload_addon_locator = (By.ID, "upload-addon")
-    _upload_progress_bar_success_locator = (By.CSS_SELECTOR, "bar-success")
+    _upload_progress_bar_success_locator = (By.CSS_SELECTOR, "#upload-file>.upload-status>.bar-success")
     _misc_category_locator = (By.CSS_SELECTOR, ".addon-misc-category.checkbox-choices>li>label")
     _mpl_license_locator = (By.CSS_SELECTOR, "#id_builtin>li>label")
     _review_button_locator = (By.CSS_SELECTOR, ".submit-buttons>button")
