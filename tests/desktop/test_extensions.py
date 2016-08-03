@@ -9,7 +9,6 @@ from pages.desktop.home import Home
 class TestExtensions:
 
     @pytest.mark.native
-    @pytest.mark.nondestructive
     def test_web_extension_submission(self, base_url, selenium, user):
         home_page = Home(base_url, selenium)
         home_page.login(user['email'], user['password'])
