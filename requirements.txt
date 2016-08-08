@@ -6,4 +6,4 @@ pytest-selenium
 pytest-variables
 pytest-xdist==1.14
 pytz==2016.6.1
-requests==2.10.0
+requests==2.11.0
