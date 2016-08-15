@@ -4,6 +4,6 @@ pyjwt==1.4.2
 pytest==2.9.2
 pytest-selenium
 pytest-variables
-pytest-xdist==1.14
+pytest-xdist==1.15.0
 pytz==2016.6.1
 requests==2.11.0
