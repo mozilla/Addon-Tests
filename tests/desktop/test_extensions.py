@@ -14,6 +14,7 @@ class TestExtensions:
         home_page.login(user['email'], user['password'])
 
         submit_page = home_page.header.click_submit_a_new_addon()
+        submit_page.accept_agreement()
 
         path = generate()
         submit_page.upload_addon(path)
@@ -24,7 +25,6 @@ class TestExtensions:
         submit_page.continue_to_step_five()
         submit_page.click_mpl_license()
         submit_page.continue_to_step_six()
-        submit_page.click_review_button()
 
         assert submit_page.is_next_steps_present
 

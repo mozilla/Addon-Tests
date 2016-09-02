@@ -9,11 +9,11 @@ from pages.desktop.base import Base
 
 class Submit(Base):
 
+    _accept_agreement_locator = (By.ID, 'accept-agreement')
     _upload_addon_locator = (By.ID, "upload-addon")
     _upload_progress_bar_success_locator = (By.CSS_SELECTOR, "#upload-file>.upload-status>.bar-success")
     _misc_category_locator = (By.CSS_SELECTOR, ".addon-misc-category.checkbox-choices>li>label")
     _mpl_license_locator = (By.CSS_SELECTOR, "#id_builtin>li>label")
-    _review_button_locator = (By.CSS_SELECTOR, ".submit-buttons>button")
     _done_next_steps_locator = (By.CSS_SELECTOR, ".done-next-steps")
     _continue_to_step_3_locator = (By.ID, "submit-upload-file-finish")
     _continue_to_step_4_locator = (By.CSS_SELECTOR, ".submission-buttons.addon-submission-field>button")
@@ -28,6 +28,9 @@ class Submit(Base):
     def is_next_steps_present(self):
         return self.selenium.find_element(*self._done_next_steps_locator).is_displayed()
 
+    def accept_agreement(self):
+        self.selenium.find_element(*self._accept_agreement_locator).click()
+
     def upload_addon(self, path):
         file_selector = self.selenium.find_element(*self._upload_addon_locator)
         file_selector.send_keys(path)
@@ -38,9 +41,6 @@ class Submit(Base):
 
     def click_mpl_license(self):
         self.selenium.find_element(*self._mpl_license_locator).click()
-
-    def click_review_button(self):
-        self.selenium.find_element(*self._review_button_locator).click()
 
     def continue_to_step_three(self):
         self.selenium.find_element(*self._continue_to_step_3_locator).click()
