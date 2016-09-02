@@ -9,6 +9,7 @@ from pages.desktop.base import Base
 
 class Submit(Base):
 
+    _accept_agreement_locator = (By.ID, 'accept-agreement')
     _upload_addon_locator = (By.ID, "upload-addon")
     _upload_progress_bar_success_locator = (By.CSS_SELECTOR, "#upload-file>.upload-status>.bar-success")
     _misc_category_locator = (By.CSS_SELECTOR, ".addon-misc-category.checkbox-choices>li>label")
@@ -27,6 +28,9 @@ class Submit(Base):
     @property
     def is_next_steps_present(self):
         return self.selenium.find_element(*self._done_next_steps_locator).is_displayed()
+
+    def accept_agreement(self):
+        self.selenium.find_element(*self._accept_agreement_locator).click()
 
     def upload_addon(self, path):
         file_selector = self.selenium.find_element(*self._upload_addon_locator)

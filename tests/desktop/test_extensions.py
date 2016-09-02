@@ -14,6 +14,7 @@ class TestExtensions:
         home_page.login(user['email'], user['password'])
 
         submit_page = home_page.header.click_submit_a_new_addon()
+        submit_page.accept_agreement()
 
         path = generate()
         submit_page.upload_addon(path)
