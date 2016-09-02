@@ -14,7 +14,6 @@ class Submit(Base):
     _upload_progress_bar_success_locator = (By.CSS_SELECTOR, "#upload-file>.upload-status>.bar-success")
     _misc_category_locator = (By.CSS_SELECTOR, ".addon-misc-category.checkbox-choices>li>label")
     _mpl_license_locator = (By.CSS_SELECTOR, "#id_builtin>li>label")
-    _review_button_locator = (By.CSS_SELECTOR, ".submit-buttons>button")
     _done_next_steps_locator = (By.CSS_SELECTOR, ".done-next-steps")
     _continue_to_step_3_locator = (By.ID, "submit-upload-file-finish")
     _continue_to_step_4_locator = (By.CSS_SELECTOR, ".submission-buttons.addon-submission-field>button")
@@ -42,9 +41,6 @@ class Submit(Base):
 
     def click_mpl_license(self):
         self.selenium.find_element(*self._mpl_license_locator).click()
-
-    def click_review_button(self):
-        self.selenium.find_element(*self._review_button_locator).click()
 
     def continue_to_step_three(self):
         self.selenium.find_element(*self._continue_to_step_3_locator).click()

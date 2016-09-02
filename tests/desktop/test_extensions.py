@@ -25,7 +25,6 @@ class TestExtensions:
         submit_page.continue_to_step_five()
         submit_page.click_mpl_license()
         submit_page.continue_to_step_six()
-        submit_page.click_review_button()
 
         assert submit_page.is_next_steps_present
 
