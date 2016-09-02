@@ -21,12 +21,8 @@ class Login(Base):
     _continue_button_locator = (By.CSS_SELECTOR, '#normal-login .login-source-button')
 
     def login(self, email, password):
-        self.selenium.find_element(*self._email_locator).send_keys(email)
-        self.selenium.find_element(*self._continue_button_locator).click()
         from fxapom.pages.sign_in import SignIn
-        sign_in = SignIn(self.selenium)
-        sign_in.login_password = password
-        sign_in.click_sign_in()
+        SignIn(self.selenium).sign_in(email, password)
 
 
 class ViewProfile(Base):
