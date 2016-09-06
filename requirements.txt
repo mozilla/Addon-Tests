@@ -1,7 +1,7 @@
 axl==0.5.1
 fxapom==1.9.0
 pyjwt==1.4.2
-pytest==3.0.1
+pytest~=3.0.0
 pytest-selenium
 pytest-variables
 pytest-xdist==1.15.0
