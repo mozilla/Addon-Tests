@@ -43,7 +43,6 @@ def user(base_url, fxa_account, jwt_token):
     params = {
         'email': user['email'],
         'username': user['username'],
-        'password': user['password'],
         'fxa_id': fxa_account.session.uid}
     headers = {'Authorization': 'JWT {token}'.format(token=jwt_token)}
     r = requests.post(url, data=params, headers=headers)
