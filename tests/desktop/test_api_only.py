@@ -29,10 +29,10 @@ class TestAPIOnlyTests:
         assert 1 == response.get_addon_type_id()
 
     @pytest.mark.nondestructive
-    def test_that_firebug_status_id_is_4_and_fully_reviewed(self, base_url):
+    def test_that_firebug_status_id_is_4_and_approved(self, base_url):
         response = AddonsAPI(base_url, 'Firebug')
         assert 4 == response.get_addon_status_id()
-        assert 'fully reviewed' == response.get_addon_status()
+        assert 'approved' == response.get_addon_status()
 
     @pytest.mark.nondestructive
     def test_that_firebug_has_install_link(self, base_url):
