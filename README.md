@@ -1,4 +1,4 @@
-Tests for addons.mozilla.org (amo)
+Tests for addons.mozilla.org (AMO)
 ==================================
 
 Thank you for checking out Mozilla's Addon-Tests test suite.
@@ -47,22 +47,6 @@ If you do not know how to clone a GitHub repository, check out this
 If you think you would like to contribute to the tests by writing or maintaining them in the future,
 it would be a good idea to create a fork of this repository first, and then clone that.
 GitHub also has great instructions for [forking a repository][git-fork].
-
-### Create or activate a Python virtual environment
-You should install this project's dependencies (which is described in the next step) into a virtual environment
-in order to avoid impacting the rest of your system, and to make problem solving easier.
-If you already have a virtual environment for these tests, then you should activate it,
-otherwise you should create a new one.
-For more information on working with virtual environments see our
-[summary][virtualenv].
-
-### Install dependencies
-Install the Python packages that are needed to run our tests using pip. In a terminal,
-from the the project root, issue the following command:
-
-```bash
-$ pip install -Ur requirements.txt
-```
 
 ### Create test variables files
 
@@ -113,24 +97,9 @@ This file will then need to be referenced on the command line using the
 `--variables` option.
 
 ### Run the tests
-Tests are run using the command line. Below are a couple of examples of running the tests:
 
-To run all of the desktop tests against the default environment, which is the add-ons development environment:
-
-```bash
-$ py.test --driver Firefox --variables api.json --variables paypal.json tests/desktop
-```
-
-To run against a different environment, pass in a value for `--base-url`, like so:
-
-```bash
-$ py.test --base-url https://addons.allizom.org --driver Firefox --variables api.json --variables paypal.json  tests/desktop
-```
-
-The pytest plugin that we use for running tests has a number of advanced
-command line options available. To see the options available, run
-`py.test --help`. The full documentation for the plugin can be found
-[here][pytest-selenium].
+* [Install Tox](https://tox.readthedocs.io/en/latest/install.html)
+* Run `PYTEST_ADDOPTS="--variables=/path/to/variables.json" tox`
 
 [contributors]: https://github.com/mozilla/Addon-Tests/contributors
 [git-clone]: https://help.github.com/articles/cloning-a-repository/

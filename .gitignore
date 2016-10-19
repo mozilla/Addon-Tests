@@ -3,6 +3,7 @@
 *.pyc
 *.komodoproject
 *.idea
+.tox
 __pycache__
-results*
+results/
 .DS_store
