@@ -30,7 +30,7 @@ Questions are always welcome
 ----------------------------
 While we take pains to keep our documentation updated, the best source of information is those
 of us who work on the project.  
-Don't be afraid to join us in irc.mozilla.org [#mozwebqa][mozwebqa] to ask questions about our
+Don't be afraid to join us in irc.mozilla.org [#fx-test][fx-test] to ask questions about our
 Selenium tests.
 We also have a [mailing list][mailing_list] available that you are welcome to join and post to.
 
