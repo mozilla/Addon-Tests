@@ -11,6 +11,13 @@ import pytest
 import requests
 
 
+@pytest.fixture
+def addon(tmpdir):
+    from axl.axl import generate
+    addon = generate(str(tmpdir))
+    yield addon
+
+
 @pytest.fixture(scope='session')
 def session_capabilities(session_capabilities):
     session_capabilities.setdefault('tags', []).append('amo')

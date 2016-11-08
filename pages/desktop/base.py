@@ -281,8 +281,8 @@ class Base(Page):
             ActionChains(self.selenium).move_to_element(hover_element).perform()
             self.selenium.find_element(*self._submit_a_new_addon_locator).click()
 
-            from pages.desktop.submit import Submit
-            return Submit(self.base_url, self.selenium)
+            from pages.desktop.submit.agreement import Agreement
+            return Agreement(self.base_url, self.selenium)
 
         @property
         def is_user_logged_in(self):
