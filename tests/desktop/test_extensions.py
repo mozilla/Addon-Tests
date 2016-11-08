@@ -102,7 +102,6 @@ class TestExtensions:
 
     @pytest.mark.native
     @pytest.mark.nondestructive
-    @pytest.mark.xfail(reason='https://github.com/mozilla/addons-server/issues/1986')
     def test_that_checks_if_the_extensions_are_sorted_by_recently_updated(self, base_url, selenium):
         home_page = Home(base_url, selenium)
         featured_extensions_page = home_page.header.site_navigation_menu("Extensions").click()

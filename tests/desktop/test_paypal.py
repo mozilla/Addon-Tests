@@ -27,6 +27,7 @@ class TestPaypal:
         payment_popup.close_paypal_popup()
         assert addon_page.is_the_current_page
 
+    @pytest.mark.flaky(reruns=1)
     def test_that_user_can_make_a_contribution_without_logging_into_amo(self, base_url, selenium, paypal_user):
         """Test that checks if the user is able to make a contribution without logging in to AMO."""
         addon_page = Details(base_url, selenium, self.addon_name)
