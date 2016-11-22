@@ -57,7 +57,6 @@ def runTox(environment) {
         variable: 'SAUCELABS_API_KEY']]) {
         withEnv(["PYTEST_ADDOPTS=${PYTEST_ADDOPTS} " +
           "-n=${processes} " +
-          "--base-url=${PYTEST_BASE_URL} " +
           "--driver=SauceLabs " +
           "--variables=capabilities.json " +
           "--color=yes"]) {
