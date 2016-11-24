@@ -13,6 +13,7 @@ class TestPaypal:
 
     addon_name = 'Firebug'
 
+    @pytest.mark.flaky(reruns=1)
     def test_that_user_can_contribute_to_an_addon(self, base_url, selenium, logged_in, paypal_user):
         """Test that checks the Contribute button for an add-on using PayPal."""
         addon_page = Details(base_url, selenium, self.addon_name)
