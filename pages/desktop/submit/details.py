@@ -10,8 +10,9 @@ from pages.desktop.base import Base
 class Details(Base):
 
     _misc_category_locator = (By.CSS_SELECTOR, '.addon-misc-category input')
-    _mpl_license_locator = (By.CSS_SELECTOR, '#id_builtin input')
-    _submit_addon_locator = (By.CSS_SELECTOR, '.addon-submission-process button[type=submit]')
+    _mpl_license_locator = (By.CSS_SELECTOR, '#id_license-builtin_0')
+    _submit_addon_locator = (
+        By.CSS_SELECTOR, '.addon-submission-process button[type=submit]')
 
     def select_misc_category(self):
         return self.selenium.find_element(*self._misc_category_locator).click()

@@ -9,8 +9,10 @@ from pages.desktop.base import Base
 
 class Distribution(Base):
 
-    _on_this_site_locator = (By.CSS_SELECTOR, '#id_choices input[value=listed]')
-    _continue_locator = (By.CSS_SELECTOR, '.addon-submission-process button[type=submit]')
+    _on_this_site_locator = (
+        By.CSS_SELECTOR, '#id_channel input[value=listed]')
+    _continue_locator = (
+        By.CSS_SELECTOR, '.addon-submission-process button[type=submit]')
 
     def select_on_this_site(self):
         self.selenium.find_element(*self._on_this_site_locator).click()
