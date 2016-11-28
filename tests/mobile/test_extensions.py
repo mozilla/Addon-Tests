@@ -5,6 +5,10 @@
 import pytest
 from pages.mobile.home import Home
 
+pytestmark = pytest.mark.xfail(
+    'dev' in pytest.config.getoption('base_url'),
+    reason='Mobile site redesigned on dev')
+
 
 class TestExtensions:
 

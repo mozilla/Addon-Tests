@@ -6,6 +6,10 @@ import pytest
 from pages.mobile.home import Home
 from pages.mobile.themes import Themes
 
+pytestmark = pytest.mark.xfail(
+    'dev' in pytest.config.getoption('base_url'),
+    reason='Mobile site redesigned on dev')
+
 
 class TestHome:
 
