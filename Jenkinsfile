@@ -1,32 +1,14 @@
 import groovy.json.JsonOutput
 
-/** Map of Tox environments and associated capabilities */
-def environments = [
-  desktop: [
-    browserName: 'Firefox',
-    version: '47.0',
-    platform: 'Windows 10'
-  ],
-  mobile: [
-    browserName: 'Browser',
-    platformName: 'Android',
-    platformVersion: '5.0',
-    deviceName: 'Android Emulator',
-    appiumVersion: '1.5.3'
-  ]
-]
+/** Tox environment */
+def environment = 'desktop'
 
-/** Transform a map into a list of maps
- *
- * @param aMap map to transform
- * @return a list of maps
-*/
-@NonCPS
-def entrySet(aMap) {
-  aMap.collect {
-    k, v -> [key: k, value: v]
-  }
-}
+/** Map of desired capabilities */
+def capabilities = [
+  browserName: 'Firefox',
+  version: '47.0',
+  platform: 'Windows 10'
+]
 
 /** Write capabilities to JSON file
  *
@@ -117,11 +99,8 @@ stage('Lint') {
   }
 }
 
-def builders = [:]
-for (entry in entrySet(environments)) {
-  def environment = entry.key
-  def capabilities = entry.value
-  builders[(environment)] = {
+try {
+  stage('Test') {
     node {
       timeout(time: 1, unit: 'HOURS') {
         timestamps {
@@ -140,12 +119,6 @@ for (entry in entrySet(environments)) {
       }
     }
   }
-}
-
-try {
-  stage('Test') {
-    parallel builders
-  }
 } catch(err) {
   currentBuild.result = 'FAILURE'
   ircNotification(currentBuild.result)
@@ -158,24 +131,18 @@ try {
   throw err
 } finally {
   stage('Results') {
-    def keys = environments.keySet() as String[]
-    def htmlFiles = []
     node {
       deleteDir()
       sh 'mkdir results'
       dir('results') {
-        for (int i = 0; i < keys.size(); i++) {
-          // Unstash results from each environment
-          unstash keys[i]
-          htmlFiles.add("${keys[i]}.html")
-        }
+        unstash environment
       }
       publishHTML(target: [
         allowMissing: false,
         alwaysLinkToLastBuild: true,
         keepAll: true,
         reportDir: 'results',
-        reportFiles: htmlFiles.join(','),
+        reportFiles: "${environment}.html",
         reportName: 'HTML Report'])
       junit 'results/*.xml'
       archiveArtifacts 'results/*'
