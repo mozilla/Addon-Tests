@@ -1,5 +1,6 @@
 axl==0.5.1
 fxapom==1.10.0
+mozlog==3.4
 PyJWT==1.4.2
 pytest==3.0.7
 pytest-rerunfailures==2.1.0
