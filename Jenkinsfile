@@ -29,9 +29,12 @@ pipeline {
     }
     stage('Test') {
       environment {
-        /* See https://issues.jenkins-ci.org/browse/JENKINS-42771 - we'd like
-           to expand this out into multi-line concatenations */
-        PYTEST_ADDOPTS = "--tb=short --color=yes --driver=SauceLabs --variables=capabilities.json --variables=${VARIABLES}"
+        PYTEST_ADDOPTS =
+          "--tb=short " +
+          "--color=yes " +
+          "--driver=SauceLabs " +
+          "--variables=capabilities.json " +
+          "--variables=${VARIABLES}"
       }
       steps {
         writeCapabilities(capabilities)
