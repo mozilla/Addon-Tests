@@ -15,7 +15,7 @@ pipeline {
     timeout(time: 1, unit: 'HOURS')
   }
   environment {
-    /* See https://issues.jenkins-ci.org/browse/JENKINS-42858 - credentials
+    /* See https://issues.jenkins-ci.org/browse/JENKINS-43872 - credentials
        variable should be usable inside the same environment block */
     VARIABLES = credentials('AMO_VARIABLES')
     PULSE = credentials('PULSE')
