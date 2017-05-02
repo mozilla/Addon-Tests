@@ -15,8 +15,8 @@ pipeline {
     timeout(time: 1, unit: 'HOURS')
   }
   environment {
-    /* See https://issues.jenkins-ci.org/browse/JENKINS-43872 - credentials
-       variable should be usable inside the same environment block */
+    /* See https://issues.jenkins-ci.org/browse/JENKINS-43910 - File credentials
+    can't be used in Declarative environment variables */
     VARIABLES = credentials('AMO_VARIABLES')
     PULSE = credentials('PULSE')
     SAUCELABS_API_KEY = credentials('SAUCELABS_API_KEY')
