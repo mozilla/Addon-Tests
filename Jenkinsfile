@@ -15,9 +15,13 @@ pipeline {
     timeout(time: 1, unit: 'HOURS')
   }
   environment {
-    /* See https://issues.jenkins-ci.org/browse/JENKINS-43910 - File credentials
-    can't be used in Declarative environment variables */
     VARIABLES = credentials('AMO_VARIABLES')
+    PYTEST_ADDOPTS =
+          "--tb=short " +
+          "--color=yes " +
+          "--driver=SauceLabs " +
+          "--variables=capabilities.json " +
+          "--variables=${VARIABLES}"
     PULSE = credentials('PULSE')
     SAUCELABS_API_KEY = credentials('SAUCELABS_API_KEY')
   }
@@ -28,14 +32,6 @@ pipeline {
       }
     }
     stage('Test') {
-      environment {
-        PYTEST_ADDOPTS =
-          "--tb=short " +
-          "--color=yes " +
-          "--driver=SauceLabs " +
-          "--variables=capabilities.json " +
-          "--variables=${VARIABLES}"
-      }
       steps {
         writeCapabilities(capabilities)
         sh 'tox -e py27'
