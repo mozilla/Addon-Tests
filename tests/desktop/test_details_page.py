@@ -53,7 +53,6 @@ class TestDetails:
         assert details_page.is_version_information_section_expanded
         assert details_page.is_source_code_license_information_visible
         assert details_page.is_whats_this_license_visible
-        assert details_page.is_view_the_source_link_visible
         assert details_page.is_complete_version_history_visible
         assert details_page.is_version_information_install_button_visible
         # check that the release number matches the version number at the top of the page
@@ -243,6 +242,7 @@ class TestDetails:
         assert 'Frequently Asked Questions' == license_faq.header_text
 
     @pytest.mark.nondestructive
+    @pytest.mark.xfail(reason='https://github.com/mozilla/addons-server/issues/5135')
     def test_view_the_source_in_the_version_information(self, base_url, selenium):
         details_page = Details(base_url, selenium, "Firebug")
         assert 'Version Information' == details_page.version_information_heading
