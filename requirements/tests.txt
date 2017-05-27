@@ -8,4 +8,4 @@ pytest-selenium==1.10.0
 pytest-variables==1.6.1
 pytest-xdist==1.16.0
 pytz==2017.2
-requests==2.14.2
+requests==2.16.0
