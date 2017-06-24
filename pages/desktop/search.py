@@ -6,10 +6,13 @@
 from time import strptime, mktime
 
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as expected
 from selenium.webdriver.support.ui import WebDriverWait
 
 from pages.page import Page
 from pages.desktop.base import Base
+from pages.desktop.regions.sorter import Sorter as BaseSorter
+from pages.desktop.regions.paginator import Paginator as BasePaginator
 
 
 class SearchResultList(Base):
@@ -47,9 +50,8 @@ class SearchResultList(Base):
     def result_count(self):
         return len(self.selenium.find_elements(*self._results_locator))
 
-    def click_sort_by(self, type):
-        from pages.desktop.regions.sorter import Sorter
-        Sorter(self.base_url, self.selenium).sort_by(type)
+    def click_sort_by(self, category):
+        Sorter(self.base_url, self.selenium).sort_by(category)
 
     def result(self, lookup):
         elements = self.selenium.find_elements(*self._results_locator)
@@ -74,7 +76,6 @@ class SearchResultList(Base):
 
     @property
     def paginator(self):
-        from pages.desktop.regions.paginator import Paginator
         return Paginator(self.base_url, self.selenium)
 
     class SearchResultItem(Page):
@@ -138,3 +139,25 @@ class SearchResultList(Base):
                 return CompleteTheme(self.base_url, self.selenium)
             else:
                 return Details(self.base_url, self.selenium)
+
+
+class Paginator(BasePaginator):
+
+    def _navigate(self, locator):
+        el = self.selenium.find_element(*SearchResultList._results_locator)
+        self.selenium.find_element(*locator).click()
+        WebDriverWait(self.selenium, self.timeout).until(expected.staleness_of(el))
+        WebDriverWait(self.selenium, self.timeout).until(
+            expected.visibility_of_element_located(
+                SearchResultList._results_locator))
+
+
+class Sorter(BaseSorter):
+
+    def sort_by(self, category):
+        el = self.selenium.find_element(*SearchResultList._results_locator)
+        super(Sorter, self).sort_by(category)
+        WebDriverWait(self.selenium, self.timeout).until(expected.staleness_of(el))
+        WebDriverWait(self.selenium, self.timeout).until(
+            expected.visibility_of_element_located(
+                SearchResultList._results_locator))

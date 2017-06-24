@@ -4,7 +4,6 @@
 
 
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.action_chains import ActionChains
 
 from pages.page import Page
@@ -28,21 +27,19 @@ class Sorter(Page):
     _updating_locator = (By.CSS_SELECTOR, '.updating')
     _footer_locator = (By.ID, 'footer')
 
-    def sort_by(self, type):
+    def sort_by(self, category):
         """This is done because sometimes the hover menus remains open so we move the focus to footer to close the menu
         We go to footer because all the menus open a window under them so moving the mouse from down to up will not leave any menu
         open over the desired element"""
         footer_element = self.selenium.find_element(*self._footer_locator)
         ActionChains(self.selenium).move_to_element(footer_element).perform()
-        click_element = self.selenium.find_element(*getattr(self, '_sort_by_%s_locator' % type.replace(' ', '_').lower()))
-        if type.replace(' ', '_').lower() in ["featured", "most_users", "top_rated", "newest"]:
+        click_element = self.selenium.find_element(*getattr(self, '_sort_by_%s_locator' % category.replace(' ', '_').lower()))
+        if category.replace(' ', '_').lower() in ["featured", "most_users", "top_rated", "newest"]:
             click_element.click()
         else:
             hover_element = self.selenium.find_element(*self._hover_more_locator)
-            ActionChains(self.selenium).move_to_element(hover_element).\
-                move_to_element(click_element).\
-                click().perform()
-        WebDriverWait(self.selenium, self.timeout).until(lambda s: not self.is_element_present(*self._updating_locator))
+            ActionChains(self.selenium).move_to_element(hover_element).perform()
+            click_element.click()
 
     @property
     def sorted_by(self):

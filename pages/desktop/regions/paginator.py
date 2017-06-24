@@ -3,7 +3,6 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
 
 from pages.page import Page
 
@@ -27,10 +26,6 @@ class Paginator(Page):
 
     _updating_locator = (By.CSS_SELECTOR, "div.updating")
 
-    def _wait_for_results_refresh(self):
-        # On pages that do not have ajax refresh this wait will have no effect.
-        WebDriverWait(self.selenium, self.timeout).until(lambda s: not self.is_element_present(*self._updating_locator))
-
     @property
     def page_number(self):
         return int(self.selenium.find_element(*self._page_number_locator).text)
@@ -40,12 +35,10 @@ class Paginator(Page):
         return int(self.selenium.find_element(*self._total_page_number_locator).text)
 
     def click_first_page(self):
-        self.selenium.find_element(*self._first_page_locator).click()
-        self._wait_for_results_refresh()
+        self._navigate(self._first_page_locator)
 
     def click_prev_page(self):
-        self.selenium.find_element(*self._prev_locator).click()
-        self._wait_for_results_refresh()
+        self._navigate(self._prev_locator)
 
     @property
     def is_prev_page_disabled(self):
@@ -55,17 +48,18 @@ class Paginator(Page):
     def is_first_page_disabled(self):
         return 'disabled' in self.selenium.find_element(*self._first_page_locator).get_attribute('class')
 
+    def _navigate(self, locator):
+        self.selenium.find_element(*locator).click()
+
     def click_next_page(self):
-        self.selenium.find_element(*self._next_locator).click()
-        self._wait_for_results_refresh()
+        self._navigate(self._next_locator)
 
     @property
     def is_next_page_disabled(self):
         return 'disabled' in self.selenium.find_element(*self._next_locator).get_attribute('class')
 
     def click_last_page(self):
-        self.selenium.find_element(*self._last_page_locator).click()
-        self._wait_for_results_refresh()
+        self._navigate(self._last_page_locator)
 
     @property
     def is_last_page_disabled(self):
