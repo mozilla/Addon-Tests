@@ -2,9 +2,11 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-
 import re
+import urllib
+
 import pytest
+import requests
 
 from pages.desktop.details import Details
 
@@ -79,15 +81,11 @@ class TestDetails:
         assert len(details_page.part_of_collections) > 0
 
     @pytest.mark.nondestructive
-    def test_that_external_link_leads_to_addon_website(self, base_url, selenium):
-        # Step 1 - Open AMO Home
-        # Step 2 - Open MemChaser Plus details page
+    def test_website_link(self, base_url, selenium):
         details_page = Details(base_url, selenium, 'MemChaser')
-        website_link = details_page.website
-        assert not website_link == ''
-        # Step 3 - Follow external website link
-        details_page.click_website_link()
-        assert details_page.get_url_current_page() in website_link
+        url = 'https://wiki.mozilla.org/QA/Automation_Services/Projects/Addons/MemChaser'
+        assert urllib.quote(url) in details_page.website
+        assert requests.head(url).url == url
 
     @pytest.mark.nondestructive
     def test_that_whats_this_link_for_source_license_links_to_an_answer_in_faq(self, base_url, selenium):
