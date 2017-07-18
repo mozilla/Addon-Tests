@@ -1,5 +1,5 @@
 axl==0.5.1
-fxapom==1.10.0
+fxapom==1.10.1
 mozlog==3.5
 PyJWT==1.5.2
 pytest==3.1.3
