@@ -74,11 +74,6 @@ class TestDetailsAgainstXML:
         assert xml_summary == browser_summary
 
     @pytest.mark.nondestructive
-    def test_that_firebug_rating_is_correct(self, base_url, selenium):
-        firebug_page = Details(base_url, selenium, self.firebug)
-        assert '5' == firebug_page.rating
-
-    @pytest.mark.nondestructive
     def test_that_description_text_is_correct(self, base_url, selenium):
         # browser
         firebug_page = Details(base_url, selenium, self.firebug)
