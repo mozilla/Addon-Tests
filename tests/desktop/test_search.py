@@ -137,10 +137,10 @@ class TestSearch:
     @pytest.mark.nondestructive
     def test_that_searching_for_a_tag_returns_results(self, base_url, selenium):
         home_page = Home(base_url, selenium)
-        search_page = home_page.search_for('food')
+        search_page = home_page.search_for('cookie')
         result_count = search_page.filter.results_count
         assert result_count > 0
-        search_page.filter.tag('food').click_tag()
+        search_page.filter.tag('cookie').click_tag()
         assert search_page.filter.results_count >= result_count
 
     @pytest.mark.nondestructive
