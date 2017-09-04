@@ -207,7 +207,7 @@ class TestDetails:
         assert details_page.is_development_channel_install_button_visible
 
         # Verify experimental version (beta or pre)
-        assert re.match('Version\s\d+\.\d+\.\d+[a|b|rc]\d+\:', details_page.beta_version) is not None
+        assert re.match('Version\s\d+\.\d+\.\d+[a|b|rc]\d+', details_page.beta_version) is not None
 
     @pytest.mark.nondestructive
     def test_that_license_link_works(self, base_url, selenium):
