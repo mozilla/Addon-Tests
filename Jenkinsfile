@@ -8,7 +8,7 @@ def capabilities = [
 pipeline {
   agent any
   libraries {
-    lib('fxtest@1.6')
+    lib('fxtest@1.9')
   }
   options {
     ansiColor('xterm')
