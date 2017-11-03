@@ -1,9 +1,0 @@
-.cache
-*.swp
-*.pyc
-*.komodoproject
-*.idea
-.tox
-__pycache__
-results/
-.DS_store
